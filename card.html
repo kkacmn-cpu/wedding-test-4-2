@@ -1103,6 +1103,87 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 @keyframes ambGrainFlick{0%{transform:translateX(0);}33%{transform:translateX(1.5px);}66%{transform:translateX(-1.5px);}100%{transform:translateX(0);}}
 @media (prefers-reduced-motion:reduce){.ambient-layer{display:none!important;}}
 
+/* ===== 2차 모바일 첫 화면 높이 정상화 (커버 stage만, 데스크톱·크롭·디자인 무변경) =====
+   원인1: 100vh가 모바일 주소창 포함 높이라 실표시영역 초과 → dvh/svh 사용(vh fallback 유지)
+   원인2: min-height:600px가 작은 화면(예:320×568)에서 화면을 초과 → 모바일에서 완화 */
+@media (max-width:768px){
+  .sig-hero,
+  .t-classic-ivory .civ-stage,
+  .t-black .bk-stage,
+  .t-flower .fl-hero,
+  .t-hanok .hk-stage,
+  .t-minimal .stl-stage,
+  .t-fullscreen .cn-stage,
+  .t-gold-serif .lt-stage{
+    box-sizing:border-box;
+    height:100vh;        /* fallback */
+    height:100svh;       /* 주소창 펼쳐진 안정 높이 */
+    min-height:0;        /* 600px 고정 제거: 작은 화면 초과 방지 */
+    max-height:none;     /* 1000px 상한이 모바일 dvh 계산을 방해하지 않도록 */
+  }
+}
+/* dvh 지원 브라우저에서는 동적 viewport 높이 사용 (주소창 접힘/펼침 반영) */
+@supports (height:100dvh){
+  @media (max-width:768px){
+    .sig-hero,
+    .t-classic-ivory .civ-stage,
+    .t-black .bk-stage,
+    .t-flower .fl-hero,
+    .t-hanok .hk-stage,
+    .t-minimal .stl-stage,
+    .t-fullscreen .cn-stage,
+    .t-gold-serif .lt-stage{ height:100dvh; }
+  }
+}
+/* flower는 #card.t-flower .fl-hero (1019행, #card specificity)가 별도로 적용되므로
+   모바일에서 동일 specificity로 높이 정상화 (데스크톱 -24px 여백 규칙은 유지) */
+@media (max-width:768px){
+  #card.t-flower .fl-hero{
+    box-sizing:border-box;
+    height:100vh; height:100svh;
+    min-height:0; max-height:none;
+  }
+}
+@supports (height:100dvh){
+  @media (max-width:768px){
+    #card.t-flower .fl-hero{ height:100dvh; }
+  }
+}
+
+/* ===== 2차 재수정: 모바일 커버 바깥 wrapper(.iv-cover) 충돌 제거 =====
+   내부 stage는 100svh/100dvh로 정상화됐으나, 바깥 .iv-cover에 과거 템플릿의
+   padding / min-height / max-height / overflow / 장식 pseudo-element가 남아
+   outer 높이가 viewport를 초과(black·hanok 100px, minimal 148px, gold-serif 124px,
+   flower 24px)하거나 fullscreen은 max-height:520+overflow:hidden로 내부 stage를 잘랐다.
+   모바일에서만 outer wrapper를 초기화한다(데스크톱·내부 stage 디자인 무변경). */
+@media (max-width:768px){
+  #card.t-signature > .iv-cover,
+  #card.t-classic-ivory > .iv-cover,
+  #card.t-hanok > .iv-cover,
+  #card.t-black > .iv-cover,
+  #card.t-fullscreen > .iv-cover,
+  #card.t-minimal > .iv-cover,
+  #card.t-flower > .iv-cover,
+  #card.t-gold-serif > .iv-cover{
+    box-sizing:border-box;
+    width:100%;
+    height:auto;
+    min-height:0;
+    max-height:none;
+    padding:0;
+    overflow:visible;
+  }
+  /* gold-serif: 외부 높이를 만들던 border-bottom 제거 */
+  #card.t-gold-serif > .iv-cover{ border-bottom:0; }
+  /* hanok/gold-serif: 외부 높이에 기여하는 장식 pseudo-element 제거 (내부 stage 디자인엔 영향 없음) */
+  #card.t-hanok > .iv-cover::before,
+  #card.t-hanok > .iv-cover::after,
+  #card.t-gold-serif > .iv-cover::before{
+    content:none;
+    display:none;
+  }
+}
+
 </style>
 </head>
 <body>
