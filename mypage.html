@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>내 청첩장 관리 · 메모리리터치</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500&family=Noto+Sans+KR:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ivory:#fcf9f4;--ivory-2:#f7f1e8;--beige:#efe6d8;--beige-2:#e6d9c5;--sand:#d9c8af;
+  --brown:#3a2f26;--brown-soft:#5c4e42;--brown-mute:#8a7a6a;
+  --gold:#b8945f;--gold-deep:#9a7740;--gold-pale:#e9dcc4;--gold-wash:#f5eedf;
+  --line:#e8ddcc;--line-soft:#f0e8da;--white:#fff;--ok:#6f8f6a;--no:#c0607a;
+  --serif:'Noto Serif KR',serif;--display:'Cormorant Garamond',serif;--sans:'Noto Sans KR',sans-serif;
+  --sh-sm:0 2px 14px rgba(58,47,38,.06);--sh-md:0 14px 44px rgba(58,47,38,.10);--sh-lg:0 26px 70px rgba(58,47,38,.16);
+  --r:14px;--r-lg:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:var(--ivory-2);color:var(--brown);font-weight:300;-webkit-font-smoothing:antialiased;min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+::selection{background:var(--gold-pale);}
+
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px 28px;background:rgba(252,249,244,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
+.tb-brand{font-family:var(--display);font-size:20px;letter-spacing:1.5px;color:var(--brown);font-weight:500;}
+.tb-brand b{color:var(--gold-deep);}
+.tb-actions{display:flex;align-items:center;gap:10px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:400;padding:11px 22px;border-radius:999px;transition:all .25s;white-space:nowrap;}
+.btn-solid{background:var(--brown);color:var(--ivory);}
+.btn-solid:hover{background:var(--gold-deep);}
+.btn-gold{background:var(--gold);color:#fff;}
+.btn-gold:hover{background:var(--gold-deep);}
+.btn-ghost{background:transparent;color:var(--brown-soft);border:1px solid var(--sand);}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold-deep);background:var(--white);}
+.btn-sm{padding:8px 15px;font-size:13px;}
+.btn-danger{color:var(--no);border:1px solid #e8c4ce;}
+.btn-danger:hover{background:#fbeef1;}
+
+.wrap{max-width:920px;margin:0 auto;padding:44px 24px 80px;}
+.page-head{margin-bottom:32px;}
+.page-eyebrow{font-family:var(--display);font-size:14px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:10px;}
+.page-title{font-family:var(--serif);font-size:30px;font-weight:300;color:var(--brown);}
+.page-desc{font-size:15px;color:var(--brown-mute);margin-top:10px;}
+
+/* 로그인 안내 */
+.login-box{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:50px 40px;text-align:center;box-shadow:var(--sh-sm);max-width:440px;margin:60px auto;}
+.login-box .ico{font-size:46px;margin-bottom:16px;}
+.login-box h2{font-family:var(--serif);font-size:22px;font-weight:400;margin-bottom:8px;}
+.login-box p{font-size:14px;color:var(--brown-mute);margin-bottom:26px;line-height:1.7;}
+
+/* 청첩장 카드 목록 */
+.card-list{display:flex;flex-direction:column;gap:16px;}
+.wcard{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-sm);transition:box-shadow .25s;}
+.wcard:hover{box-shadow:var(--sh-md);}
+.wcard-main{display:flex;gap:18px;padding:20px;align-items:center;}
+.wcard-thumb{width:64px;height:78px;border-radius:40px 40px 6px 6px;background:var(--gold-wash);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;border:1px solid var(--line);}
+.wcard-thumb img{width:100%;height:100%;object-fit:cover;}
+.wcard-body{flex:1;min-width:0;}
+.wcard-names{font-family:var(--serif);font-size:18px;font-weight:500;color:var(--brown);}
+.wcard-meta{font-size:13px;color:var(--brown-mute);margin-top:5px;}
+.wcard-stats{display:flex;gap:14px;margin-top:10px;}
+.wcard-stat{font-size:12px;color:var(--brown-soft);background:var(--ivory-2);padding:5px 11px;border-radius:999px;}
+.wcard-stat b{color:var(--gold-deep);font-weight:500;}
+.wcard-actions{display:flex;gap:8px;flex-wrap:wrap;padding:0 20px 18px;}
+
+/* 펼침 영역 (RSVP/방명록) */
+.wcard-detail{border-top:1px solid var(--line-soft);padding:0;max-height:0;overflow:hidden;transition:max-height .4s ease;}
+.wcard-detail.open{max-height:1400px;}
+.detail-inner{padding:22px;}
+.detail-tabs{display:flex;gap:6px;margin-bottom:18px;}
+.detail-tab{font-size:13px;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--ivory);color:var(--brown-soft);transition:all .2s;}
+.detail-tab.on{background:var(--gold);color:#fff;border-color:var(--gold);}
+.detail-pane{display:none;}
+.detail-pane.on{display:block;animation:fade .3s;}
+@keyframes fade{from{opacity:0;}to{opacity:1;}}
+
+/* RSVP 통계 */
+.rsvp-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+.rs-stat{background:var(--ivory-2);border-radius:12px;padding:16px 10px;text-align:center;}
+.rs-stat .n{font-family:var(--display);font-size:26px;font-weight:500;color:var(--gold-deep);line-height:1;}
+.rs-stat .l{font-size:11.5px;color:var(--brown-mute);margin-top:6px;}
+.rsvp-table-wrap,.guest-wrap{overflow-x:auto;}
+.rsvp-table{width:100%;border-collapse:collapse;min-width:480px;}
+.rsvp-table th,.rsvp-table td{padding:10px 12px;font-size:13px;text-align:left;border-bottom:1px solid var(--line-soft);white-space:nowrap;}
+.rsvp-table th{background:var(--beige);color:var(--brown);font-weight:500;font-size:12px;}
+.rsvp-table td{color:var(--brown-soft);font-weight:300;}
+.rsvp-table .at-yes{color:var(--ok);}
+.rsvp-table .at-no{color:var(--no);}
+.empty{text-align:center;padding:30px;color:var(--brown-mute);font-size:14px;}
+
+/* 방명록 */
+.gb-item{background:var(--ivory-2);border-radius:12px;padding:14px 16px;margin-bottom:8px;}
+.gb-name{font-size:13px;font-weight:500;color:var(--brown);}
+.gb-msg{font-size:13px;color:var(--brown-soft);line-height:1.7;margin-top:5px;}
+.gb-date{font-size:11px;color:var(--brown-mute);margin-top:6px;}
+
+/* 빈 상태 */
+.empty-state{background:var(--white);border:1px dashed var(--sand);border-radius:var(--r-lg);padding:60px 40px;text-align:center;}
+.empty-state .ico{font-size:44px;margin-bottom:16px;opacity:.7;}
+.empty-state h2{font-family:var(--serif);font-size:20px;font-weight:400;margin-bottom:8px;}
+.empty-state p{font-size:14px;color:var(--brown-mute);margin-bottom:24px;}
+
+.loading{text-align:center;padding:60px;color:var(--brown-mute);}
+
+/* 토스트 */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--brown);color:var(--ivory);padding:13px 26px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:all .3s;z-index:100;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media(max-width:560px){
+  .wrap{padding:28px 16px 60px;}
+  .rsvp-summary{grid-template-columns:repeat(2,1fr);}
+  .wcard-main{flex-wrap:wrap;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="wedding-store.html" class="tb-brand">Memory<b>Retouch</b></a>
+  <div class="tb-actions" id="tbActions">
+    <a href="editor.html" class="btn btn-gold btn-sm">+ 새 청첩장</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="page-head">
+    <div class="page-eyebrow">My Cards</div>
+    <h1 class="page-title">내 청첩장 관리</h1>
+    <p class="page-desc">만든 청첩장을 수정하고, 하객 응답을 확인하세요.</p>
+  </div>
+
+  <div id="content">
+    <div class="loading">불러오는 중...</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPA_URL='https://jchohaqvaoytplinlylt.supabase.co';
+const SUPA_KEY='sb_publishable_pinNIcaU11HhbSz3TR__mQ_Ln4cJ79a';
+const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
+const V=id=>document.getElementById(id);
+
+/* XSS 방어: 사용자 입력값을 HTML에 넣기 전 escape */
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function safeUrl(u){if(!u)return'';const s=String(u).trim();return /^https?:\/\//i.test(s)?s:'';}
+
+function toast(msg){const t=V('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+function fmtDate(d){if(!d)return'날짜 미정';const dt=new Date(d),dy=['일','월','화','수','목','금','토'];return`${dt.getFullYear()}. ${dt.getMonth()+1}. ${dt.getDate()} (${dy[dt.getDay()]})`;}
+
+/*
+ * ── 카카오 로그인 설정 (배포 전 필수) ──────────────────────────────
+ * 1. Supabase Dashboard > Authentication > Providers > Kakao 활성화
+ * 2. Kakao Developers > 앱 > 카카오 로그인 > Redirect URI:
+ *    https://jchohaqvaoytplinlylt.supabase.co/auth/v1/callback
+ * 3. Supabase > Authentication > URL Configuration > Redirect URLs에
+ *    https://kkacmn-cpu.github.io/wedding/mypage.html 등록
+ * ───────────────────────────────────────────────────────────────── */
+async function signInKakao(){await sb.auth.signInWithOAuth({provider:'kakao',options:{redirectTo:location.href}});}
+async function signOut(){await sb.auth.signOut();location.reload();}
+
+/* 메인 */
+async function main(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){
+    V('content').innerHTML=`
+      <div class="login-box">
+        <div class="ico">💌</div>
+        <h2>로그인이 필요해요</h2>
+        <p>내가 만든 청첩장을 보려면<br>카카오로 로그인해주세요.</p>
+        <button class="btn btn-gold" onclick="signInKakao()" style="width:100%;">카카오로 시작하기</button>
+      </div>`;
+    return;
+  }
+  /* 로그인 사용자 ID를 전역 저장 (삭제 쿼리에서 본인 확인용) */
+  window._uid=session.user.id;
+  /* 상단에 로그아웃 추가 */
+  V('tbActions').innerHTML=`
+    <span style="font-size:13px;color:var(--brown-mute);">${esc(session.user.email||'')}</span>
+    <a href="editor.html" class="btn btn-gold btn-sm">+ 새 청첩장</a>
+    <button class="btn btn-ghost btn-sm" onclick="signOut()">로그아웃</button>`;
+
+  const{data:cards,error}=await sb.from('cards').select('*').eq('user_id',session.user.id).order('created_at',{ascending:false});
+  if(error){V('content').innerHTML=`<div class="empty">불러오기 실패: ${error.message}</div>`;return;}
+
+  if(!cards||!cards.length){
+    V('content').innerHTML=`
+      <div class="empty-state">
+        <div class="ico">🕊️</div>
+        <h2>아직 만든 청첩장이 없어요</h2>
+        <p>첫 번째 청첩장을 만들어보세요.</p>
+        <a href="editor.html" class="btn btn-gold">청첩장 만들기 →</a>
+      </div>`;
+    return;
+  }
+
+  V('content').innerHTML=`<div class="card-list">${cards.map(c=>cardHtml(c)).join('')}</div>`;
+  /* slug 캐시 (방문자 통계용) */
+  window._cards_cache={};cards.forEach(c=>{window._cards_cache[c.id]=c.slug;});
+  cards.forEach(c=>loadCounts(c.id));
+}
+
+function cardHtml(c){
+  const order=c.options?.order_gb!==false;
+  const gn=esc(c.groom_name||'신랑'), bn=esc(c.bride_name||'신부');
+  const names=order?`${gn} ♥ ${bn}`:`${bn} ♥ ${gn}`;
+  const photo=safeUrl(c.main_photo_url);
+  const url=new URL(`card.html?slug=${encodeURIComponent(c.slug)}`,location.href).href;
+  const shareUrl=`https://weddingapi.duckdns.org/card/${encodeURIComponent(c.slug)}`;
+  return`
+    <div class="wcard" id="wc-${c.id}">
+      <div class="wcard-main">
+        <div class="wcard-thumb">${photo?`<img src="${photo}"/>`:'🤍'}</div>
+        <div class="wcard-body">
+          <div class="wcard-names">${names}</div>
+          <div class="wcard-meta">${fmtDate(c.wedding_date)} · ${esc(c.venue_name||'장소 미정')}</div>
+          <div class="wcard-stats">
+            <span class="wcard-stat">👁 방문 <b id="cnt-view-${c.id}">·</b></span>
+            <span class="wcard-stat">참석응답 <b id="cnt-rsvp-${c.id}">·</b></span>
+            <span class="wcard-stat">방명록 <b id="cnt-gb-${c.id}">·</b></span>
+          </div>
+        </div>
+      </div>
+      <div class="wcard-actions">
+        <a href="${url}" target="_blank" class="btn btn-ghost btn-sm">👁 청첩장 보기</a>
+        <button class="btn btn-ghost btn-sm" onclick="copyLink('${shareUrl}')">🔗 링크 복사</button>
+        <a href="editor.html?edit=${c.slug}" class="btn btn-ghost btn-sm">✏️ 수정</a>
+        <button class="btn btn-ghost btn-sm" onclick="toggleDetail('${c.id}')">📊 응답 확인</button>
+        <button class="btn btn-danger btn-sm" onclick="delCard('${c.id}','${c.slug}')">🗑 삭제</button>
+      </div>
+      <div class="wcard-detail" id="detail-${c.id}">
+        <div class="detail-inner">
+          <div class="detail-tabs">
+            <button class="detail-tab on" onclick="detailTab('${c.id}','rsvp',this)">참석 응답</button>
+            <button class="detail-tab" onclick="detailTab('${c.id}','gb',this)">방명록</button>
+          </div>
+          <div class="detail-pane on" id="pane-rsvp-${c.id}"><div class="loading">불러오는 중...</div></div>
+          <div class="detail-pane" id="pane-gb-${c.id}"><div class="loading">불러오는 중...</div></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* 응답 수 카운트 */
+async function loadCounts(cardId){
+  const slug=_cards_cache[cardId];
+  const[{count:rc},{count:gc},{count:vc}]=await Promise.all([
+    sb.from('rsvp').select('*',{count:'exact',head:true}).eq('card_id',cardId),
+    sb.from('guestbook').select('*',{count:'exact',head:true}).eq('card_id',cardId),
+    slug?sb.from('card_views').select('*',{count:'exact',head:true}).eq('slug',slug):Promise.resolve({count:0})
+  ]);
+  if(V('cnt-rsvp-'+cardId))V('cnt-rsvp-'+cardId).textContent=rc??0;
+  if(V('cnt-gb-'+cardId))V('cnt-gb-'+cardId).textContent=gc??0;
+  if(V('cnt-view-'+cardId))V('cnt-view-'+cardId).textContent=vc??0;
+}
+
+/* 상세 펼침 */
+const loaded={};
+function toggleDetail(id){
+  const d=V('detail-'+id);
+  d.classList.toggle('open');
+  if(d.classList.contains('open')&&!loaded[id]){loaded[id]=true;loadRsvp(id);loadGuests(id);}
+}
+function detailTab(id,tab,btn){
+  V('wc-'+id).querySelectorAll('.detail-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  V('wc-'+id).querySelectorAll('.detail-pane').forEach(p=>p.classList.remove('on'));
+  V('pane-'+tab+'-'+id).classList.add('on');
+}
+
+/* RSVP 로드 */
+async function loadRsvp(cardId){
+  const{data}=await sb.from('rsvp').select('*').eq('card_id',cardId).order('created_at',{ascending:false});
+  const pane=V('pane-rsvp-'+cardId);
+  if(!data||!data.length){pane.innerHTML='<div class="empty">아직 참석 응답이 없어요.</div>';return;}
+  /* CSV 다운로드용 데이터를 전역 캐시에 저장 (onclick에 직접 넣지 않음 → XSS 방지) */
+  window._rsvp_cache=window._rsvp_cache||{};
+  window._rsvp_cache[cardId]=data;
+  const att=data.filter(r=>r.attendance==='참석');
+  const noShow=data.filter(r=>r.attendance==='불참');
+  const meal=data.filter(r=>r.meal==='yes').length;
+  const plus=data.reduce((s,r)=>s+(r.plus_count||0),0);
+  pane.innerHTML=`
+    <div class="rsvp-summary">
+      <div class="rs-stat"><div class="n">${data.length}</div><div class="l">총 응답</div></div>
+      <div class="rs-stat"><div class="n">${att.length}</div><div class="l">참석</div></div>
+      <div class="rs-stat"><div class="n">${meal}</div><div class="l">식사함</div></div>
+      <div class="rs-stat"><div class="n">${plus}</div><div class="l">동반 인원</div></div>
+    </div>
+    <div style="text-align:right;margin-bottom:12px;">
+      <button class="btn btn-ghost btn-sm" onclick="downloadCsvByCardId('${cardId}')">⬇ 엑셀(CSV) 다운로드</button>
+    </div>
+    <div class="rsvp-table-wrap">
+      <table class="rsvp-table">
+        <thead><tr><th>성함</th><th>구분</th><th>참석</th><th>식사</th><th>동반</th><th>연락처</th><th>메모</th></tr></thead>
+        <tbody>${data.map(r=>`<tr>
+          <td>${esc(r.name||'')}</td>
+          <td>${r.side==='groom'?'신랑측':r.side==='bride'?'신부측':''}</td>
+          <td class="${r.attendance==='참석'?'at-yes':'at-no'}">${esc(r.attendance||'')}</td>
+          <td>${r.meal==='yes'?'함':r.meal==='no'?'안함':'-'}</td>
+          <td>${r.plus_count||0}</td>
+          <td>${esc(r.phone||'-')}</td>
+          <td>${esc(r.memo||'-')}</td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+}
+
+/* 방명록 로드 */
+async function loadGuests(cardId){
+  const{data}=await sb.from('guestbook').select('*').eq('card_id',cardId).order('created_at',{ascending:false});
+  const pane=V('pane-gb-'+cardId);
+  if(!data||!data.length){pane.innerHTML='<div class="empty">아직 방명록이 없어요.</div>';return;}
+  pane.innerHTML=data.map(g=>`<div class="gb-item"><div class="gb-name">${esc(g.name)}</div><div class="gb-msg">${esc(g.message)}</div><div class="gb-date">${new Date(g.created_at).toLocaleDateString('ko-KR')}</div></div>`).join('');
+}
+
+/* CSV 다운로드 — 전역 캐시에서 cardId 기준으로 데이터를 읽어 생성 */
+function downloadCsvByCardId(cardId){
+  const data=(window._rsvp_cache||{})[cardId];
+  if(!data||!data.length){toast('다운로드할 응답이 없어요');return;}
+  const head=['성함','구분','참석여부','식사','동반인원','연락처','메모'];
+  /* CSV 셀 안전 처리: 큰따옴표는 ""로 이스케이프, 줄바꿈/쉼표 제거 */
+  const cell=v=>`"${String(v??'').replace(/"/g,'""').replace(/[\r\n]/g,' ')}"`;
+  const rows=data.map(r=>[
+    r.name||'',
+    r.side==='groom'?'신랑측':r.side==='bride'?'신부측':'',
+    r.attendance||'',
+    r.meal==='yes'?'함':r.meal==='no'?'안함':'',
+    r.plus_count||0,
+    r.phone||'',
+    (r.memo||'').replace(/[\n,]/g,' ')
+  ]);
+  const csv='\uFEFF'+[head,...rows].map(r=>r.map(cell).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='참석응답.csv';a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+/* 링크 복사 */
+function copyLink(url){navigator.clipboard.writeText(url).then(()=>toast('링크가 복사됐어요'));}
+
+/* 삭제 */
+async function delCard(id,slug){
+  if(!confirm('정말 삭제할까요? 발행된 청첩장 링크도 함께 사라지며, 되돌릴 수 없어요.'))return;
+  /* RLS에 더해 코드에서도 본인 카드만 삭제하도록 user_id 조건 추가 */
+  let q=sb.from('cards').delete().eq('id',id);
+  if(window._uid)q=q.eq('user_id',window._uid);
+  const{error}=await q;
+  if(error){toast('삭제 실패');return;}
+  const el=V('wc-'+id);if(el)el.style.display='none';
+  toast('삭제됐어요');
+}
+
+main();
+</script>
+</body>
+</html>
