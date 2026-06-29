@@ -258,6 +258,11 @@ input,select,textarea{font-family:inherit;}
 .mp-box img{width:100%;height:100%;object-fit:cover;}
 .mp-box .rm{position:absolute;top:6px;right:6px;width:22px;height:22px;background:rgba(0,0,0,.55);color:#fff;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .up-status{font-size:13px;font-weight:600;color:var(--ok);margin-top:10px;}
+.upload-progress{display:none;margin-top:10px;padding:10px 12px;border-radius:10px;background:#f7f2e8;border:1px solid #e8dcc5;font-size:12.5px;line-height:1.45;color:#76654b;}
+.upload-progress.show{display:block;}
+.upload-progress.error{background:#fff1ef;border-color:#efc9c2;color:#9a4d43;}
+.pthumb.is-processing::after{content:'최적화 중';position:absolute;inset:auto 5px 5px 5px;padding:3px 5px;border-radius:7px;background:rgba(0,0,0,.62);color:#fff;font-size:9.5px;text-align:center;}
+.pthumb.is-error::after{content:'업로드 실패';position:absolute;inset:auto 5px 5px 5px;padding:3px 5px;border-radius:7px;background:rgba(151,52,43,.86);color:#fff;font-size:9.5px;text-align:center;}
 .mp-side{flex:1;min-width:0;}
 .mp-note{font-size:11.5px;line-height:1.5;color:#9a8c72;margin-top:8px;word-break:keep-all;}
 
@@ -1324,8 +1329,8 @@ input,select,textarea{font-family:inherit;}
       <h2 class="sec-title">두 분의 이름을 알려주세요</h2>
       <p class="sec-desc">청첩장 첫 화면과 인사말에 표시될 이름입니다. 혼주(부모님) 성함은 선택 사항이며, 입력하면 인사말 아래에 함께 표시됩니다.</p>
       <div class="frow">
-        <div class="fld"><label class="fld-label">신랑 이름</label><input class="fi" id="f_groom" placeholder="김민준" oninput="renderIV()"/></div>
-        <div class="fld"><label class="fld-label">신부 이름</label><input class="fi" id="f_bride" placeholder="이서연" oninput="renderIV()"/></div>
+        <div class="fld"><label class="fld-label">신랑 이름</label><input class="fi" id="f_groom" placeholder="김민준" oninput="schedulePreviewRender()"/></div>
+        <div class="fld"><label class="fld-label">신부 이름</label><input class="fi" id="f_bride" placeholder="이서연" oninput="schedulePreviewRender()"/></div>
       </div>
       <div class="fld"><label class="fld-label">표시 순서</label>
         <select class="fs" id="f_order" onchange="renderIV()">
@@ -1336,8 +1341,8 @@ input,select,textarea{font-family:inherit;}
       <div class="parents-group">
         <div class="pg-head"><span class="pg-en">With Parents</span><span class="pg-ko">혼주 정보를 입력하세요</span></div>
         <div class="frow">
-          <div class="fld"><label class="fld-label">신랑측 혼주</label><input class="fi" id="f_gparent" placeholder="김아버지 · 박어머니" oninput="renderIV()"/><label class="dec-toggle"><input type="checkbox" id="f_gparent_dec" onchange="renderIV()"/><span class="dec-txt"><b>故</b> 표시 사용</span></label><p class="dec-note">하늘에 계신 부모님을 표기할 경우 사용합니다.</p></div>
-          <div class="fld"><label class="fld-label">신부측 혼주</label><input class="fi" id="f_bparent" placeholder="이아버지 · 최어머니" oninput="renderIV()"/><label class="dec-toggle"><input type="checkbox" id="f_bparent_dec" onchange="renderIV()"/><span class="dec-txt"><b>故</b> 표시 사용</span></label><p class="dec-note">하늘에 계신 부모님을 표기할 경우 사용합니다.</p></div>
+          <div class="fld"><label class="fld-label">신랑측 혼주</label><input class="fi" id="f_gparent" placeholder="김아버지 · 박어머니" oninput="schedulePreviewRender()"/><label class="dec-toggle"><input type="checkbox" id="f_gparent_dec" onchange="renderIV()"/><span class="dec-txt"><b>故</b> 표시 사용</span></label><p class="dec-note">하늘에 계신 부모님을 표기할 경우 사용합니다.</p></div>
+          <div class="fld"><label class="fld-label">신부측 혼주</label><input class="fi" id="f_bparent" placeholder="이아버지 · 최어머니" oninput="schedulePreviewRender()"/><label class="dec-toggle"><input type="checkbox" id="f_bparent_dec" onchange="renderIV()"/><span class="dec-txt"><b>故</b> 표시 사용</span></label><p class="dec-note">하늘에 계신 부모님을 표기할 경우 사용합니다.</p></div>
         </div>
       </div>
     </div>
@@ -1348,12 +1353,12 @@ input,select,textarea{font-family:inherit;}
       <h2 class="sec-title">예식 안내</h2>
       <p class="sec-desc">소중한 예식의 일정과 장소를 안내합니다.</p>
       <div class="frow">
-        <div class="fld"><label class="fld-label">예식 날짜</label><input type="date" class="fi" id="f_date" oninput="renderIV()"/></div>
-        <div class="fld"><label class="fld-label">예식 시간</label><input type="time" class="fi" id="f_time" value="14:00" oninput="renderIV()"/></div>
+        <div class="fld"><label class="fld-label">예식 날짜</label><input type="date" class="fi" id="f_date" oninput="schedulePreviewRender()"/></div>
+        <div class="fld"><label class="fld-label">예식 시간</label><input type="time" class="fi" id="f_time" value="14:00" oninput="schedulePreviewRender()"/></div>
       </div>
-      <div class="fld"><label class="fld-label">예식장</label><input class="fi" id="f_venue" placeholder="더채플앳청담" oninput="renderIV()"/></div>
-      <div class="fld"><label class="fld-label">웨딩홀</label><input class="fi" id="f_hall" placeholder="커티지홀" oninput="renderIV()"/></div>
-      <div class="fld"><label class="fld-label">주소</label><input class="fi" id="f_addr" placeholder="서울 강남구 선릉로 757" oninput="renderIV()"/><p class="fhint">입력한 주소를 기준으로 길찾기 버튼이 자동 생성됩니다.</p></div>
+      <div class="fld"><label class="fld-label">예식장</label><input class="fi" id="f_venue" placeholder="더채플앳청담" oninput="schedulePreviewRender()"/></div>
+      <div class="fld"><label class="fld-label">웨딩홀</label><input class="fi" id="f_hall" placeholder="커티지홀" oninput="schedulePreviewRender()"/></div>
+      <div class="fld"><label class="fld-label">주소</label><input class="fi" id="f_addr" placeholder="서울 강남구 선릉로 757" oninput="schedulePreviewRender()"/><p class="fhint">입력한 주소를 기준으로 길찾기 버튼이 자동 생성됩니다.</p></div>
     </div>
 
     <!-- 5. 사진 -->
@@ -1391,8 +1396,8 @@ input,select,textarea{font-family:inherit;}
       <!-- 대표사진 업로드 -->
       <div class="fld">
         <label class="fld-label">카카오톡에 표시될 대표사진</label>
-        <div class="uploader uploader-sm" onclick="document.getElementById('upMain').click()"><div class="up-ico">📸</div><p>클릭해서 대표사진 올리기</p><span class="up-sub">JPG · PNG · 최대 10MB</span></div>
-        <input type="file" id="upMain" accept="image/*" hidden onchange="upMain(this)"/>
+        <div class="uploader uploader-sm" onclick="document.getElementById('upMain').click()"><div class="up-ico">📸</div><p>클릭해서 대표사진 올리기</p><span class="up-sub">JPG · PNG · WEBP · 원본 최대 30MB · 자동 최적화</span></div>
+        <input type="file" id="upMain" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden onchange="upMain(this)"/>
         <div id="mainPreview"></div>
       </div>
 
@@ -1400,7 +1405,8 @@ input,select,textarea{font-family:inherit;}
       <div class="fld">
         <label class="fld-label">갤러리 사진 <span class="opt">최대 40장</span></label>
         <div class="uploader uploader-sm uploader-gal" onclick="document.getElementById('upGal').click()"><div class="up-ico">🖼️</div><p>갤러리 사진 올리기</p><span class="up-sub">여러 장 선택 가능</span></div>
-        <input type="file" id="upGal" accept="image/*" multiple hidden onchange="upGal(this)"/>
+        <input type="file" id="upGal" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple hidden onchange="upGal(this)"/>
+        <div class="upload-progress" id="galUploadStatus" aria-live="polite"></div>
         <div class="pgrid" id="galGrid"></div>
       </div>
 
@@ -1430,7 +1436,7 @@ input,select,textarea{font-family:inherit;}
           <div class="msg-card-grid" id="msgCards2"></div>
         </div>
       </div>
-      <div class="fld"><label class="fld-label">인사말</label><p class="fhint msg-edit-hint">선택한 인사말은 자유롭게 수정할 수 있습니다.</p><textarea class="ft ft-msg" id="f_msg" oninput="renderIV()" placeholder="오랜 시간 함께 걸어온 두 사람이&#10;이제 같은 이름으로&#10;새로운 시작을 하려 합니다."></textarea></div>
+      <div class="fld"><label class="fld-label">인사말</label><p class="fhint msg-edit-hint">선택한 인사말은 자유롭게 수정할 수 있습니다.</p><textarea class="ft ft-msg" id="f_msg" oninput="schedulePreviewRender()" placeholder="오랜 시간 함께 걸어온 두 사람이&#10;이제 같은 이름으로&#10;새로운 시작을 하려 합니다."></textarea></div>
     </div>
 
     <!-- 7. 다국어 -->
@@ -1452,8 +1458,8 @@ input,select,textarea{font-family:inherit;}
         <summary>해외 하객용 장소 표기 수정하기</summary>
         <div class="lang-advanced-body">
           <p class="fhint" style="margin-top:14px;">필요한 경우에만 예식장과 주소 영문 표기를 수정하세요.</p>
-          <div class="fld"><label class="fld-label">예식장 영문 표기 <span class="opt">선택</span></label><input class="fi intl" id="f_venue2" oninput="renderIV()" placeholder="예) The Chapel Cheongdam, Cottage Hall"/></div>
-          <div class="fld"><label class="fld-label">주소 영문 표기 <span class="opt">선택</span></label><textarea class="ft intl" id="f_address2" oninput="renderIV()" placeholder="예) 757 Seolleung-ro, Gangnam-gu, Seoul, Korea" style="min-height:80px;"></textarea></div>
+          <div class="fld"><label class="fld-label">예식장 영문 표기 <span class="opt">선택</span></label><input class="fi intl" id="f_venue2" oninput="schedulePreviewRender()" placeholder="예) The Chapel Cheongdam, Cottage Hall"/></div>
+          <div class="fld"><label class="fld-label">주소 영문 표기 <span class="opt">선택</span></label><textarea class="ft intl" id="f_address2" oninput="schedulePreviewRender()" placeholder="예) 757 Seolleung-ro, Gangnam-gu, Seoul, Korea" style="min-height:80px;"></textarea></div>
         </div>
       </details>
     </div>
@@ -1605,16 +1611,33 @@ const chk=id=>V(id)?V(id).checked:false;
 /* 주문 인증 상태 — 신규 발행 시 반드시 인증 완료해야 함 */
 let _purchaseId=null;  /* 인증 완료된 purchase UUID */
 
+
+/* 판매용 템플릿/갤러리 값 정규화 — 과거 저장값이 구형 화면을 다시 렌더하지 않게 함 */
+const SALE_THEME_IDS=['signature','classic-ivory','hanok','black','fullscreen','minimal','flower','gold-serif'];
+const LEGACY_THEME_MAP={
+  signature:'signature','classic-ivory':'classic-ivory',hanok:'hanok',black:'black',fullscreen:'fullscreen',minimal:'minimal',flower:'flower','gold-serif':'gold-serif',
+  ivory:'classic-ivory',sage:'classic-ivory',sand:'classic-ivory',cream:'classic-ivory',calendar:'classic-ivory',global:'classic-ivory',mint:'classic-ivory',
+  blush:'flower',lavender:'flower',rose:'flower',peach:'flower',dark:'black',midnight:'black',charcoal:'black',burgundy:'black',magazine:'minimal',film:'fullscreen'
+};
+function normalizeThemeId(v){var t=LEGACY_THEME_MAP[String(v||'').trim()]||'classic-ivory';return SALE_THEME_IDS.includes(t)?t:'classic-ivory';}
+function normalizeGalleryLayout(v){return ['grid','masonry','full'].includes(v)?v:'masonry';}
+
 /* ===== 상태 ===== */
 const ST={
   theme:'signature',
-  gallery:[],       /* base64 미리보기 배열 */
-  galleryUrls:[],   /* Storage 공개 URL 배열 */
-  galleryFiles:[],  /* 미업로드 File 객체 임시 보관 */
-  mainPhoto:null,   /* base64 미리보기 */
+  gallery:[],       /* 미리보기 URL 배열(blob/public URL). base64 저장 금지 */
+  galleryUrls:[],   /* gallery와 동일 인덱스의 Storage 공개 URL(null=미업로드) */
+  galleryFiles:[],  /* gallery와 동일 인덱스의 최적화 File(null=업로드 완료) */
+  galleryStatus:[], /* processing|ready|uploaded|error */
+  mainPhoto:null,   /* 미리보기 URL(blob/public URL) */
   mainPhotoUrl:null,/* Storage 공개 URL */
-  mainFile:null,    /* 미업로드 File 객체 임시 보관 */
+  mainFile:null,    /* 업로드 대기 중인 최적화 File */
+  mainObjectUrl:null,
+  mainStatus:null,    /* processing|ready|uploaded|error */
   galleryLayout:'masonry',
+  _mainUploading:false,
+  _galleryUploading:false,
+  _galleryUploadPromise:null,
   /* 로그인 없이 Storage 경로를 구분하기 위한 세션 고유 ID */
   anonId: (()=>{
     let id=sessionStorage.getItem('_anon_id');
@@ -1626,7 +1649,7 @@ let editSlug=new URLSearchParams(location.search).get('edit')||new URLSearchPara
 let editCode=new URLSearchParams(location.search).get('editCode')||null;
 /* URL ?theme= 파라미터로 초기 테마 적용 */
 const _themeParam=new URLSearchParams(location.search).get('theme');
-if(_themeParam)ST.theme=_themeParam;
+if(_themeParam)ST.theme=normalizeThemeId(_themeParam);
 let editId=null;
 let _newEditCode=null; /* 신규 발행 시 생성된 6자리 수정번호 (발행 화면 표시용) */
 let curStep=0;
@@ -1906,8 +1929,11 @@ const THEME_DEFAULTS={
   'minimal':      {font:'sans',  opening:'split'},
   'flower':       {font:'serif', opening:'glow'},
   'hanok':        {font:'serif', opening:'curtain'},
+  'fullscreen':   {font:'sans',  opening:'split'},
+  'gold-serif':   {font:'serif', opening:'letter'},
 };
 function pickTheme(t){
+  t=normalizeThemeId(t);
   ST.theme=t;
   /* 템플릿 기본 글씨체/오프닝 자동 적용 (사용자가 따로 안 골라도 완성) */
   const d=THEME_DEFAULTS[t];
@@ -1922,9 +1948,10 @@ function pickTheme(t){
 
 /* ===== 갤러리 레이아웃 ===== */
 function pickLayout(l,el){
+  l=normalizeGalleryLayout(l);
   ST.galleryLayout=l;
-  document.querySelectorAll('.lp-item').forEach(i=>i.classList.remove('on'));
-  el.classList.add('on');
+  document.querySelectorAll('.lp-item').forEach(i=>i.classList.toggle('on',i.dataset.l===l));
+  if(el&&el.classList)el.classList.add('on');
   renderIV();
 }
 
@@ -2249,7 +2276,7 @@ function onLang2Change(){
   }
   renderIV();
 }
-function onMsg2Input(){ renderIV(); }
+function onMsg2Input(){ schedulePreviewRender(); }
 /* 영문 표기 품질 판별: 미리보기 표시 여부에만 사용 (입력값은 절대 지우지 않음) */
 function _isWeakEn(v){
   if(!v)return true;
@@ -2305,96 +2332,181 @@ function pickMsg(k,el){
   if(el)el.classList.add('on');
 }
 
-/* ===== 사진 업로드 ===== */
-function readImg(file,cb){const r=new FileReader();r.onload=e=>cb(e.target.result);r.readAsDataURL(file);}
+/* ===== 사진 업로드 · 자동 최적화 ===== */
+const IMAGE_POLICY={
+  main:{maxEdge:1800,targetBytes:900*1024,startQuality:.86,minQuality:.68},
+  gallery:{maxEdge:1400,targetBytes:520*1024,startQuality:.84,minQuality:.66},
+  sourceMaxBytes:30*1024*1024,
+  uploadMaxBytes:5*1024*1024,
+  concurrency:2
+};
+const _wait=(ms)=>new Promise(r=>setTimeout(r,ms));
+function _isSupportedImage(file){
+  return !!file && /^image\/(jpeg|png|webp|heic|heif)$/i.test(file.type||'');
+}
+function _safeBaseName(name){
+  return String(name||'photo').replace(/\.[^.]+$/,'').replace(/[^a-zA-Z0-9가-힣_-]+/g,'_').slice(0,60)||'photo';
+}
+function _revokeObjectUrl(url){
+  if(typeof url==='string'&&url.startsWith('blob:')){try{URL.revokeObjectURL(url);}catch(e){}}
+}
+function _canvasToBlob(canvas,type,quality){
+  return new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('이미지 변환 실패')),type,quality));
+}
+async function _decodeImage(file){
+  if(typeof createImageBitmap==='function'){
+    try{return await createImageBitmap(file,{imageOrientation:'from-image'});}catch(e){}
+  }
+  const url=URL.createObjectURL(file);
+  try{
+    const img=new Image();
+    img.decoding='async';
+    await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=()=>reject(new Error('이 형식은 현재 브라우저에서 읽을 수 없습니다.'));img.src=url;});
+    return img;
+  }finally{URL.revokeObjectURL(url);}
+}
+async function optimizeImageFile(file,kind){
+  if(!_isSupportedImage(file))throw new Error('JPG, PNG, WEBP, HEIC/HEIF 사진만 올릴 수 있습니다.');
+  if(file.size>IMAGE_POLICY.sourceMaxBytes)throw new Error('원본 사진이 30MB를 초과합니다.');
+  const cfg=IMAGE_POLICY[kind]||IMAGE_POLICY.gallery;
+  const source=await _decodeImage(file);
+  const sw=source.width||source.naturalWidth, sh=source.height||source.naturalHeight;
+  if(!sw||!sh){if(source.close)source.close();throw new Error('사진 크기를 확인할 수 없습니다.');}
+  let scale=Math.min(1,cfg.maxEdge/Math.max(sw,sh));
+  let w=Math.max(1,Math.round(sw*scale)), h=Math.max(1,Math.round(sh*scale));
+  let canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+  let ctx=canvas.getContext('2d',{alpha:true});
+  if(!ctx){if(source.close)source.close();throw new Error('사진 처리 기능을 사용할 수 없습니다.');}
+  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(source,0,0,w,h);
+  if(source.close)source.close();
+  let q=cfg.startQuality, blob=await _canvasToBlob(canvas,'image/webp',q);
+  while(blob.size>cfg.targetBytes&&q>cfg.minQuality+.001){
+    q=Math.max(cfg.minQuality,q-.06);
+    blob=await _canvasToBlob(canvas,'image/webp',q);
+  }
+  if(blob.size>cfg.targetBytes*1.35&&Math.max(w,h)>1100){
+    const shrink=Math.sqrt((cfg.targetBytes*1.15)/blob.size);
+    const nw=Math.max(900,Math.round(w*Math.max(.72,Math.min(.94,shrink))));
+    const nh=Math.max(1,Math.round(h*(nw/w)));
+    const c2=document.createElement('canvas');c2.width=nw;c2.height=nh;
+    const c2x=c2.getContext('2d',{alpha:true});c2x.imageSmoothingEnabled=true;c2x.imageSmoothingQuality='high';c2x.drawImage(canvas,0,0,nw,nh);
+    canvas.width=1;canvas.height=1;canvas=c2;w=nw;h=nh;
+    blob=await _canvasToBlob(canvas,'image/webp',cfg.minQuality);
+  }
+  canvas.width=1;canvas.height=1;
+  if(blob.size>IMAGE_POLICY.uploadMaxBytes)throw new Error('최적화 후에도 파일이 너무 큽니다. 다른 사진을 선택해주세요.');
+  return new File([blob],_safeBaseName(file.name)+'.webp',{type:'image/webp',lastModified:Date.now()});
+}
 async function uploadFile(file,path){
   if(!file||!(file instanceof File))return null;
-  if(!sb)return null; /* 서버 없으면 업로드 불가 */
-  /* 파일 타입 검증 */
-  if(!file.type.startsWith('image/')){return null;}
-  /* 파일 크기 10MB 제한 */
-  if(file.size>10*1024*1024){showUpStatus('파일이 너무 커요 (최대 10MB)');return null;}
+  if(!sb)return null;
+  if(!file.type.startsWith('image/'))return null;
+  if(file.size>IMAGE_POLICY.uploadMaxBytes){console.error('최적화 파일 5MB 초과',file.name,file.size);return null;}
   try{
-    const{error}=await sb.storage.from('wedding-photos').upload(path,file,{upsert:true,contentType:file.type});
+    const{error}=await sb.storage.from('wedding-photos').upload(path,file,{upsert:true,contentType:file.type,cacheControl:'31536000'});
     if(error){console.error('Storage 업로드 실패:',error.message);return null;}
     return sb.storage.from('wedding-photos').getPublicUrl(path).data.publicUrl;
   }catch(e){console.error('uploadFile 예외:',e);return null;}
 }
-
 function showUpStatus(msg,id='upMainStatus'){
-  const s=V(id);if(s)s.textContent=msg;
-}
-
-async function upMain(i){
-  if(!i.files[0])return;
-  const file=i.files[0];
-  if(!file.type.startsWith('image/')){alert('이미지 파일만 올릴 수 있어요.');return;}
-  if(file.size>10*1024*1024){alert('파일 크기가 10MB를 초과해요.');return;}
-
-  /* 새 사진 선택 → 기존 URL 즉시 무효화 (교체 보장) + 업로드 진행 표시 */
-  ST.mainPhotoUrl=null;
-  ST.mainFile=file;
-  ST._mainUploading=true;
-
-  /* 미리보기 + Storage 업로드 (로그인 불필요) */
-  readImg(file,d=>{
-    ST.mainPhoto=d;
-    if(V('mainPreview'))V('mainPreview').innerHTML=
-      `<div class="mp-wrap"><div class="mp-box"><img src="${d}" alt="대표사진"/>`+
-      `<div class="rm" onclick="rmMain()">×</div></div>`+
-      `<div class="mp-side"><p class="up-status" id="upMainStatus">업로드 중...</p>`+
-      `<p class="mp-note">이 사진이 첫 화면과 카카오톡 공유 카드에 함께 사용됩니다.</p></div></div>`;
-    renderIV();
-  });
-  const ext=file.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'');
-  const url=await uploadFile(file,`${ST.anonId}/main_${Date.now()}.${ext}`);
-  if(url){
-    ST.mainPhotoUrl=url;ST.mainFile=null;
-    showUpStatus('✓ 카카오톡 대표사진 설정 완료');
-    requestAnimationFrame(function(){ if(ST.mainPhotoUrl===url)showUpStatus('✓ 카카오톡 대표사진 설정 완료'); });
-    setTimeout(function(){ if(ST.mainPhotoUrl===url)showUpStatus('✓ 카카오톡 대표사진 설정 완료'); },120);
-  }else{
-    /* 업로드 실패 → File을 보관해 발행 시 재시도 (base64는 절대 저장 안 함) */
-    ST.mainPhotoUrl=null;ST.mainFile=file;
-    /* 서버 미연결이면 명확히 안내 (readImg 콜백이 상태 요소를 만든 뒤 확정) */
-    var _msg=sb?'업로드 실패 — 발행 시 다시 시도합니다':'서버에 연결하지 못했습니다. 인터넷 연결을 확인한 후 다시 시도해 주세요.';
-    showUpStatus(_msg);
-    requestAnimationFrame(function(){ showUpStatus(_msg); });
-    setTimeout(function(){ showUpStatus(_msg); },120);
+  const el=V(id);if(!el)return;el.textContent=msg||'';
+  if(id==='galUploadStatus'){
+    el.classList.toggle('show',!!msg);
+    el.classList.toggle('error',/실패|지원|초과|오류/.test(msg||''));
   }
-  ST._mainUploading=false;
 }
-
+function _renderMainPreview(status){
+  const wrap=V('mainPreview');if(!wrap)return;
+  if(!ST.mainPhoto){wrap.innerHTML='';return;}
+  wrap.innerHTML=`<div class="mp-wrap"><div class="mp-box"><img src="${ST.mainPhoto}" alt="대표사진" decoding="async"/>`+
+    `<div class="rm" onclick="rmMain()">×</div></div>`+
+    `<div class="mp-side"><p class="up-status" id="upMainStatus">${status||''}</p>`+
+    `<p class="mp-note">원본은 자동으로 모바일용 WEBP로 최적화되어 저장됩니다.</p></div></div>`;
+}
+async function upMain(i){
+  const original=i.files&&i.files[0];if(!original)return;
+  i.value='';
+  if(!_isSupportedImage(original)){alert('JPG, PNG, WEBP, HEIC/HEIF 사진만 올릴 수 있어요.');return;}
+  if(original.size>IMAGE_POLICY.sourceMaxBytes){alert('원본 사진은 최대 30MB까지 올릴 수 있어요.');return;}
+  _revokeObjectUrl(ST.mainObjectUrl);
+  ST.mainObjectUrl=URL.createObjectURL(original);
+  ST.mainPhoto=ST.mainObjectUrl;ST.mainPhotoUrl=null;ST.mainFile=null;ST.mainStatus='processing';ST._mainUploading=true;
+  _renderMainPreview('사진 최적화 중...');
+  renderIV(false,{preserveGallery:true,preserveOpening:true});
+  try{
+    const optimized=await optimizeImageFile(original,'main');
+    ST.mainFile=optimized;
+    showUpStatus(`최적화 완료 · ${(optimized.size/1024).toFixed(0)}KB · 업로드 중...`);
+    const url=await uploadFile(optimized,`${ST.anonId}/main_${Date.now()}.webp`);
+    if(url){ST.mainPhotoUrl=url;ST.mainFile=null;ST.mainStatus='uploaded';showUpStatus(`✓ 최적화·업로드 완료 · ${(optimized.size/1024).toFixed(0)}KB`);}
+    else{ST.mainFile=optimized;ST.mainStatus='ready';showUpStatus(sb?'업로드 대기 — 발행할 때 다시 시도합니다':'최적화 완료 — 서버 연결 후 발행할 수 있습니다');}
+  }catch(e){
+    ST.mainFile=null;ST.mainPhotoUrl=null;ST.mainStatus='error';
+    showUpStatus('사진 처리 실패: '+(e&&e.message?e.message:'지원하지 않는 사진입니다.'));
+    alert('대표사진을 처리하지 못했습니다.\n'+(e&&e.message?e.message:'다른 사진을 선택해주세요.'));
+  }finally{ST._mainUploading=false;if(!editSlug&&ST.mainStatus!=='processing')saveDraft();}
+}
 function rmMain(){
-  ST.mainPhoto=null;ST.mainPhotoUrl=null;ST.mainFile=null;
+  _revokeObjectUrl(ST.mainObjectUrl);ST.mainObjectUrl=null;
+  ST.mainPhoto=null;ST.mainPhotoUrl=null;ST.mainFile=null;ST.mainStatus=null;ST._mainUploading=false;
   if(V('mainPreview'))V('mainPreview').innerHTML='';
   if(V('upMain'))V('upMain').value='';
-  renderIV();
+  renderIV(false,{preserveGallery:true,preserveOpening:true});
 }
-
+function _galleryBusyCount(){return (ST.galleryStatus||[]).filter(x=>x==='processing').length;}
+async function _runPool(items,limit,worker){
+  let next=0;
+  async function run(){while(true){const idx=next++;if(idx>=items.length)return;await worker(items[idx],idx);}}
+  await Promise.all(Array.from({length:Math.min(limit,items.length)},run));
+}
 async function upGal(i){
-  const files=[...i.files].slice(0,40-ST.gallery.length);
-  if(!files.length)return;
-  const invalid=files.filter(f=>!f.type.startsWith('image/'));
-  if(invalid.length){alert('이미지 파일만 올릴 수 있어요.');return;}
-  /* 서버 미연결 안내 (1회) — 미리보기·보관은 그대로 진행 */
-  if(!sb){ try{alert('서버에 연결하지 못했습니다. 인터넷 연결을 확인한 후 다시 시도해 주세요.');}catch(e){} }
-  /* 미리보기 */
-  files.forEach(f=>readImg(f,d=>{ST.gallery.push(d);renderGal();renderIV();}));
-  /* 즉시 업로드 */
-  for(let j=0;j<files.length;j++){
-    const ext=files[j].name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'');
-    const url=await uploadFile(files[j],`${ST.anonId}/gal_${Date.now()}_${j}.${ext}`);
-    if(url)ST.galleryUrls.push(url);
-    else ST.galleryFiles.push(files[j]);
-  }
+  const room=Math.max(0,40-ST.gallery.length);
+  const chosen=[...(i.files||[])].slice(0,room);i.value='';
+  if(!chosen.length){if(room===0)alert('갤러리는 최대 40장까지 올릴 수 있어요.');return;}
+  const valid=chosen.filter(f=>_isSupportedImage(f)&&f.size<=IMAGE_POLICY.sourceMaxBytes);
+  const skipped=chosen.length-valid.length;
+  if(!valid.length){alert('올릴 수 있는 사진이 없습니다. JPG, PNG, WEBP, HEIC/HEIF 형식과 30MB 이하인지 확인해주세요.');return;}
+  const jobs=[];
+  valid.forEach((file,seq)=>{
+    const preview=URL.createObjectURL(file), index=ST.gallery.length;
+    ST.gallery.push(preview);ST.galleryUrls.push(null);ST.galleryFiles.push(null);ST.galleryStatus.push('processing');
+    jobs.push({file,index,seq});
+  });
+  renderGal();
+  renderIV(false,{preserveOpening:true});
+  ST._galleryUploading=true;
+  showUpStatus(`사진 최적화 중 0/${jobs.length}${skipped?` · ${skipped}장 제외`:''}`,'galUploadStatus');
+  let done=0, failed=0;
+  ST._galleryUploadPromise=_runPool(jobs,IMAGE_POLICY.concurrency,async(job)=>{
+    const {file,index}=job;
+    try{
+      const optimized=await optimizeImageFile(file,'gallery');
+      ST.galleryFiles[index]=optimized;ST.galleryStatus[index]='ready';
+      const url=await uploadFile(optimized,`${ST.anonId}/gal_${Date.now()}_${index}.webp`);
+      if(url){ST.galleryUrls[index]=url;ST.galleryFiles[index]=null;ST.galleryStatus[index]='uploaded';}
+      else{ST.galleryStatus[index]='ready';}
+    }catch(e){
+      ST.galleryFiles[index]=null;ST.galleryUrls[index]=null;ST.galleryStatus[index]='error';failed++;
+      console.error('갤러리 사진 처리 실패:',file.name,e);
+    }finally{
+      done++;showUpStatus(`사진 처리 ${done}/${jobs.length}${failed?` · 실패 ${failed}장`:''}`,'galUploadStatus');renderGal();
+    }
+  });
+  await ST._galleryUploadPromise;
+  ST._galleryUploading=false;ST._galleryUploadPromise=null;
+  renderIV(false,{preserveOpening:true});
+  if(failed){showUpStatus(`사진 ${jobs.length-failed}장 준비 완료 · ${failed}장 실패(삭제 후 다시 선택)`,'galUploadStatus');}
+  else if(sb){showUpStatus(`✓ ${jobs.length}장 최적화·업로드 완료`,'galUploadStatus');}
+  else{showUpStatus(`✓ ${jobs.length}장 최적화 완료 · 서버 연결 후 발행 가능`,'galUploadStatus');}
+  if(!editSlug)saveDraft();
 }
-
 function renderGal(){
   if(!V('galGrid'))return;
-  V('galGrid').innerHTML=ST.gallery.map((s,i)=>
-    `<div class="pthumb"><img src="${s}" alt="갤러리${i+1}"/><div class="rm" onclick="rmGal(${i})">×</div></div>`
-  ).join('');
+  V('galGrid').innerHTML=ST.gallery.map((src,i)=>{
+    const status=ST.galleryStatus[i]||((ST.galleryUrls[i])?'uploaded':'ready');
+    const cls=status==='processing'?' is-processing':status==='error'?' is-error':'';
+    return `<div class="pthumb${cls}"><img src="${src}" alt="갤러리${i+1}" loading="lazy" decoding="async"/><div class="rm" onclick="rmGal(${i})">×</div></div>`;
+  }).join('');
   updateLayoutThumbs();
 }
 function updateLayoutThumbs(){
@@ -2402,19 +2514,20 @@ function updateLayoutThumbs(){
   document.querySelectorAll('#layoutPicker .lp-demo').forEach(function(demo){
     var spans=demo.querySelectorAll('span');
     for(var i=0;i<spans.length;i++){
-      if(imgs[i]){ spans[i].style.backgroundImage='url("'+imgs[i]+'")'; }
-      else { spans[i].style.backgroundImage=''; }
+      if(imgs[i])spans[i].style.backgroundImage='url("'+imgs[i]+'")';
+      else spans[i].style.backgroundImage='';
     }
   });
 }
-
 function rmGal(i){
-  ST.gallery.splice(i,1);
-  /* URL이 있으면 URL도 제거, 없으면 파일 보관에서 제거 */
-  if(i<ST.galleryUrls.length)ST.galleryUrls.splice(i,1);
-  else{const fi=i-ST.galleryUrls.length;if(fi>=0)ST.galleryFiles.splice(fi,1);}
-  renderGal();renderIV();
+  if(ST.galleryStatus[i]==='processing'){alert('이 사진은 최적화 중입니다. 잠시 후 삭제해주세요.');return;}
+  _revokeObjectUrl(ST.gallery[i]);
+  ST.gallery.splice(i,1);ST.galleryUrls.splice(i,1);ST.galleryFiles.splice(i,1);ST.galleryStatus.splice(i,1);
+  renderGal();renderIV(false,{preserveOpening:true});
 }
+window.addEventListener('beforeunload',function(e){
+  if(ST._mainUploading||ST._galleryUploading||ST.mainFile||ST.galleryFiles.some(f=>f instanceof File)){e.preventDefault();e.returnValue='아직 서버에 저장되지 않은 사진이 있습니다.';}
+});
 
 /* ===== 날짜 ===== */
 const DAYS=['일','월','화','수','목','금','토'];
@@ -2486,7 +2599,7 @@ function buildGallery(){
     return`<div class="gal-empty-note">${photoFallback(false)}<span>사진을 추가하면 이곳에 표시됩니다</span></div>`;
   }
   window._lbUrls=_gal.slice();
-  const items=_gal.map((s,i)=>`<div class="g${i>=9?' g-more':''}" onclick="openLb(${i})"><img src="${s}" onerror="this.closest('.g').style.display='none'"/></div>`).join('');
+  const items=_gal.map((s,i)=>`<div class="g${i>=9?' g-more':''}" onclick="openLb(${i})"><img src="${s}" alt="갤러리 사진 ${i+1}" loading="lazy" decoding="async" fetchpriority="low" onerror="this.closest('.g').style.display='none'"/></div>`).join('');
   const moreN=_gal.length-9;
   return`<div class="${cls} iv-gal-wrap">${items}</div>`+(moreN>0?`<button type="button" class="gal-more-btn" data-more="<span class='gm-deco'></span><span class='gm-1'>사진 더보기</span><span class='gm-2'>사진 <span class='gm-count'>${moreN}장</span> 더 보기</span>" data-less="<span class='gm-deco'></span><span class='gm-1'>사진 접기</span><span class='gm-2'>처음 화면으로 돌아갑니다</span>" onclick="galMore(this)"><span class='gm-deco'></span><span class='gm-1'>사진 더보기</span><span class='gm-2'>사진 <span class='gm-count'>${moreN}장</span> 더 보기</span></button>`:'');
 }
@@ -2627,48 +2740,50 @@ function syncAmbCards(){
     c.classList.toggle('on', c.getAttribute('data-v')===v);
   });
 }
-/* STEP 8 계좌 입력 전용 미리보기 디바운스.
-   renderIV()는 ivRoot 전체를 재생성하므로, 계좌 12칸을 글자마다 호출하면 렉이 생긴다.
-   입력 중에는 200ms 디바운스, 포커스 아웃/값 확정(onchange) 시 즉시 flush.
-   전역 타이머 1개만 사용해 오래된 타이머가 뒤늦게 실행되지 않게 한다.
-   renderIV 자체는 수정/복제하지 않는다. */
-let _accountRenderTimer=null;
-function scheduleAccountRender(){
-  clearTimeout(_accountRenderTimer);
-  _accountRenderTimer=setTimeout(function(){
-    _accountRenderTimer=null;
-    renderIV();
-  },200);
+/* ===== 통합 미리보기 렌더 스케줄러 =====
+   타이핑 중에는 입력 이벤트가 UI 스레드를 막지 않도록 전체 렌더를 즉시 실행하지 않는다.
+   마지막 입력 240ms 후 1회만 렌더하며, 무거운 갤러리 DOM은 그대로 보존한다.
+   blur/저장/발행 시에는 대기 중인 값을 즉시 반영한다. */
+let _previewRenderTimer=null;
+let _previewRenderIdle=null;
+let _previewRenderPending=false;
+function _cancelPreviewRender(){
+  clearTimeout(_previewRenderTimer);_previewRenderTimer=null;
+  if(_previewRenderIdle&&typeof cancelIdleCallback==='function')cancelIdleCallback(_previewRenderIdle);
+  _previewRenderIdle=null;
 }
-function flushAccountRender(){
-  clearTimeout(_accountRenderTimer);
-  _accountRenderTimer=null;
-  renderIV();
+function schedulePreviewRender(){
+  _previewRenderPending=true;_cancelPreviewRender();
+  _previewRenderTimer=setTimeout(function(){
+    _previewRenderTimer=null;
+    const run=function(){_previewRenderIdle=null;_previewRenderPending=false;renderIV(false,{preserveGallery:true,preserveOpening:true});};
+    if(typeof requestIdleCallback==='function')_previewRenderIdle=requestIdleCallback(run,{timeout:180});
+    else requestAnimationFrame(run);
+  },240);
 }
-function renderIV(playOp){
+function flushPreviewRender(forceRender=true){
+  const hadPending=_previewRenderPending||!!_previewRenderTimer||!!_previewRenderIdle;
+  _cancelPreviewRender();_previewRenderPending=false;
+  if(forceRender&&hadPending)renderIV(false,{preserveGallery:true,preserveOpening:true});
+}
+/* 기존 STEP 8 인라인 핸들러 호환 */
+function scheduleAccountRender(){schedulePreviewRender();}
+function flushAccountRender(){flushPreviewRender(true);}
+
+function renderIV(playOp,opts){
+  opts=opts||{};
   const root=V('ivRoot');if(!root)return;
-  /* 잔상 방지: 템플릿 전환 시 root 완전 초기화 */
-  root.innerHTML='';
-  root.className='';
-  /* 오프닝 오버레이도 완전 초기화 (이전 theme 잔상 방지) */
+  const preservedGallery=opts.preserveGallery?root.querySelector('.iv-gal-sec'):null;
+  if(preservedGallery)preservedGallery.remove();
+  root.innerHTML='';root.className='';
+  /* 일반 타이핑 렌더에서는 현재 오프닝을 건드리지 않는다. 테마 오프닝 재생 시에만 초기화 */
   const eoReset=V('edOp');
-  if(eoReset){
-    clearTimeout(eoReset._t);
-    eoReset.innerHTML='';
-    eoReset.className='ed-op';
+  if(playOp&&eoReset){
+    clearTimeout(eoReset._t);eoReset.innerHTML='';eoReset.className='ed-op';
   }
-  /* 템플릿 매핑 (8개 판매 + 숨김 호환 포함) */
-  const TPL_MAP_ED={
-    'signature':'signature','film':'film','fullscreen':'fullscreen','magazine':'magazine',
-    'classic-ivory':'classic-ivory','gold-serif':'gold-serif',
-    'minimal':'minimal','calendar':'calendar',
-    'hanok':'hanok','flower':'flower','black':'black','global':'global',
-    /* 구형 ID fallback */
-    'ivory':'classic-ivory','blush':'flower','dark':'black','sage':'classic-ivory',
-    'lavender':'flower','sand':'classic-ivory','midnight':'black','rose':'flower',
-    'olive':'classic-ivory','charcoal':'black','peach':'flower','mint':'global','burgundy':'black','cream':'classic-ivory'
-  };
-  const tpl=TPL_MAP_ED[ST.theme]||'classic-ivory';
+  /* 판매용 8종으로만 렌더 */
+  const tpl=normalizeThemeId(ST.theme);
+  ST.theme=tpl;
   root.className=`t-${tpl}`;
   root.style.fontFamily=FONTS[normalizeFont(val('f_font'))]||FONTS.serif;
 
@@ -2721,12 +2836,12 @@ function renderIV(playOp){
   function previewPhoto(objPos){
     const pos=objPos||'center 32%';
     if(photo){
-      return `<img src="${photo}" style="width:100%;height:100%;object-fit:cover;object-position:${pos};display:block;" alt=""/>`;
+      return `<img src="${photo}" decoding="async" fetchpriority="high" style="width:100%;height:100%;object-fit:cover;object-position:${pos};display:block;" alt=""/>`;
     }
     if(_sampleUrl){
       /* 샘플 로딩 실패 시 onerror로 숨기고 그 아래 목업이 보이도록 wrapper에 목업을 깔아둠 */
       return `<div style="position:absolute;inset:0;">${photoFallback(false)}</div>`+
-             `<img src="${_sampleUrl}" loading="lazy" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:${pos};display:block;" alt=""/>`;
+             `<img src="${_sampleUrl}" decoding="async" onerror="this.style.display='none'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:${pos};display:block;" alt=""/>`;
     }
     return photoFallback(false);
   }
@@ -3006,7 +3121,10 @@ function renderIV(playOp){
   }
 
   /* ⑤ 갤러리 */
-  if(chk('o_gallery'))html+=`<div class="iv-sec iv-gal-sec"><div class="iv-sec-t">${tpl==='hanok'?'우리의 순간':'Gallery'}</div>${buildGallery()}</div>`;
+  if(chk('o_gallery')){
+    if(opts.preserveGallery&&preservedGallery)html+=`<div class="iv-sec iv-gal-sec"></div>`;
+    else html+=`<div class="iv-sec iv-gal-sec"><div class="iv-sec-t">${tpl==='hanok'?'우리의 순간':'Gallery'}</div>${buildGallery()}</div>`;
+  }
 
   /* ⑥ RSVP */
   if(chk('o_rsvp'))html+=`<div class="iv-sec rsvp-sec"><div class="iv-sec-t">참석 안내</div><div class="iv-info hk-sec-desc" style="margin-top:8px;">귀한 발걸음을 기다립니다</div><div class="iv-chips" style="margin-top:10px;"><span class="iv-chip">참석 여부 남기기</span></div></div>`;
@@ -3034,6 +3152,10 @@ function renderIV(playOp){
   html+=`<div class="iv-foot">${(tpl==='hanok'||tpl==='minimal')?namesPlain.replace('♥','·'):namesPlain} · ${date?date.short:''}</div>`;
 
   root.innerHTML=html;
+  if(preservedGallery){
+    const freshGallery=root.querySelector('.iv-gal-sec');
+    if(freshGallery)freshGallery.replaceWith(preservedGallery);
+  }
   /* 측정 기반 이름 폭 맞춤 (렌더 직후 실행) */
   requestAnimationFrame(()=>fitAllNames(root));
   /* 배경 연출 (첫 화면 커버 한정, LIVE 즉시 반영) */
@@ -3094,6 +3216,7 @@ function renderIV(playOp){
 
 /* ===== 발행 ===== */
 async function publish(){
+  flushPreviewRender(true);
   const btn=V('publishBtn');
   if(btn.disabled)return; /* 중복 클릭 방지 */
   if(!_requireServer())return; /* 서버 없으면 차단 (거짓 성공 방지) */
@@ -3117,8 +3240,25 @@ async function publish(){
 }
 
 async function _proceedPublish(){
+  flushPreviewRender(true);
   const btn=V('publishBtn');
   btn.disabled=true;btn.textContent='저장 중...';
+  if(ST._galleryUploadPromise){
+    btn.textContent='사진 최적화·업로드 완료 대기 중...';
+    try{await ST._galleryUploadPromise;}catch(e){}
+  }
+  if((ST.galleryStatus||[]).some(x=>x==='processing')){
+    btn.disabled=false;btn.textContent=editId?'수정 완료':'발행하기';
+    alert('사진 처리가 아직 끝나지 않았어요. 잠시 후 다시 발행해주세요.');return;
+  }
+  if((ST.galleryStatus||[]).some(x=>x==='error')){
+    btn.disabled=false;btn.textContent=editId?'수정 완료':'발행하기';
+    alert('처리하지 못한 갤러리 사진이 있어요. 실패 표시가 있는 사진을 삭제하고 다시 올려주세요.');return;
+  }
+  if(ST.mainStatus==='error'){
+    btn.disabled=false;btn.textContent=editId?'수정 완료':'발행하기';
+    alert('대표사진 처리에 실패했습니다. 대표사진을 삭제하고 다시 올려주세요.');return;
+  }
 
   /* ── 0. 진행 중인 대표사진 업로드가 있으면 완료까지 대기 ── */
   if(ST._mainUploading){
@@ -3133,7 +3273,7 @@ async function _proceedPublish(){
     btn.textContent='사진 업로드 중...';
     const ext=ST.mainFile.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'');
     const url=await uploadFile(ST.mainFile,`${ST.anonId}/main_${Date.now()}.${ext}`);
-    if(url){ST.mainPhotoUrl=url;ST.mainFile=null;}
+    if(url){ST.mainPhotoUrl=url;ST.mainFile=null;ST.mainStatus='uploaded';}
     else{
       btn.disabled=false;btn.textContent=editId?'수정 완료':'발행하기';
       alert('대표사진 업로드에 실패했어요.\n다시 시도하거나, 사진 없이 먼저 발행 후 수정에서 사진을 추가해주세요.');
@@ -3141,22 +3281,21 @@ async function _proceedPublish(){
     }
   }
 
-  if(ST.galleryFiles.length>0){
-    btn.textContent=`갤러리 업로드 중... (0/${ST.galleryFiles.length})`;
-    const failedFiles=[];
-    const failedNames=[];
-    for(let j=0;j<ST.galleryFiles.length;j++){
-      const f=ST.galleryFiles[j];
-      if(!(f instanceof File)){console.warn('galleryFiles에 File이 아닌 값:', f);continue;}
-      const ext=f.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'');
-      const url=await uploadFile(f,`${ST.anonId}/gal_${Date.now()}_${j}.${ext}`);
-      if(url){ST.galleryUrls.push(url);}
-      else{failedFiles.push(f);failedNames.push(f.name);}
-      btn.textContent=`갤러리 업로드 중... (${j+1}/${ST.galleryFiles.length})`;
+  const pendingIndexes=[];
+  ST.galleryFiles.forEach((f,idx)=>{if(f instanceof File)pendingIndexes.push(idx);});
+  if(pendingIndexes.length){
+    const failed=[];
+    for(let n=0;n<pendingIndexes.length;n++){
+      const idx=pendingIndexes[n], f=ST.galleryFiles[idx];
+      btn.textContent=`갤러리 업로드 중... (${n+1}/${pendingIndexes.length})`;
+      const url=await uploadFile(f,`${ST.anonId}/gal_${Date.now()}_${idx}.webp`);
+      if(url){ST.galleryUrls[idx]=url;ST.galleryFiles[idx]=null;ST.galleryStatus[idx]='uploaded';}
+      else{failed.push(idx);ST.galleryStatus[idx]='ready';}
     }
-    ST.galleryFiles=failedFiles;
-    if(failedNames.length){
-      alert(`일부 갤러리 사진 업로드 실패 (${failedNames.length}장):\n${failedNames.join(', ')}\n\n나머지는 정상 저장됩니다. 발행 후 수정에서 해당 사진을 다시 올려주세요.`);
+    if(failed.length){
+      btn.disabled=false;btn.textContent=editId?'수정 완료':'발행하기';
+      alert(`갤러리 사진 ${failed.length}장 업로드에 실패했어요. 인터넷 연결을 확인하고 다시 발행해주세요.`);
+      return;
     }
   }
 
@@ -3181,7 +3320,7 @@ async function _proceedPublish(){
     venue_hall:val('f_hall')||null,
     venue_address:val('f_addr')||null,
     message:val('f_msg')||null,
-    theme:ST.theme,
+    theme:normalizeThemeId(ST.theme),
     font:normalizeFont(val('f_font')),
     opening:val('f_opening')||'fade',
     groom_bank:val('f_gbank')||null,
@@ -3206,7 +3345,7 @@ async function _proceedPublish(){
       bgm_url:safeUrl(val('f_bgm_url'))||null,
       bgm_mode:(function(){ if(!chk('o_music'))return 'none'; var u=safeUrl(val('f_bgm_url')); if(u)return 'custom'; if(ST_bgmMode==='preset'&&ST_bgmPreset)return 'preset'; return 'none'; })(),
       bgm_preset:(chk('o_music')&&ST_bgmMode==='preset'&&!safeUrl(val('f_bgm_url')))?ST_bgmPreset:null,
-      gallery_layout:ST.galleryLayout,
+      gallery_layout:normalizeGalleryLayout(ST.galleryLayout),
       order_gb:val('f_order')==='gb',
       groom_parents:val('f_gparent')||null,
       bride_parents:val('f_bparent')||null,
@@ -3360,8 +3499,9 @@ const DRAFT_KEY='mr_draft_v2';
 const DRAFT_FIELDS=['f_groom','f_bride','f_order','f_date','f_time','f_venue','f_hall','f_addr','f_msg','f_font','f_opening','f_lang2','f_msg2','f_venue2','f_address2','f_gbank','f_gacc','f_gholder','f_bbank','f_bacc','f_bholder','f_gpbank','f_gpacc','f_gpholder','f_bpbank','f_bpacc','f_bpholder','f_bgm_url','f_gparent','f_bparent','f_particle'];
 const DRAFT_TGLS=['o_dday','o_gallery','o_rsvp','o_guest','o_account','o_music','f_gparent_dec','f_bparent_dec'];
 function saveDraft(){
+  flushPreviewRender(true);
   if(editSlug)return;
-  const d={theme:ST.theme,layout:ST.galleryLayout,bgmMode:ST_bgmMode,bgmPreset:ST_bgmPreset,fields:{},tgls:{}};
+  const d={theme:normalizeThemeId(ST.theme),layout:normalizeGalleryLayout(ST.galleryLayout),bgmMode:ST_bgmMode,bgmPreset:ST_bgmPreset,fields:{},tgls:{},photos:{main:ST.mainPhotoUrl||null,gallery:(ST.galleryUrls||[]).filter(Boolean)}};
   DRAFT_FIELDS.forEach(id=>{if(V(id))d.fields[id]=V(id).value;});
   DRAFT_TGLS.forEach(id=>{if(V(id))d.tgls[id]=V(id).checked;});
   try{localStorage.setItem(DRAFT_KEY,JSON.stringify(d));V('saveState').textContent='임시저장 ✓';}catch(e){}
@@ -3372,7 +3512,7 @@ function loadDraft(){
     const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return;
     const d=JSON.parse(raw);
     if(d.theme)pickTheme(d.theme);
-    if(d.layout){ST.galleryLayout=d.layout;document.querySelectorAll('.lp-item').forEach(el=>el.classList.toggle('on',el.dataset.l===d.layout));}
+    if(d.layout){ST.galleryLayout=normalizeGalleryLayout(d.layout);document.querySelectorAll('.lp-item').forEach(el=>el.classList.toggle('on',el.dataset.l===d.layout));}
     Object.entries(d.fields||{}).forEach(([id,v])=>{if(V(id)){if(id==='f_particle'&&v!=='auto'&&!AMB_EFFECTS[v])v='auto';V(id).value=v;}});
     Object.entries(d.tgls||{}).forEach(([id,v])=>{if(V(id))V(id).checked=v;});
     if(d.tgls?.o_music&&V('musicUrlBox'))V('musicUrlBox').style.display='block';
@@ -3380,6 +3520,13 @@ function loadDraft(){
     ST_bgmMode=d.bgmMode||((d.fields&&d.fields.f_bgm_url)?'custom':'none');
     ST_bgmPreset=d.bgmPreset||'';
     if(typeof renderBgmPresets==='function')renderBgmPresets();
+    if(d.photos){
+      ST.mainPhotoUrl=d.photos.main||null;ST.mainPhoto=ST.mainPhotoUrl;ST.mainFile=null;ST.mainObjectUrl=null;ST.mainStatus=ST.mainPhotoUrl?'uploaded':null;
+      const restored=(Array.isArray(d.photos.gallery)?d.photos.gallery:[]).filter(u=>typeof u==='string'&&/^https:\/\//i.test(u)).slice(0,40);
+      ST.gallery=restored.slice();ST.galleryUrls=restored.slice();ST.galleryFiles=restored.map(()=>null);ST.galleryStatus=restored.map(()=> 'uploaded');
+      if(ST.mainPhoto)_renderMainPreview('✓ 저장된 대표사진 불러옴');
+      renderGal();
+    }
     syncAmbCards();
     renderIV();renderFonts();V('saveState').textContent='이전 작업 불러옴 ✓';
   }catch(e){}
@@ -3424,9 +3571,9 @@ async function loadForEdit(){
   if(data.options?.bride_parents)set('f_bparent',data.options.bride_parents);
   if(V('f_gparent_dec'))V('f_gparent_dec').checked=!!data.options?.groom_parent_deceased;
   if(V('f_bparent_dec'))V('f_bparent_dec').checked=!!data.options?.bride_parent_deceased;
-  ST.theme=data.theme||'signature';renderTemplates();
+  ST.theme=normalizeThemeId(data.theme||'signature');renderTemplates();
   renderFonts();
-  ST.galleryLayout=data.options?.gallery_layout||'masonry';
+  ST.galleryLayout=normalizeGalleryLayout(data.options?.gallery_layout||'masonry');
   document.querySelectorAll('.lp-item').forEach(el=>el.classList.toggle('on',el.dataset.l===ST.galleryLayout));
   /* 신랑/신부 순서 복원: order_gb===false 이면 'bg', 그 외 'gb' */
   if(V('f_order'))V('f_order').value=data.options?.order_gb===false?'bg':'gb';
@@ -3437,8 +3584,9 @@ async function loadForEdit(){
     V('f_particle').value=_pe;
     syncAmbCards();
   }
-  ST.mainPhotoUrl=data.main_photo_url||null;ST.mainPhoto=data.main_photo_url||null;
-  ST.galleryUrls=data.gallery_urls||[];ST.gallery=[...(data.gallery_urls||[])];
+  ST.mainPhotoUrl=data.main_photo_url||null;ST.mainPhoto=data.main_photo_url||null;ST.mainFile=null;ST.mainObjectUrl=null;ST.mainStatus=ST.mainPhotoUrl?'uploaded':null;
+  ST.gallery=[...(data.gallery_urls||[])];ST.galleryUrls=[...(data.gallery_urls||[])];
+  ST.galleryFiles=ST.gallery.map(()=>null);ST.galleryStatus=ST.gallery.map(()=> 'uploaded');
   const o=data.options||{};
   DRAFT_TGLS.forEach(id=>{if(V(id))V(id).checked=o[id.slice(2)]!==false;});
   /* 배경음악 ON/OFF 명확 복원: music===true 또는 preset/custom 또는 bgm_url 있으면 ON */
@@ -3462,6 +3610,10 @@ renderToggles();
 renderStepbar();
 syncAmbCards();
 renderIV(true);
+/* 입력 완료 시 대기 중인 미리보기를 즉시 확정 */
+document.addEventListener('focusout',function(e){
+  if(e.target&&e.target.matches&&e.target.matches('input.fi, textarea.ft, input.intl, textarea.intl'))flushPreviewRender(true);
+},true);
 V('work').addEventListener('scroll',()=>requestAnimationFrame(onScroll),{passive:true});
 /* 모바일은 window 스크롤이므로 window에도 리스너 추가 (데스크톱에선 work가 스크롤되어 중복 무해) */
 window.addEventListener('scroll',()=>requestAnimationFrame(onScroll),{passive:true});
