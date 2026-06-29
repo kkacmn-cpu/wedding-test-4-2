@@ -1098,6 +1098,9 @@ input,select,textarea{font-family:inherit;}
   .preview.show{background:linear-gradient(160deg,#efe6d8,#e6d9c5);padding:0;}
   .preview.show .phone{margin:auto;width:min(320px,86vw);}
   .preview.show .scr{height:min(620px,76vh);}
+  /* 320px 초소형 화면에서도 미리보기 폭을 실제 카드에 가깝게 확보.
+     좁은 목업 때문에 3+3 이름이 실제 발행본과 다르게 조기 줄바꿈되던 현상 방지 */
+  @media(max-width:340px){.preview.show .phone{width:94vw;}}
   .prev-close{width:40px;height:40px;top:calc(14px + env(safe-area-inset-top,0px));right:16px;background:rgba(58,47,38,.55);z-index:210;}
   .prev-label{position:fixed;top:calc(18px + env(safe-area-inset-top,0px));left:20px;z-index:210;}
   .prev-hint{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;z-index:210;}
@@ -1266,6 +1269,9 @@ input,select,textarea{font-family:inherit;}
 @keyframes ambGrainFlick{0%{transform:translateX(0);}33%{transform:translateX(1.5px);}66%{transform:translateX(-1.5px);}100%{transform:translateX(0);}}
 @media (prefers-reduced-motion:reduce){.ambient-layer{display:none!important;}}
 
+/* Signature 이름 폭 기준 수정: 텍스트 래퍼를 전체 폭으로 고정해 2~3자 이름이 불필요하게 2줄로 바뀌지 않도록 한다. */
+#ivRoot.t-signature .sig-textwrap{display:block;width:100%;max-width:100%;}
+#ivRoot.t-signature .sig-names{display:inline-block;max-width:84%;margin:0 auto;white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -1436,7 +1442,7 @@ input,select,textarea{font-family:inherit;}
           <div class="msg-card-grid" id="msgCards2"></div>
         </div>
       </div>
-      <div class="fld"><label class="fld-label">인사말</label><p class="fhint msg-edit-hint">선택한 인사말은 자유롭게 수정할 수 있습니다.</p><textarea class="ft ft-msg" id="f_msg" oninput="schedulePreviewRender()" placeholder="오랜 시간 함께 걸어온 두 사람이&#10;이제 같은 이름으로&#10;새로운 시작을 하려 합니다."></textarea></div>
+      <div class="fld"><label class="fld-label">인사말</label><p class="fhint msg-edit-hint">선택한 인사말은 자유롭게 수정할 수 있습니다.</p><textarea class="ft ft-msg" id="f_msg" oninput="schedulePreviewRender()" placeholder="서로 마주보며 다져온 사랑을&#10;이제 함께 한 곳을 바라보며&#10;걸어가고자 합니다."></textarea></div>
     </div>
 
     <!-- 7. 다국어 -->
@@ -1611,16 +1617,19 @@ const chk=id=>V(id)?V(id).checked:false;
 /* 주문 인증 상태 — 신규 발행 시 반드시 인증 완료해야 함 */
 let _purchaseId=null;  /* 인증 완료된 purchase UUID */
 
-
-/* 판매용 템플릿/갤러리 값 정규화 — 과거 저장값이 구형 화면을 다시 렌더하지 않게 함 */
-const SALE_THEME_IDS=['signature','classic-ivory','hanok','black','fullscreen','minimal','flower','gold-serif'];
+/* ===== 판매 템플릿 정규화 ===== */
+const SALE_THEMES=['signature','classic-ivory','hanok','black','fullscreen','minimal','flower','gold-serif'];
 const LEGACY_THEME_MAP={
-  signature:'signature','classic-ivory':'classic-ivory',hanok:'hanok',black:'black',fullscreen:'fullscreen',minimal:'minimal',flower:'flower','gold-serif':'gold-serif',
-  ivory:'classic-ivory',sage:'classic-ivory',sand:'classic-ivory',cream:'classic-ivory',calendar:'classic-ivory',global:'classic-ivory',mint:'classic-ivory',
-  blush:'flower',lavender:'flower',rose:'flower',peach:'flower',dark:'black',midnight:'black',charcoal:'black',burgundy:'black',magazine:'minimal',film:'fullscreen'
+  ivory:'classic-ivory',sage:'classic-ivory',sand:'classic-ivory',cream:'classic-ivory',calendar:'classic-ivory',global:'classic-ivory',mint:'classic-ivory',olive:'classic-ivory',
+  blush:'flower',lavender:'flower',rose:'flower',peach:'flower',
+  dark:'black',midnight:'black',charcoal:'black',burgundy:'black',
+  magazine:'minimal',film:'fullscreen'
 };
-function normalizeThemeId(v){var t=LEGACY_THEME_MAP[String(v||'').trim()]||'classic-ivory';return SALE_THEME_IDS.includes(t)?t:'classic-ivory';}
-function normalizeGalleryLayout(v){return ['grid','masonry','full'].includes(v)?v:'masonry';}
+function normalizeTheme(theme){
+  const raw=String(theme||'').trim();
+  const mapped=LEGACY_THEME_MAP[raw]||raw;
+  return SALE_THEMES.includes(mapped)?mapped:'signature';
+}
 
 /* ===== 상태 ===== */
 const ST={
@@ -1649,7 +1658,7 @@ let editSlug=new URLSearchParams(location.search).get('edit')||new URLSearchPara
 let editCode=new URLSearchParams(location.search).get('editCode')||null;
 /* URL ?theme= 파라미터로 초기 테마 적용 */
 const _themeParam=new URLSearchParams(location.search).get('theme');
-if(_themeParam)ST.theme=normalizeThemeId(_themeParam);
+if(_themeParam)ST.theme=normalizeTheme(_themeParam);
 let editId=null;
 let _newEditCode=null; /* 신규 발행 시 생성된 6자리 수정번호 (발행 화면 표시용) */
 let curStep=0;
@@ -1739,7 +1748,8 @@ let _curCat='all';
 function renderTemplates(){
   /* 선택 UI에는 판매용 8종(show:true)만 항상 표시. 과거 ID가 ST.theme이어도
      과거 선택 카드를 만들지 않음 (미리보기/card 호환 렌더는 별도로 유지) */
-  const filtered=THEMES.filter(t=>t.show);
+  ST.theme=normalizeTheme(ST.theme);
+  const filtered=THEMES.filter(t=>t.show&&SALE_THEMES.includes(t.id));
   /* 썸네일 미리보기 날짜: 입력값 기반 (없으면 빈 문자열) — 하드코딩 금지 */
   const _td=(typeof getOpeningDate==='function')?getOpeningDate():'';
   /* fullscreen 썸네일용: 점 형식 날짜 + 요일 (입력값 기반, 입력 전 샘플) */
@@ -1829,7 +1839,7 @@ function renderTemplates(){
       previewInner=`<div style="position:relative;width:100%;height:100%;background:linear-gradient(160deg,#4a443c,#15110d);">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.45),transparent 40%,rgba(0,0,0,.55));"></div>
         <div style="position:absolute;top:7px;left:7px;right:7px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;">
-          <span style="font-family:'Cormorant Garamond',serif;font-size:5px;letter-spacing:1px;color:rgba(255,255,255,.9);">MEMORY RETOUCH</span>
+          <span style="font-family:'Cormorant Garamond',serif;font-size:5px;letter-spacing:1px;color:rgba(255,255,255,.9);">WEDDING JOURNAL</span>
           <span style="font-family:'Cormorant Garamond',serif;font-size:5px;color:rgba(255,255,255,.75);">VOL.1</span>
         </div>
         <div style="position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);text-align:center;">
@@ -1929,12 +1939,9 @@ const THEME_DEFAULTS={
   'minimal':      {font:'sans',  opening:'split'},
   'flower':       {font:'serif', opening:'glow'},
   'hanok':        {font:'serif', opening:'curtain'},
-  'fullscreen':   {font:'sans',  opening:'split'},
-  'gold-serif':   {font:'serif', opening:'letter'},
 };
 function pickTheme(t){
-  t=normalizeThemeId(t);
-  ST.theme=t;
+  ST.theme=normalizeTheme(t);
   /* 템플릿 기본 글씨체/오프닝 자동 적용 (사용자가 따로 안 골라도 완성) */
   const d=THEME_DEFAULTS[t];
   if(d){
@@ -1948,10 +1955,9 @@ function pickTheme(t){
 
 /* ===== 갤러리 레이아웃 ===== */
 function pickLayout(l,el){
-  l=normalizeGalleryLayout(l);
   ST.galleryLayout=l;
-  document.querySelectorAll('.lp-item').forEach(i=>i.classList.toggle('on',i.dataset.l===l));
-  if(el&&el.classList)el.classList.add('on');
+  document.querySelectorAll('.lp-item').forEach(i=>i.classList.remove('on'));
+  el.classList.add('on');
   renderIV();
 }
 
@@ -2139,7 +2145,7 @@ function onScroll(){
 
 /* ===== 추천 문구 ===== */
 const SAMPLES={
-  best:'오랜 시간 함께 걸어온 두 사람이\n이제 같은 이름으로\n새로운 시작을 하려 합니다.\n\n소중한 날,\n함께해 주시면 감사하겠습니다.',
+  best:'서로 마주보며 다져온 사랑을\n이제 함께 한 곳을 바라보며\n걸어가고자 합니다.\n\n소중한 날,\n함께해 주시면 감사하겠습니다.',
   warm:'함께한 시간 위에\n또 하나의 약속을 더합니다.\n\n소중한 날,\n따뜻한 마음으로 함께해 주세요.',
   short:'두 사람이\n하나가 됩니다.\n\n귀한 걸음으로\n축복해 주세요.',
   letter:'저희 두 사람의 새로운 시작에\n소중한 분들을 초대합니다.\n\n함께해 주시는 마음\n오래도록 간직하겠습니다.',
@@ -2295,7 +2301,7 @@ function _isWeakEn(v){
 /* Step5 인사말 프리셋 카드 데이터 */
 const MSG_PRESETS={
   popular:[
-    {k:'best',  title:'베스트 추천', desc:'대부분의 커플이 선택하는<br>가장 자연스러운 초대 인사말', rec:true, preview:'오랜 시간 함께 걸어온…'},
+    {k:'best',  title:'베스트 추천', desc:'대부분의 커플이 선택하는<br>가장 자연스러운 초대 인사말', rec:true, preview:'서로 마주보며 다져온…'},
     {k:'warm',  title:'따뜻한 감성', desc:'감사의 마음을<br>부드럽게 전하는 인사말', preview:'함께한 시간 위에…'},
     {k:'short', title:'짧고 세련된', desc:'짧지만 분위기 있는<br>미니멀 인사말', preview:'두 사람이…'},
     {k:'letter',title:'서신형 초대', desc:'한 통의 편지처럼<br>차분하게 전하는 초대', rec:true, preview:'저희 두 사람의 새로운 시작에…'},
@@ -2781,8 +2787,18 @@ function renderIV(playOp,opts){
   if(playOp&&eoReset){
     clearTimeout(eoReset._t);eoReset.innerHTML='';eoReset.className='ed-op';
   }
-  /* 판매용 8종으로만 렌더 */
-  const tpl=normalizeThemeId(ST.theme);
+  /* 템플릿 매핑 (8개 판매 + 숨김 호환 포함) */
+  const TPL_MAP_ED={
+    'signature':'signature','film':'film','fullscreen':'fullscreen','magazine':'magazine',
+    'classic-ivory':'classic-ivory','gold-serif':'gold-serif',
+    'minimal':'minimal','calendar':'calendar',
+    'hanok':'hanok','flower':'flower','black':'black','global':'global',
+    /* 구형 ID fallback */
+    'ivory':'classic-ivory','blush':'flower','dark':'black','sage':'classic-ivory',
+    'lavender':'flower','sand':'classic-ivory','midnight':'black','rose':'flower',
+    'olive':'classic-ivory','charcoal':'black','peach':'flower','mint':'global','burgundy':'black','cream':'classic-ivory'
+  };
+  const tpl=normalizeTheme(ST.theme);
   ST.theme=tpl;
   root.className=`t-${tpl}`;
   root.style.fontFamily=FONTS[normalizeFont(val('f_font'))]||FONTS.serif;
@@ -3030,7 +3046,7 @@ function renderIV(playOp,opts){
     let ltDate=dateStr||'';
     const _ltRaw=val('f_date');
     if(_ltRaw){const _d=new Date(_ltRaw+'T00:00:00');if(!isNaN(_d.getTime())){ltDate=`${_d.getFullYear()}. ${String(_d.getMonth()+1).padStart(2,'0')}. ${String(_d.getDate()).padStart(2,'0')}`;}}
-    const _ltMsg=esc((val('f_msg')||'두 사람이\n하나가 되는 자리에\n귀한 걸음으로 함께해 주세요').split('\n').slice(0,3).join('\n'));
+    const _ltMsg=esc((val('f_msg')||'서로 마주보며 다져온 사랑을\n이제 함께 한 곳을 바라보며\n걸어가고자 합니다.').split('\n').slice(0,3).join('\n'));
     const _mi=(_ef||'민').trim().charAt(0), _mj=(_es||'준').trim().charAt(0);
     html+=`<div class="iv-cover t-gold-serif">
       <div class="lt-stage">
@@ -3320,7 +3336,7 @@ async function _proceedPublish(){
     venue_hall:val('f_hall')||null,
     venue_address:val('f_addr')||null,
     message:val('f_msg')||null,
-    theme:normalizeThemeId(ST.theme),
+    theme:normalizeTheme(ST.theme),
     font:normalizeFont(val('f_font')),
     opening:val('f_opening')||'fade',
     groom_bank:val('f_gbank')||null,
@@ -3345,12 +3361,19 @@ async function _proceedPublish(){
       bgm_url:safeUrl(val('f_bgm_url'))||null,
       bgm_mode:(function(){ if(!chk('o_music'))return 'none'; var u=safeUrl(val('f_bgm_url')); if(u)return 'custom'; if(ST_bgmMode==='preset'&&ST_bgmPreset)return 'preset'; return 'none'; })(),
       bgm_preset:(chk('o_music')&&ST_bgmMode==='preset'&&!safeUrl(val('f_bgm_url')))?ST_bgmPreset:null,
-      gallery_layout:normalizeGalleryLayout(ST.galleryLayout),
+      gallery_layout:ST.galleryLayout,
       order_gb:val('f_order')==='gb',
       groom_parents:val('f_gparent')||null,
       bride_parents:val('f_bparent')||null,
       groom_parent_deceased:!!(V('f_gparent_dec')&&V('f_gparent_dec').checked),
       bride_parent_deceased:!!(V('f_bparent_dec')&&V('f_bparent_dec').checked),
+      /* 혼주 계좌: 전용 컬럼 + options JSON 이중 저장(구형 RPC/스키마 호환) */
+      groom_parent_bank:val('f_gpbank')||null,
+      groom_parent_account:val('f_gpacc')||null,
+      groom_parent_holder:val('f_gpholder')||null,
+      bride_parent_bank:val('f_bpbank')||null,
+      bride_parent_account:val('f_bpacc')||null,
+      bride_parent_holder:val('f_bpholder')||null,
       particle_effect:val('f_particle')||'auto'
     },
     main_photo_url:_mainUrl,
@@ -3411,15 +3434,15 @@ async function _proceedPublish(){
     _purchaseId=null; // 사용 완료
   }
 
-  /* 공유 링크: VPS SSR 주소 (카카오/SNS가 OG 태그를 읽을 수 있도록)
-     사람이 열면 VPS가 실제 카드로 자동 리다이렉트함 */
-  const VPS_BASE='https://weddingapi.duckdns.org';
-  const shareUrl=`${VPS_BASE}/card/${encodeURIComponent(slug)}`;
-  /* 청첩장 보기(미리보기) 링크: GitHub Pages 실제 카드 */
+  /* 실제 카드 보기 주소는 현재 배포 폴더를 기준으로 생성한다.
+     테스트 저장소에서는 오래된 운영 VPS로 넘어가지 않으며,
+     운영 /wedding/ 배포에서만 카카오 OG용 VPS 링크를 복사한다. */
   const viewUrl=new URL(`card.html?slug=${encodeURIComponent(slug)}`,location.href).href;
+  /* 구형 VPS card 페이지로 이동하지 않는다. 보기·복사·카카오 링크는 항상 현재 배포의 최신 card.html을 사용한다. */
+  const shareUrl=viewUrl;
 
-  V('pubUrl').textContent=shareUrl;   /* 복사/공유용 = VPS */
-  V('pubLink').href=viewUrl;          /* 청첩장 보기 = 실제 카드 */
+  V('pubUrl').textContent=shareUrl;
+  V('pubLink').href=viewUrl;
   V('pubTitle').textContent=editId?'청첩장이 수정됐어요!':'청첩장이 발행됐어요!';
 
   /* 신규 발행 시에만 수정번호 표시 (editCode는 이때만 생성됨) */
@@ -3435,8 +3458,12 @@ async function _proceedPublish(){
   V('pubOv').classList.add('show');
   clearDraft();
 }
-function copyUrl(){navigator.clipboard.writeText(V('pubUrl').textContent).then(()=>{const b=V('pubCopyBtn');b.textContent='복사됨 ✓';setTimeout(()=>b.textContent='🔗 링크 복사',1500);});}
-function copyEditCode(){navigator.clipboard.writeText(V('pubEditCode').textContent).then(()=>{const b=V('pubEditCopyBtn');b.textContent='복사됨 ✓';setTimeout(()=>b.textContent='🔑 수정번호 복사',1500);});}
+function _copyEditorText(text){
+  if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(text);
+  return new Promise((resolve,reject)=>{let ta;try{ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;opacity:0;pointer-events:none';document.body.appendChild(ta);ta.select();document.execCommand('copy')?resolve():reject(new Error('copy failed'));}catch(err){reject(err);}finally{if(ta?.parentNode)ta.parentNode.removeChild(ta);}});
+}
+function copyUrl(){_copyEditorText(V('pubUrl').textContent).then(()=>{const b=V('pubCopyBtn');b.textContent='복사됨 ✓';setTimeout(()=>b.textContent='🔗 링크 복사',1500);}).catch(()=>alert('링크를 직접 선택해 복사해주세요.'));}
+function copyEditCode(){_copyEditorText(V('pubEditCode').textContent).then(()=>{const b=V('pubEditCopyBtn');b.textContent='복사됨 ✓';setTimeout(()=>b.textContent='🔑 수정번호 복사',1500);}).catch(()=>alert('수정번호를 직접 선택해 복사해주세요.'));}
 
 /* ===== 주문 인증 ===== */
 function closeOrderModal(){
@@ -3501,7 +3528,7 @@ const DRAFT_TGLS=['o_dday','o_gallery','o_rsvp','o_guest','o_account','o_music',
 function saveDraft(){
   flushPreviewRender(true);
   if(editSlug)return;
-  const d={theme:normalizeThemeId(ST.theme),layout:normalizeGalleryLayout(ST.galleryLayout),bgmMode:ST_bgmMode,bgmPreset:ST_bgmPreset,fields:{},tgls:{},photos:{main:ST.mainPhotoUrl||null,gallery:(ST.galleryUrls||[]).filter(Boolean)}};
+  const d={theme:normalizeTheme(ST.theme),layout:ST.galleryLayout,bgmMode:ST_bgmMode,bgmPreset:ST_bgmPreset,fields:{},tgls:{},photos:{main:ST.mainPhotoUrl||null,gallery:(ST.galleryUrls||[]).filter(Boolean)}};
   DRAFT_FIELDS.forEach(id=>{if(V(id))d.fields[id]=V(id).value;});
   DRAFT_TGLS.forEach(id=>{if(V(id))d.tgls[id]=V(id).checked;});
   try{localStorage.setItem(DRAFT_KEY,JSON.stringify(d));V('saveState').textContent='임시저장 ✓';}catch(e){}
@@ -3511,8 +3538,8 @@ function loadDraft(){
   try{
     const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return;
     const d=JSON.parse(raw);
-    if(d.theme)pickTheme(d.theme);
-    if(d.layout){ST.galleryLayout=normalizeGalleryLayout(d.layout);document.querySelectorAll('.lp-item').forEach(el=>el.classList.toggle('on',el.dataset.l===d.layout));}
+    if(d.theme)pickTheme(normalizeTheme(d.theme));
+    if(d.layout){ST.galleryLayout=d.layout;document.querySelectorAll('.lp-item').forEach(el=>el.classList.toggle('on',el.dataset.l===d.layout));}
     Object.entries(d.fields||{}).forEach(([id,v])=>{if(V(id)){if(id==='f_particle'&&v!=='auto'&&!AMB_EFFECTS[v])v='auto';V(id).value=v;}});
     Object.entries(d.tgls||{}).forEach(([id,v])=>{if(V(id))V(id).checked=v;});
     if(d.tgls?.o_music&&V('musicUrlBox'))V('musicUrlBox').style.display='block';
@@ -3561,7 +3588,7 @@ async function loadForEdit(){
   set('f_venue2',data.venue_lang2);
   set('f_address2',data.address_lang2);
   set('f_gbank',data.groom_bank);set('f_gacc',data.groom_account);set('f_gholder',data.groom_holder);set('f_bbank',data.bride_bank);set('f_bacc',data.bride_account);set('f_bholder',data.bride_holder);
-  set('f_gpbank',data.groom_parent_bank);set('f_gpacc',data.groom_parent_account);set('f_gpholder',data.groom_parent_holder);set('f_bpbank',data.bride_parent_bank);set('f_bpacc',data.bride_parent_account);set('f_bpholder',data.bride_parent_holder);
+  set('f_gpbank',data.groom_parent_bank??data.options?.groom_parent_bank);set('f_gpacc',data.groom_parent_account??data.options?.groom_parent_account);set('f_gpholder',data.groom_parent_holder??data.options?.groom_parent_holder);set('f_bpbank',data.bride_parent_bank??data.options?.bride_parent_bank);set('f_bpacc',data.bride_parent_account??data.options?.bride_parent_account);set('f_bpholder',data.bride_parent_holder??data.options?.bride_parent_holder);
   if(data.options?.bgm_url)set('f_bgm_url',data.options.bgm_url);
   /* BGM 모드 복원: 명시값 우선, 없으면 bgm_url 유무로 custom/none 추론(기존 호환) */
   var _bm=data.options?.bgm_mode||(data.options?.bgm_url?'custom':'none');
@@ -3571,9 +3598,9 @@ async function loadForEdit(){
   if(data.options?.bride_parents)set('f_bparent',data.options.bride_parents);
   if(V('f_gparent_dec'))V('f_gparent_dec').checked=!!data.options?.groom_parent_deceased;
   if(V('f_bparent_dec'))V('f_bparent_dec').checked=!!data.options?.bride_parent_deceased;
-  ST.theme=normalizeThemeId(data.theme||'signature');renderTemplates();
+  ST.theme=normalizeTheme(data.theme);renderTemplates();
   renderFonts();
-  ST.galleryLayout=normalizeGalleryLayout(data.options?.gallery_layout||'masonry');
+  ST.galleryLayout=data.options?.gallery_layout||'masonry';
   document.querySelectorAll('.lp-item').forEach(el=>el.classList.toggle('on',el.dataset.l===ST.galleryLayout));
   /* 신랑/신부 순서 복원: order_gb===false 이면 'bg', 그 외 'gb' */
   if(V('f_order'))V('f_order').value=data.options?.order_gb===false?'bg':'gb';
@@ -3588,7 +3615,9 @@ async function loadForEdit(){
   ST.gallery=[...(data.gallery_urls||[])];ST.galleryUrls=[...(data.gallery_urls||[])];
   ST.galleryFiles=ST.gallery.map(()=>null);ST.galleryStatus=ST.gallery.map(()=> 'uploaded');
   const o=data.options||{};
-  DRAFT_TGLS.forEach(id=>{if(V(id))V(id).checked=o[id.slice(2)]!==false;});
+  /* 기능 토글만 options 키로 복원. 혼주 故 체크는 위의 명시적 매핑을 유지한다.
+     (f_gparent_dec.slice(2)='gparent_dec'는 실제 키가 아니어서 항상 true가 되던 문제 방지) */
+  ['o_dday','o_gallery','o_rsvp','o_guest','o_account'].forEach(id=>{if(V(id))V(id).checked=o[id.slice(2)]!==false;});
   /* 배경음악 ON/OFF 명확 복원: music===true 또는 preset/custom 또는 bgm_url 있으면 ON */
   var _musicOn=(o.music===true)||(ST_bgmMode==='preset')||(ST_bgmMode==='custom')||!!o.bgm_url;
   if(V('o_music'))V('o_music').checked=_musicOn;

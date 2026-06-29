@@ -288,7 +288,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 /* 풀스크린 포토형 — 사진이 주인공, 텍스트 최소 */
 .sig-hero{position:relative;width:100%;height:100svh;min-height:560px;max-height:1000px;overflow:hidden;background:#0c0a08;}
 .sig-photo{position:absolute;inset:0;width:100%;height:100%;}
-.sig-photo img{width:100%;height:100%;object-fit:cover;object-position:center 52%;display:block;}
+.sig-photo img{width:100%;height:100%;object-fit:cover;object-position:center 32%;display:block;}
 @keyframes sigKenburns{from{transform:scale(1.035);}to{transform:scale(1);}}
 /* 하단 안전영역만 살짝 어둡게 — 사진 대부분은 그대로 */
 .sig-scrim{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,6,4,.16) 0%,transparent 24%,transparent 52%,rgba(8,6,4,.34) 78%,rgba(8,6,4,.62) 100%);}
@@ -363,7 +363,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 .t-minimal .stl-stage{position:relative;width:100%;height:100vh;min-height:600px;max-height:1000px;display:flex;flex-direction:column;background:#fbf6ec;overflow:hidden;}
 .t-minimal .stl-photo-area{position:relative;flex:0 0 78%;overflow:hidden;background:#cabfae;}
 .t-minimal .stl-photo{position:absolute;inset:0;width:100%;height:100%;}
-.t-minimal .stl-photo img{width:100%;height:100%;object-fit:cover;object-position:center 36%;display:block;}
+.t-minimal .stl-photo img{width:100%;height:100%;object-fit:cover;object-position:center 32%;display:block;}
 .t-minimal .stl-info{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:0 22px calc(28px + env(safe-area-inset-bottom,0px));background:#fbf6ec;z-index:2;}
 .t-minimal .stl-names{font-family:'Cormorant Garamond','Noto Serif KR',serif;font-size:20px;font-weight:400;letter-spacing:1.2px;color:#241c14;line-height:1.3;white-space:nowrap;}
 .t-minimal .stl-names .stl-amp{font-style:normal;color:#b09870;margin:0 5px;font-weight:400;font-size:.62em;vertical-align:middle;}
@@ -1185,24 +1185,34 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 }
 
 
-
-/* ===== PHASE 3: 모바일 기능 안전영역 / FAB / 모달 안정화 ===== */
+/* ===== 최종 판매본 기능 안정화: 디자인 비변경 ===== */
+.rsvp-sec,.guest-sec,.acc-sec,.iv-gal-sec{content-visibility:visible;contain-intrinsic-size:auto;}
+.acc-box{display:block;width:100%;}
+.acc-list[hidden]{display:none!important;}
+.acc-toggle{appearance:none;-webkit-appearance:none;cursor:pointer;}
 .fab-wrap{bottom:max(16px,env(safe-area-inset-bottom,0px));right:max(12px,env(safe-area-inset-right,0px));transition:opacity .2s ease,transform .2s ease;}
 .fab-wrap.fab-suppressed{opacity:0;pointer-events:none;transform:translateY(12px);}
 .fab-wrap.fab-suppressed .fab-menu{pointer-events:none!important;}
-.watermark{clear:both;position:relative!important;inset:auto!important;transform:none!important;pointer-events:auto;}
 body.modal-open{overflow:hidden;touch-action:none;}
-.bgm-state{font-size:12px;opacity:.72;}
 @media(max-width:480px){
   .fab-main{width:46px;height:46px;font-size:19px;}
   .fab-item{min-height:42px;padding:10px 15px;font-size:12.5px;}
-  .fab-wrap{gap:8px;}
   .toast{bottom:max(74px,calc(58px + env(safe-area-inset-bottom,0px)));max-width:calc(100vw - 32px);white-space:normal;text-align:center;}
   .qr-ov{padding:16px max(14px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));}
   .qr-modal{max-height:calc(100dvh - 32px);overflow:auto;-webkit-overflow-scrolling:touch;}
 }
-@media(prefers-reduced-motion:reduce){
-  .fab-wrap,.fab-menu,.toast,.qr-ov{transition:none!important;}
+@media(prefers-reduced-motion:reduce){.fab-wrap,.fab-menu,.toast,.qr-ov{transition:none!important;}}
+/* editor 최종본과 동일한 Signature 이름 구조: 기본 한 줄, 폭 초과 때만 fitName이 사람 단위 2줄 전환 */
+#card.t-signature .sig-textwrap{display:block;width:100%;max-width:100%;}
+#card.t-signature .sig-names{display:inline-block;max-width:84%;margin:0 auto;white-space:nowrap;font-family:'Noto Serif KR',serif;font-size:28px;font-weight:500;line-height:1.12;letter-spacing:.02em;text-align:center;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.28);}
+#card.t-signature .sig-names .nm-person{display:inline-block;white-space:nowrap;}
+#card.t-signature .sig-names .sig-dot{display:inline-block;font-size:8px;line-height:1;opacity:.72;margin:0 10px;vertical-align:middle;}
+#card.t-signature .sig-names.nm-twoline .nm-person{display:block;}
+/* 320×568급 초소형 화면: black 정보 패널이 하단을 넘지 않도록 사진/여백만 최소 조정 */
+@media (max-width:768px) and (max-height:620px){
+  #card.t-black .bk-photo-area{flex-basis:74%;}
+  #card.t-black .bk-info{gap:11px;padding:0 24px calc(36px + env(safe-area-inset-bottom,0px));}
+  #card.t-black .bk-when{margin-bottom:8px;gap:5px;}
 }
 
 </style>
@@ -1211,7 +1221,7 @@ body.modal-open{overflow:hidden;touch-action:none;}
 
 <!-- 로딩 -->
 <div id="loading">
-  <div class="loading-logo">MemoryRetouch</div>
+  <div class="loading-logo" aria-hidden="true">✦</div>
   <div class="loading-dots"><span></span><span></span><span></span></div>
 </div>
 
@@ -1230,12 +1240,6 @@ body.modal-open{overflow:hidden;touch-action:none;}
   <div class="lb-counter" id="lbCounter"></div>
 </div>
 
-<!-- 워터마크 (구매 전) -->
-<div class="watermark" id="watermark">
-  <span>✦</span>
-  <span>Made by <b><a href="https://kkacmn-cpu.github.io/wedding/wedding-store.html" target="_blank">MemoryRetouch</a></b></span>
-</div>
-
 <!-- 플로팅 액션 버튼 -->
 <div class="fab-wrap">
   <div class="fab-menu" id="fabMenu">
@@ -1246,7 +1250,7 @@ body.modal-open{overflow:hidden;touch-action:none;}
     <div class="fab-item" onclick="addCalendar()"><span class="fi">📅</span>달력에 저장</div>
     <div class="fab-item" onclick="openEditModal()"><span class="fi">✏️</span>수정하기</div>
   </div>
-  <button class="fab-main" id="fabMain" onclick="toggleFab()">⋯</button>
+  <button class="fab-main" id="fabMain" type="button" aria-label="청첩장 메뉴" aria-expanded="false" onclick="toggleFab()">⋯</button>
 </div>
 
 <!-- QR 모달 -->
@@ -1294,7 +1298,9 @@ body.modal-open{overflow:hidden;touch-action:none;}
 <script>
 const SUPA_URL='https://jchohaqvaoytplinlylt.supabase.co';
 const SUPA_KEY='sb_publishable_pinNIcaU11HhbSz3TR__mQ_Ln4cJ79a';
-const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
+const sb=(window.supabase&&typeof window.supabase.createClient==='function')
+  ?window.supabase.createClient(SUPA_URL,SUPA_KEY)
+  :null;
 
 /* ===== 카카오 설정 ===== */
 const KAKAO_JS_KEY='595f376e62ae3df09dea25e6825e94a4';
@@ -1381,15 +1387,13 @@ function fmtDateLang(d,t,lang){
 }
 function dday(d){if(!d)return null;const a=new Date();a.setHours(0,0,0,0);const b=new Date(d);b.setHours(0,0,0,0);return Math.round((b-a)/864e5);}
 
-/* 오프닝 연출 — theme별 (0.8~1.2초 자동, 터치 불필요) */
+/* 오프닝 연출 — 선택된 템플릿 하나만 1회 실행 */
 let _openingTimer=null;
 function playOpening(card){
   const ov=document.getElementById('opOverlay');
   if(!ov)return;
   if(_openingTimer){clearTimeout(_openingTimer);_openingTimer=null;}
-  ov.className='op-overlay';
-  ov.innerHTML='';
-  ov.removeAttribute('aria-hidden');
+  ov.className='op-overlay';ov.innerHTML='';ov.removeAttribute('aria-hidden');
   const rawTheme=card.theme||'classic-ivory';
   const theme=normalizeTheme(rawTheme);
   const g=esc(card.groom_name||'신랑'),b=esc(card.bride_name||'신부');
@@ -1440,7 +1444,7 @@ function playOpening(card){
     const _opNm=ov.querySelector('.op-names,.op-vnames');
     if(_opNm)requestAnimationFrame(()=>fitName(_opNm));
   }
-  /* 자동으로 사라짐 (애니메이션 종료 시점 ~1.55s) */
+  /* 자동으로 사라짐. 접근성 설정에서는 짧게 종료한다. */
   const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   _openingTimer=setTimeout(()=>{ov.classList.add('done');ov.setAttribute('aria-hidden','true');_openingTimer=null;},reduce?220:1600);
 }
@@ -1453,9 +1457,8 @@ const TPL_MAP={
   /* 판매용 8종 */
   'signature':'signature','classic-ivory':'classic-ivory','hanok':'hanok','black':'black',
   'fullscreen':'fullscreen','minimal':'minimal','flower':'flower','gold-serif':'gold-serif',
-  /* 과거 저장값은 가장 가까운 판매용 템플릿으로만 변환 — 구형 화면 렌더 금지 */
-  'ivory':'classic-ivory','sage':'classic-ivory','sand':'classic-ivory','cream':'classic-ivory',
-  'calendar':'classic-ivory','global':'classic-ivory','mint':'classic-ivory',
+  /* 과거 저장값은 가장 가까운 판매용 템플릿으로 변환 — 구형 커버 렌더 금지 */
+  'ivory':'classic-ivory','sage':'classic-ivory','sand':'classic-ivory','cream':'classic-ivory','calendar':'classic-ivory','global':'classic-ivory','mint':'classic-ivory','olive':'classic-ivory',
   'blush':'flower','lavender':'flower','rose':'flower','peach':'flower',
   'dark':'black','midnight':'black','charcoal':'black','burgundy':'black',
   'magazine':'minimal','film':'fullscreen'
@@ -1502,7 +1505,7 @@ function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,w
         <div class="sig-scrim"></div>
         <div class="sig-overlay">
           <div class="sig-textwrap">
-            <div class="sig-names"><span class="nm-person">${_first}</span><span class="nm-person">${_second}</span></div>
+            <div class="sig-names"><span class="nm-person">${_first}</span><span class="sig-dot nm-sep">·</span><span class="nm-person">${_second}</span></div>
             <div class="sig-date">${sigDate}</div>
           </div>
         </div>
@@ -1516,7 +1519,7 @@ function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,w
         <div class="mag-photo">${phFallback}</div>
         <div class="mag-scrim"></div>
         <div class="mag-top">
-          <span class="mag-brand">MEMORY&nbsp;RETOUCH</span>
+          <span class="mag-brand">WEDDING&nbsp;JOURNAL</span>
           <span class="mag-issue">ISSUE · ${yr}</span>
         </div>
         <div class="mag-side mag-side-l">CELEBRATE</div>
@@ -1569,6 +1572,7 @@ function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,w
     let ltDate=dateStr||'';
     if(weddingDateRaw){const _d=new Date(weddingDateRaw+'T00:00:00');if(!isNaN(_d.getTime())){ltDate=`${_d.getFullYear()}. ${String(_d.getMonth()+1).padStart(2,'0')}. ${String(_d.getDate()).padStart(2,'0')}`;}}
     const _mi=(_first||'민').trim().charAt(0), _mj=(_second||'준').trim().charAt(0);
+    const _ltMsg=esc((card.message||'서로 마주보며 다져온 사랑을\n이제 함께 한 곳을 바라보며\n걸어가고자 합니다.').split('\n').slice(0,3).join('\n'));
     return`<div class="iv-cover t-gold-serif">
       <div class="lt-stage">
         <div class="lt-frame">
@@ -1580,9 +1584,7 @@ function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,w
             ${timeStr?`<span class="lt-time">${timeStr}</span>`:''}
           </div>
           <div class="lt-rule"></div>
-          <div class="lt-msg">두 사람이
-하나가 되는 자리에
-귀한 걸음으로 함께해 주세요</div>
+          <div class="lt-msg">${_ltMsg}</div>
         </div>
       </div>
     </div>`;
@@ -1715,7 +1717,7 @@ function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,w
 
 /* 카드 렌더링 */
 function renderCard(card){
-  /* BGM — 재생 실패 후에도 다시 시도할 수 있고, 메뉴에서 재생/정지 가능 */
+  /* BGM — 자동재생 실패 후에도 메뉴에서 재생/정지 가능 */
   initBgm(card);
 
   const card_el=document.getElementById('card');
@@ -1743,12 +1745,13 @@ function renderCard(card){
   const brideBank=esc(card.bride_bank||'');
   const brideHolder=esc(card.bride_holder||'');
   const brideAcc=esc(card.bride_account||'');
-  const gpBank=esc(card.groom_parent_bank||'');
-  const gpHolder=esc(card.groom_parent_holder||'');
-  const gpAcc=esc(card.groom_parent_account||'');
-  const bpBank=esc(card.bride_parent_bank||'');
-  const bpHolder=esc(card.bride_parent_holder||'');
-  const bpAcc=esc(card.bride_parent_account||'');
+  /* 혼주 계좌: 전용 컬럼 우선, options JSON fallback */
+  const gpBank=esc(card.groom_parent_bank??opts.groom_parent_bank??'');
+  const gpHolder=esc(card.groom_parent_holder??opts.groom_parent_holder??'');
+  const gpAcc=esc(card.groom_parent_account??opts.groom_parent_account??'');
+  const bpBank=esc(card.bride_parent_bank??opts.bride_parent_bank??'');
+  const bpHolder=esc(card.bride_parent_holder??opts.bride_parent_holder??'');
+  const bpAcc=esc(card.bride_parent_account??opts.bride_parent_account??'');
   /* 신랑/신부 표시 순서: options.order_gb===false 이면 신부 먼저 */
   const orderGb=card.options?.order_gb!==false;
   const names=orderGb
@@ -1901,24 +1904,21 @@ function renderCard(card){
     html+=`<div class="iv-sec acc-sec">
       <div class="iv-sec-t">마음 전하실 곳</div>
       <div class="hk-sec-desc" style="font-size:13px;opacity:${tpl==='hanok'?'.9':'.55'};margin-top:6px;margin-bottom:12px;">${tpl==='hanok'?'마음을 전하실 분들을 위해 준비했습니다':'참석이 어려우신 분들을 위한 안내입니다'}</div>
-      <details class="acc-box">
-        <summary class="acc-toggle">계좌번호 확인하기</summary>
-        <div class="acc-list">
-          ${groomAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${groomBank} ${groomHolder}</span><span class="acc-num">${groomAcc}</span></div><button class="acc-copy" data-acc="${groomAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
-          ${(gpBank||gpAcc||gpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button class="acc-copy" data-acc="${gpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
-          ${brideAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${brideBank} ${brideHolder}</span><span class="acc-num">${brideAcc}</span></div><button class="acc-copy" data-acc="${brideAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
-          ${(bpBank||bpAcc||bpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button class="acc-copy" data-acc="${bpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
+      <div class="acc-box">
+        <button type="button" class="acc-toggle" aria-expanded="false" onclick="toggleAccountBox(this)">계좌번호 확인하기</button>
+        <div class="acc-list" hidden>
+          ${groomAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${groomBank} ${groomHolder}</span><span class="acc-num">${groomAcc}</span></div><button type="button" class="acc-copy" data-acc="${groomAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
+          ${(gpBank||gpAcc||gpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-acc="${gpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
+          ${brideAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${brideBank} ${brideHolder}</span><span class="acc-num">${brideAcc}</span></div><button type="button" class="acc-copy" data-acc="${brideAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
+          ${(bpBank||bpAcc||bpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-acc="${bpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
         </div>
-      </details>
+      </div>
     </div>`;
   }
 
-  /* ⑨ 푸터 */
-  html+=`<div class="iv-foot">
-    ${tpl==='minimal'?`${namesPlain.replace('♥','·')} · ${esc(card.wedding_date||'')}`:`${tpl==='hanok'?namesPlain.replace('♥','·'):namesPlain}<br>
-    ${esc(card.wedding_date||'')}`}${(tpl==='hanok'||tpl==='black'||tpl==='minimal'||tpl==='fullscreen'||tpl==='gold-serif')?'':`<br>
-    <span style="font-family:'Cormorant Garamond',serif;letter-spacing:2px;font-size:12px;">MemoryRetouch</span>`}
-  </div>`;
+  /* ⑨ 푸터 — editor LIVE와 동일한 이름 구분·날짜 형식 */
+  const footerDate=weddingDateRaw?weddingDateRaw.replace(/-/g,'.'):'';
+  html+=`<div class="iv-foot">${(tpl==='hanok'||tpl==='minimal')?namesPlain.replace('♥','·'):namesPlain} · ${esc(footerDate)}</div>`;
 
   card_el.innerHTML=html;
   /* 갤러리: 성공 이미지만 채우고 9장 노출·더보기·라이트박스 목록 재계산 */
@@ -1943,22 +1943,20 @@ function rsvpPick(el){
   el.classList.add('on');
 }
 function _setBusy(btn,busy,busyText,normalText){
-  if(!btn)return;
-  btn.disabled=!!busy;btn.setAttribute('aria-busy',busy?'true':'false');
-  btn.textContent=busy?busyText:normalText;
+  if(!btn)return;btn.disabled=!!busy;btn.setAttribute('aria-busy',busy?'true':'false');btn.textContent=busy?busyText:normalText;
 }
-/* RSVP 제출 */
 async function submitRsvp(cardId){
   const name=document.getElementById('rv_name')?.value.trim();
   if(!name){showToast('성함을 입력해주세요.');document.getElementById('rv_name')?.focus();return;}
-  if(!cardId){showToast('청첩장 정보를 찾을 수 없어요.');return;}
+  if(!cardId||!sb){showToast('서버에 연결하지 못했습니다. 잠시 후 다시 시도해주세요.');return;}
   const btn=document.querySelector('#rsvpForm .rsvp-submit')||document.querySelector('.rsvp-submit');
   if(btn?.disabled)return;
   _setBusy(btn,true,'전송 중...','참석 여부 남기기');
   try{
     const{error}=await sb.from('rsvp').insert({
       card_id:cardId,name,
-      side:document.getElementById('rv_side')?.value||'groom',attendance:rsvpChoice,
+      side:document.getElementById('rv_side')?.value||'groom',
+      attendance:rsvpChoice,
       meal:document.getElementById('rv_meal')?.value||'yes',
       plus_count:parseInt(document.getElementById('rv_plus')?.value||'0',10)||0,
       phone:document.getElementById('rv_phone')?.value.trim()||null,
@@ -1968,42 +1966,37 @@ async function submitRsvp(cardId){
     const form=document.getElementById('rsvpForm');
     if(form)form.innerHTML='<div class="form-success" role="status" style="text-align:center;padding:20px;font-size:15px;color:var(--gold-deep);">감사합니다 💌<br><span style="font-size:13px;opacity:.7">참석 여부가 전달됐어요</span></div>';
     showToast('참석 여부가 전달됐어요 ✓');
-  }catch(e){
-    console.error('RSVP submit failed',e);
-    showToast('전송하지 못했습니다. 잠시 후 다시 시도해주세요.');
-    _setBusy(btn,false,'전송 중...','참석 여부 남기기');
-  }
+  }catch(err){console.error('RSVP submit failed',err);showToast('전송하지 못했습니다. 잠시 후 다시 시도해주세요.');_setBusy(btn,false,'전송 중...','참석 여부 남기기');}
 }
-/* 방명록 로드 */
+
 let _guestLoadSeq=0;
 async function loadGuests(cardId){
-  const list=document.getElementById('guestList');
-  if(!list||!cardId)return;
+  const list=document.getElementById('guestList');if(!list||!cardId||!sb)return;
   const seq=++_guestLoadSeq;
   try{
     const{data,error}=await sb.rpc('get_guestbook_by_card',{p_card_id:cardId,p_limit:20});
     if(error)throw error;if(seq!==_guestLoadSeq)return;
     if(!Array.isArray(data)||!data.length){list.innerHTML='';return;}
     list.innerHTML=data.map(g=>`<div class="guest-item"><div class="gi-name">${esc(g.name)}</div><div class="gi-msg">${esc(g.message)}</div><div class="gi-date">${new Date(g.created_at).toLocaleDateString('ko-KR')}</div></div>`).join('');
-  }catch(e){console.error('Guestbook load failed',e);}
+  }catch(err){console.error('Guestbook load failed',err);}
 }
-/* 방명록 제출 */
 async function submitGuest(cardId){
-  const name=document.getElementById('gb_name')?.value.trim();
-  const msg=document.getElementById('gb_msg')?.value.trim();
-  if(!name||!msg){showToast('성함과 메시지를 모두 입력해주세요.');(name?document.getElementById('gb_msg'):document.getElementById('gb_name'))?.focus();return;}
-  if(!cardId){showToast('청첩장 정보를 찾을 수 없어요.');return;}
-  const btn=document.querySelector('.guest-form .guest-submit')||document.querySelector('.guest-submit');
-  if(btn?.disabled)return;
+  const name=document.getElementById('gb_name')?.value.trim(),msg=document.getElementById('gb_msg')?.value.trim();
+  if(!name||!msg){showToast('성함과 메시지를 입력해주세요.');return;}
+  if(!cardId||!sb){showToast('서버에 연결하지 못했습니다. 잠시 후 다시 시도해주세요.');return;}
+  const btn=document.querySelector('.guest-form .guest-submit')||document.querySelector('.guest-submit');if(btn?.disabled)return;
   _setBusy(btn,true,'남기는 중...','마음 남기기');
   try{
-    const{error}=await sb.from('guestbook').insert({card_id:cardId,name,message:msg});
-    if(error)throw error;
-    document.getElementById('gb_name').value='';document.getElementById('gb_msg').value='';
-    showToast('따뜻한 마음이 남겨졌어요 ✓');
-    await loadGuests(cardId);
-  }catch(e){console.error('Guestbook submit failed',e);showToast('남기지 못했습니다. 잠시 후 다시 시도해주세요.');}
-  finally{_setBusy(btn,false,'남기는 중...','마음 남기기');}
+    const{error}=await sb.from('guestbook').insert({card_id:cardId,name,message:msg});if(error)throw error;
+    document.getElementById('gb_name').value='';document.getElementById('gb_msg').value='';_setBusy(btn,false,'남기는 중...','마음 남기기');
+    showToast('따뜻한 마음이 남겨졌어요 ✓');await loadGuests(cardId);
+  }catch(err){console.error('Guestbook submit failed',err);showToast('남기지 못했습니다. 잠시 후 다시 시도해주세요.');_setBusy(btn,false,'남기는 중...','마음 남기기');}
+}
+
+function toggleAccountBox(btn){
+  const box=btn?.closest('.acc-box'),list=box?.querySelector('.acc-list');if(!btn||!list)return;
+  const open=btn.getAttribute('aria-expanded')!=='true';btn.setAttribute('aria-expanded',String(open));list.hidden=!open;
+  btn.textContent=open?'계좌번호 닫기':'계좌번호 확인하기';scheduleFabSafety();
 }
 
 /* 계좌 복사 — 공통 안내 toast (재사용, 누적 방지, aria-live) */
@@ -2068,111 +2061,157 @@ function copyAcc(btn){
   });
 }
 
-/* 갤러리 — 최초 9장만 요청, 더보기 시 나머지 로드 */
+/* 갤러리 */
 var _lbIndex=0;
-var _lbPrevOverflow=null;
-window._lbUrls=[];window._lbBad={};
-function _lbFind(start,dir){
+var _lbPrevOverflow=null; /* 라이트박스 열기 전 body overflow 저장 */
+function _lbValidIndexes(){
   var urls=window._lbUrls||[],bad=window._lbBad||{};
-  if(!urls.length)return-1;
-  for(var n=0;n<urls.length;n++){var i=(start+n*dir+urls.length*2)%urls.length;if(!bad[i])return i;}
-  return-1;
+  return urls.map(function(_,i){return i;}).filter(function(i){return !bad[i];});
+}
+function _lbNearestUsable(start,dir){
+  var urls=window._lbUrls||[],bad=window._lbBad||{};
+  if(!urls.length)return -1;
+  var step=dir<0?-1:1,idx=((start%urls.length)+urls.length)%urls.length;
+  for(var n=0;n<urls.length;n++,idx=(idx+step+urls.length)%urls.length){if(!bad[idx])return idx;}
+  return -1;
 }
 function openLb(arg){
-  var urls=window._lbUrls||[];if(!urls.length)return;
-  var idx=typeof arg==='number'?arg:urls.indexOf(arg);if(idx<0)idx=0;
-  if(window._lbBad?.[idx])idx=_lbFind(idx,1);if(idx<0)return;
-  _lbIndex=idx;_lbRender();
-  var lb=document.getElementById('lb');if(lb)lb.classList.add('show');
-  if(_lbPrevOverflow===null)_lbPrevOverflow=document.body.style.overflow||'';
-  document.body.style.overflow='hidden';closeFab();
+  var urls=window._lbUrls||[];
+  var idx=0;
+  if(typeof arg==='number')idx=arg;
+  else { var f=urls.indexOf(arg); idx=f>=0?f:0; } /* src 호환 */
+  if(!urls.length)return;
+  idx=_lbNearestUsable(idx,1);if(idx<0)return;
+  _lbIndex=idx;
+  _lbRender();
+  var lb=document.getElementById('lb');if(!lb)return;
+  lb.classList.add('show');
+  /* 배경 페이지 스크롤 잠금 (현재 overflow 저장 후 hidden) */
+  if(_lbPrevOverflow===null){ _lbPrevOverflow=document.body.style.overflow||''; }
+  document.body.style.overflow='hidden';
 }
 function _lbRender(){
-  var urls=window._lbUrls||[];if(!urls.length)return;
+  var urls=window._lbUrls||[],valid=_lbValidIndexes();
+  if(!urls.length||!valid.length){closeLb();return;}
+  if((window._lbBad||{})[_lbIndex]){_lbIndex=_lbNearestUsable(_lbIndex,1);if(_lbIndex<0){closeLb();return;}}
   var img=document.getElementById('lbImg');
-  if(img){
-    img.onload=null;
-    img.onerror=function(){window._lbBad[_lbIndex]=true;var nx=_lbFind(_lbIndex+1,1);if(nx<0){closeLb();showToast('사진을 불러오지 못했습니다.');return;}_lbIndex=nx;_lbRender();};
-    img.src=urls[_lbIndex];
-  }
-  var c=document.getElementById('lbCounter');if(c)c.textContent=(_lbIndex+1)+' / '+urls.length;
-  var multi=urls.filter((_,i)=>!window._lbBad[i]).length>1;
-  var p=document.querySelector('.lb-prev'),n=document.querySelector('.lb-next');if(p)p.style.display=multi?'flex':'none';if(n)n.style.display=multi?'flex':'none';
+  if(img){img.onerror=function(){galleryImageError(this,_lbIndex);_lbIndex=_lbNearestUsable(_lbIndex+1,1);_lbRender();};img.src=urls[_lbIndex];}
+  var c=document.getElementById('lbCounter'),pos=valid.indexOf(_lbIndex);
+  if(c)c.textContent=(pos+1)+' / '+valid.length;
+  var multi=valid.length>1;
+  var p=document.querySelector('.lb-prev'), n=document.querySelector('.lb-next');
+  if(p)p.style.display=multi?'flex':'none';
+  if(n)n.style.display=multi?'flex':'none';
 }
 function lbStep(dir){
-  var urls=window._lbUrls||[];if(!urls.length)return;
-  var next=_lbFind(_lbIndex+dir,dir<0?-1:1);if(next<0)return;_lbIndex=next;_lbRender();
+  var urls=window._lbUrls||[];
+  if(!urls.length)return;
+  var next=_lbNearestUsable(_lbIndex+(dir<0?-1:1),dir);if(next<0)return;
+  _lbIndex=next;_lbRender();
 }
 function closeLb(){
-  var lb=document.getElementById('lb');if(lb)lb.classList.remove('show');
-  var img=document.getElementById('lbImg');if(img){img.onerror=null;img.removeAttribute('src');}
-  document.body.style.overflow=_lbPrevOverflow!==null?_lbPrevOverflow:'';_lbPrevOverflow=null;
+  var lb=document.getElementById('lb');
+  if(lb)lb.classList.remove('show');
+  /* 배경 스크롤 복원 (저장된 값으로, 누적·재진입 안전) */
+  if(_lbPrevOverflow!==null){ document.body.style.overflow=_lbPrevOverflow; _lbPrevOverflow=null; }
+  else { document.body.style.overflow=''; }
 }
-function galleryImageError(img,index){
-  window._lbBad[index]=true;var cell=img?.closest('.g');if(cell)cell.style.display='none';
-}
+/* 키보드 ←/→/ESC */
 document.addEventListener('keydown',function(e){
   var lb=document.getElementById('lb');
-  if(lb?.classList.contains('show')){if(e.key==='ArrowLeft')lbStep(-1);else if(e.key==='ArrowRight')lbStep(1);else if(e.key==='Escape')closeLb();}
+  if(!lb||!lb.classList.contains('show'))return;
+  if(e.key==='ArrowLeft')lbStep(-1);
+  else if(e.key==='ArrowRight')lbStep(1);
+  else if(e.key==='Escape')closeLb();
 });
+/* 모바일 좌우 스와이프 */
 (function(){
-  var sx=0,sy=0,tracking=false,lb=document.getElementById('lb');if(!lb)return;
-  lb.addEventListener('touchstart',function(e){if(e.touches.length!==1)return;sx=e.touches[0].clientX;sy=e.touches[0].clientY;tracking=true;},{passive:true});
-  lb.addEventListener('touchend',function(e){if(!tracking)return;tracking=false;var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy))lbStep(dx<0?1:-1);},{passive:true});
-  lb.addEventListener('click',function(e){if(e.target===lb)closeLb();});
+  var sx=0,sy=0,tracking=false;
+  var lb=document.getElementById('lb');
+  if(!lb)return;
+  lb.addEventListener('touchstart',function(e){
+    if(e.touches.length!==1)return;
+    sx=e.touches[0].clientX;sy=e.touches[0].clientY;tracking=true;
+  },{passive:true});
+  lb.addEventListener('touchend',function(e){
+    if(!tracking)return;tracking=false;
+    var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){ lbStep(dx<0?1:-1); }
+  },{passive:true});
 })();
+/* 배경 클릭 시 닫기 (이미지/버튼 클릭은 제외) */
+(function(){
+  var lb=document.getElementById('lb');
+  if(!lb)return;
+  lb.addEventListener('click',function(e){ if(e.target===lb)closeLb(); });
+})();
+/* 갤러리 하이드레이션: 이미지 preload 후 성공 URL만으로 셀·더보기·라이트박스 재계산.
+   - 실패 이미지는 셀/라이트박스 목록에서 제거
+   - 정상 사진이 앞으로 당겨져 최초 9장 채움
+   - 더보기 숫자는 성공 사진 기준, 전부 실패 시 섹션 숨김
+   - 템플릿별 레이아웃(flower 12열, 홀수 마지막 전체폭 등)은 클래스 유지로 보존 */
+var _galGen=0; /* 갤러리 렌더 세대 — 오래된 preload callback의 DOM/_lbUrls 오염 방지 */
+function galleryImageError(img,index){
+  window._lbBad=window._lbBad||{};window._lbBad[index]=true;
+  const cell=img?.closest('.g');if(cell){cell.style.display='none';cell.setAttribute('aria-hidden','true');}
+  const sec=document.getElementById('galSec'),valid=_lbValidIndexes();
+  const btn=sec?.querySelector('.gal-more-btn'),count=btn?.querySelector('.gm-count');
+  if(count){const visible=Math.max(0,valid.length-9);count.textContent=visible+'장';if(!visible)btn.remove();}
+  if(sec&&!valid.length)sec.style.display='none';
+}
 function hydrateGallery(){
-  var sec=document.getElementById('galSec'),wrap=document.getElementById('galWrap');if(!sec||!wrap)return;
-  var raw=[];try{raw=JSON.parse(sec.getAttribute('data-gallery')||'[]');}catch(e){}
-  var urls=(Array.isArray(raw)?raw:[]).map(safeUrl).filter(Boolean);
+  const sec=document.getElementById('galSec'),wrap=document.getElementById('galWrap');if(!sec||!wrap)return;
+  let raw=[];try{raw=JSON.parse(sec.getAttribute('data-gallery')||'[]');}catch(e){}
+  const urls=(Array.isArray(raw)?raw:[]).map(safeUrl).filter(Boolean);
   window._lbUrls=urls;window._lbBad={};
   if(!urls.length){sec.style.display='none';return;}
-  wrap.innerHTML=urls.map(function(s,i){
-    var attr=i<9?'src="'+s+'"':'data-src="'+s+'"';
-    return '<div class="g'+(i>=9?' g-more':'')+'" onclick="openLb('+i+')"><img '+attr+' alt="갤러리 사진 '+(i+1)+'" loading="lazy" decoding="async" fetchpriority="low" onerror="galleryImageError(this,'+i+')"/></div>';
+  wrap.innerHTML=urls.map((s,i)=>{
+    const attr=i<9?`src="${s}"`:`data-src="${s}"`;
+    return `<div class="g${i>=9?' g-more':''}" onclick="openLb(${i})"><img ${attr} alt="갤러리 사진 ${i+1}" loading="lazy" decoding="async" fetchpriority="low" onerror="galleryImageError(this,${i})"/></div>`;
   }).join('');
-  var old=sec.querySelector('.gal-more-btn');if(old)old.remove();
-  var moreN=urls.length-9;
+  sec.querySelector('.gal-more-btn')?.remove();
+  const moreN=urls.length-9;
   if(moreN>0){
-    var btn=document.createElement('button');btn.type='button';btn.className='gal-more-btn';
-    var moreHtml="<span class='gm-deco'></span><span class='gm-1'>사진 더보기</span><span class='gm-2'>사진 <span class='gm-count'>"+moreN+"장</span> 더 보기</span>";
-    var lessHtml="<span class='gm-deco'></span><span class='gm-1'>사진 접기</span><span class='gm-2'>처음 화면으로 돌아갑니다</span>";
-    btn.setAttribute('data-more',moreHtml);btn.setAttribute('data-less',lessHtml);btn.onclick=function(){galMore(btn);};btn.innerHTML=moreHtml;sec.appendChild(btn);
+    const btn=document.createElement('button');btn.type='button';btn.className='gal-more-btn';
+    const moreHtml=`<span class='gm-deco'></span><span class='gm-1'>사진 더보기</span><span class='gm-2'>사진 <span class='gm-count'>${moreN}장</span> 더 보기</span>`;
+    const lessHtml=`<span class='gm-deco'></span><span class='gm-1'>사진 접기</span><span class='gm-2'>처음 화면으로 돌아갑니다</span>`;
+    btn.dataset.more=moreHtml;btn.dataset.less=lessHtml;btn.innerHTML=moreHtml;btn.addEventListener('click',()=>galMore(btn));sec.appendChild(btn);
   }
   sec.style.display='';
 }
 function _loadDeferredGallery(wrap){
-  var imgs=[].slice.call(wrap.querySelectorAll('img[data-src]'));
-  var i=0;function batch(deadline){var limit=0;while(i<imgs.length&&limit<6&&(!deadline||deadline.timeRemaining()>2)){var im=imgs[i++],s=im.getAttribute('data-src');if(s){im.src=s;im.removeAttribute('data-src');}limit++;}if(i<imgs.length){if(window.requestIdleCallback)requestIdleCallback(batch,{timeout:250});else setTimeout(batch,16);}}
-  if(window.requestIdleCallback)requestIdleCallback(batch,{timeout:150});else setTimeout(batch,0);
+  const imgs=[...wrap.querySelectorAll('img[data-src]')];let i=0;
+  const batch=(deadline)=>{let n=0;while(i<imgs.length&&n<6&&(!deadline||deadline.timeRemaining()>2)){const im=imgs[i++],src=im.dataset.src;if(src){im.src=src;im.removeAttribute('data-src');}n++;}if(i<imgs.length){window.requestIdleCallback?requestIdleCallback(batch,{timeout:250}):setTimeout(()=>batch(),16);}};
+  window.requestIdleCallback?requestIdleCallback(batch,{timeout:150}):setTimeout(()=>batch(),0);
 }
 function galMore(btn){
-  var w=btn.parentNode.querySelector('.iv-gal-wrap');if(!w)return;
-  var expanded=w.classList.toggle('gal-expanded');
-  if(expanded){btn.innerHTML=btn.getAttribute('data-less');_loadDeferredGallery(w);}
-  else{btn.innerHTML=btn.getAttribute('data-more');var sec=btn.closest('.iv-sec');if(sec?.scrollIntoView)sec.scrollIntoView({behavior:'smooth',block:'start'});}
-  scheduleFabSafety();
+  const w=btn?.parentNode?.querySelector('.iv-gal-wrap');if(!w)return;
+  const expanded=w.classList.toggle('gal-expanded');
+  if(expanded){btn.innerHTML=btn.dataset.less||btn.getAttribute('data-less');_loadDeferredGallery(w);}
+  else{btn.innerHTML=btn.dataset.more||btn.getAttribute('data-more');btn.closest('.iv-sec')?.scrollIntoView({behavior:'smooth',block:'start'});}
+  btn.setAttribute('aria-expanded',String(expanded));scheduleFabSafety();
 }
 
 /* BGM 컨트롤 */
 let _bgmUnlockBound=false;
 function _setBgmLabel(){
-  var item=document.getElementById('bgmFabItem'),label=document.getElementById('bgmFabLabel'),a=window._bgmAudio;
-  if(!item||!label)return;item.style.display=a?'flex':'none';label.textContent=a&& !a.paused?'음악 정지':'음악 재생';
+  const item=document.getElementById('bgmFabItem'),label=document.getElementById('bgmFabLabel'),audio=window._bgmAudio;
+  if(!item||!label)return;item.style.display=audio?'flex':'none';label.textContent=audio&&!audio.paused?'음악 정지':'음악 재생';
 }
 function initBgm(card){
   if(window._bgmAudio){try{window._bgmAudio.pause();window._bgmAudio.remove();}catch(e){}window._bgmAudio=null;}
-  var BGM_BASE='music/',mode=card.options?.bgm_mode||(card.options?.bgm_url?'custom':'none'),src='';
-  if(mode==='preset'&&card.options?.bgm_preset)src=BGM_BASE+card.options.bgm_preset+'.mp3';else if(mode==='custom')src=safeUrl(card.options?.bgm_url)||'';
+  const mode=card.options?.bgm_mode||(card.options?.bgm_url?'custom':'none');let src='';
+  if(mode==='preset'&&card.options?.bgm_preset)src='music/'+card.options.bgm_preset+'.mp3';
+  else if(mode==='custom')src=safeUrl(card.options?.bgm_url)||'';
   if(!card.options?.music||!src){_setBgmLabel();return;}
-  var audio=document.createElement('audio');audio.src=src;audio.loop=true;audio.volume=.3;audio.preload='none';audio.setAttribute('playsinline','');document.body.appendChild(audio);window._bgmAudio=audio;
-  var pending=false;window._bgmTryPlay=async function(){if(!audio.paused||pending)return true;pending=true;try{await audio.play();return true;}catch(e){return false;}finally{pending=false;_setBgmLabel();}};
-  audio.addEventListener('play',_setBgmLabel);audio.addEventListener('pause',_setBgmLabel);audio.addEventListener('error',function(){_setBgmLabel();});_setBgmLabel();
-  if(!_bgmUnlockBound){_bgmUnlockBound=true;var unlock=function(){window._bgmTryPlay?.();};document.addEventListener('touchstart',unlock,{once:true,passive:true});document.addEventListener('click',unlock,{once:true});}
+  const audio=document.createElement('audio');audio.src=src;audio.loop=true;audio.volume=.3;audio.preload='none';audio.setAttribute('playsinline','');document.body.appendChild(audio);window._bgmAudio=audio;
+  let pending=false;window._bgmTryPlay=async()=>{if(!audio.paused||pending)return true;pending=true;try{await audio.play();return true;}catch(e){return false;}finally{pending=false;_setBgmLabel();}};
+  audio.addEventListener('play',_setBgmLabel);audio.addEventListener('pause',_setBgmLabel);audio.addEventListener('error',_setBgmLabel);_setBgmLabel();
+  if(!_bgmUnlockBound){_bgmUnlockBound=true;const unlock=()=>window._bgmTryPlay?.();document.addEventListener('touchstart',unlock,{once:true,passive:true});document.addEventListener('click',unlock,{once:true});}
 }
 async function toggleBgm(){
-  var a=window._bgmAudio;if(!a){showToast('설정된 배경음악이 없습니다.');closeFab();return;}
-  if(a.paused){var ok=await (window._bgmTryPlay?window._bgmTryPlay():a.play().then(()=>true).catch(()=>false));showToast(ok?'음악을 재생합니다 ♫':'브라우저에서 음악 재생을 허용해주세요.');}
+  const a=window._bgmAudio;if(!a){showToast('설정된 배경음악이 없습니다.');closeFab();return;}
+  if(a.paused){const ok=await (window._bgmTryPlay?window._bgmTryPlay():a.play().then(()=>true).catch(()=>false));showToast(ok?'음악을 재생합니다 ♫':'브라우저에서 음악 재생을 허용해주세요.');}
   else{a.pause();showToast('음악을 멈췄습니다.');}
   _setBgmLabel();closeFab();
 }
@@ -2182,6 +2221,12 @@ async function main(){
   if(!slug){
     document.getElementById('loading').classList.add('hide');
     document.getElementById('card').innerHTML=`<div class="not-found"><h2>청첩장을 찾을 수 없어요</h2><p>링크를 다시 확인해주세요</p></div>`;
+    return;
+  }
+  if(!sb){
+    document.getElementById('loading').classList.add('hide');
+    document.getElementById('opOverlay').classList.add('done');
+    document.getElementById('card').innerHTML='<div class="not-found"><h2>청첩장을 불러오지 못했어요</h2><p>네트워크 연결을 확인한 뒤 새로고침해주세요.</p></div>';
     return;
   }
   const{data:_rows,error}=await sb.rpc('get_card_by_slug',{p_slug:slug});
@@ -2215,41 +2260,31 @@ async function main(){
   renderCard(data);
   /* 방문 기록 */
   try{sb.from('card_views').insert({slug,viewed_at:new Date().toISOString()}).then(()=>{});}catch(e){}
-  /* 워터마크: 로그인 사용자가 이 카드 주인이면 숨김 */
-  const{data:{session}}=await sb.auth.getSession();
-  if(session&&data.user_id===session.user.id){
-    const wm=document.getElementById('watermark');if(wm)wm.classList.add('hidden');
-  }
   /* 전역에 카드 데이터 저장 (공유 등에 사용) */
   window._cardData=data;
-  setupFabSafety();
-  _setBgmLabel();
+  setupFabSafety();_setBgmLabel();
 }
-
 
 /* ===== 플로팅 메뉴 ===== */
 let _fabOpen=false,_fabSafetyRaf=0,_fabInitialVh=window.innerHeight;
 function setFabOpen(open){
-  _fabOpen=!!open;var menu=document.getElementById('fabMenu'),main=document.getElementById('fabMain');
-  if(menu)menu.classList.toggle('open',_fabOpen);if(main){main.textContent=_fabOpen?'✕':'⋯';main.setAttribute('aria-expanded',String(_fabOpen));}
+  _fabOpen=!!open;const menu=document.getElementById('fabMenu'),main=document.getElementById('fabMain');
+  menu?.classList.toggle('open',_fabOpen);if(main){main.textContent=_fabOpen?'✕':'⋯';main.setAttribute('aria-expanded',String(_fabOpen));}
 }
-function toggleFab(){setFabOpen(!_fabOpen);}
-function closeFab(){setFabOpen(false);}
-function _rectHit(a,b,pad){pad=pad||0;return !(a.right<b.left-pad||a.left>b.right+pad||a.bottom<b.top-pad||a.top>b.bottom+pad);}
+function toggleFab(){setFabOpen(!_fabOpen);}function closeFab(){setFabOpen(false);}
+function _rectHit(a,b,pad=0){return !(a.right<b.left-pad||a.left>b.right+pad||a.bottom<b.top-pad||a.top>b.bottom+pad);}
 function updateFabSafety(){
-  _fabSafetyRaf=0;var wrap=document.querySelector('.fab-wrap'),main=document.getElementById('fabMain');if(!wrap||!main)return;
-  var active=document.activeElement,isTyping=!!active&&(/^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName)||active.isContentEditable);
-  var vv=window.visualViewport,keyboard=!!vv&&vv.height<Math.min(_fabInitialVh,window.innerHeight)*.72;
-  var fr=main.getBoundingClientRect(),collision=false;
-  document.querySelectorAll('.rsvp-sec button,.rsvp-sec input,.rsvp-sec select,.rsvp-sec textarea,.guest-sec button,.guest-sec input,.guest-sec textarea,.acc-sec summary,.acc-sec button').forEach(function(el){if(collision||el.offsetParent===null)return;var r=el.getBoundingClientRect();if(r.bottom<0||r.top>(vv?.height||window.innerHeight))return;if(_rectHit(fr,r,10))collision=true;});
-  var suppress=isTyping||keyboard||collision;wrap.classList.toggle('fab-suppressed',suppress);if(suppress)closeFab();
+  _fabSafetyRaf=0;const wrap=document.querySelector('.fab-wrap'),main=document.getElementById('fabMain');if(!wrap||!main)return;
+  const active=document.activeElement,isTyping=!!active&&(/^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName)||active.isContentEditable);
+  const vv=window.visualViewport,keyboard=!!vv&&vv.height<Math.min(_fabInitialVh,window.innerHeight)*.72;
+  const fr=main.getBoundingClientRect();let collision=false;
+  document.querySelectorAll('.rsvp-sec button,.rsvp-sec input,.rsvp-sec select,.rsvp-sec textarea,.guest-sec button,.guest-sec input,.guest-sec textarea,.acc-sec .acc-toggle,.acc-sec .acc-copy').forEach(el=>{if(collision||el.offsetParent===null)return;const r=el.getBoundingClientRect();if(r.bottom<0||r.top>(vv?.height||innerHeight))return;if(_rectHit(fr,r,10))collision=true;});
+  const suppress=isTyping||keyboard||collision;wrap.classList.toggle('fab-suppressed',suppress);if(suppress)closeFab();
 }
-function scheduleFabSafety(){if(_fabSafetyRaf)return;_fabSafetyRaf=requestAnimationFrame(updateFabSafety);}
+function scheduleFabSafety(){if(!_fabSafetyRaf)_fabSafetyRaf=requestAnimationFrame(updateFabSafety);}
 function setupFabSafety(){
-  scheduleFabSafety();window.addEventListener('scroll',scheduleFabSafety,{passive:true});window.addEventListener('resize',scheduleFabSafety,{passive:true});
-  window.visualViewport?.addEventListener('resize',scheduleFabSafety,{passive:true});
-  document.addEventListener('focusin',scheduleFabSafety);document.addEventListener('focusout',()=>setTimeout(scheduleFabSafety,80));
-  document.addEventListener('pointerdown',function(e){var wrap=document.querySelector('.fab-wrap');if(_fabOpen&&wrap&&!wrap.contains(e.target))closeFab();});
+  scheduleFabSafety();window.addEventListener('scroll',scheduleFabSafety,{passive:true});window.addEventListener('resize',scheduleFabSafety,{passive:true});window.visualViewport?.addEventListener('resize',scheduleFabSafety,{passive:true});
+  document.addEventListener('focusin',scheduleFabSafety);document.addEventListener('focusout',()=>setTimeout(scheduleFabSafety,80));document.addEventListener('pointerdown',e=>{const wrap=document.querySelector('.fab-wrap');if(_fabOpen&&wrap&&!wrap.contains(e.target))closeFab();});
 }
 
 /* ===== 토스트 ===== */
@@ -2261,25 +2296,14 @@ function showToast(msg){
 }
 
 /* ===== 링크 복사 ===== */
-/* 공유용 URL: VPS SSR 주소 (카카오/SNS가 OG 태그를 읽도록)
-   사람이 열면 VPS가 실제 카드로 자동 리다이렉트 */
-function getShareUrl(){
-  const VPS_BASE='https://weddingapi.duckdns.org';
-  if(slug)return `${VPS_BASE}/card/${encodeURIComponent(slug)}`;
-  return location.href;
-}
+/* 보기·복사·카카오·QR은 항상 현재 배포의 최신 card.html을 사용한다.
+   구형 VPS 렌더러는 editor/card 불일치가 있으므로 링크 대상으로 사용하지 않는다. */
+function getViewUrl(){return slug?new URL(`card.html?slug=${encodeURIComponent(slug)}`,location.href).href:location.href;}
+function getShareUrl(){return getViewUrl();}
 
 function copyCardLink(){
   const shareUrl=getShareUrl();
-  navigator.clipboard.writeText(shareUrl)
-    .then(()=>showToast('링크가 복사됐어요 ✓'))
-    .catch(()=>{
-      /* clipboard API 실패 시 fallback */
-      const ta=document.createElement('textarea');
-      ta.value=shareUrl;document.body.appendChild(ta);ta.select();
-      document.execCommand('copy');document.body.removeChild(ta);
-      showToast('링크가 복사됐어요 ✓');
-    });
+  _doCopy(shareUrl).then(ok=>showToast(ok?'링크가 복사됐어요 ✓':'복사하지 못했습니다. 링크를 직접 선택해 주세요.'));
   closeFab();
 }
 
@@ -2305,10 +2329,6 @@ function getSafeImageUrl(data){
 }
 
 function shareKakao(){
-  console.log('Kakao exists:', !!window.Kakao);
-  console.log('Kakao initialized:', window.Kakao?.isInitialized?.());
-  console.log('Current URL:', location.href);
-
   if(!window.Kakao){
     console.error('Kakao SDK not loaded');
     copyCardLink();
@@ -2329,15 +2349,6 @@ function shareKakao(){
 
   /* 대표사진 — 검증된 http URL만, 없으면 기본 썸네일 */
   const imageUrl=getSafeImageUrl(d);
-  /* ── 강제 디버깅: 대표사진 URL / 원본 데이터 출력 ──
-     아래 KAKAO IMAGE URL 값을 브라우저 새 탭에서 직접 열어보세요.
-       - 사진이 보이면 → 정상
-       - 404 또는 빈 화면 → 해당 카드의 대표사진 데이터 문제 (코드 문제 아님) */
-  console.log('KAKAO IMAGE URL:', imageUrl);
-  console.log('RAW DATA:', d);
-  console.log('main_photo_url:', d?.main_photo_url);
-  console.log('👉 위 KAKAO IMAGE URL을 새 탭에서 열어 사진이 보이는지 확인하세요. 안 보이면 대표사진 데이터 문제입니다.');
-
   try{
     Kakao.Share.sendDefault({
       objectType:'feed',
@@ -2366,7 +2377,7 @@ function addCalendar(){
   const title=`${d.groom_name||'신랑'} ♥ ${d.bride_name||'신부'} 결혼식`;
   const loc=(d.venue_name||'')+(d.venue_address?' '+d.venue_address:'');
   const ics=[
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//MemoryRetouch//Wedding//KO',
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Wedding Invitation//Calendar//KO',
     'BEGIN:VEVENT',
     `DTSTART:${dt}T${tm}`,`DTEND:${dt}T${tm}`,
     `SUMMARY:${title}`,`LOCATION:${loc}`,
@@ -2419,17 +2430,21 @@ function _drawQR(url,container){
   }
 }
 
-function closeQR(){const ov=document.getElementById('qrOv');if(ov)ov.classList.remove('show');document.body.classList.remove('modal-open');}
+function closeQR(){
+  const ov=document.getElementById('qrOv');if(ov)ov.classList.remove('show');
+}
 
 /* ===== 수정번호 입력 / 검증 ===== */
 function openEditModal(){
-  closeFab();
+  const menu=document.getElementById('fabMenu');if(menu)menu.classList.remove('open');
   const err=document.getElementById('editErr');if(err)err.textContent='';
   const inp=document.getElementById('editCodeInput');if(inp)inp.value='';
-  const ov=document.getElementById('editOv');if(ov){ov.classList.add('show');document.body.classList.add('modal-open');}
+  const ov=document.getElementById('editOv');if(ov)ov.classList.add('show');
   if(inp)setTimeout(()=>inp.focus(),100);
 }
-function closeEditModal(){const ov=document.getElementById('editOv');if(ov)ov.classList.remove('show');document.body.classList.remove('modal-open');}
+function closeEditModal(){
+  const ov=document.getElementById('editOv');if(ov)ov.classList.remove('show');
+}
 async function submitEditCode(){
   const inp=document.getElementById('editCodeInput');
   const err=document.getElementById('editErr');
@@ -2441,6 +2456,7 @@ async function submitEditCode(){
 
   if(btn){btn.disabled=true;btn.textContent='확인 중...';}
   try{
+    if(!sb){if(err)err.textContent='서버에 연결하지 못했습니다. 잠시 후 다시 시도해주세요.';return;}
     const{data,error}=await sb.rpc('verify_edit_code',{p_slug:slug,p_edit_code:code});
     if(error){if(err)err.textContent='확인 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.';}
     else if(data&&data.ok){
@@ -2478,13 +2494,6 @@ function downloadQR(){
     showToast('QR 코드를 먼저 생성해주세요');
   }
 }
-
-
-/* 모달 바깥 터치·ESC */
-(function(){
-  ['qrOv','editOv'].forEach(function(id){var ov=document.getElementById(id);ov?.addEventListener('click',function(e){if(e.target!==ov)return;if(id==='qrOv')closeQR();else closeEditModal();});});
-  document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;closeFab();if(document.getElementById('qrOv')?.classList.contains('show'))closeQR();if(document.getElementById('editOv')?.classList.contains('show'))closeEditModal();});
-})();
 
 main();
 
