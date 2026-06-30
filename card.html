@@ -1147,6 +1147,43 @@ body.modal-open{overflow:hidden;touch-action:none;}
   #card.t-black .bk-when{margin-bottom:8px;gap:5px;}
 }
 
+
+
+/* ===== 계좌 정보 중앙 정렬 안정화 =====
+   계좌 텍스트는 카드 정중앙, 복사 버튼은 우측 고정.
+   버튼 폭 때문에 계좌명이 왼쪽으로 밀리지 않도록 3열 그리드 사용. */
+.acc-list{width:100%;max-width:100%;margin-left:auto;margin-right:auto;}
+.acc-row{
+  display:grid!important;
+  grid-template-columns:58px minmax(0,1fr) 58px;
+  align-items:center;
+  justify-items:center;
+  gap:8px;
+  width:100%;
+}
+.acc-info{
+  grid-column:2;
+  min-width:0;
+  width:100%;
+  align-items:center!important;
+  text-align:center!important;
+}
+.acc-side,.acc-bank,.acc-num{
+  display:block;
+  width:100%;
+  text-align:center!important;
+  overflow-wrap:anywhere;
+  word-break:keep-all;
+}
+.acc-copy{
+  grid-column:3;
+  justify-self:end;
+  margin:0!important;
+}
+@media(max-width:360px){
+  .acc-row{grid-template-columns:50px minmax(0,1fr) 50px;padding-left:10px;padding-right:10px;}
+  .acc-copy{padding-left:10px!important;padding-right:10px!important;}
+}
 </style>
 </head>
 <body>
@@ -2304,7 +2341,7 @@ async function shareKakao(){
   let KakaoApi;
   try{KakaoApi=await ensureKakaoSdk();}
   catch(e){console.error(e);showToast('카카오 공유를 열지 못해 링크를 복사합니다.');copyCardLink();return;}
-  if(!KakaoApi.isInitialized())KakaoApi.init('595f376e62ae3df09dea25e6825e94a4');
+  if(!KakaoApi.isInitialized())KakaoApi.init(KAKAO_JS_KEY);
 
   const d=window._cardData;
   const cardUrl=getShareUrl();
@@ -2324,6 +2361,8 @@ async function shareKakao(){
         title:title,
         description:desc,
         imageUrl:imageUrl,
+        imageWidth:800,
+        imageHeight:800,
         link:{mobileWebUrl:cardUrl,webUrl:cardUrl}
       },
       buttons:[{title:'청첩장 보기',link:{mobileWebUrl:cardUrl,webUrl:cardUrl}}]
@@ -2331,8 +2370,18 @@ async function shareKakao(){
     closeFab();
   }catch(e){
     console.error('Kakao share failed:', e);
+    try{
+      if(navigator.share){
+        await navigator.share({title:title,text:desc,url:cardUrl});
+        closeFab();
+        return;
+      }
+    }catch(nativeErr){
+      if(nativeErr?.name==='AbortError')return;
+      console.error('Native share failed:',nativeErr);
+    }
     copyCardLink();
-    showToast('카카오톡 공유를 사용할 수 없어 링크를 복사했어요. 카카오톡에 붙여넣기 해주세요.');
+    showToast('공유 인증을 확인할 수 없어 링크를 복사했어요. 카카오톡에 붙여넣기 해주세요.');
   }
 }
 

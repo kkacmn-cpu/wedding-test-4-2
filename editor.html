@@ -1198,6 +1198,43 @@ input,select,textarea{font-family:inherit;}
 /* Signature 이름 폭 기준 수정: 텍스트 래퍼를 전체 폭으로 고정해 2~3자 이름이 불필요하게 2줄로 바뀌지 않도록 한다. */
 #ivRoot.t-signature .sig-textwrap{display:block;width:100%;max-width:100%;}
 #ivRoot.t-signature .sig-names{display:inline-block;max-width:84%;margin:0 auto;white-space:nowrap;}
+
+
+/* ===== 계좌 정보 중앙 정렬 안정화 =====
+   계좌 텍스트는 카드 정중앙, 복사 버튼은 우측 고정.
+   버튼 폭 때문에 계좌명이 왼쪽으로 밀리지 않도록 3열 그리드 사용. */
+.acc-list{width:100%;max-width:100%;margin-left:auto;margin-right:auto;}
+.acc-row{
+  display:grid!important;
+  grid-template-columns:58px minmax(0,1fr) 58px;
+  align-items:center;
+  justify-items:center;
+  gap:8px;
+  width:100%;
+}
+.acc-info{
+  grid-column:2;
+  min-width:0;
+  width:100%;
+  align-items:center!important;
+  text-align:center!important;
+}
+.acc-side,.acc-bank,.acc-num{
+  display:block;
+  width:100%;
+  text-align:center!important;
+  overflow-wrap:anywhere;
+  word-break:keep-all;
+}
+.acc-copy{
+  grid-column:3;
+  justify-self:end;
+  margin:0!important;
+}
+@media(max-width:360px){
+  .acc-row{grid-template-columns:50px minmax(0,1fr) 50px;padding-left:10px;padding-right:10px;}
+  .acc-copy{padding-left:10px!important;padding-right:10px!important;}
+}
 </style>
 </head>
 <body>
