@@ -171,35 +171,7 @@ input,select,textarea{font-family:inherit;}
 .sig-template-card .sig-prev-person{display:block;white-space:nowrap;}
 .sig-template-card .sig-prev-date{font-family:'Noto Sans KR',sans-serif;font-size:9px;font-weight:500;line-height:1;letter-spacing:.12em;margin-top:7px;color:rgba(255,255,255,.9);text-align:center;}
 .sig-template-card .tf-desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.55;}
-/* 템플릿 색상 (8개 판매 + 숨김 호환 템플릿 포함) */
-.t-ivory{background:linear-gradient(155deg,#fcfaf6,#f0e6d5);color:#4a3f33;}
-.t-ivory .tp-amp{color:#b8945f;}
-.t-blush{background:linear-gradient(155deg,#fdf6f4,#f6e3e0);color:#7d5e5a;}
-.t-blush .tp-amp{color:#c98f88;}
-.t-dark{background:linear-gradient(155deg,#2a231d,#1a1410);color:#d9c8ad;}
-.t-dark .tp-amp{color:#b8945f;}
-.t-sage{background:linear-gradient(155deg,#f2f5ef,#e4ece0);color:#4e5a46;}
-.t-sage .tp-amp{color:#8a9a76;}
-.t-lavender{background:linear-gradient(155deg,#f5f2fb,#e8e0f5);color:#6b5b8a;}
-.t-lavender .tp-amp{color:#9d86c4;}
-.t-sand{background:linear-gradient(155deg,#faf5ec,#ede0c8);color:#6b5840;}
-.t-sand .tp-amp{color:#c4945a;}
-.t-midnight{background:linear-gradient(155deg,#1a1f2e,#111520);color:#8fa8d4;}
-.t-midnight .tp-amp{color:#6b8fc4;}
-.t-rose{background:linear-gradient(155deg,#fff0f3,#ffd6e0);color:#8b4558;}
-.t-rose .tp-amp{color:#d4607a;}
-.t-olive{background:linear-gradient(155deg,#f4f6ee,#dde4d0);color:#4a5438;}
-.t-olive .tp-amp{color:#7a8c5a;}
-.t-charcoal{background:linear-gradient(155deg,#2e2e2e,#1e1e1e);color:#c8c0b4;}
-.t-charcoal .tp-amp{color:#d4a870;}
-.t-peach{background:linear-gradient(155deg,#fff4ef,#ffe0d5);color:#7a4a38;}
-.t-peach .tp-amp{color:#d4826a;}
-.t-mint{background:linear-gradient(155deg,#eef7f4,#d4ede6);color:#3a6358;}
-.t-mint .tp-amp{color:#6ab0a0;}
-.t-burgundy{background:linear-gradient(155deg,#3d1520,#2a0e16);color:#d4a0a8;}
-.t-burgundy .tp-amp{color:#e8c0c4;}
-.t-cream{background:linear-gradient(155deg,#fdfbf5,#f5efdf);color:#5c5040;}
-.t-cream .tp-amp{color:#b8905a;}
+/* 템플릿 선택 카드는 판매용 8종 전용. 구형 ID는 normalizeTheme에서만 호환한다. */
 
 /* ===== 업로더 ===== */
 .uploader{border:1.5px dashed var(--sand);border-radius:14px;padding:28px;text-align:center;cursor:pointer;transition:all .25s;background:var(--white);}
@@ -675,39 +647,6 @@ input,select,textarea{font-family:inherit;}
 .t-classic-ivory .iv-sec-t{color:#9a7740;}
 .t-classic-ivory .iv-names{font-family:'Noto Serif KR',serif;}
 
-/* MAGAZINE — 진짜 웨딩 매거진 표지 (미리보기) */
-.t-magazine{background:#15110d;color:#f4f1ea;}
-.t-magazine .iv-cover{padding:0;}
-.t-magazine .mag-hero{position:relative;width:100%;height:560px;overflow:hidden;background:#1c1814;}
-.t-magazine .mag-photo{position:absolute;inset:0;width:100%;height:100%;}
-.t-magazine .mag-photo img{width:100%;height:100%;object-fit:cover;display:block;}
-.t-magazine .mag-scrim{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,.12) 26%,rgba(0,0,0,.06) 52%,rgba(0,0,0,.34) 80%,rgba(0,0,0,.6));}
-.t-magazine .mag-top{position:absolute;top:20px;left:18px;right:18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:11px;}
-.t-magazine .mag-brand{font-family:var(--display);font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.95);}
-.t-magazine .mag-issue{font-family:var(--display);font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.78);}
-.t-magazine .mag-side{position:absolute;top:50%;font-family:var(--display);font-size:9px;letter-spacing:4px;color:rgba(255,255,255,.72);writing-mode:vertical-rl;text-shadow:0 1px 8px rgba(0,0,0,.5);}
-.t-magazine .mag-side-l{left:12px;transform:translateY(-50%) rotate(180deg);}
-.t-magazine .mag-side-r{right:12px;transform:translateY(-50%);}
-.t-magazine .mag-center{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);text-align:center;padding:0 16px;}
-.t-magazine .mag-bigtitle{font-family:var(--display);font-size:74px;font-weight:300;letter-spacing:1px;line-height:.88;color:#fff;text-shadow:0 6px 30px rgba(0,0,0,.5);}
-.t-magazine .mag-namebar{display:flex;align-items:center;justify-content:center;gap:11px;margin-top:16px;}
-.t-magazine .mag-line{width:26px;height:1px;background:rgba(255,255,255,.6);}
-.t-magazine .mag-names{font-family:'Noto Serif KR',serif;font-size:13px;font-weight:400;letter-spacing:4px;color:rgba(255,255,255,.96);text-shadow:0 2px 12px rgba(0,0,0,.5);}
-.t-magazine .mag-names .iv-amp{font-family:var(--display);font-style:italic;margin:0 4px;opacity:.85;}
-.t-magazine .mag-bottom{position:absolute;bottom:20px;left:18px;right:18px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.28);padding-top:11px;}
-.t-magazine .mag-date{font-family:var(--display);font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.92);}
-.t-magazine .mag-tag{font-family:var(--display);font-style:italic;font-size:11px;color:rgba(255,255,255,.8);}
-.t-magazine .iv-sec{border-top:1px solid #2a241e;background:#1a1612;}
-.t-magazine .iv-sec-t{font-family:var(--display);letter-spacing:4px;color:rgba(244,241,234,.5);}
-.t-magazine .iv-msg,.t-magazine .iv-info{color:rgba(244,241,234,.84);}
-.t-magazine .iv-names{font-family:var(--display);}
-.t-magazine .iv-div{background:rgba(255,255,255,.3);}
-.t-film{background:#f4efe6;color:#2c2420;}
-.t-film .iv-eyebrow{font-family:var(--display);color:#8a7a6a;}
-.t-film .iv-names{font-family:var(--display);font-style:italic;}
-.t-film .iv-div{background:#8a7a6a;}
-.t-film .iv-sec{border-top:1px solid rgba(44,36,32,.09);}
-.t-film .iv-sec-t{font-family:var(--display);color:#8a7a6a;}
 .t-minimal{background:#fff;color:#1a1a1a;}
 .t-minimal .iv-eyebrow{color:#aaa;letter-spacing:6px;}
 .t-minimal .iv-names{font-family:var(--display);font-weight:300;letter-spacing:0;}
@@ -730,12 +669,6 @@ input,select,textarea{font-family:inherit;}
 .t-fullscreen .iv-sec-t{color:rgba(255,255,255,.45);}
 .t-fullscreen .iv-msg,.t-fullscreen .iv-info{color:rgba(245,238,224,.92);}
 .t-fullscreen .acc-row{background:rgba(255,255,255,.05);}
-.t-calendar{background:#fff;color:#2a2a2a;}
-.t-calendar .iv-eyebrow{color:#aaa;}
-.t-calendar .iv-names{font-family:'Noto Serif KR',serif;}
-.t-calendar .iv-div{display:none;}
-.t-calendar .iv-sec{border-top:1px solid #f2f2f2;}
-.t-calendar .iv-sec-t{color:#bbb;}
 .t-hanok{background:linear-gradient(180deg,#f9f5ed,#efe6d2);color:#1e1a14;}
 .t-hanok .iv-eyebrow{font-family:'Noto Serif KR',serif;color:#8a7a50;}
 .t-hanok .iv-names{font-family:'Noto Serif KR',serif;font-weight:500;letter-spacing:6px;}
@@ -759,13 +692,6 @@ input,select,textarea{font-family:inherit;}
 .t-black .iv-sec-t{color:#9a7440;}
 .t-black .iv-msg,.t-black .iv-info{color:#f0e8d8;line-height:1.8;letter-spacing:.3px;}
 .t-black .acc-row{background:rgba(255,255,255,.04);}
-.t-global{background:#fafafa;color:#1a1a1a;}
-.t-global .iv-eyebrow{color:#999;}
-.t-global .iv-names{font-family:var(--display);}
-.t-global .iv-amp{color:#888;}
-.t-global .iv-div{background:#ccc;}
-.t-global .iv-sec{border-top:1px solid #ececec;}
-.t-global .iv-sec-t{color:#aaa;}
 .iv-foot{padding:22px;text-align:center;font-size:11px;opacity:.5;}
 
 /* ================================================================
@@ -1590,21 +1516,83 @@ input,select,textarea{font-family:inherit;}
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+
+/* ===== 내장 Supabase REST 클라이언트 =====
+   외부 SDK CDN이 차단되거나 느린 모바일 환경에서도 발행·조회·기능이 멈추지 않도록
+   프로젝트에서 실제 사용하는 RPC/insert/storage 기능만 fetch로 직접 제공한다. */
+function createWeddingApiClient(baseUrl, apiKey){
+  const base=String(baseUrl||'').replace(/\/+$/,'');
+  const authHeaders={apikey:apiKey,Authorization:`Bearer ${apiKey}`};
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  async function request(path,options={},retryCount=1){
+    const method=options.method||'POST';
+    const timeout=Number(options.timeout||15000);
+    let lastError=null;
+    for(let attempt=0;attempt<=retryCount;attempt++){
+      const ctrl=typeof AbortController!=='undefined'?new AbortController():null;
+      const timer=ctrl?setTimeout(()=>ctrl.abort(),timeout):null;
+      try{
+        const headers={...authHeaders,...(options.headers||{})};
+        if(options.body!=null && !(options.body instanceof Blob) && !(options.body instanceof FormData) && !headers['Content-Type']) headers['Content-Type']='application/json';
+        const res=await fetch(base+path,{method,headers,body:options.body,signal:ctrl?.signal,cache:'no-store'});
+        const text=await res.text();
+        let data=null;
+        if(text){try{data=JSON.parse(text);}catch(e){data=text;}}
+        if(!res.ok){
+          const msg=(data&&typeof data==='object'&&(data.message||data.error_description||data.error))||`서버 오류 (${res.status})`;
+          lastError={message:String(msg),status:res.status,details:data};
+          if(res.status>=500 && attempt<retryCount){await sleep(350*(attempt+1));continue;}
+          return {data:null,error:lastError};
+        }
+        return {data,error:null};
+      }catch(err){
+        lastError={message:err?.name==='AbortError'?'서버 응답 시간이 초과되었습니다.':(err?.message||'네트워크 연결 오류'),cause:err};
+        if(attempt<retryCount){await sleep(350*(attempt+1));continue;}
+        return {data:null,error:lastError};
+      }finally{if(timer)clearTimeout(timer);}
+    }
+    return {data:null,error:lastError||{message:'알 수 없는 서버 오류'}};
+  }
+  const encodePath=p=>String(p||'').split('/').map(encodeURIComponent).join('/');
+  return {
+    rpc(name,args){return request(`/rest/v1/rpc/${encodeURIComponent(name)}`,{body:JSON.stringify(args||{}),timeout:18000},2);},
+    from(table){
+      const t=encodeURIComponent(table);
+      return {
+        insert(payload){return request(`/rest/v1/${t}`,{body:JSON.stringify(payload),headers:{Prefer:'return=minimal'},timeout:15000},1);}
+      };
+    },
+    storage:{
+      from(bucket){
+        const b=encodeURIComponent(bucket);
+        return {
+          upload(path,file,opts={}){
+            const headers={'Content-Type':opts.contentType||file?.type||'application/octet-stream','x-upsert':opts.upsert?'true':'false','cache-control':opts.cacheControl||'31536000'};
+            return request(`/storage/v1/object/${b}/${encodePath(path)}`,{method:'POST',headers,body:file,timeout:60000},1);
+          },
+          getPublicUrl(path){return {data:{publicUrl:`${base}/storage/v1/object/public/${b}/${encodePath(path)}`}};}
+        };
+      }
+    }
+  };
+}
+
 const SUPA_URL='https://jchohaqvaoytplinlylt.supabase.co';
 const SUPA_KEY='sb_publishable_pinNIcaU11HhbSz3TR__mQ_Ln4cJ79a';
-/* Supabase SDK 로드 실패해도 editor 기본 UI는 살아야 함 (ReferenceError 차단).
-   SDK 정상일 때 기존 동작 동일. */
-let sb=null;
-try{
-  if(typeof supabase!=='undefined'&&supabase&&typeof supabase.createClient==='function'){
-    sb=supabase.createClient(SUPA_URL,SUPA_KEY);
-  }else{
-    console.warn('Supabase SDK 미로드 — 서버 기능은 비활성, 기본 편집 UI는 정상 동작합니다.');
-  }
-}catch(e){ sb=null; console.warn('Supabase client 생성 실패:',e&&e.message); }
+/* 외부 Supabase SDK 없이도 동작하는 내장 클라이언트. */
+const sb=createWeddingApiClient(SUPA_URL,SUPA_KEY);
 /* 서버 기능 진입 전 공통 방어: sb 없으면 안내 후 차단(거짓 성공 방지) */
+async function fetchJsonWithTimeout(url,options={},timeout=15000){
+  const ctrl=typeof AbortController!=='undefined'?new AbortController():null;
+  const timer=ctrl?setTimeout(()=>ctrl.abort(),timeout):null;
+  try{
+    const res=await fetch(url,{...options,signal:ctrl?.signal,cache:'no-store'});
+    let json=null;try{json=await res.json();}catch(e){}
+    if(!res.ok)throw new Error((json&&json.reason)||`서버 오류 (${res.status})`);
+    return json;
+  }finally{if(timer)clearTimeout(timer);}
+}
 function _requireServer(){
   if(sb)return true;
   try{ alert('서버에 연결하지 못했습니다. 인터넷 연결을 확인한 후 다시 시도해 주세요.'); }catch(e){}
@@ -1683,7 +1671,7 @@ function safeUrl(url){
   return'';
 }
 
-/* ===== 프리미엄 템플릿 (8개 판매 + 숨김 호환 템플릿 포함) ===== */
+/* ===== 프리미엄 판매 템플릿 8종 ===== */
 const THEMES=[
   /* ── 사진형 6종 (show:true) ── */
   {id:'signature',    name:'웨딩화보형',     show:true, tier:'premium', photoType:true, group:'hero',    mood:'시그니처', forWho:'세로 웨딩화보가 있는 커플', why:'실패 없는 대표 선택',     desc:'우리가 가장 우리다웠던 한 장', photo:'세로 화보가 가장 빛납니다'},
@@ -1695,11 +1683,6 @@ const THEMES=[
   /* ── 무사진형 2종 (show:true, noPhoto) ── */
   {id:'fullscreen',   name:'시네마 타이포형',show:true, tier:'basic',   noPhoto:true, group:'basic', mood:'영화톤',   forWho:'사진 없이 무드만 원하는 커플', why:'영화 같은 밤 분위기',   desc:'한 편의 영화처럼 시작되는 이야기', photo:'사진 없이 완성됩니다'},
   {id:'gold-serif',   name:'레터 미니멀형',  show:true, tier:'basic',   noPhoto:true, group:'basic', mood:'문서·편지', forWho:'정중한 초대를 원하는 커플',   why:'편지 같은 정중한 초대', desc:'손으로 적어 건네는 초대처럼', photo:'사진 없이 완성됩니다'},
-  /* ── 숨김(show:false). 코드/렌더 유지 → 기존 발행 카드 호환 ── */
-  {id:'film',     name:'Film Moment',    show:false, tier:'basic', desc:'필름 감성', photo:''},
-  {id:'magazine', name:'Magazine Cover', show:false, tier:'basic', desc:'잡지형', photo:''},
-  {id:'calendar', name:'Calendar Day',   show:false, tier:'basic', desc:'날짜 강조', photo:''},
-  {id:'global',   name:'Global Couple',  show:false, tier:'basic', desc:'다국어', photo:''},
 ];
 /* ⚠️ 샘플 웨딩사진 — 템플릿 '선택 카드'에서만 사용. LIVE PREVIEW/발행 카드는 절대 사용 안 함(고객 사진만) */
 const SAMPLE_BASE='https://kkacmn-cpu.github.io/wedding/samples/';
@@ -1731,23 +1714,18 @@ function sampleBg(id){
 /* 템플릿별 미리보기 색상 */
 const THEME_STYLES={
   'signature':    {bg:'linear-gradient(155deg,#fcfaf6,#f0e6d5)',color:'#4a3f33',deco:'◇  ◇  ◇'},
-  'film':         {bg:'linear-gradient(155deg,#f5f0e8,#ede0cc)',color:'#2c2420',deco:'📷'},
   'fullscreen':   {bg:'linear-gradient(155deg,#2a2a2a,#1a1a1a)',color:'#fff',  deco:'✧'},
-  'magazine':     {bg:'linear-gradient(155deg,#fafafa,#f0f0f0)',color:'#1a1a1a',deco:'WEDDING'},
   'classic-ivory':{bg:'linear-gradient(155deg,#fdfbf5,#f3ead8)',color:'#3a2f26',deco:'◇  ◇  ◇'},
   'gold-serif':   {bg:'linear-gradient(155deg,#fdfbf5,#f6efdf)',color:'#2c2218',deco:'✦'},
   'minimal':      {bg:'#ffffff',                               color:'#1a1a1a',deco:'—'},
-  'calendar':     {bg:'#ffffff',                               color:'#2a2a2a',deco:'📅'},
   'hanok':        {bg:'linear-gradient(155deg,#f9f5ed,#f0e8d5)',color:'#1e1a14',deco:'◈'},
   'flower':       {bg:'linear-gradient(155deg,#fffbf8,#fdf0ea)',color:'#5a3a32',deco:'✿ ❀ ✿'},
   'black':        {bg:'linear-gradient(155deg,#141414,#0a0a0a)',color:'#d4c4a0',deco:'✦'},
-  'global':       {bg:'#fafafa',                               color:'#1a1a1a',deco:'🌏'},
 };
 let _curCat='all';
 
 function renderTemplates(){
-  /* 선택 UI에는 판매용 8종(show:true)만 항상 표시. 과거 ID가 ST.theme이어도
-     과거 선택 카드를 만들지 않음 (미리보기/card 호환 렌더는 별도로 유지) */
+  /* 선택 UI에는 판매용 8종만 표시한다. 과거 ID는 normalizeTheme에서 변환한다. */
   ST.theme=normalizeTheme(ST.theme);
   const filtered=THEMES.filter(t=>t.show&&SALE_THEMES.includes(t.id));
   /* 썸네일 미리보기 날짜: 입력값 기반 (없으면 빈 문자열) — 하드코딩 금지 */
@@ -1768,18 +1746,6 @@ function renderTemplates(){
         <div style="position:absolute;bottom:14px;left:0;right:0;z-index:1;text-align:center;">
           <div class="sig-prev-names"><span class="sig-prev-person">민준</span><span class="sig-prev-person">서연</span></div>
           <div class="sig-prev-date">${_td}</div>
-        </div>
-      </div>`;
-    }else if(t.id==='film'){
-      previewInner=`<div style="position:relative;width:100%;height:100%;background:linear-gradient(155deg,#e8ddc9,#cdb99a 75%,#b09c7d);">
-        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(40,30,18,.25),transparent 40%,rgba(40,30,18,.45));mix-blend-mode:multiply;"></div>
-        <div style="position:absolute;inset:0;box-shadow:inset 0 0 26px rgba(60,44,26,.5);"></div>
-        <div style="position:absolute;top:0;bottom:0;left:5px;width:5px;background:repeating-linear-gradient(to bottom,#2c2420 0,#2c2420 3px,transparent 3px,transparent 7px);opacity:.55;"></div>
-        <div style="position:absolute;top:0;bottom:0;right:5px;width:5px;background:repeating-linear-gradient(to bottom,#2c2420 0,#2c2420 3px,transparent 3px,transparent 7px);opacity:.55;"></div>
-        <div style="position:absolute;top:9px;left:0;right:0;text-align:center;font-family:'Courier New',monospace;font-size:6px;letter-spacing:2px;color:rgba(60,44,26,.8);">● 35mm · KODAK</div>
-        <div style="position:absolute;bottom:12px;left:0;right:0;text-align:center;">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:#3a2c1a;letter-spacing:1px;">민준 &amp; 서연</div>
-          <div style="font-family:'Courier New',monospace;font-size:6.5px;color:rgba(60,44,26,.75);margin-top:3px;">— — — —</div>
         </div>
       </div>`;
     }else if(t.id==='gold-serif'){
@@ -1825,37 +1791,6 @@ function renderTemplates(){
           <div style="display:flex;align-items:center;gap:5px;"><span style="font-family:'Cormorant Garamond',serif;font-size:8px;letter-spacing:2px;color:#c9a86a;">${_td}</span></div>
         </div>
       </div>`;
-    }else if(t.id==='global'){
-      previewInner=`<div style="position:relative;width:100%;height:100%;background:linear-gradient(160deg,#ffffff,#eef2f6 70%,#e3e9f0);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px;">
-        <div style="position:absolute;top:8px;left:0;right:0;display:flex;justify-content:center;gap:4px;font-size:7px;letter-spacing:2px;color:#8a93a0;">
-          <span>KOR</span><span style="opacity:.4;">·</span><span>ENG</span>
-        </div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;letter-spacing:1px;color:#2a3340;line-height:1.05;text-align:center;margin-top:4px;">Minjun<br><span style="font-style:italic;font-size:11px;color:#9aa4b2;">&amp;</span><br>Seoyeon</div>
-        <div style="width:22px;height:1px;background:#c2cad4;margin:2px 0;"></div>
-        <div style="font-family:'Noto Serif KR',serif;font-size:8px;letter-spacing:2px;color:#5a6470;">민준 &amp; 서연</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:7px;letter-spacing:1px;color:#8a93a0;">SAVE THE DATE</div>
-      </div>`;
-    }else if(t.id==='magazine'){
-      previewInner=`<div style="position:relative;width:100%;height:100%;background:linear-gradient(160deg,#4a443c,#15110d);">
-        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.45),transparent 40%,rgba(0,0,0,.55));"></div>
-        <div style="position:absolute;top:7px;left:7px;right:7px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;">
-          <span style="font-family:'Cormorant Garamond',serif;font-size:5px;letter-spacing:1px;color:rgba(255,255,255,.9);">WEDDING JOURNAL</span>
-          <span style="font-family:'Cormorant Garamond',serif;font-size:5px;color:rgba(255,255,255,.75);">VOL.1</span>
-        </div>
-        <div style="position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);text-align:center;">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:#fff;letter-spacing:1px;line-height:.88;text-shadow:0 2px 14px rgba(0,0,0,.5);">WEDDING</div>
-          <div style="display:flex;align-items:center;justify-content:center;gap:5px;margin-top:5px;">
-            <span style="width:12px;height:1px;background:rgba(255,255,255,.6);"></span>
-            <span style="font-family:'Noto Serif KR',serif;font-size:7px;letter-spacing:2px;color:rgba(255,255,255,.92);">민준 &amp; 서연</span>
-            <span style="width:12px;height:1px;background:rgba(255,255,255,.6);"></span>
-          </div>
-        </div>
-        <div style="position:absolute;left:4px;top:50%;transform:translateY(-50%) rotate(180deg);writing-mode:vertical-rl;font-family:'Cormorant Garamond',serif;font-size:5px;letter-spacing:2px;color:rgba(255,255,255,.65);">CELEBRATE</div>
-        <div style="position:absolute;right:4px;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-family:'Cormorant Garamond',serif;font-size:5px;letter-spacing:2px;color:rgba(255,255,255,.65);">LOVE &amp; JOY</div>
-        <div style="position:absolute;bottom:7px;left:7px;right:7px;display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.3);padding-top:4px;font-family:'Cormorant Garamond',serif;font-size:5px;color:rgba(255,255,255,.85);">
-          <span>WEDDING</span><span style="font-style:italic;">THE ONLY ISSUE</span>
-        </div>
-      </div>`;
     }else if(t.id==='classic-ivory'){
       previewInner=`<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;background:#f6efe0;">
         <div style="flex:0 0 70%;position:relative;background:linear-gradient(155deg,#d8ccba,#a8967c);overflow:hidden;">
@@ -1874,16 +1809,6 @@ function renderTemplates(){
           <div style="font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;letter-spacing:2px;color:#241c14;white-space:nowrap;">민준<span style="color:#9a7740;margin:0 5px;font-size:.7em;vertical-align:middle;">·</span>서연</div>
           <div style="font-family:'Cormorant Garamond',serif;font-size:6px;letter-spacing:2px;color:#8a7560;">${_td}</div>
         </div>
-      </div>`;
-    }else if(t.id==='calendar'){
-      previewInner=`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px;">
-        <div style="font-size:9px;letter-spacing:2px;color:#aaa;">SAVE THE DATE</div>
-        <div style="width:60px;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;font-size:10px;">
-          <div style="background:#2a2a2a;color:#fff;text-align:center;padding:2px;font-size:7px;">CALENDAR</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:22px;text-align:center;color:#2a2a2a;line-height:1.2;padding:2px;">18</div>
-          <div style="font-size:6px;text-align:center;color:#aaa;padding-bottom:3px;">SAT</div>
-        </div>
-        <div style="font-size:8px;font-family:'Cormorant Garamond',serif;color:#1a1a1a;">민준 &amp; 서연</div>
       </div>`;
     }else if(t.id==='fullscreen'){
       previewInner=`<div style="position:relative;width:100%;height:100%;background:radial-gradient(ellipse at 50% 32%,#221d18,#0a0807 78%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;overflow:hidden;">
@@ -2787,17 +2712,7 @@ function renderIV(playOp,opts){
   if(playOp&&eoReset){
     clearTimeout(eoReset._t);eoReset.innerHTML='';eoReset.className='ed-op';
   }
-  /* 템플릿 매핑 (8개 판매 + 숨김 호환 포함) */
-  const TPL_MAP_ED={
-    'signature':'signature','film':'film','fullscreen':'fullscreen','magazine':'magazine',
-    'classic-ivory':'classic-ivory','gold-serif':'gold-serif',
-    'minimal':'minimal','calendar':'calendar',
-    'hanok':'hanok','flower':'flower','black':'black','global':'global',
-    /* 구형 ID fallback */
-    'ivory':'classic-ivory','blush':'flower','dark':'black','sage':'classic-ivory',
-    'lavender':'flower','sand':'classic-ivory','midnight':'black','rose':'flower',
-    'olive':'classic-ivory','charcoal':'black','peach':'flower','mint':'global','burgundy':'black','cream':'classic-ivory'
-  };
+  /* 과거 템플릿 ID는 normalizeTheme에서 판매용 8종으로 변환한다. */
   const tpl=normalizeTheme(ST.theme);
   ST.theme=tpl;
   root.className=`t-${tpl}`;
@@ -2808,21 +2723,9 @@ function renderIV(playOp,opts){
   const names=order==='gb'?`${g}<span class="iv-amp">&amp;</span>${b}`:`${b}<span class="iv-amp">&amp;</span>${g}`;
   const namesPlain=order==='gb'?`${g} ♥ ${b}`:`${b} ♥ ${g}`;
   updateKShare(namesPlain, ST.mainPhoto);
-  /* 줄바꿈 형태 (magazine, minimal 등 스택 레이아웃용) */
   const _ef=order==='gb'?g:b, _es=order==='gb'?b:g;
-  const namesStacked=`${_ef}<br><span class="iv-amp">&amp;</span><br>${_es}`;
-  const namesStackedInline=`${_ef}<br><span class="iv-amp">&amp;</span> ${_es}`;
   const date=fmtDate(val('f_date')), time=fmtTime(val('f_time'));
   const dateStr=date?date.full:null;
-  /* Calendar 템플릿용 월/일/요일 (f_date 원본 기준, Invalid Date 방지) */
-  const _calRaw=val('f_date')||'';
-  const _calObj=new Date(_calRaw+'T00:00:00');
-  const _calMonths=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  const _calDays=['SUN','MON','TUE','WED','THU','FRI','SAT'];
-  const _calValid=!isNaN(_calObj.getTime());
-  const calMonth=_calValid?`${_calMonths[_calObj.getMonth()]} ${_calObj.getFullYear()}`:'';
-  const calDay=_calValid?_calObj.getDate():18;
-  const calDow=_calValid?_calDays[_calObj.getDay()]:'SAT';
   const msg=esc(val('f_msg')||'서로 마주보며 다져온 사랑을\n이제 함께 한 곳을 바라보며 걸어가려 합니다.');
   const msg2=esc(val('f_msg2')||'');
   const gParentRaw=esc(val('f_gparent')||'');
@@ -2906,23 +2809,6 @@ function renderIV(playOp,opts){
         </div>
       </div>
     </div>`;
-  }else if(tpl==='magazine'){
-    const ph=photo?`<img src="${photo}" style="width:100%;height:100%;object-fit:cover;display:block;" alt=""/>`:photoFallback(false);
-    const yr=(val('f_date')||'').slice(0,4)||'';
-    html+=`<div class="iv-cover t-magazine">
-      <div class="mag-hero">
-        <div class="mag-photo">${ph}</div>
-        <div class="mag-scrim"></div>
-        <div class="mag-top"><span class="mag-brand">MEMORY&nbsp;RETOUCH</span><span class="mag-issue">ISSUE · ${yr}</span></div>
-        <div class="mag-side mag-side-l">CELEBRATE</div>
-        <div class="mag-side mag-side-r">LOVE&nbsp;&amp;&nbsp;JOY</div>
-        <div class="mag-center">
-          <div class="mag-bigtitle">WEDDING</div>
-          <div class="mag-namebar"><span class="mag-line"></span><span class="mag-names">${names}</span><span class="mag-line"></span></div>
-        </div>
-        <div class="mag-bottom"><span class="mag-date">${dateStr||''}</span><span class="mag-tag">THE ONLY ISSUE</span></div>
-      </div>
-    </div>`;
   }else if(tpl==='fullscreen'){
     let cnDate='2026.10.24';
     let cnWeekday='SATURDAY';
@@ -2939,32 +2825,6 @@ function renderIV(playOp,opts){
           </div>
         </div>
       </div>
-    </div>`;
-  }else if(tpl==='film'){
-    html+=`<div class="iv-cover t-film" style="padding:0 0 24px;">
-      <div style="width:100%;height:60vw;max-height:300px;overflow:hidden;">
-        ${photo?`<img src="${photo}" style="width:100%;height:100%;object-fit:cover;display:block;filter:sepia(12%)contrast(1.05);" alt=""/>`:photoFallback(false)}
-      </div>
-      <div style="display:flex;gap:3px;padding:0 3px;background:#1a1a1a;height:10px;margin-bottom:14px;">
-        ${Array(12).fill('<span style="flex:1;background:#f5f0e8;opacity:.2;"></span>').join('')}
-      </div>
-      <div style="text-align:center;padding:0 24px;">
-        <div class="iv-eyebrow">Film Memory</div>
-        <div class="iv-names">${names}</div>
-        <div class="iv-div"></div>
-        <div class="iv-date">${dateStr||''}</div>
-      </div>
-    </div>`;
-  }else if(tpl==='calendar'){
-    html+=`<div class="iv-cover t-calendar" style="padding:44px 28px 32px;text-align:center;">
-      <div class="iv-eyebrow">Save the date</div>
-      <div class="iv-names">${names}</div>
-      <div style="width:160px;border:1px solid #e0e0e0;border-radius:12px;overflow:hidden;margin:16px auto;">
-        <div style="background:#2a2a2a;color:#fff;padding:6px 12px;font-size:10px;letter-spacing:3px;text-align:center;">${calMonth}</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:#2a2a2a;text-align:center;padding:6px 12px 2px;line-height:1;">${calDay}</div>
-        <div style="font-size:9px;letter-spacing:2px;color:#aaa;text-align:center;padding-bottom:10px;">${calDow}</div>
-      </div>
-      <div class="iv-date">${time||'오후 2시'}</div>
     </div>`;
   }else if(tpl==='classic-ivory'){
     const ph=previewPhoto('center 32%');
@@ -3064,19 +2924,8 @@ function renderIV(playOp,opts){
       </div>
     </div>`;
   }else{
-    /* global - 아치형 기본 (기타/호환) */
-    const photoEl=previewPhoto('center 35%');
-    const radius=tpl==='minimal'?'0':'100px 100px 10px 10px';
-    const size='155px';
-    html+=`<div class="iv-cover t-${tpl}" style="padding:48px 28px 36px;text-align:center;">
-      <div class="iv-eyebrow">We're getting married</div>
-      <div class="iv-names">${names}</div>
-      <div style="width:${size};height:190px;border-radius:${radius};
-        overflow:hidden;margin:18px auto;display:flex;align-items:center;justify-content:center;font-size:28px;
-        position:relative;background:rgba(0,0,0,.06);">${photoEl}</div>
-      <div class="iv-div"></div>
-      <div class="iv-date">${dateStr||''}${time?' '+time:''}</div>
-    </div>`;
+    /* normalizeTheme가 판매용 8종만 반환하므로 도달하지 않는다. */
+    html+=`<div class="iv-cover t-signature"></div>`;
   }
 
   /* ② 인사말 */
@@ -3387,11 +3236,12 @@ async function _proceedPublish(){
     /* ── 수정 모드: cards 직접 update 불가 (RLS 차단)
          → update_card_by_slug RPC 경유 (구매확인/verify-order 불필요) ── */
     d.slug=editSlug;
-    const{data:upResult,error:upErr}=await sb.rpc('update_card_by_slug',{
+    const{data:upRaw,error:upErr}=await sb.rpc('update_card_by_slug',{
       p_slug:editSlug,
       p_card_data:d,
       p_edit_code:editCode
     });
+    const upResult=_unwrapRpcValue(upRaw);
     btn.disabled=false;btn.textContent='수정 완료';
     if(upErr){alert('수정 실패: '+upErr.message);return;}
     if(upResult&&upResult.success===false){alert('수정 실패: '+upResult.error);return;}
@@ -3413,11 +3263,12 @@ async function _proceedPublish(){
     /* 6자리 수정번호 생성 (평문은 발행 화면에만 표시, DB엔 해시만) */
     _newEditCode=String(Math.floor(100000+Math.random()*900000));
 
-    const{data:rpcResult,error:rpcErr}=await sb.rpc('create_card_with_purchase',{
+    const{data:rpcRaw,error:rpcErr}=await sb.rpc('create_card_with_purchase',{
       p_purchase_id:_purchaseId,
       p_card_data:d,
       p_edit_code:_newEditCode
     });
+    const rpcResult=_unwrapRpcValue(rpcRaw);
     btn.disabled=false;btn.textContent='발행하기';
 
     if(rpcErr||!rpcResult){
@@ -3492,12 +3343,9 @@ async function verifyOrder(){
   verifyBtn.textContent='확인 중...';verifyBtn.disabled=true;
 
   try{
-    const res=await fetch('https://weddingapi.duckdns.org/verify-order',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({buyerName,buyerPhone})
-    });
-    const json=await res.json();
+    const json=await fetchJsonWithTimeout('https://weddingapi.duckdns.org/verify-order',{
+      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({buyerName,buyerPhone})
+    },15000);
 
     if(json.valid&&json.purchaseId){
       /* 정상 인증 — purchaseId 확보 후 발행 진행 */
@@ -3560,6 +3408,31 @@ function loadDraft(){
 }
 function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
 
+function _parseJsonObject(value,fallback){
+  if(value==null)return fallback;
+  if(typeof value==='object')return value;
+  if(typeof value==='string'){try{const p=JSON.parse(value);return p==null?fallback:p;}catch(e){}}
+  return fallback;
+}
+function _unwrapRpcValue(value){
+  let v=value;
+  if(typeof v==='string')v=_parseJsonObject(v,v);
+  if(Array.isArray(v)&&v.length===1)v=v[0];
+  return v;
+}
+function _unwrapRpcRecord(value){
+  let v=_unwrapRpcValue(value);
+  if(Array.isArray(v))v=v[0]??null;
+  if(v&&typeof v==='object'&&v.data&&Object.keys(v).length===1)v=v.data;
+  if(Array.isArray(v))v=v[0]??null;
+  if(!v||typeof v!=='object')return null;
+  v={...v};
+  v.options=_parseJsonObject(v.options,{});
+  v.gallery_urls=_parseJsonObject(v.gallery_urls,[]);
+  if(!Array.isArray(v.gallery_urls))v.gallery_urls=[];
+  return v;
+}
+
 /* ===== 수정 모드 ===== */
 async function loadForEdit(){
   if(!editSlug)return;
@@ -3572,7 +3445,7 @@ async function loadForEdit(){
   }
   /* 수정번호 검증 후 데이터 반환 (get_card_for_edit RPC) */
   const{data:rows,error}=await sb.rpc('get_card_for_edit',{p_slug:editSlug,p_edit_code:editCode});
-  const data=Array.isArray(rows)?rows[0]:rows;
+  const data=_unwrapRpcRecord(rows);
   if(error||!data){
     alert('수정번호가 올바르지 않거나 청첩장을 찾을 수 없어요.');
     editSlug=null;editId=null;editCode=null;

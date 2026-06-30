@@ -435,57 +435,6 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 .t-classic-ivory .iv-sec-t{color:#9a7740;}
 .t-classic-ivory .iv-names{font-family:'Noto Serif KR',serif;}
 
-/* ============================================================
-   3. MAGAZINE COVER — 진짜 웨딩 매거진 표지 (초대형 타이틀 + 사이드 라벨)
-   ============================================================ */
-.t-magazine{background:#15110d;color:#f4f1ea;}
-.t-magazine .iv-cover{padding:0;}
-.mag-hero{position:relative;width:100%;height:96vh;min-height:600px;max-height:940px;overflow:hidden;background:#1c1814;}
-.mag-photo{position:absolute;inset:0;width:100%;height:100%;}
-.mag-photo img{width:100%;height:100%;object-fit:cover;display:block;}
-.mag-scrim{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.5) 0%,rgba(0,0,0,.12) 26%,rgba(0,0,0,.06) 52%,rgba(0,0,0,.34) 80%,rgba(0,0,0,.6) 100%);}
-.mag-top{position:absolute;top:26px;left:24px;right:24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:14px;}
-.mag-brand{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;color:rgba(255,255,255,.95);}
-.mag-issue{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.78);}
-.mag-side{position:absolute;top:50%;font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:5px;color:rgba(255,255,255,.75);writing-mode:vertical-rl;text-shadow:0 1px 10px rgba(0,0,0,.5);}
-.mag-side-l{left:18px;transform:translateY(-50%) rotate(180deg);}
-.mag-side-r{right:18px;transform:translateY(-50%);}
-.mag-center{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);text-align:center;padding:0 20px;}
-.mag-bigtitle{font-family:'Cormorant Garamond',serif;font-size:clamp(60px,21vw,108px);font-weight:300;letter-spacing:2px;line-height:.88;color:#fff;text-shadow:0 6px 40px rgba(0,0,0,.5);}
-.mag-namebar{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:22px;}
-.mag-line{width:34px;height:1px;background:rgba(255,255,255,.6);}
-.mag-names{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:400;letter-spacing:5px;color:rgba(255,255,255,.96);text-shadow:0 2px 14px rgba(0,0,0,.5);}
-.mag-names .iv-amp{font-family:'Cormorant Garamond',serif;font-style:italic;margin:0 5px;opacity:.85;}
-.mag-bottom{position:absolute;bottom:30px;left:24px;right:24px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.28);padding-top:14px;}
-.mag-date{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;color:rgba(255,255,255,.92);}
-.mag-tag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:1px;color:rgba(255,255,255,.8);}
-.t-magazine .iv-sec{border-top:1px solid #2a241e;background:#1a1612;}
-.t-magazine .iv-sec-t{font-family:'Cormorant Garamond',serif;letter-spacing:5px;color:rgba(244,241,234,.5);}
-.t-magazine .iv-msg,.t-magazine .iv-info{color:rgba(244,241,234,.84);}
-.t-magazine .iv-names{font-family:'Cormorant Garamond',serif;}
-.t-magazine .iv-div{background:rgba(255,255,255,.3);}
-.t-magazine .iv-chip{border-color:rgba(255,255,255,.3);}
-.t-magazine .acc-row{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08);}
-.t-magazine .acc-toggle{opacity:.6;}
-.t-magazine .guest-item{background:rgba(255,255,255,.05);}
-.t-magazine .guest-form input,.t-magazine .guest-form textarea,
-.t-magazine .rsvp-form input,.t-magazine .rsvp-form select{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);color:#f0ede6;}
-.t-magazine .rsvp-opt{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);}
-.t-magazine .iv-foot{color:rgba(244,241,234,.5);}
-
-/* 4. film — 따뜻한 필름 감성 */
-.t-film{background:#f4efe6;color:#2c2420;}
-.t-film .iv-cover{padding:0 0 36px;position:relative;}
-.t-film .iv-photo-full{width:100%;height:66vw;max-height:330px;object-fit:cover;display:block;filter:sepia(14%) contrast(1.04) saturate(1.05);}
-.t-film .iv-film-strip{display:flex;gap:3px;padding:0 3px;background:#1a1a1a;margin-bottom:22px;height:11px;}
-.t-film .iv-film-strip span{flex:1;background:#f4efe6;opacity:.25;}
-.t-film .iv-cover-inner{padding:0 26px;text-align:center;}
-.t-film .iv-eyebrow{font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:6px;color:#8a7a6a;margin-bottom:10px;}
-.t-film .iv-names{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;letter-spacing:2px;}
-.t-film .iv-div{background:#8a7a6a;width:28px;}
-.t-film .iv-sec{border-top:1px solid rgba(44,36,32,.09);}
-.t-film .iv-sec-t{font-family:'Cormorant Garamond',serif;letter-spacing:4px;color:#8a7a6a;}
-
 /* 5. minimal — 타이포 중심, 사진 적어도 예쁨 */
 .t-minimal{background:#ffffff;color:#1a1a1a;}
 .t-minimal .iv-cover{padding:84px 34px 64px;text-align:left;}
@@ -534,16 +483,6 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 .t-fullscreen .rsvp-form input,.t-fullscreen .rsvp-form select{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:#eee;}
 .t-fullscreen .rsvp-opt{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);}
 
-/* 8. calendar — 날짜·달력 강조 */
-.t-calendar{background:#fff;color:#2a2a2a;}
-.t-calendar .iv-cover{padding:54px 30px 42px;text-align:center;}
-.t-calendar .iv-eyebrow{font-size:10px;letter-spacing:5px;color:#aaa;text-transform:uppercase;}
-.t-calendar .iv-names{font-family:'Noto Serif KR',serif;font-size:25px;letter-spacing:3px;margin:14px 0;font-weight:500;}
-.t-calendar .iv-photo{width:84px;height:84px;border-radius:50%;margin:0 auto;}
-.t-calendar .iv-div{display:none;}
-.t-calendar .iv-sec{border-top:1px solid #f2f2f2;}
-.t-calendar .iv-sec-t{letter-spacing:4px;color:#bbb;}
-
 /* 9. hanok — 한국적 차분한 무드 */
 .t-hanok{background:linear-gradient(180deg,#f9f5ed,#efe6d2);color:#1e1a14;}
 .t-hanok .iv-cover{padding:54px 30px 46px;text-align:center;position:relative;}
@@ -586,20 +525,6 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 .t-black .guest-form input,.t-black .guest-form textarea,
 .t-black .rsvp-form input,.t-black .rsvp-form select{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1);color:#d4c4a0;}
 .t-black .rsvp-opt{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1);}
-
-/* 12. global — 다국어/국제커플, 심플 고급 */
-.t-global{background:#fafafa;color:#1a1a1a;}
-.t-global .iv-cover{padding:54px 30px 42px;text-align:center;}
-.t-global .iv-eyebrow{font-size:10px;letter-spacing:6px;color:#999;text-transform:uppercase;}
-.t-global .iv-names{font-family:'Cormorant Garamond',serif;font-size:30px;letter-spacing:2px;}
-.t-global .iv-amp{font-style:italic;color:#888;}
-.t-global .iv-photo{border-radius:6px;}
-.t-global .iv-div{background:#ccc;width:34px;}
-.t-global .iv-date{font-size:13px;letter-spacing:1px;}
-.t-global .sub-lang{color:#999;font-size:.82em;}
-.t-global .iv-sec{border-top:1px solid #ececec;}
-.t-global .iv-sec-t{letter-spacing:5px;color:#aaa;}
-.t-global .iv-flag{font-size:14px;margin-left:6px;opacity:.7;}
 
 /* 공통 - 섹션 구분선 */
 .iv-sec-divider{width:24px;height:1px;margin:0 auto 6px;opacity:.3;background:currentColor;}
@@ -1185,6 +1110,13 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 }
 
 
+/* ===== 공통 모바일 동작 엔진 보강 ===== */
+[data-action]{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.acc-list{display:none;}
+.acc-box.is-open .acc-list{display:flex;}
+.load-retry-btn{margin-top:18px;padding:12px 22px;border:1px solid currentColor;border-radius:999px;background:transparent;color:inherit;font:inherit;cursor:pointer;touch-action:manipulation;}
+.tap-active{filter:brightness(.96);}
+
 /* ===== 최종 판매본 기능 안정화: 디자인 비변경 ===== */
 .rsvp-sec,.guest-sec,.acc-sec,.iv-gal-sec{content-visibility:visible;contain-intrinsic-size:auto;}
 .acc-box{display:block;width:100%;}
@@ -1233,24 +1165,24 @@ body.modal-open{overflow:hidden;touch-action:none;}
 
 <!-- 갤러리 라이트박스 -->
 <div class="lightbox" id="lb">
-  <span class="lb-close" onclick="closeLb()">×</span>
-  <button type="button" class="lb-nav lb-prev" onclick="lbStep(-1)" aria-label="이전">‹</button>
+  <button type="button" class="lb-close" data-action="close-lightbox" aria-label="닫기">×</button>
+  <button type="button" class="lb-nav lb-prev" data-action="lightbox-step" data-delta="-1" aria-label="이전">‹</button>
   <img id="lbImg" src="" alt=""/>
-  <button type="button" class="lb-nav lb-next" onclick="lbStep(1)" aria-label="다음">›</button>
+  <button type="button" class="lb-nav lb-next" data-action="lightbox-step" data-delta="1" aria-label="다음">›</button>
   <div class="lb-counter" id="lbCounter"></div>
 </div>
 
 <!-- 플로팅 액션 버튼 -->
 <div class="fab-wrap">
   <div class="fab-menu" id="fabMenu">
-    <div class="fab-item" id="bgmFabItem" style="display:none" onclick="toggleBgm()"><span class="fi">♫</span><span id="bgmFabLabel">음악 재생</span></div>
-    <div class="fab-item" onclick="shareKakao()"><span class="fi">💛</span>카카오톡 공유하기</div>
-    <div class="fab-item" onclick="copyCardLink()"><span class="fi">🔗</span>링크 복사</div>
-    <div class="fab-item" onclick="showQR()"><span class="fi">🔳</span>QR 코드</div>
-    <div class="fab-item" onclick="addCalendar()"><span class="fi">📅</span>달력에 저장</div>
-    <div class="fab-item" onclick="openEditModal()"><span class="fi">✏️</span>수정하기</div>
+    <div class="fab-item" id="bgmFabItem" style="display:none" role="button" tabindex="0" data-action="toggle-bgm"><span class="fi">♫</span><span id="bgmFabLabel">음악 재생</span></div>
+    <div class="fab-item" role="button" tabindex="0" data-action="share-kakao"><span class="fi">💛</span>카카오톡 공유하기</div>
+    <div class="fab-item" role="button" tabindex="0" data-action="copy-link"><span class="fi">🔗</span>링크 복사</div>
+    <div class="fab-item" role="button" tabindex="0" data-action="show-qr"><span class="fi">🔳</span>QR 코드</div>
+    <div class="fab-item" role="button" tabindex="0" data-action="add-calendar"><span class="fi">📅</span>달력에 저장</div>
+    <div class="fab-item" role="button" tabindex="0" data-action="open-edit"><span class="fi">✏️</span>수정하기</div>
   </div>
-  <button class="fab-main" id="fabMain" type="button" aria-label="청첩장 메뉴" aria-expanded="false" onclick="toggleFab()">⋯</button>
+  <button class="fab-main" id="fabMain" type="button" aria-label="청첩장 메뉴" aria-expanded="false" data-action="toggle-fab">⋯</button>
 </div>
 
 <!-- QR 모달 -->
@@ -1261,8 +1193,8 @@ body.modal-open{overflow:hidden;touch-action:none;}
     <div id="qrContainer" style="width:200px;height:200px;margin:0 auto 18px;border-radius:12px;overflow:hidden;"></div>
     <div class="qr-url" id="qrUrl"></div>
     <div class="qr-btns">
-      <button class="qr-dl" onclick="downloadQR()">⬇ 다운로드</button>
-      <button class="qr-close-btn" onclick="closeQR()">닫기</button>
+      <button type="button" class="qr-dl" data-action="download-qr">⬇ 다운로드</button>
+      <button type="button" class="qr-close-btn" data-action="close-qr">닫기</button>
     </div>
   </div>
 </div>
@@ -1279,8 +1211,8 @@ body.modal-open{overflow:hidden;touch-action:none;}
       style="width:100%;text-align:center;font-size:24px;letter-spacing:8px;padding:14px;border:1.5px solid var(--line,#e6ddd0);border-radius:12px;margin-bottom:8px;box-sizing:border-box;"/>
     <div id="editErr" style="color:#c0392b;font-size:13px;min-height:18px;margin-bottom:12px;"></div>
     <div class="qr-btns">
-      <button class="qr-dl" id="editGoBtn" onclick="submitEditCode()">수정하기</button>
-      <button class="qr-close-btn" onclick="closeEditModal()">닫기</button>
+      <button type="button" class="qr-dl" id="editGoBtn" data-action="submit-edit-code">수정하기</button>
+      <button type="button" class="qr-close-btn" data-action="close-edit">닫기</button>
     </div>
     <p style="font-size:11.5px;color:var(--brown-mute,#a89a86);margin-top:14px;line-height:1.6;">
       수정번호를 잃어버리셨나요?<br>구매하신 판매자에게 문의해주세요.
@@ -1288,19 +1220,73 @@ body.modal-open{overflow:hidden;touch-action:none;}
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- 카카오 JavaScript SDK -->
-<!-- ※ Kakao Developers(developers.kakao.com)에서 앱 등록 후 JavaScript Key 발급 필요 -->
-<!-- ※ 플랫폼 > 웹에 https://kkacmn-cpu.github.io 도메인 등록 필요 -->
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
-  integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4"
-  crossorigin="anonymous"></script>
+<!-- 카카오 SDK는 공유 버튼을 누를 때 비동기로 로드합니다. -->
 <script>
+
+/* ===== 내장 Supabase REST 클라이언트 =====
+   외부 SDK CDN이 차단되거나 느린 모바일 환경에서도 발행·조회·기능이 멈추지 않도록
+   프로젝트에서 실제 사용하는 RPC/insert/storage 기능만 fetch로 직접 제공한다. */
+function createWeddingApiClient(baseUrl, apiKey){
+  const base=String(baseUrl||'').replace(/\/+$/,'');
+  const authHeaders={apikey:apiKey,Authorization:`Bearer ${apiKey}`};
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  async function request(path,options={},retryCount=1){
+    const method=options.method||'POST';
+    const timeout=Number(options.timeout||15000);
+    let lastError=null;
+    for(let attempt=0;attempt<=retryCount;attempt++){
+      const ctrl=typeof AbortController!=='undefined'?new AbortController():null;
+      const timer=ctrl?setTimeout(()=>ctrl.abort(),timeout):null;
+      try{
+        const headers={...authHeaders,...(options.headers||{})};
+        if(options.body!=null && !(options.body instanceof Blob) && !(options.body instanceof FormData) && !headers['Content-Type']) headers['Content-Type']='application/json';
+        const res=await fetch(base+path,{method,headers,body:options.body,signal:ctrl?.signal,cache:'no-store'});
+        const text=await res.text();
+        let data=null;
+        if(text){try{data=JSON.parse(text);}catch(e){data=text;}}
+        if(!res.ok){
+          const msg=(data&&typeof data==='object'&&(data.message||data.error_description||data.error))||`서버 오류 (${res.status})`;
+          lastError={message:String(msg),status:res.status,details:data};
+          if(res.status>=500 && attempt<retryCount){await sleep(350*(attempt+1));continue;}
+          return {data:null,error:lastError};
+        }
+        return {data,error:null};
+      }catch(err){
+        lastError={message:err?.name==='AbortError'?'서버 응답 시간이 초과되었습니다.':(err?.message||'네트워크 연결 오류'),cause:err};
+        if(attempt<retryCount){await sleep(350*(attempt+1));continue;}
+        return {data:null,error:lastError};
+      }finally{if(timer)clearTimeout(timer);}
+    }
+    return {data:null,error:lastError||{message:'알 수 없는 서버 오류'}};
+  }
+  const encodePath=p=>String(p||'').split('/').map(encodeURIComponent).join('/');
+  return {
+    rpc(name,args){return request(`/rest/v1/rpc/${encodeURIComponent(name)}`,{body:JSON.stringify(args||{}),timeout:18000},2);},
+    from(table){
+      const t=encodeURIComponent(table);
+      return {
+        insert(payload){return request(`/rest/v1/${t}`,{body:JSON.stringify(payload),headers:{Prefer:'return=minimal'},timeout:15000},1);}
+      };
+    },
+    storage:{
+      from(bucket){
+        const b=encodeURIComponent(bucket);
+        return {
+          upload(path,file,opts={}){
+            const headers={'Content-Type':opts.contentType||file?.type||'application/octet-stream','x-upsert':opts.upsert?'true':'false','cache-control':opts.cacheControl||'31536000'};
+            return request(`/storage/v1/object/${b}/${encodePath(path)}`,{method:'POST',headers,body:file,timeout:60000},1);
+          },
+          getPublicUrl(path){return {data:{publicUrl:`${base}/storage/v1/object/public/${b}/${encodePath(path)}`}};}
+        };
+      }
+    }
+  };
+}
+
 const SUPA_URL='https://jchohaqvaoytplinlylt.supabase.co';
 const SUPA_KEY='sb_publishable_pinNIcaU11HhbSz3TR__mQ_Ln4cJ79a';
-const sb=(window.supabase&&typeof window.supabase.createClient==='function')
-  ?window.supabase.createClient(SUPA_URL,SUPA_KEY)
-  :null;
+/* 외부 Supabase SDK CDN이 없어도 카드 조회·RSVP·방명록·수정 검증이 작동한다. */
+const sb=createWeddingApiClient(SUPA_URL,SUPA_KEY);
 
 /* ===== 카카오 설정 ===== */
 const KAKAO_JS_KEY='595f376e62ae3df09dea25e6825e94a4';
@@ -1389,6 +1375,31 @@ function dday(d){if(!d)return null;const a=new Date();a.setHours(0,0,0,0);const 
 
 /* 오프닝 연출 — 선택된 템플릿 하나만 1회 실행 */
 let _openingTimer=null;
+function parseJsonMaybe(value,fallback){
+  if(value==null)return fallback;
+  if(typeof value==='object')return value;
+  if(typeof value==='string'){try{const p=JSON.parse(value);return p==null?fallback:p;}catch(e){}}
+  return fallback;
+}
+function normalizeCardRecord(raw){
+  let card=raw;
+  if(typeof card==='string')card=parseJsonMaybe(card,card);
+  if(Array.isArray(card))card=card[0]??null;
+  if(card&&typeof card==='object'&&card.data&&Object.keys(card).length===1)card=card.data;
+  if(Array.isArray(card))card=card[0]??null;
+  if(!card||typeof card!=='object')return null;
+  card={...card};
+  card.options=parseJsonMaybe(card.options,{});
+  if(!card.options||typeof card.options!=='object'||Array.isArray(card.options))card.options={};
+  card.gallery_urls=parseJsonMaybe(card.gallery_urls,[]);
+  if(!Array.isArray(card.gallery_urls))card.gallery_urls=[];
+  card.gallery_urls=card.gallery_urls.map(safeUrl).filter(Boolean);
+  const parentKeys=['groom_parent_bank','groom_parent_account','groom_parent_holder','bride_parent_bank','bride_parent_account','bride_parent_holder'];
+  parentKeys.forEach(k=>{if(card[k]==null&&card.options[k]!=null)card[k]=card.options[k];});
+  card.theme=normalizeTheme(card.theme);
+  return card;
+}
+
 function playOpening(card){
   const ov=document.getElementById('opOverlay');
   if(!ov)return;
@@ -1450,7 +1461,7 @@ function playOpening(card){
 }
 
 /* ================================================================
-   12종 템플릿 매핑 (editor의 14종 ID → card의 12종 구조로 매핑)
+   판매 템플릿 8종 + 구형 저장값 호환 매핑
    ================================================================ */
 const SALE_THEMES=['signature','classic-ivory','hanok','black','fullscreen','minimal','flower','gold-serif'];
 const TPL_MAP={
@@ -1470,12 +1481,9 @@ function normalizeTheme(theme){
 
 /* 커버 HTML 빌더 (템플릿별 완전히 다른 레이아웃) */
 function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,weddingDateRaw){
-  /* names: "신랑 & 신부" 또는 "신부 & 신랑" (순서 반영된 한 줄)
-     namesStacked: 줄바꿈 형태로도 같은 순서 반영 */
+  /* names는 사용자가 선택한 신랑·신부 순서를 반영한다. */
   const _first=names.startsWith(b+'<')?b:g;
   const _second=_first===g?b:g;
-  const namesStacked=`${_first}<br><span class="iv-amp">&amp;</span><br>${_second}`;
-  const namesStackedInline=`${_first}<br><span class="iv-amp">&amp;</span> ${_second}`;
   /* 사진 없을 때 고급 fallback (가는 선 꽃 모티브) */
   const _dark=(tpl==='black'||tpl==='fullscreen');
   const _fbColor=_dark?'rgba(255,255,255,.35)':'rgba(140,122,90,.4)';
@@ -1485,7 +1493,6 @@ function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,w
     `<circle cx="24" cy="24" r="5"/>`+
     `<path d="M24 19c0-6 4-10 4-10s-1 6-4 10zM24 29c0 6 4 10 4 10s-1-6-4-10zM19 24c-6 0-10 4-10 4s6-1 10-4zM29 24c6 0 10 4 10 4s-6-1-10-4z"/>`+
     `</svg></div>`;
-  const ph=mainPhoto?`<img src="${mainPhoto}" alt="대표사진" decoding="async" fetchpriority="high" style="width:100%;height:100%;object-fit:cover;"/>`:'';
   const phFallback=mainPhoto?`<img src="${mainPhoto}" alt="대표사진" decoding="async" fetchpriority="high" style="width:100%;height:100%;object-fit:cover;display:block;"/>`:_fb;
 
   if(tpl==='signature'){
@@ -1511,46 +1518,6 @@ function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,w
         </div>
       </div>
     </div>`;
-  }
-  if(tpl==='magazine'){
-    const yr=(weddingDateRaw||'').slice(0,4)||'';
-    return`<div class="iv-cover t-magazine">
-      <div class="mag-hero">
-        <div class="mag-photo">${phFallback}</div>
-        <div class="mag-scrim"></div>
-        <div class="mag-top">
-          <span class="mag-brand">WEDDING&nbsp;JOURNAL</span>
-          <span class="mag-issue">ISSUE · ${yr}</span>
-        </div>
-        <div class="mag-side mag-side-l">CELEBRATE</div>
-        <div class="mag-side mag-side-r">LOVE&nbsp;&amp;&nbsp;JOY</div>
-        <div class="mag-center">
-          <div class="mag-bigtitle">WEDDING</div>
-          <div class="mag-namebar">
-            <span class="mag-line"></span>
-            <span class="mag-names">${names}</span>
-            <span class="mag-line"></span>
-          </div>
-        </div>
-        <div class="mag-bottom">
-          <span class="mag-date">${dateStr||''}</span>
-          <span class="mag-tag">THE ONLY ISSUE</span>
-        </div>
-      </div>
-    </div>`;
-  }
-  if(tpl==='film'){
-    return`<div class="iv-cover t-film" style="padding:0 0 28px;">
-      <div style="width:100%;height:65vw;max-height:320px;overflow:hidden;">${phFallback}</div>
-      <div style="display:flex;gap:3px;padding:0 3px;background:#1a1a1a;height:10px;margin-bottom:16px;">
-        ${Array(12).fill('<span style="flex:1;background:#f5f0e8;opacity:.25;"></span>').join('')}
-      </div>
-      <div class="iv-cover-inner" style="padding:0 24px;text-align:center;">
-        <div class="iv-eyebrow">Film Memory</div>
-        <div class="iv-names">${names}</div>
-        <div class="iv-div"></div>
-        <div class="iv-date">${dateStr||''}</div>
-      </div></div>`;
   }
   if(tpl==='minimal'){
     let stlDate=dateStr||'';
@@ -1606,28 +1573,6 @@ function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,w
       </div>
     </div>`;
   }
-  if(tpl==='calendar'){
-    /* weddingDateRaw: 원본 ISO 날짜 (YYYY-MM-DD) 기준으로 파싱 — Invalid Date 방지 */
-    const mo=weddingDateRaw?new Date(weddingDateRaw+'T00:00:00'):new Date();
-    const months=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-    const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
-    return`<div class="iv-cover t-calendar" style="padding:48px 28px 36px;text-align:center;">
-      <div class="iv-eyebrow">Save the date</div>
-      <div class="iv-names">${names}</div>
-      <div style="width:180px;border:1px solid #e0e0e0;border-radius:14px;overflow:hidden;margin:20px auto;">
-        <div style="background:#2a2a2a;color:#fff;padding:8px 16px;font-size:11px;letter-spacing:3px;text-align:center;">
-          ${mo.getFullYear()} ${months[mo.getMonth()]}
-        </div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:#2a2a2a;text-align:center;padding:8px 16px 4px;line-height:1;">
-          ${mo.getDate()}
-        </div>
-        <div style="font-size:10px;letter-spacing:2px;color:#aaa;text-align:center;padding-bottom:12px;">
-          ${days[mo.getDay()]}
-        </div>
-      </div>
-      <div class="iv-date">${timeStr||''}</div>
-    </div>`;
-  }
   if(tpl==='hanok'){
     let hkDate=dateStr||'';
     if(weddingDateRaw){const _d=new Date(weddingDateRaw+'T00:00:00');if(!isNaN(_d.getTime())){hkDate=`${_d.getFullYear()}. ${String(_d.getMonth()+1).padStart(2,'0')}. ${String(_d.getDate()).padStart(2,'0')}`;}}
@@ -1673,17 +1618,6 @@ function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,w
             ${timeStr?`<span class="bk-time">${timeStr}</span>`:''}
           </div>
         </div>
-      </div>
-    </div>`;
-  }
-  if(tpl==='global'){
-    return`<div class="iv-cover t-global" style="padding:48px 28px 36px;text-align:center;">
-      <div class="iv-eyebrow">Wedding Invitation</div>
-      <div class="iv-names">${names}</div>
-      <div style="width:160px;height:200px;border-radius:4px;overflow:hidden;border:1px solid #e8e8e8;margin:18px auto;">${phFallback}</div>
-      <div class="iv-div"></div>
-      <div class="iv-date">${dateStr||''}${timeStr?' '+timeStr:''}
-        ${lang2?`<br><span class="sub-lang">${langDate}</span>`:''}
       </div>
     </div>`;
   }
@@ -1862,11 +1796,11 @@ function renderCard(card){
     html+=`<div class="iv-sec rsvp-sec">
       <div class="iv-sec-t">참석 안내</div>
       <div class="hk-sec-desc" style="font-size:13px;color:inherit;opacity:.7;margin-top:8px;margin-bottom:14px;">귀한 발걸음을 기다립니다</div>
-      ${(tpl==='hanok'||tpl==='black'||tpl==='minimal'||tpl==='fullscreen'||tpl==='gold-serif')?`<button type="button" class="hk-open-btn" onclick="this.style.display='none';document.getElementById('rsvpForm').style.display='flex';">참석 여부 남기기</button>`:''}
+      ${(tpl==='hanok'||tpl==='black'||tpl==='minimal'||tpl==='fullscreen'||tpl==='gold-serif')?`<button type="button" class="hk-open-btn" data-action="open-rsvp">참석 여부 남기기</button>`:''}
       <div class="rsvp-form" id="rsvpForm"${(tpl==='hanok'||tpl==='black'||tpl==='minimal'||tpl==='fullscreen'||tpl==='gold-serif')?' style="display:none;"':''}>
         <div class="rsvp-opts">
-          <div class="rsvp-opt on" onclick="rsvpPick(this)">참석</div>
-          <div class="rsvp-opt" onclick="rsvpPick(this)">불참</div>
+          <div class="rsvp-opt on" data-action="rsvp-pick">참석</div>
+          <div class="rsvp-opt" data-action="rsvp-pick">불참</div>
         </div>
         <div class="rsvp-row">
           <select id="rv_side"><option value="groom">신랑측</option><option value="bride">신부측</option></select>
@@ -1878,7 +1812,7 @@ function renderCard(card){
         </div>
         <input id="rv_phone" placeholder="연락처 (선택)" maxlength="20"/>
         <input id="rv_memo" placeholder="메모" maxlength="100"/>
-        <button class="rsvp-submit" onclick="submitRsvp('${esc(card.id)}')">참석 여부 남기기</button>
+        <button class="rsvp-submit" data-action="submit-rsvp" data-card-id="${esc(card.id)}">참석 여부 남기기</button>
         <p class="privacy">입력하신 정보는 예식 준비 목적으로만 사용됩니다.</p>
       </div>
     </div>`;
@@ -1889,11 +1823,11 @@ function renderCard(card){
     html+=`<div class="iv-sec guest-sec">
       <div class="iv-sec-t">축하의 글</div>
       <div class="hk-sec-desc" style="font-size:13px;color:inherit;opacity:.7;margin-top:8px;margin-bottom:14px;">두 사람에게 따뜻한 마음을 전해주세요</div>
-      ${(tpl==='hanok'||tpl==='black'||tpl==='minimal'||tpl==='fullscreen'||tpl==='gold-serif')?`<button type="button" class="hk-open-btn" onclick="this.style.display='none';this.nextElementSibling.style.display='flex';">마음 남기기</button>`:''}
+      ${(tpl==='hanok'||tpl==='black'||tpl==='minimal'||tpl==='fullscreen'||tpl==='gold-serif')?`<button type="button" class="hk-open-btn" data-action="open-guest">마음 남기기</button>`:''}
       <div class="guest-form"${(tpl==='hanok'||tpl==='black'||tpl==='minimal'||tpl==='fullscreen'||tpl==='gold-serif')?' style="display:none;"':''}>
         <input id="gb_name" placeholder="성함" maxlength="20"/>
         <textarea id="gb_msg" rows="3" placeholder="두 사람에게 따뜻한 마음을 전해주세요" maxlength="300"></textarea>
-        <button class="guest-submit" onclick="submitGuest('${esc(card.id)}')">마음 남기기</button>
+        <button class="guest-submit" data-action="submit-guest" data-card-id="${esc(card.id)}">마음 남기기</button>
       </div>
       <div class="guest-list" id="guestList"></div>
     </div>`;
@@ -1905,12 +1839,12 @@ function renderCard(card){
       <div class="iv-sec-t">마음 전하실 곳</div>
       <div class="hk-sec-desc" style="font-size:13px;opacity:${tpl==='hanok'?'.9':'.55'};margin-top:6px;margin-bottom:12px;">${tpl==='hanok'?'마음을 전하실 분들을 위해 준비했습니다':'참석이 어려우신 분들을 위한 안내입니다'}</div>
       <div class="acc-box">
-        <button type="button" class="acc-toggle" aria-expanded="false" onclick="toggleAccountBox(this)">계좌번호 확인하기</button>
+        <button type="button" class="acc-toggle" aria-expanded="false" data-action="toggle-account">계좌번호 확인하기</button>
         <div class="acc-list" hidden>
-          ${groomAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${groomBank} ${groomHolder}</span><span class="acc-num">${groomAcc}</span></div><button type="button" class="acc-copy" data-acc="${groomAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
-          ${(gpBank||gpAcc||gpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-acc="${gpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
-          ${brideAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${brideBank} ${brideHolder}</span><span class="acc-num">${brideAcc}</span></div><button type="button" class="acc-copy" data-acc="${brideAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
-          ${(bpBank||bpAcc||bpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-acc="${bpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
+          ${groomAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${groomBank} ${groomHolder}</span><span class="acc-num">${groomAcc}</span></div><button type="button" class="acc-copy" data-acc="${groomAcc}" data-action="copy-account">복사</button></div>`:''}
+          ${(gpBank||gpAcc||gpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-acc="${gpAcc}" data-action="copy-account">복사</button></div>`:''}
+          ${brideAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${brideBank} ${brideHolder}</span><span class="acc-num">${brideAcc}</span></div><button type="button" class="acc-copy" data-acc="${brideAcc}" data-action="copy-account">복사</button></div>`:''}
+          ${(bpBank||bpAcc||bpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-acc="${bpAcc}" data-action="copy-account">복사</button></div>`:''}
         </div>
       </div>
     </div>`;
@@ -1994,9 +1928,16 @@ async function submitGuest(cardId){
 }
 
 function toggleAccountBox(btn){
-  const box=btn?.closest('.acc-box'),list=box?.querySelector('.acc-list');if(!btn||!list)return;
-  const open=btn.getAttribute('aria-expanded')!=='true';btn.setAttribute('aria-expanded',String(open));list.hidden=!open;
-  btn.textContent=open?'계좌번호 닫기':'계좌번호 확인하기';scheduleFabSafety();
+  const box=btn?.closest('.acc-box'),list=box?.querySelector('.acc-list');
+  if(!btn||!box||!list)return false;
+  const open=btn.getAttribute('aria-expanded')!=='true';
+  btn.setAttribute('aria-expanded',String(open));
+  box.classList.toggle('is-open',open);
+  list.hidden=!open;
+  list.style.display=open?'flex':'none';
+  btn.textContent=open?'계좌번호 닫기':'계좌번호 확인하기';
+  scheduleFabSafety();
+  return open;
 }
 
 /* 계좌 복사 — 공통 안내 toast (재사용, 누적 방지, aria-live) */
@@ -2167,7 +2108,7 @@ function hydrateGallery(){
   if(!urls.length){sec.style.display='none';return;}
   wrap.innerHTML=urls.map((s,i)=>{
     const attr=i<9?`src="${s}"`:`data-src="${s}"`;
-    return `<div class="g${i>=9?' g-more':''}" onclick="openLb(${i})"><img ${attr} alt="갤러리 사진 ${i+1}" loading="lazy" decoding="async" fetchpriority="low" onerror="galleryImageError(this,${i})"/></div>`;
+    return `<div class="g${i>=9?' g-more':''}" data-action="open-lightbox" data-index="${i}"><img ${attr} alt="갤러리 사진 ${i+1}" loading="lazy" decoding="async" fetchpriority="low" onerror="galleryImageError(this,${i})"/></div>`;
   }).join('');
   sec.querySelector('.gal-more-btn')?.remove();
   const moreN=urls.length-9;
@@ -2175,7 +2116,7 @@ function hydrateGallery(){
     const btn=document.createElement('button');btn.type='button';btn.className='gal-more-btn';
     const moreHtml=`<span class='gm-deco'></span><span class='gm-1'>사진 더보기</span><span class='gm-2'>사진 <span class='gm-count'>${moreN}장</span> 더 보기</span>`;
     const lessHtml=`<span class='gm-deco'></span><span class='gm-1'>사진 접기</span><span class='gm-2'>처음 화면으로 돌아갑니다</span>`;
-    btn.dataset.more=moreHtml;btn.dataset.less=lessHtml;btn.innerHTML=moreHtml;btn.addEventListener('click',()=>galMore(btn));sec.appendChild(btn);
+    btn.dataset.more=moreHtml;btn.dataset.less=lessHtml;btn.dataset.action='gallery-more';btn.innerHTML=moreHtml;sec.appendChild(btn);
   }
   sec.style.display='';
 }
@@ -2218,24 +2159,19 @@ async function toggleBgm(){
 
 /* 메인 */
 async function main(){
+  const loading=document.getElementById('loading'),cardRoot=document.getElementById('card'),overlay=document.getElementById('opOverlay');
   if(!slug){
-    document.getElementById('loading').classList.add('hide');
-    document.getElementById('card').innerHTML=`<div class="not-found"><h2>청첩장을 찾을 수 없어요</h2><p>링크를 다시 확인해주세요</p></div>`;
-    return;
-  }
-  if(!sb){
-    document.getElementById('loading').classList.add('hide');
-    document.getElementById('opOverlay').classList.add('done');
-    document.getElementById('card').innerHTML='<div class="not-found"><h2>청첩장을 불러오지 못했어요</h2><p>네트워크 연결을 확인한 뒤 새로고침해주세요.</p></div>';
-    return;
+    loading?.classList.add('hide');
+    cardRoot.innerHTML=`<div class="not-found"><h2>청첩장을 찾을 수 없어요</h2><p>링크를 다시 확인해주세요</p></div>`;
+    overlay?.classList.add('done');return;
   }
   const{data:_rows,error}=await sb.rpc('get_card_by_slug',{p_slug:slug});
-  const data=Array.isArray(_rows)?_rows[0]:_rows;
-  document.getElementById('loading').classList.add('hide');
+  const data=normalizeCardRecord(_rows);
+  loading?.classList.add('hide');
   if(error||!data){
-    document.getElementById('card').innerHTML=`<div class="not-found"><h2>청첩장을 찾을 수 없어요</h2><p>링크를 다시 확인해주세요</p></div>`;
-    document.getElementById('opOverlay').classList.add('done');
-    return;
+    console.error('card load failed',error);
+    cardRoot.innerHTML=`<div class="not-found"><h2>청첩장을 불러오지 못했어요</h2><p>${error?.status===404?'링크를 다시 확인해주세요.':'네트워크 연결을 확인한 뒤 다시 시도해주세요.'}</p><button type="button" class="load-retry-btn" data-action="retry-load">다시 불러오기</button></div>`;
+    overlay?.classList.add('done');return;
   }
   /* 메타태그 업데이트 (카톡/SNS 공유 썸네일) */
   const g=data.groom_name||'신랑',b=data.bride_name||'신부';
@@ -2299,11 +2235,37 @@ function showToast(msg){
 /* 보기·복사·카카오·QR은 항상 현재 배포의 최신 card.html을 사용한다.
    구형 VPS 렌더러는 editor/card 불일치가 있으므로 링크 대상으로 사용하지 않는다. */
 function getViewUrl(){return slug?new URL(`card.html?slug=${encodeURIComponent(slug)}`,location.href).href:location.href;}
-function getShareUrl(){return getViewUrl();}
+/* 서버 OG 공유 페이지가 최신 버전으로 배포된 경우에만 자동 사용한다.
+   구형 weddingapi 카드가 남아 있으면 검증 헤더가 없으므로 현재 card.html 링크를 유지한다. */
+const SHARE_ROUTE_BASE='https://weddingapi.duckdns.org';
+/* OG 서버 링크는 실제 운영 /wedding/ 배포에서만 사용한다.
+   테스트 저장소가 운영 카드로 잘못 이동하는 문제를 원천 차단한다. */
+function shareRouteAllowed(){
+  if(window.__ENABLE_SHARE_ROUTE===true)return true; /* 자동검수 전용 */
+  return location.hostname==='kkacmn-cpu.github.io'&&/^\/wedding\/card\.html$/i.test(location.pathname);
+}
+let _verifiedShareUrl='';
+async function probeShareRoute(){
+  if(!shareRouteAllowed()||!slug||!/^https:\/\//i.test(SHARE_ROUTE_BASE))return false;
+  const candidate=`${SHARE_ROUTE_BASE}/card/${encodeURIComponent(slug)}`;
+  const ctrl=typeof AbortController!=='undefined'?new AbortController():null;
+  const timer=ctrl?setTimeout(()=>ctrl.abort(),1200):null;
+  try{
+    const res=await fetch(candidate+'?probe=1',{method:'HEAD',mode:'cors',cache:'no-store',credentials:'omit',signal:ctrl?.signal});
+    if(res.ok&&res.headers.get('X-Wedding-Share-Version')==='2'){
+      _verifiedShareUrl=candidate;return true;
+    }
+  }catch(e){}finally{if(timer)clearTimeout(timer);}
+  _verifiedShareUrl='';return false;
+}
+function getShareUrl(){return _verifiedShareUrl||getViewUrl();}
 
-function copyCardLink(){
+async function copyCardLink(){
+  /* 링크 직접 붙여넣기용 OG 서버가 최신 배포된 경우에만 해당 주소를 사용한다. */
+  await probeShareRoute();
   const shareUrl=getShareUrl();
-  _doCopy(shareUrl).then(ok=>showToast(ok?'링크가 복사됐어요 ✓':'복사하지 못했습니다. 링크를 직접 선택해 주세요.'));
+  const ok=await _doCopy(shareUrl);
+  showToast(ok?'링크가 복사됐어요 ✓':'복사하지 못했습니다. 링크를 직접 선택해 주세요.');
   closeFab();
 }
 
@@ -2318,25 +2280,31 @@ function copyCardLink(){
    - null/undefined/빈값 → 기본 썸네일
    - blob/data/상대경로/DOM이미지/signed URL 사용 안 함 */
 function getSafeImageUrl(data){
-  const DEFAULT='https://kkacmn-cpu.github.io/wedding/og-default.jpg';
-  const url=
-    data?.main_photo_url ||
-    data?.cover_image ||
-    DEFAULT;
-  if(typeof url!=='string')return DEFAULT;
-  if(!url.startsWith('http'))return DEFAULT;
+  let DEFAULT='https://kkacmn-cpu.github.io/wedding/og-default.jpg';
+  try{if(location.protocol==='https:')DEFAULT=new URL('og-default.jpg',location.href).href;}catch(e){}
+  const firstGallery=Array.isArray(data?.gallery_urls)?data.gallery_urls.find(x=>typeof x==='string'&&/^https:\/\//i.test(x)):null;
+  const url=data?.main_photo_url||data?.cover_image||firstGallery||DEFAULT;
+  if(typeof url!=='string'||!/^https:\/\//i.test(url))return DEFAULT;
   return url;
 }
 
-function shareKakao(){
-  if(!window.Kakao){
-    console.error('Kakao SDK not loaded');
-    copyCardLink();
-    return;
-  }
-  if(!Kakao.isInitialized()){
-    Kakao.init('595f376e62ae3df09dea25e6825e94a4');
-  }
+let _kakaoLoadPromise=null;
+function ensureKakaoSdk(){
+  if(window.Kakao)return Promise.resolve(window.Kakao);
+  if(_kakaoLoadPromise)return _kakaoLoadPromise;
+  _kakaoLoadPromise=new Promise((resolve,reject)=>{
+    const s=document.createElement('script');s.src='https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';s.async=true;s.crossOrigin='anonymous';
+    const timer=setTimeout(()=>reject(new Error('카카오 SDK 로드 시간 초과')),10000);
+    s.onload=()=>{clearTimeout(timer);window.Kakao?resolve(window.Kakao):reject(new Error('카카오 SDK 초기화 실패'));};
+    s.onerror=()=>{clearTimeout(timer);reject(new Error('카카오 SDK를 불러오지 못했습니다.'));};document.head.appendChild(s);
+  }).catch(err=>{_kakaoLoadPromise=null;throw err;});
+  return _kakaoLoadPromise;
+}
+async function shareKakao(){
+  let KakaoApi;
+  try{KakaoApi=await ensureKakaoSdk();}
+  catch(e){console.error(e);showToast('카카오 공유를 열지 못해 링크를 복사합니다.');copyCardLink();return;}
+  if(!KakaoApi.isInitialized())KakaoApi.init('595f376e62ae3df09dea25e6825e94a4');
 
   const d=window._cardData;
   const cardUrl=getShareUrl();
@@ -2350,7 +2318,7 @@ function shareKakao(){
   /* 대표사진 — 검증된 http URL만, 없으면 기본 썸네일 */
   const imageUrl=getSafeImageUrl(d);
   try{
-    Kakao.Share.sendDefault({
+    KakaoApi.Share.sendDefault({
       objectType:'feed',
       content:{
         title:title,
@@ -2457,9 +2425,10 @@ async function submitEditCode(){
   if(btn){btn.disabled=true;btn.textContent='확인 중...';}
   try{
     if(!sb){if(err)err.textContent='서버에 연결하지 못했습니다. 잠시 후 다시 시도해주세요.';return;}
-    const{data,error}=await sb.rpc('verify_edit_code',{p_slug:slug,p_edit_code:code});
+    const{data:raw,error}=await sb.rpc('verify_edit_code',{p_slug:slug,p_edit_code:code});
+    let data=raw;if(typeof data==='string')data=parseJsonMaybe(data,data);if(Array.isArray(data))data=data[0]||null;
     if(error){if(err)err.textContent='확인 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.';}
-    else if(data&&data.ok){
+    else if(data&&(data.ok||data.success)){
       /* 검증 성공 → editor 진입 (editCode 전달) */
       location.href='editor.html?slug='+encodeURIComponent(slug)+'&editCode='+encodeURIComponent(code);
       return;
@@ -2494,6 +2463,60 @@ function downloadQR(){
     showToast('QR 코드를 먼저 생성해주세요');
   }
 }
+
+
+/* ===== 공통 모바일 동작 엔진 =====
+   동적으로 다시 그려지는 카드에서도 버튼 이벤트가 사라지지 않도록 document 한 곳에서 처리한다. */
+function bindCommonActions(){
+  if(window.__weddingActionsBound)return;window.__weddingActionsBound=true;
+  document.addEventListener('click',function(e){
+    const target=e.target instanceof Element?e.target.closest('[data-action]'):null;
+    if(!target)return;
+    const action=target.dataset.action;
+    if(!action)return;
+    if(target.tagName==='A')return;
+    e.preventDefault();
+    if(action==='toggle-account'){toggleAccountBox(target);return;}
+    if(action==='copy-account'){copyAcc(target);return;}
+    if(action==='gallery-more'){galMore(target);return;}
+    if(action==='open-lightbox'){openLb(Number(target.dataset.index));return;}
+    if(action==='rsvp-pick'){rsvpPick(target);return;}
+    if(action==='open-rsvp'){
+      target.style.display='none';const form=target.closest('.rsvp-sec')?.querySelector('.rsvp-form');if(form)form.style.display='flex';scheduleFabSafety();return;
+    }
+    if(action==='open-guest'){
+      target.style.display='none';const form=target.closest('.guest-sec')?.querySelector('.guest-form');if(form)form.style.display='flex';scheduleFabSafety();return;
+    }
+    if(action==='submit-rsvp'){submitRsvp(target.dataset.cardId);return;}
+    if(action==='submit-guest'){submitGuest(target.dataset.cardId);return;}
+    if(action==='retry-load'){location.reload();return;}
+    if(action==='close-lightbox'){closeLb();return;}
+    if(action==='lightbox-step'){lbStep(Number(target.dataset.delta)||0);return;}
+    if(action==='toggle-bgm'){toggleBgm();return;}
+    if(action==='share-kakao'){shareKakao();return;}
+    if(action==='copy-link'){copyCardLink();return;}
+    if(action==='show-qr'){showQR();return;}
+    if(action==='add-calendar'){addCalendar();return;}
+    if(action==='open-edit'){openEditModal();return;}
+    if(action==='toggle-fab'){toggleFab();return;}
+    if(action==='download-qr'){downloadQR();return;}
+    if(action==='close-qr'){closeQR();return;}
+    if(action==='submit-edit-code'){submitEditCode();return;}
+    if(action==='close-edit'){closeEditModal();return;}
+  },false);
+  /* iOS에서 버튼을 빠르게 탭할 때 선택 지연/하이라이트가 남지 않도록 포인터 처리 */
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Enter'&&e.key!==' ')return;
+    const el=e.target instanceof Element?e.target.closest('[role="button"][data-action]'):null;
+    if(!el)return;e.preventDefault();el.click();
+  });
+  document.addEventListener('pointerup',function(e){
+    const el=e.target instanceof Element?e.target.closest('button,[role="button"],[data-action]'):null;
+    if(el)el.classList.add('tap-active');
+    setTimeout(()=>el?.classList.remove('tap-active'),120);
+  },{passive:true});
+}
+bindCommonActions();
 
 main();
 
