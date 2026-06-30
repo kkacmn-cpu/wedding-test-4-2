@@ -1121,7 +1121,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 .rsvp-sec,.guest-sec,.acc-sec,.iv-gal-sec{content-visibility:visible;contain-intrinsic-size:auto;}
 .acc-box{display:block;width:100%;}
 .acc-list[hidden]{display:none!important;}
-.acc-toggle{appearance:none;-webkit-appearance:none;cursor:pointer;}
+.acc-toggle{appearance:none;-webkit-appearance:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;margin-right:auto;}
 .fab-wrap{bottom:max(16px,env(safe-area-inset-bottom,0px));right:max(12px,env(safe-area-inset-right,0px));transition:opacity .2s ease,transform .2s ease;}
 .fab-wrap.fab-suppressed{opacity:0;pointer-events:none;transform:translateY(12px);}
 .fab-wrap.fab-suppressed .fab-menu{pointer-events:none!important;}
@@ -1351,8 +1351,25 @@ function safeUrl(url){
   return'';
 }
 
-/* slug 파싱 */
-const slug=new URLSearchParams(location.search).get('slug');
+/* slug 파싱 — 모바일/카카오 인앱 브라우저, /card/slug 경로, hash 링크까지 허용 */
+function getSlugFromLocation(){
+  try{
+    const qs=new URLSearchParams(location.search);
+    const qSlug=qs.get('slug')||qs.get('s')||qs.get('card');
+    if(qSlug)return qSlug.trim();
+    const hash=String(location.hash||'').replace(/^#/,'');
+    if(hash){
+      const hq=new URLSearchParams(hash.includes('=')?hash:'slug='+hash);
+      const hSlug=hq.get('slug')||hq.get('s')||hq.get('card');
+      if(hSlug)return hSlug.trim();
+    }
+    const parts=String(location.pathname||'').split('/').filter(Boolean);
+    const idx=parts.findIndex(p=>p.toLowerCase()==='card');
+    if(idx>=0&&parts[idx+1]&&!/\.html?$/i.test(parts[idx+1]))return decodeURIComponent(parts[idx+1]).trim();
+  }catch(e){}
+  return '';
+}
+const slug=getSlugFromLocation();
 
 /* 폰트 매핑 (premium=Cormorant+명조 조합 / 기존 값은 하위호환 유지) */
 const FONTS={serif:"'Noto Serif KR',serif",gowunb:"'Noto Serif KR',serif",sans:"'Noto Sans KR',sans-serif",premium:"'Cormorant Garamond','Noto Serif KR',serif",nanum:"'Noto Serif KR',serif",song:"'Cormorant Garamond','Noto Serif KR',serif",dodum:"'Noto Sans KR',sans-serif",gaegu:"'Noto Serif KR',serif"};
@@ -1871,7 +1888,7 @@ function renderCard(card){
   }
 
   /* ⑧ 계좌 (마지막 — 감성 → 정보 → 기능 → 계좌 순서) */
-  if(opts.account!==false&&(groomAcc||brideAcc||gpBank||gpAcc||gpHolder||bpBank||bpAcc||bpHolder)){
+  if(opts.account!==false&&(groomAcc||brideAcc||gpAcc||bpAcc)){
     html+=`<div class="iv-sec acc-sec">
       <div class="iv-sec-t">마음 전하실 곳</div>
       <div class="hk-sec-desc" style="font-size:13px;opacity:${tpl==='hanok'?'.9':'.55'};margin-top:6px;margin-bottom:12px;">${tpl==='hanok'?'마음을 전하실 분들을 위해 준비했습니다':'참석이 어려우신 분들을 위한 안내입니다'}</div>
@@ -1879,9 +1896,9 @@ function renderCard(card){
         <button type="button" class="acc-toggle" aria-expanded="false" data-action="toggle-account">계좌번호 확인하기</button>
         <div class="acc-list" hidden>
           ${groomAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${groomBank} ${groomHolder}</span><span class="acc-num">${groomAcc}</span></div><button type="button" class="acc-copy" data-acc="${groomAcc}" data-action="copy-account">복사</button></div>`:''}
-          ${(gpBank||gpAcc||gpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-acc="${gpAcc}" data-action="copy-account">복사</button></div>`:''}
+          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-acc="${gpAcc}" data-action="copy-account">복사</button></div>`:''}
           ${brideAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${brideBank} ${brideHolder}</span><span class="acc-num">${brideAcc}</span></div><button type="button" class="acc-copy" data-acc="${brideAcc}" data-action="copy-account">복사</button></div>`:''}
-          ${(bpBank||bpAcc||bpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-acc="${bpAcc}" data-action="copy-account">복사</button></div>`:''}
+          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-acc="${bpAcc}" data-action="copy-account">복사</button></div>`:''}
         </div>
       </div>
     </div>`;
@@ -2001,7 +2018,7 @@ function _showCopyToast(msg,ok){
 /* 실제 복사 성공 여부를 boolean으로 판정 (clipboard API → textarea+execCommand fallback) */
 function _doCopy(txt){
   return new Promise(function(resolve){
-    if(window.isSecureContext&&navigator.clipboard&&navigator.clipboard.writeText){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
       navigator.clipboard.writeText(txt).then(function(){resolve(true);}).catch(function(){resolve(_fallbackCopy(txt));});
     }else{
       resolve(_fallbackCopy(txt));
@@ -2279,7 +2296,13 @@ const SHARE_ROUTE_BASE='https://weddingapi.duckdns.org';
    테스트 저장소가 운영 카드로 잘못 이동하는 문제를 원천 차단한다. */
 function shareRouteAllowed(){
   if(window.__ENABLE_SHARE_ROUTE===true)return true; /* 자동검수 전용 */
-  return location.hostname==='kkacmn-cpu.github.io'&&/^\/wedding\/card\.html$/i.test(location.pathname);
+  if(!slug||location.protocol!=='https:')return false;
+  const host=location.hostname;
+  if(host==='localhost'||host==='127.0.0.1'||host==='0.0.0.0')return false;
+  /* 테스트 저장소·운영 저장소 모두 동적 OG 서버를 먼저 검증한다.
+     단, probeShareRoute에서 X-Wedding-Share-Version: 2 헤더가 확인된 경우에만 실제 공유 URL로 채택하므로
+     구형 weddingapi 서버가 남아 있어도 잘못 이동하지 않는다. */
+  return true;
 }
 let _verifiedShareUrl='';
 async function probeShareRoute(){
@@ -2344,6 +2367,7 @@ async function shareKakao(){
   if(!KakaoApi.isInitialized())KakaoApi.init(KAKAO_JS_KEY);
 
   const d=window._cardData;
+  await probeShareRoute();
   const cardUrl=getShareUrl();
 
   const _gn=d?.groom_name||'신랑', _bn=d?.bride_name||'신부';
@@ -2390,15 +2414,19 @@ function addCalendar(){
   const d=window._cardData;
   if(!d||!d.wedding_date){showToast('예식 날짜 정보가 없어요');return;}
   const dt=d.wedding_date.replace(/-/g,'');
-  const tm=d.wedding_time?d.wedding_time.replace(':','')+'00':'120000';
+  const [hh,mm]=(d.wedding_time||'12:00').split(':').map(n=>parseInt(n,10)||0);
+  const start=new Date(`${d.wedding_date}T${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:00`);
+  const end=new Date(start.getTime()+2*60*60*1000);
+  const fmtIcs=x=>`${x.getFullYear()}${String(x.getMonth()+1).padStart(2,'0')}${String(x.getDate()).padStart(2,'0')}T${String(x.getHours()).padStart(2,'0')}${String(x.getMinutes()).padStart(2,'0')}00`;
+  const escIcs=x=>String(x||'').replace(/\\/g,'\\\\').replace(/,/g,'\\,').replace(/;/g,'\\;').replace(/\r?\n/g,'\\n');
   const title=`${d.groom_name||'신랑'} ♥ ${d.bride_name||'신부'} 결혼식`;
   const loc=(d.venue_name||'')+(d.venue_address?' '+d.venue_address:'');
   const ics=[
     'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Wedding Invitation//Calendar//KO',
     'BEGIN:VEVENT',
-    `DTSTART:${dt}T${tm}`,`DTEND:${dt}T${tm}`,
-    `SUMMARY:${title}`,`LOCATION:${loc}`,
-    `DESCRIPTION:${getShareUrl()}`,
+    `DTSTART:${fmtIcs(start)}`,`DTEND:${fmtIcs(end)}`,
+    `SUMMARY:${escIcs(title)}`,`LOCATION:${escIcs(loc)}`,
+    `DESCRIPTION:${escIcs(getShareUrl())}`,
     'END:VEVENT','END:VCALENDAR'
   ].join('\r\n');
   const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});

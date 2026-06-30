@@ -3037,15 +3037,15 @@ function renderIV(playOp,opts){
     :`<div class="iv-sec"><div class="iv-sec-t">축하의 글</div><div class="iv-info" style="margin-top:8px;">두 사람에게 따뜻한 마음을 전해주세요</div></div>`);
 
   /* ⑧ 계좌 */
-  if(chk('o_account')&&(gAcc||bAcc||gpBank||gpAcc||gpHolder||bpBank||bpAcc||bpHolder)){
+  if(chk('o_account')&&(gAcc||bAcc||gpAcc||bpAcc)){
     html+=`<div class="iv-sec acc-sec"><div class="iv-sec-t">마음 전하실 곳</div>
       ${tpl==='hanok'?`<div class="hk-sec-desc" style="font-size:13px;opacity:.9;margin-top:6px;margin-bottom:12px;">마음을 전하실 분들을 위해 준비했습니다</div>`:''}
       <details class="acc-box"><summary class="acc-toggle">계좌번호 확인하기</summary>
         <div class="acc-list">
           ${gAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${gBank} ${gHolder}</span><span class="acc-num">${gAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
-          ${(gpBank||gpAcc||gpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
+          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
           ${bAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${bBank} ${bHolder}</span><span class="acc-num">${bAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
-          ${(bpBank||bpAcc||bpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
+          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
         </div>
       </details>
     </div>`;
