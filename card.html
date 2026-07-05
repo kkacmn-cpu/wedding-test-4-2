@@ -9,13 +9,13 @@
 <meta property="og:type" content="website"/>
 <meta property="og:title" id="og-title" content="모바일 청첩장"/>
 <meta property="og:description" id="og-desc" content="저희 결혼식에 초대합니다"/>
-<meta property="og:image" id="og-image" content="https://kkacmn-cpu.github.io/wedding/og-default.jpg"/>
-<meta property="og:image:secure_url" id="og-image-secure" content="https://kkacmn-cpu.github.io/wedding/og-default.jpg"/>
-<meta property="og:image:width" content="800"/>
-<meta property="og:image:height" content="800"/>
+<meta property="og:image" id="og-image" content="https://wedding-test-4-2.vercel.app/og-default.jpg"/>
+<meta property="og:image:secure_url" id="og-image-secure" content="https://wedding-test-4-2.vercel.app/og-default.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="600"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" id="tw-title" content="모바일 청첩장"/>
-<meta name="twitter:image" id="tw-image" content="https://kkacmn-cpu.github.io/wedding/og-default.jpg"/>
+<meta name="twitter:image" id="tw-image" content="https://wedding-test-4-2.vercel.app/og-default.jpg"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700;800&family=Noto+Sans+JP:wght@300;400&family=Noto+Sans+Thai:wght@300;400&family=Gowun+Batang:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet"/>
@@ -298,9 +298,11 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 .sig-textwrap::before{content:'';position:absolute;inset:-8px -20px;background:radial-gradient(ellipse 75% 100% at 50% 60%,rgba(6,4,3,.5),transparent 75%);z-index:-1;filter:blur(2px);}
 .sig-names{font-family:'Noto Serif KR',serif;font-size:28px;font-weight:500;letter-spacing:.02em;color:#fff;line-height:1.12;text-align:center;text-shadow:0 1px 8px rgba(0,0,0,.28);}
 .sig-date{font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;line-height:1;letter-spacing:.14em;margin-top:11px;color:rgba(255,255,255,.92);text-shadow:0 1px 6px rgba(0,0,0,.25);text-align:center;white-space:nowrap;}
+.sig-time{font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:400;line-height:1;letter-spacing:.08em;margin-top:8px;color:rgba(255,255,255,.88);text-shadow:0 1px 6px rgba(0,0,0,.25);text-align:center;white-space:nowrap;}
 @media (max-width:380px){
   #card.t-signature .sig-names{font-size:26px;letter-spacing:.02em;}
   .sig-date{font-size:12px;letter-spacing:.12em;}
+  .sig-time{font-size:11px;letter-spacing:.06em;}
 }
 @keyframes sigScroll{0%{transform:translateY(-12px);opacity:0;}40%{opacity:1;}100%{transform:translateY(34px);opacity:0;}}
 .t-signature .iv-sec{border-top:1px solid rgba(184,148,95,.14);}
@@ -515,7 +517,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 
 /* 7. fullscreen — 풀스크린 사진 + 오버레이 */
 .t-fullscreen{background:#161616;color:#fff;}
-.t-fullscreen .iv-cover{position:relative;min-height:108vw;max-height:520px;padding:0;overflow:hidden;}
+.t-fullscreen .iv-cover{position:relative;min-height:0;max-height:none;padding:0;overflow:hidden;}
 .t-fullscreen .iv-photo-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8;}
 .t-fullscreen .iv-cover-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.08) 52%,rgba(0,0,0,.2) 100%);}
 .t-fullscreen .iv-cover-text{position:absolute;bottom:0;left:0;right:0;padding:34px 30px 40px;text-align:center;color:#fff;}
@@ -1184,13 +1186,14 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <!-- 카카오 JavaScript SDK -->
 <!-- ※ Kakao Developers(developers.kakao.com)에서 앱 등록 후 JavaScript Key 발급 필요 -->
-<!-- ※ 플랫폼 > 웹에 https://kkacmn-cpu.github.io 도메인 등록 필요 -->
+<!-- ※ Kakao Developers > 플랫폼 > Web에 실제 배포 도메인(https://wedding-test-4-2.vercel.app) 등록 필요 -->
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
   integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4"
   crossorigin="anonymous"></script>
 <script>
 const SUPA_URL='https://jchohaqvaoytplinlylt.supabase.co';
 const SUPA_KEY='sb_publishable_pinNIcaU11HhbSz3TR__mQ_Ln4cJ79a';
+const SHARE_API_BASE='https://wedding-test-4-2.vercel.app';
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 
 /* ===== 카카오 설정 ===== */
@@ -1234,7 +1237,7 @@ function fitName(el){
   el.style.letterSpacing='';el.style.fontSize='';
   const sep=el.querySelector('.nm-sep');
   if(sep){sep.style.margin='';sep.style.fontSize='';}
-  const over=()=>el.scrollWidth>el.clientWidth+1;
+  const over=()=>el.scrollWidth>el.clientWidth;
   if(!over())return;
   const baseFs=parseFloat(getComputedStyle(el).fontSize)||30;
   const baseLs=parseFloat(getComputedStyle(el).letterSpacing)||0;
@@ -1248,6 +1251,8 @@ function fitName(el){
   if(sep){const sf=parseFloat(getComputedStyle(sep).fontSize)||baseFs;for(const f of [0.85,0.78,0.72]){sep.style.fontSize=(sf*f)+'px';if(!over())return;}}
   for(const f of [0.97,0.94,0.90]){el.style.fontSize=(baseFs*f)+'px';if(!over())return;}
   el.classList.add('nm-twoline');
+  /* 브라우저 서브픽셀 반올림으로 1px 남는 경우까지 제거 */
+  if(over()){for(const f of [0.88,0.86,0.84]){el.style.fontSize=(baseFs*f)+'px';if(!over())break;}}
 }
 function fitAllNames(root){
   if(!root)return;
@@ -1392,6 +1397,7 @@ function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,w
           <div class="sig-textwrap">
             <div class="sig-names"><span class="nm-person">${_first}</span><span class="nm-person">${_second}</span></div>
             <div class="sig-date">${sigDate}</div>
+            ${timeStr?`<div class="sig-time">${timeStr}</div>`:''}
           </div>
         </div>
       </div>
@@ -1487,6 +1493,7 @@ function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,w
           <div class="cn-when">
             <span class="cn-date">${cnDate}</span>
             ${cnWeekday?`<span class="cn-weekday">${cnWeekday}</span>`:''}
+            ${timeStr?`<span class="cn-time">${timeStr}</span>`:''}
           </div>
         </div>
       </div>
@@ -1799,7 +1806,7 @@ function renderCard(card){
   }
 
   /* ⑧ 계좌 (마지막 — 감성 → 정보 → 기능 → 계좌 순서) */
-  if(opts.account!==false&&(groomAcc||brideAcc||gpBank||gpAcc||gpHolder||bpBank||bpAcc||bpHolder)){
+  if(opts.account!==false&&(groomAcc||brideAcc||gpAcc||bpAcc)){
     html+=`<div class="iv-sec acc-sec">
       <div class="iv-sec-t">마음 전하실 곳</div>
       <div class="hk-sec-desc" style="font-size:13px;opacity:${tpl==='hanok'?'.9':'.55'};margin-top:6px;margin-bottom:12px;">${tpl==='hanok'?'마음을 전하실 분들을 위해 준비했습니다':'참석이 어려우신 분들을 위한 안내입니다'}</div>
@@ -1807,9 +1814,9 @@ function renderCard(card){
         <summary class="acc-toggle">계좌번호 확인하기</summary>
         <div class="acc-list">
           ${groomAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${groomBank} ${groomHolder}</span><span class="acc-num">${groomAcc}</span></div><button class="acc-copy" data-acc="${groomAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
-          ${(gpBank||gpAcc||gpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button class="acc-copy" data-acc="${gpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
+          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button class="acc-copy" data-acc="${gpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
           ${brideAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${brideBank} ${brideHolder}</span><span class="acc-num">${brideAcc}</span></div><button class="acc-copy" data-acc="${brideAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
-          ${(bpBank||bpAcc||bpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button class="acc-copy" data-acc="${bpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
+          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button class="acc-copy" data-acc="${bpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
         </div>
       </details>
     </div>`;
@@ -2149,12 +2156,26 @@ function showToast(msg){
 }
 
 /* ===== 링크 복사 ===== */
-/* 공유용 URL: VPS SSR 주소 (카카오/SNS가 OG 태그를 읽도록)
-   사람이 열면 VPS가 실제 카드로 자동 리다이렉트 */
+/* 공유용 URL: Vercel SSR API 주소.
+   정적 card.html이 아니라 서버가 카드별 OG 태그를 먼저 응답한 뒤 실제 카드로 이동한다. */
+function getShareVersion(data){
+  const raw=data?.updated_at||data?.created_at||'';
+  if(raw){
+    const t=Date.parse(raw);
+    if(Number.isFinite(t))return String(t);
+  }
+  /* 대표사진 파일명에 포함된 업로드 시각(main_171234...)을 캐시 버전으로 재사용 */
+  const photo=String(data?.main_photo_url||'');
+  const m=photo.match(/(?:main_|gal_)(\d{10,})/);
+  return m?m[1]:'';
+}
 function getShareUrl(){
-  const VPS_BASE='https://weddingapi.duckdns.org';
-  if(slug)return `${VPS_BASE}/card/${encodeURIComponent(slug)}`;
-  return location.href;
+  if(!slug)return location.href;
+  const u=new URL('/api/wedding-share',SHARE_API_BASE);
+  u.searchParams.set('slug',slug);
+  const version=getShareVersion(window._cardData);
+  if(version)u.searchParams.set('v',version);
+  return u.href;
 }
 
 function copyCardLink(){
@@ -2182,21 +2203,14 @@ function copyCardLink(){
    - null/undefined/빈값 → 기본 썸네일
    - blob/data/상대경로/DOM이미지/signed URL 사용 안 함 */
 function getSafeImageUrl(data){
-  const DEFAULT='https://kkacmn-cpu.github.io/wedding/og-default.jpg';
-  const url=
-    data?.main_photo_url ||
-    data?.cover_image ||
-    DEFAULT;
-  if(typeof url!=='string')return DEFAULT;
-  if(!url.startsWith('http'))return DEFAULT;
+  const DEFAULT='https://wedding-test-4-2.vercel.app/og-default.jpg';
+  const firstGallery=Array.isArray(data?.gallery_urls)?data.gallery_urls.find(u=>typeof u==='string'&&/^https?:\/\//i.test(u)):'';
+  const url=data?.main_photo_url||data?.cover_image||firstGallery||DEFAULT;
+  if(typeof url!=='string'||!/^https?:\/\//i.test(url))return DEFAULT;
   return url;
 }
 
 function shareKakao(){
-  console.log('Kakao exists:', !!window.Kakao);
-  console.log('Kakao initialized:', window.Kakao?.isInitialized?.());
-  console.log('Current URL:', location.href);
-
   if(!window.Kakao){
     console.error('Kakao SDK not loaded');
     copyCardLink();
@@ -2213,18 +2227,10 @@ function shareKakao(){
   const _orderGb=d?.options?.order_gb!==false;
   const _names=_orderGb?`${_gn} ♥ ${_bn}`:`${_bn} ♥ ${_gn}`;
   const title=d?`${_names}의 결혼식에 초대합니다`:(document.title||'모바일 청첩장');
-  const desc=d?`${d.wedding_date||''} · ${d.venue_name||''}`.trim():'소중한 날에 초대합니다.';
+  const desc=d?[d.wedding_date||'',fmtTime(d.wedding_time),d.venue_name||''].filter(Boolean).join(' · '):'소중한 날에 초대합니다.';
 
-  /* 대표사진 — 검증된 http URL만, 없으면 기본 썸네일 */
+  /* 대표사진 — 검증된 공개 URL만, 없으면 갤러리 첫 사진 또는 기본 썸네일 */
   const imageUrl=getSafeImageUrl(d);
-  /* ── 강제 디버깅: 대표사진 URL / 원본 데이터 출력 ──
-     아래 KAKAO IMAGE URL 값을 브라우저 새 탭에서 직접 열어보세요.
-       - 사진이 보이면 → 정상
-       - 404 또는 빈 화면 → 해당 카드의 대표사진 데이터 문제 (코드 문제 아님) */
-  console.log('KAKAO IMAGE URL:', imageUrl);
-  console.log('RAW DATA:', d);
-  console.log('main_photo_url:', d?.main_photo_url);
-  console.log('👉 위 KAKAO IMAGE URL을 새 탭에서 열어 사진이 보이는지 확인하세요. 안 보이면 대표사진 데이터 문제입니다.');
 
   try{
     Kakao.Share.sendDefault({
