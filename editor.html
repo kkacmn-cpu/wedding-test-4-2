@@ -348,7 +348,7 @@ input,select,textarea{font-family:inherit;}
 .prev-label{position:absolute;top:18px;font-size:11px;letter-spacing:2px;color:var(--brown-mute);text-transform:uppercase;font-family:var(--display);z-index:2;}
 .phone{width:min(290px,90%);background:#1c1712;border-radius:42px;padding:11px;box-shadow:0 30px 70px -20px rgba(28,23,18,.55);position:relative;z-index:2;}
 .phone::before{content:'';position:absolute;top:21px;left:50%;transform:translateX(-50%);width:48px;height:5px;background:#000;border-radius:99px;z-index:8;}
-.scr{background:#fff;border-radius:32px;overflow:hidden;height:min(560px,72vh);overflow-y:auto;scrollbar-width:none;position:relative;}
+.scr{--preview-screen-height:min(560px,72vh);background:#fff;border-radius:32px;overflow:hidden;height:var(--preview-screen-height);overflow-y:auto;scrollbar-width:none;position:relative;}
 .sample-wm{position:absolute;top:8px;right:8px;z-index:50;font-size:9.5px;letter-spacing:1px;color:#fff;background:rgba(20,16,12,.5);backdrop-filter:blur(4px);padding:4px 9px;border-radius:999px;pointer-events:none;white-space:nowrap;}
 .scr::-webkit-scrollbar{display:none;}
 .prev-hint{position:absolute;bottom:18px;font-size:11px;color:var(--brown-mute);z-index:2;}
@@ -530,6 +530,7 @@ input,select,textarea{font-family:inherit;}
 .t-signature .sig-names{font-family:'Noto Serif KR',serif;font-size:24px;font-weight:500;letter-spacing:.04em;color:#fff;line-height:1.2;text-align:center;white-space:nowrap;text-shadow:0 1px 8px rgba(0,0,0,.28);}
 .t-signature .sig-names .sig-dot{display:inline-block;font-size:7px;line-height:1;opacity:.72;margin:0 10px;vertical-align:middle;}
 .t-signature .sig-date{font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:500;line-height:1;letter-spacing:.14em;margin-top:11px;color:rgba(255,255,255,.92);text-shadow:0 1px 6px rgba(0,0,0,.25);text-align:center;white-space:nowrap;}
+.t-signature .sig-time{font-family:'Noto Sans KR',sans-serif;font-size:10.5px;font-weight:400;line-height:1;letter-spacing:.08em;margin-top:7px;color:rgba(255,255,255,.88);text-shadow:0 1px 6px rgba(0,0,0,.25);text-align:center;white-space:nowrap;}
 @keyframes sigScroll{0%{transform:translateY(-10px);opacity:0;}40%{opacity:1;}100%{transform:translateY(28px);opacity:0;}}
 .t-signature .iv-sec{border-top:1px solid rgba(184,148,95,.14);}
 .t-signature .iv-sec-t{color:#9a7740;}
@@ -538,7 +539,7 @@ input,select,textarea{font-family:inherit;}
 /* CLASSIC IVORY — 고급 종이청첩장 (미리보기) */
 .t-classic-ivory{background:#f6efe0;color:#3a2f26;}
 .t-classic-ivory .iv-cover{padding:0;}
-.t-classic-ivory .civ-stage{position:relative;width:100%;height:540px;display:flex;flex-direction:column;background:#f6efe0;overflow:hidden;}
+.t-classic-ivory .civ-stage{position:relative;width:100%;height:var(--preview-screen-height,540px);display:flex;flex-direction:column;background:#f6efe0;overflow:hidden;}
 .t-classic-ivory .civ-photo-area{position:relative;flex:0 0 75%;overflow:hidden;background:#e8dcc6;}
 .t-classic-ivory .civ-photo{position:absolute;inset:0;width:100%;height:100%;}
 .t-classic-ivory .civ-photo img{width:100%;height:100%;object-fit:cover;object-position:center 32%;display:block;}
@@ -970,6 +971,101 @@ input,select,textarea{font-family:inherit;}
 .order-err{font-size:13px;color:#c0607a;margin-bottom:10px;min-height:18px;text-align:left;}
 .order-ok{font-size:13px;color:var(--ok);font-weight:500;margin-bottom:10px;}
 .order-info{background:var(--ivory-2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--brown-mute);text-align:left;line-height:1.8;margin-bottom:14px;}
+/* 발행 전 자동점검 */
+.preflight-modal{max-width:560px;text-align:left;padding:36px 32px 30px;}
+.preflight-modal h3{text-align:center;margin-bottom:6px;}
+.preflight-lead{text-align:center;margin-bottom:16px!important;}
+.preflight-summary{display:flex;justify-content:center;gap:8px;margin-bottom:16px;}
+.preflight-count{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:600;}
+.preflight-count.error{background:#fbe9e7;color:#a94237;border:1px solid #f0c9c4;}
+.preflight-count.warning{background:#fff5df;color:#8a651f;border:1px solid #ecd9ab;}
+.preflight-list{display:flex;flex-direction:column;gap:9px;max-height:min(48vh,390px);overflow:auto;margin:0 0 18px;padding-right:3px;}
+.preflight-item{width:100%;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:12px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;text-align:left;cursor:pointer;transition:border-color .2s,background .2s,transform .2s;}
+.preflight-item:hover{border-color:var(--gold-pale);background:var(--gold-wash);transform:translateY(-1px);}
+.preflight-item.error{border-left:4px solid #c85b50;}
+.preflight-item.warning{border-left:4px solid #c69a3a;}
+.preflight-badge{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:24px;padding:0 7px;border-radius:999px;font-size:10px;font-weight:700;}
+.preflight-item.error .preflight-badge{background:#fbe9e7;color:#a94237;}
+.preflight-item.warning .preflight-badge{background:#fff5df;color:#8a651f;}
+.preflight-copy b{display:block;font-size:13.5px;color:var(--brown);margin-bottom:3px;font-weight:600;}
+.preflight-copy span{display:block;font-size:12px;color:var(--brown-mute);line-height:1.55;word-break:keep-all;}
+.preflight-fix{font-size:11px;color:var(--gold-deep);white-space:nowrap;}
+.preflight-note{font-size:11.5px!important;line-height:1.6!important;margin:-4px 0 14px!important;padding:10px 12px;border-radius:10px;background:var(--ivory-2);text-align:left;}
+.preflight-focus{animation:preflightPulse 1.4s ease 1;}
+@keyframes preflightPulse{0%,100%{box-shadow:0 0 0 0 rgba(200,91,80,0)}35%{box-shadow:0 0 0 5px rgba(200,91,80,.18);border-color:#c85b50}70%{box-shadow:0 0 0 2px rgba(200,91,80,.08)}}
+
+/* ===== 기존 청첩장 복제·대상별 버전 ===== */
+.clone-banner{display:none;align-items:center;justify-content:space-between;gap:18px;margin:18px 0 4px;padding:15px 17px;border:1px solid var(--gold-pale);border-radius:15px;background:linear-gradient(135deg,#fffdf8,#f8f0e3);box-shadow:0 8px 24px rgba(91,69,42,.07);}
+.clone-banner.show{display:flex;}
+.clone-copy{min-width:0;}
+.clone-copy b{display:block;font-size:14px;color:var(--brown);margin-bottom:4px;font-weight:650;}
+.clone-copy span{display:block;font-size:12px;color:var(--brown-mute);line-height:1.55;word-break:keep-all;}
+.clone-banner.is-clone{border-color:#c8a66d;background:linear-gradient(135deg,#fffaf0,#f3e6cd);}
+.clone-banner .btn{flex:0 0 auto;white-space:nowrap;}
+.clone-modal{max-width:520px;text-align:left;}
+.clone-modal h3,.clone-modal>p{text-align:center;}
+.clone-audience{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:18px 0 16px;}
+.clone-choice{padding:13px 12px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--brown-soft);font:inherit;font-size:13px;cursor:pointer;transition:.2s;text-align:center;}
+.clone-choice:hover{border-color:var(--gold-pale);background:var(--gold-wash);}
+.clone-choice.on{border-color:var(--gold);background:var(--gold-wash);color:var(--gold-deep);font-weight:650;box-shadow:0 0 0 3px rgba(184,148,95,.10);}
+.clone-safety{margin:0 0 17px;padding:12px 13px;border-radius:11px;background:var(--ivory-2);border:1px solid var(--line);font-size:12px;color:var(--brown-mute);line-height:1.7;word-break:keep-all;}
+.clone-safety b{color:var(--brown);}
+.clone-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto;}
+.clone-actions .btn{white-space:nowrap;}
+/* RSVP 참석자 관리 — 수정번호 검증 후에만 열리는 소유자 전용 화면 */
+.rsvp-manager-modal{max-width:900px;text-align:left;padding:32px 30px 26px;max-height:calc(100vh - 32px);overflow:hidden;}
+.rsvp-manager-modal h3{text-align:left;margin-bottom:3px;}
+.rsvp-manager-lead{margin-bottom:16px!important;}
+.rsvp-manager-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;}
+.rsvp-manager-toolbar-copy{min-width:0;}
+.rsvp-manager-toolbar-copy b{display:block;font-size:13px;color:var(--brown);margin-bottom:2px;}
+.rsvp-manager-toolbar-copy span{display:block;font-size:11.5px;color:var(--brown-mute);line-height:1.45;}
+.rsvp-manager-actions{display:flex;gap:7px;flex:0 0 auto;}
+.rsvp-manager-actions .btn{padding:8px 13px;font-size:12px;}
+.rsvp-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:14px;}
+.rsvp-stat{padding:13px 12px;border:1px solid var(--line);border-radius:13px;background:linear-gradient(145deg,#fff,#fbf6ed);min-width:0;}
+.rsvp-stat span{display:block;font-size:10.5px;color:var(--brown-mute);margin-bottom:5px;white-space:nowrap;}
+.rsvp-stat b{display:block;font-family:var(--serif);font-size:24px;font-weight:500;color:var(--brown);line-height:1;}
+.rsvp-stat b small{font-family:var(--sans);font-size:11px;font-weight:400;color:var(--brown-mute);margin-left:2px;}
+.rsvp-manager-filters{display:grid;grid-template-columns:auto 132px minmax(150px,1fr);gap:9px;align-items:center;margin-bottom:12px;}
+.rsvp-filter-tabs{display:flex;gap:5px;padding:3px;border:1px solid var(--line);border-radius:11px;background:var(--ivory-2);}
+.rsvp-filter-btn{padding:7px 10px;border-radius:8px;font-size:11.5px;color:var(--brown-soft);white-space:nowrap;}
+.rsvp-filter-btn.on{background:#fff;color:var(--gold-deep);box-shadow:0 1px 5px rgba(68,48,27,.09);font-weight:650;}
+.rsvp-manager-filters .fs,.rsvp-manager-filters .fi{padding:9px 11px;border-radius:10px;font-size:13px;}
+.rsvp-manager-state{padding:34px 16px;text-align:center;border:1px dashed var(--sand);border-radius:14px;color:var(--brown-mute);font-size:13px;line-height:1.7;background:#fffdf9;}
+.rsvp-manager-list{display:flex;flex-direction:column;gap:8px;max-height:min(45vh,420px);overflow:auto;padding-right:3px;}
+.rsvp-manager-row{display:grid;grid-template-columns:minmax(140px,.8fr) minmax(230px,1.35fr) minmax(150px,.85fr);gap:12px;align-items:center;padding:13px 14px;border:1px solid var(--line);border-radius:13px;background:#fff;}
+.rsvp-person{min-width:0;}
+.rsvp-person b{display:block;font-size:14px;color:var(--brown);margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rsvp-badges{display:flex;gap:5px;flex-wrap:wrap;}
+.rsvp-badge{display:inline-flex;align-items:center;min-height:21px;padding:2px 7px;border-radius:999px;font-size:10px;font-weight:650;}
+.rsvp-badge.attend{background:#eaf3e5;color:#4d713d;}
+.rsvp-badge.decline{background:#f8e9e7;color:#a34d45;}
+.rsvp-badge.side{background:#f3ecdf;color:#7b6442;}
+.rsvp-detail{font-size:11.5px;color:var(--brown-soft);line-height:1.65;min-width:0;}
+.rsvp-detail b{font-weight:600;color:var(--brown);}
+.rsvp-contact{min-width:0;text-align:right;}
+.rsvp-contact a{display:block;font-size:12px;color:var(--gold-deep);text-decoration:none;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rsvp-contact span{display:block;font-size:11px;color:var(--brown-mute);line-height:1.45;word-break:break-word;max-height:3em;overflow:auto;}
+.rsvp-manager-privacy{margin:12px 0 0!important;padding:9px 11px;border-radius:10px;background:var(--ivory-2);border:1px solid var(--line-soft);font-size:10.5px!important;line-height:1.55!important;text-align:left;color:var(--brown-mute)!important;}
+@media(max-width:768px){
+  .clone-banner{align-items:flex-start;flex-direction:column;margin:12px 14px 0;padding:14px;}
+  .clone-banner .btn{width:100%;}
+  .clone-audience{grid-template-columns:1fr 1fr;}
+  .clone-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;}
+  .clone-actions .btn{width:100%;}
+  .rsvp-manager-modal{padding:27px 18px 20px;max-height:calc(100vh - 16px);}
+  .rsvp-manager-toolbar{align-items:flex-start;flex-direction:column;}
+  .rsvp-manager-actions{width:100%;}
+  .rsvp-manager-actions .btn{flex:1;}
+  .rsvp-summary{grid-template-columns:1fr 1fr;}
+  .rsvp-manager-filters{grid-template-columns:1fr 1fr;}
+  .rsvp-filter-tabs{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);}
+  .rsvp-filter-btn{text-align:center;padding:8px 5px;}
+  .rsvp-manager-row{grid-template-columns:1fr;gap:8px;padding:13px;}
+  .rsvp-contact{text-align:left;padding-top:7px;border-top:1px solid var(--line-soft);}
+  .rsvp-manager-list{max-height:42vh;}
+}
 
 /* ===== 반응형 ===== */
 /* ════════════════════════════════════════════════════════
@@ -1092,7 +1188,7 @@ input,select,textarea{font-family:inherit;}
   /* ── 미리보기 풀스크린 오버레이 ── */
   .preview.show{background:linear-gradient(160deg,#efe6d8,#e6d9c5);padding:0;}
   .preview.show .phone{margin:auto;width:min(320px,86vw);}
-  .preview.show .scr{height:min(620px,76vh);}
+  .preview.show .scr{--preview-screen-height:min(620px,76vh);height:var(--preview-screen-height);}
   .prev-close{width:40px;height:40px;top:calc(14px + env(safe-area-inset-top,0px));right:16px;background:rgba(58,47,38,.55);z-index:210;}
   .prev-label{position:fixed;top:calc(18px + env(safe-area-inset-top,0px));left:20px;z-index:210;}
   .prev-hint{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;z-index:210;}
@@ -1265,7 +1361,7 @@ input,select,textarea{font-family:inherit;}
 <body>
 
 <div class="topbar">
-  <a href="wedding-store.html" class="tb-back">← 나가기</a>
+  <a href="https://kkacmn-cpu.github.io/wedding/wedding-store.html" class="tb-back">← 나가기</a>
   <div class="tb-brand">Memory<b>Retouch</b></div>
   <div class="tb-right">
     <span class="save-state" id="saveState"></span>
@@ -1277,6 +1373,17 @@ input,select,textarea{font-family:inherit;}
 
 <div class="layout">
   <div class="work" id="work">
+
+    <div class="clone-banner" id="cloneBanner" aria-live="polite">
+      <div class="clone-copy">
+        <b id="cloneBannerTitle">원본 청첩장을 수정하고 있습니다</b>
+        <span id="cloneBannerDesc">같은 내용을 새 주소로 만들려면 원본을 건드리지 않고 복제할 수 있습니다.</span>
+      </div>
+      <div class="clone-actions">
+        <button type="button" class="btn btn-ghost btn-sm" id="rsvpManageBtn" onclick="openRsvpManager()" style="display:none;">참석자 관리</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="cloneBannerBtn" onclick="openCloneModal()">복제본 만들기</button>
+      </div>
+    </div>
 
     <!-- 1. 테마 -->
     <div class="sec sec-wide" data-step="theme">
@@ -1551,6 +1658,88 @@ input,select,textarea{font-family:inherit;}
   </div>
 </div>
 
+<!-- 발행 전 자동점검 모달 -->
+<div class="ov" id="preflightOv">
+  <div class="modal preflight-modal">
+    <span class="modal-x" onclick="closePreflight()">×</span>
+    <div style="font-size:36px;text-align:center;margin-bottom:8px;">🔎</div>
+    <h3>발행 전 자동점검</h3>
+    <p class="preflight-lead" id="preflightLead">발행 전에 입력 누락과 사진 상태를 확인했습니다.</p>
+    <div class="preflight-summary" id="preflightSummary"></div>
+    <div class="preflight-list" id="preflightList"></div>
+    <p class="preflight-note" id="preflightNote"></p>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closePreflight()">돌아가서 수정</button>
+      <button class="btn btn-gold" id="preflightContinueBtn" onclick="continueAfterPreflight()">경고 확인 후 계속 발행</button>
+    </div>
+  </div>
+</div>
+
+<!-- 기존 청첩장 복제 모달 -->
+<div class="ov" id="cloneOv">
+  <div class="modal clone-modal">
+    <span class="modal-x" onclick="closeCloneModal()">×</span>
+    <div style="font-size:36px;text-align:center;margin-bottom:8px;">📄</div>
+    <h3>원본을 보존하고 복제합니다</h3>
+    <p>복제본의 사용 대상을 선택한 뒤 문구나 기능만 다르게 편집하세요.</p>
+    <div class="clone-audience" id="cloneAudience">
+      <button type="button" class="clone-choice on" data-value="family" onclick="pickCloneAudience(this)">가족용</button>
+      <button type="button" class="clone-choice" data-value="friend" onclick="pickCloneAudience(this)">친구용</button>
+      <button type="button" class="clone-choice" data-value="business" onclick="pickCloneAudience(this)">회사·지인용</button>
+      <button type="button" class="clone-choice" data-value="other" onclick="pickCloneAudience(this)">기타 버전</button>
+    </div>
+    <div class="clone-safety">
+      <b>원본 청첩장은 변경되지 않습니다.</b><br>
+      복제본은 새 주소와 새 수정번호로 발행됩니다. 현재 발행 정책에 따라 새 주소를 만들 때 구매 확인을 다시 진행합니다.
+    </div>
+    <div class="modal-btns">
+      <button type="button" class="btn btn-ghost" onclick="closeCloneModal()">취소</button>
+      <button type="button" class="btn btn-gold" onclick="startCloneMode()">복제해서 편집하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- RSVP 참석자 관리 모달 (소유자 수정번호 검증 전용) -->
+<div class="ov" id="rsvpManagerOv">
+  <div class="modal rsvp-manager-modal">
+    <span class="modal-x" onclick="closeRsvpManager()">×</span>
+    <h3>참석자 관리</h3>
+    <p class="rsvp-manager-lead">하객이 남긴 참석 여부와 예상 인원을 한곳에서 확인합니다.</p>
+    <div class="rsvp-manager-toolbar">
+      <div class="rsvp-manager-toolbar-copy">
+        <b id="rsvpManagerCardTitle">청첩장 참석 현황</b>
+        <span id="rsvpManagerUpdated">수정번호 확인 후 안전하게 불러옵니다.</span>
+      </div>
+      <div class="rsvp-manager-actions">
+        <button type="button" class="btn btn-ghost" id="rsvpRefreshBtn" onclick="loadRsvpManager(true)">새로고침</button>
+        <button type="button" class="btn btn-ghost" id="rsvpCsvBtn" onclick="exportRsvpCsv()" disabled>CSV 저장</button>
+      </div>
+    </div>
+    <div class="rsvp-summary">
+      <div class="rsvp-stat"><span>응답 수</span><b id="rsvpStatResponses">0<small>건</small></b></div>
+      <div class="rsvp-stat"><span>참석 예상</span><b id="rsvpStatGuests">0<small>명</small></b></div>
+      <div class="rsvp-stat"><span>식사 예상</span><b id="rsvpStatMeals">0<small>명</small></b></div>
+      <div class="rsvp-stat"><span>불참 응답</span><b id="rsvpStatDeclines">0<small>건</small></b></div>
+    </div>
+    <div class="rsvp-manager-filters">
+      <div class="rsvp-filter-tabs" id="rsvpFilterTabs">
+        <button type="button" class="rsvp-filter-btn on" data-filter="all" onclick="setRsvpAttendanceFilter(this)">전체</button>
+        <button type="button" class="rsvp-filter-btn" data-filter="attend" onclick="setRsvpAttendanceFilter(this)">참석</button>
+        <button type="button" class="rsvp-filter-btn" data-filter="decline" onclick="setRsvpAttendanceFilter(this)">불참</button>
+      </div>
+      <select class="fs" id="rsvpSideFilter" onchange="renderRsvpManager()">
+        <option value="all">양측 전체</option>
+        <option value="groom">신랑측</option>
+        <option value="bride">신부측</option>
+      </select>
+      <input class="fi" id="rsvpSearch" placeholder="이름·연락처·메모 검색" oninput="renderRsvpManager()"/>
+    </div>
+    <div class="rsvp-manager-state" id="rsvpManagerState">참석자 정보를 불러오는 중입니다.</div>
+    <div class="rsvp-manager-list" id="rsvpManagerList" style="display:none;"></div>
+    <p class="rsvp-manager-privacy">개인정보가 포함된 소유자 전용 화면입니다. 수정번호를 아는 사용자만 조회할 수 있으며, 내려받은 파일은 예식 준비가 끝난 뒤 안전하게 삭제해 주세요.</p>
+  </div>
+</div>
+
 <!-- 스마트스토어 주문 인증 모달 -->
 <div class="ov" id="orderOv">
   <div class="modal">
@@ -1581,6 +1770,15 @@ input,select,textarea{font-family:inherit;}
 <script>
 const SUPA_URL='https://jchohaqvaoytplinlylt.supabase.co';
 const SUPA_KEY='sb_publishable_pinNIcaU11HhbSz3TR__mQ_Ln4cJ79a';
+/* 카카오/SNS 공유 전용 Vercel SSR 엔드포인트.
+   정적 card.html 주소가 아니라 서버가 카드별 OG 태그를 먼저 응답한다. */
+const SHARE_API_BASE='https://wedding-test-4-2.vercel.app';
+function buildShareUrl(slug,version){
+  const u=new URL('/api/wedding-share',SHARE_API_BASE);
+  u.searchParams.set('slug',String(slug||''));
+  if(version)u.searchParams.set('v',String(version));
+  return u.href;
+}
 /* Supabase SDK 로드 실패해도 editor 기본 UI는 살아야 함 (ReferenceError 차단).
    SDK 정상일 때 기존 동작 동일. */
 let sb=null;
@@ -1608,8 +1806,8 @@ let _purchaseId=null;  /* 인증 완료된 purchase UUID */
 const ST={
   theme:'signature',
   gallery:[],       /* base64 미리보기 배열 */
-  galleryUrls:[],   /* Storage 공개 URL 배열 */
-  galleryFiles:[],  /* 미업로드 File 객체 임시 보관 */
+  galleryUrls:[],   /* gallery와 인덱스 정렬: Storage 공개 URL 또는 null */
+  galleryFiles:[],  /* gallery와 인덱스 정렬: 재업로드할 File 또는 null */
   mainPhoto:null,   /* base64 미리보기 */
   mainPhotoUrl:null,/* Storage 공개 URL */
   mainFile:null,    /* 미업로드 File 객체 임시 보관 */
@@ -1621,13 +1819,18 @@ const ST={
     return id;
   })()
 };
-let editSlug=new URLSearchParams(location.search).get('edit')||new URLSearchParams(location.search).get('slug');
-let editCode=new URLSearchParams(location.search).get('editCode')||null;
+const _queryParams=new URLSearchParams(location.search);
+let editSlug=_queryParams.get('edit')||_queryParams.get('slug');
+let editCode=_queryParams.get('editCode')||null;
 /* URL ?theme= 파라미터로 초기 테마 적용 */
-const _themeParam=new URLSearchParams(location.search).get('theme');
+const _themeParam=_queryParams.get('theme');
 if(_themeParam)ST.theme=_themeParam;
 let editId=null;
-let _newEditCode=null; /* 신규 발행 시 생성된 6자리 수정번호 (발행 화면 표시용) */
+let cloneMode=_queryParams.get('clone')==='1';
+let cloneAudience='family';
+const CLONE_META_KEY='mr_clone_meta_v1';
+const CLONE_DRAFT_KEY='mr_clone_draft_v1';
+let _newEditCode=null; /* 신규/복제 발행 시 생성된 6자리 수정번호 (발행 화면 표시용) */
 let curStep=0;
 
 /* ===== XSS 방어 유틸 ===== */
@@ -1915,7 +2118,7 @@ function pickTheme(t){
     if(V('f_opening'))V('f_opening').value=d.opening;
     if(typeof renderFonts==='function')renderFonts();
   }
-  renderTemplates();renderIV(true);
+  renderTemplates();renderIV(true);queueDraftSave();
 }
 
 
@@ -1924,7 +2127,7 @@ function pickLayout(l,el){
   ST.galleryLayout=l;
   document.querySelectorAll('.lp-item').forEach(i=>i.classList.remove('on'));
   el.classList.add('on');
-  renderIV();
+  renderIV();queueDraftSave();
 }
 
 /* ===== 기능 토글 ===== */
@@ -1985,7 +2188,7 @@ function renderBgmPresets(){
 function pickBgmPreset(k){
   ST_bgmMode='preset'; ST_bgmPreset=k;
   if(V('f_bgm_url'))V('f_bgm_url').value=''; /* 프리셋 선택 시 직접URL 비움 */
-  renderBgmPresets(); renderIV();
+  renderBgmPresets(); renderIV();queueDraftSave();
 }
 function onBgmUrlInput(){
   var v=V('f_bgm_url')?V('f_bgm_url').value.trim():'';
@@ -2246,6 +2449,7 @@ function pickMsg(k,el){
   applySample(k);
   document.querySelectorAll('.msg-card').forEach(function(c){c.classList.remove('on');});
   if(el)el.classList.add('on');
+  queueDraftSave();
 }
 
 /* ===== 사진 업로드 ===== */
@@ -2306,13 +2510,14 @@ async function upMain(i){
     setTimeout(function(){ showUpStatus(_msg); },120);
   }
   ST._mainUploading=false;
+  queueDraftSave();
 }
 
 function rmMain(){
   ST.mainPhoto=null;ST.mainPhotoUrl=null;ST.mainFile=null;
   if(V('mainPreview'))V('mainPreview').innerHTML='';
   if(V('upMain'))V('upMain').value='';
-  renderIV();
+  renderIV();queueDraftSave();
 }
 
 async function upGal(i){
@@ -2322,15 +2527,20 @@ async function upGal(i){
   if(invalid.length){alert('이미지 파일만 올릴 수 있어요.');return;}
   /* 서버 미연결 안내 (1회) — 미리보기·보관은 그대로 진행 */
   if(!sb){ try{alert('서버에 연결하지 못했습니다. 인터넷 연결을 확인한 후 다시 시도해 주세요.');}catch(e){} }
-  /* 미리보기 */
-  files.forEach(f=>readImg(f,d=>{ST.gallery.push(d);renderGal();renderIV();}));
-  /* 즉시 업로드 */
+  /* 파일 순서대로 미리보기와 업로드 결과를 같은 인덱스에 넣는다.
+     성공/실패가 섞여도 삭제·재시도 시 다른 사진 URL이 지워지지 않는다. */
+  const readPreview=(file)=>new Promise(resolve=>readImg(file,resolve));
   for(let j=0;j<files.length;j++){
-    const ext=files[j].name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'');
-    const url=await uploadFile(files[j],`${ST.anonId}/gal_${Date.now()}_${j}.${ext}`);
-    if(url)ST.galleryUrls.push(url);
-    else ST.galleryFiles.push(files[j]);
+    const file=files[j];
+    const preview=await readPreview(file);
+    const ext=file.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'');
+    const url=await uploadFile(file,`${ST.anonId}/gal_${Date.now()}_${j}.${ext}`);
+    ST.gallery.push(preview);
+    ST.galleryUrls.push(url||null);
+    ST.galleryFiles.push(url?null:file);
+    renderGal();renderIV();
   }
+  queueDraftSave();
 }
 
 function renderGal(){
@@ -2352,11 +2562,11 @@ function updateLayoutThumbs(){
 }
 
 function rmGal(i){
+  /* 세 배열은 항상 같은 인덱스를 가리킨다. */
   ST.gallery.splice(i,1);
-  /* URL이 있으면 URL도 제거, 없으면 파일 보관에서 제거 */
-  if(i<ST.galleryUrls.length)ST.galleryUrls.splice(i,1);
-  else{const fi=i-ST.galleryUrls.length;if(fi>=0)ST.galleryFiles.splice(fi,1);}
-  renderGal();renderIV();
+  ST.galleryUrls.splice(i,1);
+  ST.galleryFiles.splice(i,1);
+  renderGal();renderIV();queueDraftSave();
 }
 
 /* ===== 날짜 ===== */
@@ -2408,7 +2618,7 @@ function renderFonts(){
 function pickFont(id){
   if(V('f_font'))V('f_font').value=id;
   renderFonts();
-  renderIV();
+  renderIV();queueDraftSave();
 }
 
 /* 사진 없을 때 고급스러운 fallback (가는 선 꽃 모티브) */
@@ -2517,7 +2727,7 @@ function fitName(el){
   const sep=el.querySelector('.nm-sep');
   if(sep){sep.style.margin='';sep.style.fontSize='';sep.style.transform='';}
   const persons=el.querySelectorAll('.nm-person');
-  const over=()=>el.scrollWidth>el.clientWidth+1;
+  const over=()=>el.scrollWidth>el.clientWidth;
   if(!over())return;
   /* 기준 폰트 크기 */
   const baseFs=parseFloat(getComputedStyle(el).fontSize)||24;
@@ -2544,6 +2754,8 @@ function fitName(el){
   for(const f of [0.97,0.94,0.90]){el.style.fontSize=(baseFs*f)+'px';if(!over())return;}
   /* 5차: 그래도 넘치면 2줄(사람 단위) */
   el.classList.add('nm-twoline');
+  /* 브라우저 서브픽셀 반올림으로 1px 남는 경우까지 제거 */
+  if(over()){for(const f of [0.88,0.86,0.84]){el.style.fontSize=(baseFs*f)+'px';if(!over())break;}}
 }
 function fitAllNames(root){
   if(!root)return;
@@ -2561,7 +2773,7 @@ function updateKShare(namesPlain, photo){
 function pickAmb(v){
   var sel=V('f_particle'); if(sel)sel.value=v;
   syncAmbCards();
-  renderIV();
+  renderIV();queueDraftSave();
 }
 function syncAmbCards(){
   var sel=V('f_particle'); if(!sel)return;
@@ -2660,7 +2872,7 @@ function renderIV(playOp){
 
   /* ① 커버 - 템플릿별 다른 레이아웃 */
   if(tpl==='minimal'){
-    const ph=previewPhoto('center 32%');
+    const ph=previewPhoto('center 36%');
     let stlDate=dateStr||'';
     const _stlRaw=val('f_date');
     if(_stlRaw){const _d=new Date(_stlRaw+'T00:00:00');if(!isNaN(_d.getTime())){const _wd=['SUN','MON','TUE','WED','THU','FRI','SAT'][_d.getDay()];stlDate=`${_d.getFullYear()}. ${String(_d.getMonth()+1).padStart(2,'0')}. ${String(_d.getDate()).padStart(2,'0')} ${_wd}`;}}
@@ -2677,7 +2889,7 @@ function renderIV(playOp){
       </div>
     </div>`;
   }else if(tpl==='signature'){
-    const ph=previewPhoto('center 32%');
+    const ph=previewPhoto('center 52%');
     let sigDate=dateStr||'';
     const _sdRaw=val('f_date');
     if(_sdRaw){
@@ -2696,6 +2908,7 @@ function renderIV(playOp){
           <div class="sig-textwrap">
             <div class="sig-names"><span class="nm-person">${_ef}</span><span class="sig-dot nm-sep">·</span><span class="nm-person">${_es}</span></div>
             <div class="sig-date">${sigDate}</div>
+            ${time?`<div class="sig-time">${time}</div>`:''}
           </div>
         </div>
       </div>
@@ -2730,6 +2943,7 @@ function renderIV(playOp){
           <div class="cn-when">
             <span class="cn-date">${cnDate}</span>
             ${cnWeekday?`<span class="cn-weekday">${cnWeekday}</span>`:''}
+            ${time?`<span class="cn-time">${time}</span>`:''}
           </div>
         </div>
       </div>
@@ -2942,15 +3156,15 @@ function renderIV(playOp){
     :`<div class="iv-sec"><div class="iv-sec-t">축하의 글</div><div class="iv-info" style="margin-top:8px;">두 사람에게 따뜻한 마음을 전해주세요</div></div>`);
 
   /* ⑧ 계좌 */
-  if(chk('o_account')&&(gAcc||bAcc||gpBank||gpAcc||gpHolder||bpBank||bpAcc||bpHolder)){
+  if(chk('o_account')&&(gAcc||bAcc||gpAcc||bpAcc)){
     html+=`<div class="iv-sec acc-sec"><div class="iv-sec-t">마음 전하실 곳</div>
       ${tpl==='hanok'?`<div class="hk-sec-desc" style="font-size:13px;opacity:.9;margin-top:6px;margin-bottom:12px;">마음을 전하실 분들을 위해 준비했습니다</div>`:''}
       <details class="acc-box"><summary class="acc-toggle">계좌번호 확인하기</summary>
         <div class="acc-list">
           ${gAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${gBank} ${gHolder}</span><span class="acc-num">${gAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
-          ${(gpBank||gpAcc||gpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
+          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
           ${bAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${bBank} ${bHolder}</span><span class="acc-num">${bAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
-          ${(bpBank||bpAcc||bpHolder)?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
+          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
         </div>
       </details>
     </div>`;
@@ -2961,6 +3175,13 @@ function renderIV(playOp){
   root.innerHTML=html;
   /* 측정 기반 이름 폭 맞춤 (렌더 직후 실행) */
   requestAnimationFrame(()=>fitAllNames(root));
+  /* Black 템플릿은 웹폰트 적용 뒤 폭이 달라질 수 있어 해당 이름만 한 번 더 측정 */
+  if(document.fonts&&document.fonts.ready){
+    document.fonts.ready.then(()=>requestAnimationFrame(()=>{
+      const blackNames=root.querySelector('.bk-names');
+      if(blackNames)fitName(blackNames);
+    }));
+  }
   /* 배경 연출 (첫 화면 커버 한정, LIVE 즉시 반영) */
   requestAnimationFrame(function(){
     var coverEl=root.querySelector('.iv-cover');
@@ -3017,14 +3238,330 @@ function renderIV(playOp){
   })();
 }
 
+/* ===== 기존 청첩장 복제·대상별 버전 ===== */
+function _cloneAudienceLabel(v){return({family:'가족용',friend:'친구용',business:'회사·지인용',other:'기타 버전'})[v]||'복제본';}
+function _readCloneMeta(){
+  try{const v=JSON.parse(localStorage.getItem(CLONE_META_KEY)||'null');if(v&&v.audience)cloneAudience=v.audience;}catch(e){}
+}
+function _writeCloneMeta(){
+  try{localStorage.setItem(CLONE_META_KEY,JSON.stringify({sourceSlug:editSlug||'',audience:cloneAudience,updatedAt:Date.now()}));}catch(e){}
+}
+function _setCloneQuery(on){
+  try{const u=new URL(location.href);if(on)u.searchParams.set('clone','1');else u.searchParams.delete('clone');history.replaceState({},'',u.href);}catch(e){}
+}
+function updateCloneUi(){
+  const banner=V('cloneBanner'),title=V('cloneBannerTitle'),desc=V('cloneBannerDesc'),btn=V('cloneBannerBtn'),mgr=V('rsvpManageBtn');
+  if(!banner)return;
+  const show=!!editId||cloneMode;
+  banner.classList.toggle('show',show);banner.classList.toggle('is-clone',cloneMode);
+  if(mgr)mgr.style.display=(!!editId&&!cloneMode)?'inline-flex':'none';
+  if(!show)return;
+  if(cloneMode){
+    const label=_cloneAudienceLabel(cloneAudience);
+    title.textContent=`${label} 복제본을 편집하고 있습니다`;
+    desc.textContent='원본은 그대로 보존됩니다. 이 화면에서 바꾼 내용은 새 주소로만 발행됩니다.';
+    btn.textContent='복제 취소';btn.onclick=cancelCloneMode;
+    V('publishBtn').textContent='복제본 발행';
+    document.querySelectorAll('.mab-publish').forEach(el=>el.textContent='복제본 발행 →');
+    V('saveState').textContent=`📄 ${label} 복제본`;
+  }else{
+    title.textContent='원본 청첩장을 수정하고 있습니다';
+    desc.textContent='같은 내용을 새 주소로 만들려면 원본을 건드리지 않고 복제할 수 있습니다.';
+    btn.textContent='복제본 만들기';btn.onclick=openCloneModal;
+    V('publishBtn').textContent='수정 완료';
+    document.querySelectorAll('.mab-publish').forEach(el=>el.textContent='수정 완료 →');
+  }
+}
+function openCloneModal(){
+  if(!editId||cloneMode)return;
+  cloneAudience='family';
+  document.querySelectorAll('#cloneAudience .clone-choice').forEach(el=>el.classList.toggle('on',el.dataset.value==='family'));
+  V('cloneOv').classList.add('show');
+}
+function closeCloneModal(){const ov=V('cloneOv');if(ov)ov.classList.remove('show');}
+function pickCloneAudience(el){
+  if(!el)return;cloneAudience=el.dataset.value||'family';
+  document.querySelectorAll('#cloneAudience .clone-choice').forEach(x=>x.classList.toggle('on',x===el));
+}
+function startCloneMode(){
+  if(!editId||!editSlug||!editCode){closeCloneModal();alert('원본 청첩장을 불러온 뒤 다시 시도해 주세요.');return;}
+  cloneMode=true;_purchaseId=null;_newEditCode=null;
+  _writeCloneMeta();_setCloneQuery(true);closeCloneModal();
+  saveDraft();updateCloneUi();
+  const work=V('work');
+  if(work&&typeof work.scrollTo==='function')work.scrollTo({top:0,behavior:'smooth'});else window.scrollTo({top:0,behavior:'smooth'});
+}
+async function cancelCloneMode(){
+  if(!cloneMode)return;
+  if(!confirm('복제본에서 수정한 내용을 버리고 원본 수정 화면으로 돌아갈까요?'))return;
+  try{localStorage.removeItem(CLONE_DRAFT_KEY);localStorage.removeItem(CLONE_META_KEY);}catch(e){}
+  cloneMode=false;cloneAudience='family';_purchaseId=null;_newEditCode=null;_setCloneQuery(false);
+  await loadForEdit();renderIV();updateCloneUi();
+}
+function finishCloneMode(newSlug,newEditCode){
+  if(!cloneMode)return;
+  try{localStorage.removeItem(CLONE_DRAFT_KEY);localStorage.removeItem(CLONE_META_KEY);}catch(e){}
+  cloneMode=false;
+  /* 발행 직후 편집 대상을 새 복제본으로 전환한다.
+     이후 저장을 눌러도 원본이 아니라 방금 만든 복제본만 수정된다. */
+  editSlug=newSlug||editSlug;
+  editCode=newEditCode||editCode;
+  editId='published-clone';
+  try{
+    const u=new URL(location.href);
+    u.searchParams.delete('clone');
+    u.searchParams.delete('slug');
+    u.searchParams.set('edit',editSlug);
+    if(editCode)u.searchParams.set('editCode',editCode);
+    history.replaceState({},'',u.href);
+  }catch(e){}
+  updateCloneUi();
+}
+
+/* ===== RSVP 참석자 관리 (소유자 전용·읽기 전용) ===== */
+let rsvpManagerRows=[];
+let rsvpAttendanceFilter='all';
+let rsvpManagerLoading=false;
+function _rsvpAttendance(v){return String(v||'')==='불참'?'불참':'참석';}
+function _rsvpSide(v){return String(v||'')==='bride'?'bride':'groom';}
+function _rsvpMeal(v){return String(v||'')==='yes'?'yes':'no';}
+function _rsvpPlus(v){const n=parseInt(v,10);return Number.isFinite(n)?Math.max(0,Math.min(20,n)):0;}
+function _normalizeRsvpRow(r){
+  r=r&&typeof r==='object'?r:{};
+  return{
+    name:String(r.name||'이름 없음').slice(0,80),
+    side:_rsvpSide(r.side),attendance:_rsvpAttendance(r.attendance),meal:_rsvpMeal(r.meal),
+    plus_count:_rsvpPlus(r.plus_count),phone:String(r.phone||'').slice(0,80),memo:String(r.memo||'').slice(0,300)
+  };
+}
+function _rsvpPartySize(r){return r.attendance==='참석'?1+r.plus_count:0;}
+function openRsvpManager(){
+  if(!editId||cloneMode){alert('발행된 원본 청첩장의 수정 화면에서만 참석자를 확인할 수 있습니다.');return;}
+  if(!editSlug||!editCode){alert('수정 권한 정보를 확인할 수 없습니다. 청첩장의 수정하기 버튼으로 다시 들어와 주세요.');return;}
+  if(!_requireServer())return;
+  rsvpAttendanceFilter='all';
+  document.querySelectorAll('#rsvpFilterTabs .rsvp-filter-btn').forEach(el=>el.classList.toggle('on',el.dataset.filter==='all'));
+  if(V('rsvpSideFilter'))V('rsvpSideFilter').value='all';
+  if(V('rsvpSearch'))V('rsvpSearch').value='';
+  V('rsvpManagerOv').classList.add('show');
+  loadRsvpManager(true);
+}
+function closeRsvpManager(){const ov=V('rsvpManagerOv');if(ov)ov.classList.remove('show');}
+async function loadRsvpManager(force){
+  if(rsvpManagerLoading)return;
+  if(!editSlug||!editCode||!sb)return;
+  rsvpManagerLoading=true;
+  const refresh=V('rsvpRefreshBtn'),csv=V('rsvpCsvBtn'),state=V('rsvpManagerState'),list=V('rsvpManagerList');
+  if(refresh){refresh.disabled=true;refresh.textContent='불러오는 중...';}
+  if(csv)csv.disabled=true;
+  if(state){state.style.display='block';state.textContent='참석자 정보를 안전하게 불러오는 중입니다.';}
+  if(list)list.style.display='none';
+  try{
+    const{data,error}=await sb.rpc('get_rsvp_for_edit',{p_slug:editSlug,p_edit_code:editCode});
+    if(error)throw error;
+    if(data&&data.success===false)throw new Error(data.error||'수정 권한을 확인할 수 없습니다.');
+    const raw=Array.isArray(data)?data:(Array.isArray(data?.rows)?data.rows:[]);
+    rsvpManagerRows=raw.map(_normalizeRsvpRow);
+    if(V('rsvpManagerCardTitle'))V('rsvpManagerCardTitle').textContent=`${val('f_groom')||'신랑'} · ${val('f_bride')||'신부'} 참석 현황`;
+    if(V('rsvpManagerUpdated'))V('rsvpManagerUpdated').textContent=`마지막 확인 ${new Date().toLocaleString('ko-KR')}`;
+    renderRsvpManager();
+    if(csv)csv.disabled=rsvpManagerRows.length===0;
+  }catch(e){
+    rsvpManagerRows=[];
+    _setRsvpStats(0,0,0,0);
+    if(state){state.style.display='block';state.innerHTML=`참석자 정보를 불러오지 못했습니다.<br><span style="font-size:11px;opacity:.72;">${esc(e?.message||'서버 설정을 확인해 주세요.')}</span>`;}
+    if(list)list.style.display='none';
+  }finally{
+    rsvpManagerLoading=false;
+    if(refresh){refresh.disabled=false;refresh.textContent='새로고침';}
+  }
+}
+function _setRsvpStats(responses,guests,meals,declines){
+  const set=(id,n,unit)=>{const el=V(id);if(el)el.innerHTML=`${n}<small>${unit}</small>`;};
+  set('rsvpStatResponses',responses,'건');set('rsvpStatGuests',guests,'명');set('rsvpStatMeals',meals,'명');set('rsvpStatDeclines',declines,'건');
+}
+function setRsvpAttendanceFilter(el){
+  rsvpAttendanceFilter=el?.dataset?.filter||'all';
+  document.querySelectorAll('#rsvpFilterTabs .rsvp-filter-btn').forEach(x=>x.classList.toggle('on',x===el));
+  renderRsvpManager();
+}
+function _filteredRsvpRows(){
+  const side=V('rsvpSideFilter')?.value||'all';
+  const q=(V('rsvpSearch')?.value||'').trim().toLowerCase();
+  return rsvpManagerRows.filter(r=>{
+    if(rsvpAttendanceFilter==='attend'&&r.attendance!=='참석')return false;
+    if(rsvpAttendanceFilter==='decline'&&r.attendance!=='불참')return false;
+    if(side!=='all'&&r.side!==side)return false;
+    if(q&&!`${r.name} ${r.phone} ${r.memo}`.toLowerCase().includes(q))return false;
+    return true;
+  });
+}
+function renderRsvpManager(){
+  const responses=rsvpManagerRows.length;
+  const guests=rsvpManagerRows.reduce((sum,r)=>sum+_rsvpPartySize(r),0);
+  const meals=rsvpManagerRows.reduce((sum,r)=>sum+(r.attendance==='참석'&&r.meal==='yes'?1+r.plus_count:0),0);
+  const declines=rsvpManagerRows.filter(r=>r.attendance==='불참').length;
+  _setRsvpStats(responses,guests,meals,declines);
+  const rows=_filteredRsvpRows(),state=V('rsvpManagerState'),list=V('rsvpManagerList');
+  if(!state||!list)return;
+  if(!rows.length){
+    state.style.display='block';list.style.display='none';
+    state.textContent=responses?'선택한 조건에 맞는 응답이 없습니다.':'아직 도착한 참석 응답이 없습니다.';
+    return;
+  }
+  state.style.display='none';list.style.display='flex';
+  list.innerHTML=rows.map(r=>{
+    const attend=r.attendance==='참석',party=_rsvpPartySize(r),side=r.side==='bride'?'신부측':'신랑측';
+    const meal=attend?(r.meal==='yes'?`식사 ${party}명`:'식사 안 함'):'식사 미집계';
+    const safePhone=esc(r.phone),tel=r.phone.replace(/[^0-9+]/g,'');
+    return `<div class="rsvp-manager-row">
+      <div class="rsvp-person"><b>${esc(r.name)}</b><div class="rsvp-badges"><span class="rsvp-badge ${attend?'attend':'decline'}">${r.attendance}</span><span class="rsvp-badge side">${side}</span></div></div>
+      <div class="rsvp-detail"><b>${attend?`참석 예상 ${party}명`:'불참'}</b><br>${meal}${attend&&r.plus_count?` · 동반 ${r.plus_count}명`:''}</div>
+      <div class="rsvp-contact">${safePhone?`<a href="tel:${esc(tel)}">${safePhone}</a>`:'<span>연락처 없음</span>'}<span>${r.memo?esc(r.memo):'메모 없음'}</span></div>
+    </div>`;
+  }).join('');
+}
+function _csvCell(v){let s=String(v??'');if(/^[=+\-@]/.test(s))s="'"+s;return `"${s.replace(/"/g,'""')}"`;}
+function exportRsvpCsv(){
+  if(!rsvpManagerRows.length){alert('저장할 참석자 정보가 없습니다.');return;}
+  const header=['성함','구분','참석 여부','본인 포함 예상 인원','식사 여부','동반 인원','연락처','메모'];
+  const lines=[header.map(_csvCell).join(',')];
+  rsvpManagerRows.forEach(r=>lines.push([
+    r.name,r.side==='bride'?'신부측':'신랑측',r.attendance,_rsvpPartySize(r),r.attendance==='참석'?(r.meal==='yes'?'식사 함':'식사 안 함'):'-',r.plus_count,r.phone,r.memo
+  ].map(_csvCell).join(',')));
+  const blob=new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=`${(editSlug||'wedding').replace(/[^a-zA-Z0-9가-힣_-]/g,'_')}_참석자.csv`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+/* ===== 발행 전 자동점검 ===== */
+let _preflightBypassOnce=false;
+let _lastPreflightIssues=[];
+
+function _isStoragePublicUrl(u){
+  return typeof u==='string'&&/^https:\/\//i.test(u)&&u.includes('/storage/v1/object/public/');
+}
+function _preflightIssue(level,step,field,title,desc){
+  return{level,step,field,title,desc};
+}
+function collectPreflightIssues(){
+  const issues=[];
+  const required=[
+    ['couple','f_groom','신랑 이름을 입력해 주세요.','첫 화면과 카카오톡 공유 제목에 사용됩니다.'],
+    ['couple','f_bride','신부 이름을 입력해 주세요.','첫 화면과 카카오톡 공유 제목에 사용됩니다.'],
+    ['wedding','f_date','예식 날짜를 입력해 주세요.','D-Day와 카카오톡 미리보기에 필요한 정보입니다.'],
+    ['wedding','f_time','예식 시간을 입력해 주세요.','첫 화면과 카카오톡 미리보기에 필요한 정보입니다.'],
+    ['wedding','f_venue','예식장을 입력해 주세요.','카카오톡 미리보기와 예식 안내에 표시됩니다.'],
+    ['wedding','f_addr','예식장 주소를 입력해 주세요.','네이버·카카오·구글 길찾기에 필요합니다.'],
+    ['message','f_msg','초대 인사말을 입력해 주세요.','인사말이 비어 있으면 청첩장 본문이 완성되지 않습니다.']
+  ];
+  required.forEach(([step,field,title,desc])=>{if(!val(field))issues.push(_preflightIssue('error',step,field,title,desc));});
+
+  const theme=THEMES.find(t=>t.id===ST.theme)||{};
+  const hasMainUrl=_isStoragePublicUrl(ST.mainPhotoUrl);
+  const hasMainFile=typeof File!=='undefined'&&ST.mainFile instanceof File;
+  const hasMainUpload=!!ST._mainUploading;
+  const hasMainReady=hasMainUrl||hasMainFile||hasMainUpload;
+  const hasMainPreview=!!(ST.mainPhoto&&String(ST.mainPhoto).trim());
+  if(theme.photoType&&!hasMainReady){
+    issues.push(_preflightIssue('error','photo','upMain','대표사진 업로드를 완료해 주세요.','사진형 템플릿의 첫 화면과 카카오톡 공유 이미지에 필요합니다.'));
+  }else if(theme.noPhoto&&!hasMainReady){
+    issues.push(_preflightIssue('warning','photo','upMain','카카오톡 공유에 기본 이미지가 사용됩니다.','사진 없는 템플릿은 발행할 수 있지만, 대표사진을 올리면 공유 화면의 첫인상이 좋아집니다.'));
+  }else if(hasMainPreview&&!hasMainReady){
+    issues.push(_preflightIssue('error','photo','upMain','대표사진 미리보기와 업로드 상태가 일치하지 않습니다.','사진을 삭제한 뒤 다시 올려 주세요.'));
+  }
+
+  const galLen=Math.max(ST.gallery.length,ST.galleryUrls.length,ST.galleryFiles.length);
+  let brokenGallery=0, galleryItems=0;
+  for(let i=0;i<galLen;i++){
+    const preview=!!ST.gallery[i];
+    const url=_isStoragePublicUrl(ST.galleryUrls[i]);
+    const file=typeof File!=='undefined'&&ST.galleryFiles[i] instanceof File;
+    if(preview||url||file)galleryItems++;
+    if((preview||url||file)&&!url&&!file)brokenGallery++;
+  }
+  if(brokenGallery){
+    issues.push(_preflightIssue('error','photo','upGal',`갤러리 사진 ${brokenGallery}장의 업로드 상태를 확인해 주세요.`,`미리보기는 있지만 저장 가능한 사진 정보가 없습니다. 해당 사진을 삭제하고 다시 올려 주세요.`));
+  }
+  if(chk('o_gallery')&&galleryItems===0){
+    issues.push(_preflightIssue('warning','photo','upGal','갤러리 기능이 켜져 있지만 사진이 없습니다.','사진을 추가하거나 Step 07에서 화보 갤러리 기능을 꺼 주세요.'));
+  }
+
+  if(chk('o_account')){
+    const rows=[
+      ['신랑측','f_gbank','f_gacc','f_gholder'],['신부측','f_bbank','f_bacc','f_bholder'],
+      ['신랑측 혼주','f_gpbank','f_gpacc','f_gpholder'],['신부측 혼주','f_bpbank','f_bpacc','f_bpholder']
+    ];
+    const entered=rows.filter(([,bank,acc,holder])=>val(bank)||val(acc)||val(holder));
+    if(!entered.length){
+      issues.push(_preflightIssue('error','account','f_gacc','계좌 안내 기능이 켜져 있지만 계좌가 없습니다.','계좌를 한 개 이상 입력하거나 Step 07에서 마음 전하실 곳 기능을 꺼 주세요.'));
+    }else{
+      entered.forEach(([label,bank,acc,holder])=>{
+        const missing=[];if(!val(bank))missing.push('은행');if(!val(acc))missing.push('계좌번호');if(!val(holder))missing.push('예금주');
+        if(missing.length)issues.push(_preflightIssue('error','account',acc,`${label} 계좌의 ${missing.join('·')} 항목을 확인해 주세요.`,'입력 중인 계좌는 은행·계좌번호·예금주가 모두 있어야 합니다.'));
+      });
+    }
+  }
+
+  if(chk('o_music')){
+    const custom=safeUrl(val('f_bgm_url'));
+    const preset=ST_bgmMode==='preset'&&!!ST_bgmPreset;
+    if(!custom&&!preset){
+      issues.push(_preflightIssue('error','features','o_music','배경음악이 켜져 있지만 음악이 선택되지 않았습니다.','프리셋 음악을 선택하거나 직접 음악 주소를 입력해 주세요.'));
+    }
+  }
+  if(val('f_lang2')&&!val('f_msg2')){
+    issues.push(_preflightIssue('error','lang','f_msg2','보조 언어 인사말을 입력해 주세요.','해외 하객 언어를 선택했으므로 해당 언어 인사말이 필요합니다.'));
+  }
+  if(!/^https:\/\//i.test(SHARE_API_BASE||'')){
+    issues.push(_preflightIssue('error','photo','kshareThumb','카카오톡 공유 서버 주소를 확인할 수 없습니다.','관리자 설정 오류입니다. 발행하지 말고 관리자에게 문의해 주세요.'));
+  }
+  return issues;
+}
+function renderPreflight(issues){
+  _lastPreflightIssues=issues.slice();
+  const errors=issues.filter(i=>i.level==='error').length;
+  const warnings=issues.length-errors;
+  V('preflightSummary').innerHTML=`${errors?`<span class="preflight-count error">필수 수정 ${errors}</span>`:''}${warnings?`<span class="preflight-count warning">확인 권장 ${warnings}</span>`:''}`;
+  V('preflightList').innerHTML=issues.map((it,i)=>`<button type="button" class="preflight-item ${it.level}" onclick="goPreflightIssue(${i})"><span class="preflight-badge">${it.level==='error'?'필수':'권장'}</span><span class="preflight-copy"><b>${esc(it.title)}</b><span>${esc(it.desc)}</span></span><span class="preflight-fix">수정하기 ›</span></button>`).join('');
+  V('preflightLead').textContent=errors?'필수 항목을 수정해야 발행할 수 있습니다.':'발행은 가능하지만 아래 항목을 한 번 확인해 주세요.';
+  V('preflightNote').textContent=errors?'필수 수정 항목을 모두 해결한 뒤 발행 버튼을 다시 눌러 주세요.':'권장 항목은 그대로 발행할 수 있습니다. 내용을 확인했다면 계속 발행을 눌러 주세요.';
+  V('preflightContinueBtn').style.display=errors?'none':'inline-flex';
+  V('preflightOv').classList.add('show');
+}
+function closePreflight(){const ov=V('preflightOv');if(ov)ov.classList.remove('show');}
+function goPreflightIssue(i){
+  const it=_lastPreflightIssues[i];if(!it)return;
+  closePreflight();
+  const idx=STEPS.findIndex(s=>s.id===it.step);
+  if(idx>=0)goStep(idx);
+  setTimeout(()=>{
+    let el=V(it.field);
+    if(el&&el.type==='file')el=el.closest('.fld')||el.parentElement;
+    else if(el&&el.type==='checkbox')el=el.closest('.tgl')||el.closest('.fld')||el.parentElement;
+    if(!el)el=document.querySelector(`.sec[data-step="${it.step}"]`);
+    if(el){el.classList.remove('preflight-focus');void el.offsetWidth;el.classList.add('preflight-focus');if(typeof el.focus==='function'&&el.tagName!=='DIV')el.focus({preventScroll:true});}
+  },420);
+}
+function continueAfterPreflight(){
+  closePreflight();
+  _preflightBypassOnce=true;
+  publish();
+}
+
 /* ===== 발행 ===== */
 async function publish(){
+  if(!_preflightBypassOnce){
+    const issues=collectPreflightIssues();
+    if(issues.length){renderPreflight(issues);return;}
+  }
+  _preflightBypassOnce=false;
   const btn=V('publishBtn');
   if(btn.disabled)return; /* 중복 클릭 방지 */
   if(!_requireServer())return; /* 서버 없으면 차단 (거짓 성공 방지) */
 
-  /* ── 주문 인증 게이트 (신규 발행만 / 수정 모드는 통과) ── */
-  if(!editId){
+  /* ── 주문 인증 게이트 (신규·복제 발행 / 원본 수정은 통과) ── */
+  if(!editId||cloneMode){
     /* 이미 인증 완료됐으면 바로 발행 */
     if(_purchaseId){
       await _proceedPublish();
@@ -3036,7 +3573,7 @@ async function publish(){
     return;
   }
 
-  /* 수정 모드 — 주문 재인증 불필요 */
+  /* 원본 수정 모드 — 주문 재인증 불필요 */
   btn.disabled=true;btn.textContent='저장 중...';
   await _proceedPublish();
 }
@@ -3060,26 +3597,28 @@ async function _proceedPublish(){
     const url=await uploadFile(ST.mainFile,`${ST.anonId}/main_${Date.now()}.${ext}`);
     if(url){ST.mainPhotoUrl=url;ST.mainFile=null;}
     else{
-      btn.disabled=false;btn.textContent=editId?'수정 완료':'발행하기';
+      btn.disabled=false;btn.textContent=(editId&&!cloneMode)?'수정 완료':(cloneMode?'복제본 발행':'발행하기');
       alert('대표사진 업로드에 실패했어요.\n다시 시도하거나, 사진 없이 먼저 발행 후 수정에서 사진을 추가해주세요.');
       return;
     }
   }
 
-  if(ST.galleryFiles.length>0){
-    btn.textContent=`갤러리 업로드 중... (0/${ST.galleryFiles.length})`;
-    const failedFiles=[];
+  const _pendingGallery=[];
+  for(let j=0;j<ST.galleryFiles.length;j++){
+    if(ST.galleryFiles[j] instanceof File)_pendingGallery.push(j);
+  }
+  if(_pendingGallery.length>0){
+    btn.textContent=`갤러리 업로드 중... (0/${_pendingGallery.length})`;
     const failedNames=[];
-    for(let j=0;j<ST.galleryFiles.length;j++){
+    for(let p=0;p<_pendingGallery.length;p++){
+      const j=_pendingGallery[p];
       const f=ST.galleryFiles[j];
-      if(!(f instanceof File)){console.warn('galleryFiles에 File이 아닌 값:', f);continue;}
       const ext=f.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'');
       const url=await uploadFile(f,`${ST.anonId}/gal_${Date.now()}_${j}.${ext}`);
-      if(url){ST.galleryUrls.push(url);}
-      else{failedFiles.push(f);failedNames.push(f.name);}
-      btn.textContent=`갤러리 업로드 중... (${j+1}/${ST.galleryFiles.length})`;
+      if(url){ST.galleryUrls[j]=url;ST.galleryFiles[j]=null;}
+      else{failedNames.push(f.name);}
+      btn.textContent=`갤러리 업로드 중... (${p+1}/${_pendingGallery.length})`;
     }
-    ST.galleryFiles=failedFiles;
     if(failedNames.length){
       alert(`일부 갤러리 사진 업로드 실패 (${failedNames.length}장):\n${failedNames.join(', ')}\n\n나머지는 정상 저장됩니다. 발행 후 수정에서 해당 사진을 다시 올려주세요.`);
     }
@@ -3146,8 +3685,8 @@ async function _proceedPublish(){
   /* ── 3. 저장 ── */
   let slug=editSlug, err;
 
-  if(editId){
-    /* ── 수정 모드: cards 직접 update 불가 (RLS 차단)
+  if(editId&&!cloneMode){
+    /* ── 원본 수정 모드: cards 직접 update 불가 (RLS 차단)
          → update_card_by_slug RPC 경유 (구매확인/verify-order 불필요) ── */
     d.slug=editSlug;
     const{data:upResult,error:upErr}=await sb.rpc('update_card_by_slug',{
@@ -3161,12 +3700,12 @@ async function _proceedPublish(){
     slug=editSlug;
 
   }else{
-    /* ── 신규 발행: 반드시 create_card_with_purchase RPC 경유
+    /* ── 신규·복제 발행: 반드시 create_card_with_purchase RPC 경유
          프론트에서 cards.insert() 직접 호출 불가 (cards_insert_own 정책 제거됨)
          RPC 내부에서 purchase 검증 + cards insert + purchases 상태 업데이트가
          단일 트랜잭션으로 원자적 처리 → 우회 불가 ── */
     if(!_purchaseId){
-      btn.disabled=false;btn.textContent='발행하기';
+      btn.disabled=false;btn.textContent=cloneMode?'복제본 발행':'발행하기';
       alert('주문 인증이 필요합니다. 발행 버튼을 다시 눌러주세요.');
       return;
     }
@@ -3181,7 +3720,7 @@ async function _proceedPublish(){
       p_card_data:d,
       p_edit_code:_newEditCode
     });
-    btn.disabled=false;btn.textContent='발행하기';
+    btn.disabled=false;btn.textContent=cloneMode?'복제본 발행':'발행하기';
 
     if(rpcErr||!rpcResult){
       alert('발행 실패: '+(rpcErr?.message||'알 수 없는 오류'));return;
@@ -3197,19 +3736,20 @@ async function _proceedPublish(){
     _purchaseId=null; // 사용 완료
   }
 
-  /* 공유 링크: VPS SSR 주소 (카카오/SNS가 OG 태그를 읽을 수 있도록)
-     사람이 열면 VPS가 실제 카드로 자동 리다이렉트함 */
-  const VPS_BASE='https://weddingapi.duckdns.org';
-  const shareUrl=`${VPS_BASE}/card/${encodeURIComponent(slug)}`;
+  /* 공유 링크: Vercel SSR API 주소.
+     서버가 slug로 카드 데이터를 조회해 고객별 OG 태그를 응답한 뒤 실제 카드로 이동한다.
+     v는 사진/정보 수정 뒤 카카오 캐시가 이전 미리보기를 재사용하지 않게 하는 버전값이다. */
+  const shareUrl=buildShareUrl(slug,Date.now());
   /* 청첩장 보기(미리보기) 링크: GitHub Pages 실제 카드 */
   const viewUrl=new URL(`card.html?slug=${encodeURIComponent(slug)}`,location.href).href;
 
-  V('pubUrl').textContent=shareUrl;   /* 복사/공유용 = VPS */
+  const _publishedAsClone=cloneMode;
+  V('pubUrl').textContent=shareUrl;   /* 복사/공유용 = Vercel SSR */
   V('pubLink').href=viewUrl;          /* 청첩장 보기 = 실제 카드 */
-  V('pubTitle').textContent=editId?'청첩장이 수정됐어요!':'청첩장이 발행됐어요!';
+  V('pubTitle').textContent=_publishedAsClone?'복제본 청첩장이 발행됐어요!':(editId?'청첩장이 수정됐어요!':'청첩장이 발행됐어요!');
 
-  /* 신규 발행 시에만 수정번호 표시 (editCode는 이때만 생성됨) */
-  if(!editId&&_newEditCode){
+  /* 신규·복제 발행 시에만 수정번호 표시 */
+  if((!editId||_publishedAsClone)&&_newEditCode){
     if(V('pubEditCode')){
       V('pubEditCode').textContent=_newEditCode;
       if(V('pubEditWrap'))V('pubEditWrap').style.display='block';
@@ -3219,7 +3759,8 @@ async function _proceedPublish(){
   }
 
   V('pubOv').classList.add('show');
-  clearDraft();
+  if(_publishedAsClone)finishCloneMode(slug,_newEditCode);
+  else clearDraft();
 }
 function copyUrl(){navigator.clipboard.writeText(V('pubUrl').textContent).then(()=>{const b=V('pubCopyBtn');b.textContent='복사됨 ✓';setTimeout(()=>b.textContent='🔗 링크 복사',1500);});}
 function copyEditCode(){navigator.clipboard.writeText(V('pubEditCode').textContent).then(()=>{const b=V('pubEditCopyBtn');b.textContent='복사됨 ✓';setTimeout(()=>b.textContent='🔑 수정번호 복사',1500);});}
@@ -3230,7 +3771,7 @@ function closeOrderModal(){
   V('orderErr').textContent='';
   // 인증 중 발행 버튼 복구
   const btn=V('publishBtn');
-  if(btn){btn.disabled=false;btn.textContent='발행하기';}
+  if(btn){btn.disabled=false;btn.textContent=cloneMode?'복제본 발행':(editId?'수정 완료':'발행하기');}
 }
 
 async function verifyOrder(){
@@ -3281,33 +3822,55 @@ async function recordView(slug){
 }
 
 /* ===== 자동저장 ===== */
+var _draftSaveTimer=null;
+function queueDraftSave(){
+  if(editSlug&&!cloneMode)return;
+  if(_draftSaveTimer)clearTimeout(_draftSaveTimer);
+  _draftSaveTimer=setTimeout(saveDraft,220);
+}
 const DRAFT_KEY='mr_draft_v2';
+function activeDraftKey(){return cloneMode?CLONE_DRAFT_KEY:DRAFT_KEY;}
 const DRAFT_FIELDS=['f_groom','f_bride','f_order','f_date','f_time','f_venue','f_hall','f_addr','f_msg','f_font','f_opening','f_lang2','f_msg2','f_venue2','f_address2','f_gbank','f_gacc','f_gholder','f_bbank','f_bacc','f_bholder','f_gpbank','f_gpacc','f_gpholder','f_bpbank','f_bpacc','f_bpholder','f_bgm_url','f_gparent','f_bparent','f_particle'];
 const DRAFT_TGLS=['o_dday','o_gallery','o_rsvp','o_guest','o_account','o_music','f_gparent_dec','f_bparent_dec'];
 function saveDraft(){
-  if(editSlug)return;
-  const d={theme:ST.theme,layout:ST.galleryLayout,bgmMode:ST_bgmMode,bgmPreset:ST_bgmPreset,fields:{},tgls:{}};
+  if(editSlug&&!cloneMode)return;
+  const d={
+    theme:ST.theme,layout:ST.galleryLayout,bgmMode:ST_bgmMode,bgmPreset:ST_bgmPreset,
+    mainPhotoUrl:safeUrl(ST.mainPhotoUrl)||null,
+    galleryUrls:(ST.galleryUrls||[]).map(safeUrl).filter(Boolean).slice(0,40),
+    fields:{},tgls:{}
+  };
   DRAFT_FIELDS.forEach(id=>{if(V(id))d.fields[id]=V(id).value;});
   DRAFT_TGLS.forEach(id=>{if(V(id))d.tgls[id]=V(id).checked;});
-  try{localStorage.setItem(DRAFT_KEY,JSON.stringify(d));V('saveState').textContent='임시저장 ✓';}catch(e){}
+  try{localStorage.setItem(activeDraftKey(),JSON.stringify(d));V('saveState').textContent=cloneMode?`${_cloneAudienceLabel(cloneAudience)} 복제본 저장 ✓`:'임시저장 ✓';}catch(e){}
 }
 function loadDraft(){
-  if(editSlug)return;
+  if(editSlug&&!cloneMode)return false;
   try{
-    const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return;
+    const raw=localStorage.getItem(activeDraftKey());if(!raw)return false;
     const d=JSON.parse(raw);
     if(d.theme)pickTheme(d.theme);
     if(d.layout){ST.galleryLayout=d.layout;document.querySelectorAll('.lp-item').forEach(el=>el.classList.toggle('on',el.dataset.l===d.layout));}
-    Object.entries(d.fields||{}).forEach(([id,v])=>{if(V(id)){if(id==='f_particle'&&v!=='auto'&&!AMB_EFFECTS[v])v='auto';V(id).value=v;}});
+    /* AMB_EFFECTS는 초기화 블록보다 아래에 선언되어 있으므로, 초안 복원 중에는 독립 허용목록으로 검증한다. */
+    const _draftEffects={auto:1,none:1,winter_snow:1,gold_dust:1,film_dust:1,pearl_bokeh:1};
+    Object.entries(d.fields||{}).forEach(([id,v])=>{if(V(id)){if(id==='f_particle'&&!_draftEffects[v])v='auto';V(id).value=v;}});
     Object.entries(d.tgls||{}).forEach(([id,v])=>{if(V(id))V(id).checked=v;});
+    /* 이미 Storage 업로드가 끝난 사진 URL은 새로고침 뒤에도 복원한다. File/base64는 저장하지 않는다. */
+    const _draftMain=safeUrl(d.mainPhotoUrl||'');
+    const _draftGallery=(Array.isArray(d.galleryUrls)?d.galleryUrls:[]).map(safeUrl).filter(Boolean).slice(0,40);
+    ST.mainPhotoUrl=_draftMain||null;ST.mainPhoto=_draftMain||null;ST.mainFile=null;
+    ST.galleryUrls=[..._draftGallery];ST.gallery=[..._draftGallery];ST.galleryFiles=new Array(_draftGallery.length).fill(null);
+    if(V('mainPreview'))V('mainPreview').innerHTML=_draftMain?`<div class="mp-wrap"><div class="mp-box"><img src="${esc(_draftMain)}" alt="대표사진"/><div class="rm" onclick="rmMain()">×</div></div></div>`:'';
+    renderGal();
     if(d.tgls?.o_music&&V('musicUrlBox'))V('musicUrlBox').style.display='block';
     /* BGM 모드 복원: 명시값 우선, 없으면 f_bgm_url 유무로 추론(기존 호환) */
     ST_bgmMode=d.bgmMode||((d.fields&&d.fields.f_bgm_url)?'custom':'none');
     ST_bgmPreset=d.bgmPreset||'';
     if(typeof renderBgmPresets==='function')renderBgmPresets();
     syncAmbCards();
-    renderIV();renderFonts();V('saveState').textContent='이전 작업 불러옴 ✓';
-  }catch(e){}
+    renderIV();renderFonts();V('saveState').textContent=cloneMode?`${_cloneAudienceLabel(cloneAudience)} 복제본 불러옴 ✓`:'이전 작업 불러옴 ✓';
+    return true;
+  }catch(e){return false;}
 }
 function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
 
@@ -3363,9 +3926,9 @@ async function loadForEdit(){
     syncAmbCards();
   }
   ST.mainPhotoUrl=data.main_photo_url||null;ST.mainPhoto=data.main_photo_url||null;
-  ST.galleryUrls=data.gallery_urls||[];ST.gallery=[...(data.gallery_urls||[])];
+  ST.galleryUrls=[...(data.gallery_urls||[])];ST.gallery=[...(data.gallery_urls||[])];ST.galleryFiles=new Array(ST.gallery.length).fill(null);
   const o=data.options||{};
-  DRAFT_TGLS.forEach(id=>{if(V(id))V(id).checked=o[id.slice(2)]!==false;});
+  DRAFT_TGLS.forEach(id=>{if(!id.startsWith('o_'))return;if(V(id))V(id).checked=o[id.slice(2)]!==false;});
   /* 배경음악 ON/OFF 명확 복원: music===true 또는 preset/custom 또는 bgm_url 있으면 ON */
   var _musicOn=(o.music===true)||(ST_bgmMode==='preset')||(ST_bgmMode==='custom')||!!o.bgm_url;
   if(V('o_music'))V('o_music').checked=_musicOn;
@@ -3374,6 +3937,7 @@ async function loadForEdit(){
   renderGal();
   V('publishBtn').textContent='수정 완료';
   V('saveState').textContent='✏️ 수정 중';
+  updateCloneUi();
 }
 
 /* ===== 미리보기 토글 (모바일) ===== */
@@ -3390,7 +3954,10 @@ renderIV(true);
 V('work').addEventListener('scroll',()=>requestAnimationFrame(onScroll),{passive:true});
 let _dt;V('work').addEventListener('input',()=>{clearTimeout(_dt);_dt=setTimeout(saveDraft,1500);},{passive:true});
 V('work').addEventListener('change',()=>{clearTimeout(_dt);_dt=setTimeout(saveDraft,600);},{passive:true});
-if(editSlug)loadForEdit().then(()=>renderIV());
+if(editSlug)loadForEdit().then(()=>{
+  if(cloneMode){_readCloneMeta();const restored=loadDraft();if(!restored)saveDraft();updateCloneUi();}
+  renderIV();
+});
 else loadDraft();
 
 /* ===== 배경 연출 엔진 (첫 화면 한정, 공통) ===== */
