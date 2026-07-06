@@ -1442,6 +1442,38 @@ input,select,textarea{font-family:inherit;}
   .publish-share-actions,.publish-edit-actions{grid-template-columns:1fr;}
   .publish-share-actions #pubLink{grid-column:auto;}
 }
+
+/* ===== FIX9: 구매자 인증 후 내 청첩장 수정 진입 ===== */
+.manage-entry-btn{padding:8px 14px;font-size:12.5px;background:#fff;color:var(--brown-soft);border:1px solid var(--sand);}
+.manage-entry-btn:hover{border-color:var(--gold);color:var(--gold-deep);background:var(--gold-wash);}
+.buyer-manage-modal{max-width:500px;text-align:left;}
+.buyer-manage-head{text-align:center;margin-bottom:20px;}
+.buyer-manage-icon{font-size:36px;line-height:1;margin-bottom:10px;}
+.buyer-manage-head h3{margin-bottom:7px;}
+.buyer-manage-head p{font-size:13px;line-height:1.65;color:var(--brown-mute);word-break:keep-all;}
+.buyer-manage-form{display:grid;gap:14px;}
+.buyer-manage-form .fi{background:var(--white);}
+.buyer-manage-actions{display:grid;grid-template-columns:1fr;gap:9px;margin-top:18px;}
+.buyer-manage-error{min-height:20px;margin-top:10px;font-size:12.5px;line-height:1.5;color:#b24f45;text-align:center;}
+.buyer-manage-result{display:none;}
+.buyer-manage-result.show{display:block;}
+.buyer-manage-summary{padding:13px 14px;margin-bottom:12px;border-radius:12px;background:var(--gold-wash);font-size:13px;line-height:1.6;color:var(--brown-soft);text-align:center;}
+.buyer-manage-list{display:grid;gap:10px;max-height:45vh;overflow:auto;padding:2px;}
+.buyer-manage-card{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:15px;border:1px solid var(--line);border-radius:14px;background:#fff;}
+.buyer-manage-card-title{font-size:14px;font-weight:600;color:var(--brown);margin-bottom:4px;}
+.buyer-manage-card-meta{font-size:12px;line-height:1.55;color:var(--brown-mute);word-break:break-all;}
+.buyer-manage-card .btn{padding:9px 14px;font-size:12.5px;}
+.buyer-manage-empty{padding:20px 14px;border:1px dashed var(--sand);border-radius:14px;text-align:center;font-size:13px;line-height:1.7;color:var(--brown-mute);}
+.buyer-manage-foot{display:flex;justify-content:center;margin-top:14px;}
+@media(max-width:700px){
+  .manage-entry-btn{padding:7px 11px;font-size:12px;}
+  .save-state{display:none;}
+  .buyer-manage-modal{max-width:calc(100vw - 28px);padding:28px 20px;}
+  .buyer-manage-card{grid-template-columns:1fr;}
+  .buyer-manage-card .btn{width:100%;}
+}
+@media(max-width:360px){.manage-entry-btn{font-size:0}.manage-entry-btn::after{content:'내 청첩장';font-size:11.5px;}}
+
 </style>
 </head>
 <body>
@@ -1450,6 +1482,7 @@ input,select,textarea{font-family:inherit;}
   <a href="https://kkacmn-cpu.github.io/wedding/wedding-store.html" class="tb-back">← 나가기</a>
   <div class="tb-brand">Memory<b>Retouch</b></div>
   <div class="tb-right">
+    <button type="button" class="btn manage-entry-btn" onclick="openBuyerManage()">내 청첩장 수정</button>
     <span class="save-state" id="saveState"></span>
     <button class="btn btn-gold btn-sm" id="publishBtn" onclick="publish()">발행하기</button>
   </div>
@@ -1873,6 +1906,47 @@ input,select,textarea{font-family:inherit;}
   </div>
 </div>
 
+<!-- 구매자 인증 후 내 청첩장 수정 모달 -->
+<div class="ov" id="buyerManageOv">
+  <div class="modal buyer-manage-modal">
+    <span class="modal-x" onclick="closeBuyerManage()">×</span>
+    <div id="buyerManageAuthView">
+      <div class="buyer-manage-head">
+        <div class="buyer-manage-icon">✏️</div>
+        <h3>내 청첩장 수정하기</h3>
+        <p>청첩장을 발행할 때 인증한 구매자 이름과 휴대폰번호를 입력하세요.</p>
+      </div>
+      <div class="buyer-manage-form">
+        <div>
+          <label class="fld-label">구매자 이름 *</label>
+          <input class="fi" id="mv_buyer_name" placeholder="주문하신 분의 이름" maxlength="20" autocomplete="name"/>
+        </div>
+        <div>
+          <label class="fld-label">휴대폰번호 *</label>
+          <input class="fi" id="mv_phone" placeholder="예: 01012345678" maxlength="11" inputmode="numeric" autocomplete="tel"/>
+        </div>
+      </div>
+      <div class="buyer-manage-error" id="buyerManageErr"></div>
+      <div class="buyer-manage-actions">
+        <button type="button" class="btn btn-gold" id="buyerManageVerifyBtn" onclick="verifyBuyerForManage()">구매 확인 후 청첩장 찾기</button>
+        <button type="button" class="btn btn-ghost" onclick="closeBuyerManage()">취소</button>
+      </div>
+    </div>
+    <div class="buyer-manage-result" id="buyerManageResultView">
+      <div class="buyer-manage-head">
+        <div class="buyer-manage-icon">💌</div>
+        <h3>내 청첩장</h3>
+        <p>수정할 청첩장을 선택하세요.</p>
+      </div>
+      <div class="buyer-manage-summary" id="buyerManageSummary"></div>
+      <div class="buyer-manage-list" id="buyerManageList"></div>
+      <div class="buyer-manage-foot">
+        <button type="button" class="btn btn-ghost btn-sm" onclick="resetBuyerManage()">다른 주문으로 확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 스마트스토어 주문 인증 모달 -->
 <div class="ov" id="orderOv">
   <div class="modal">
@@ -1934,6 +2008,10 @@ const chk=id=>V(id)?V(id).checked:false;
 
 /* 주문 인증 상태 — 신규 발행 시 반드시 인증 완료해야 함 */
 let _purchaseId=null;  /* 인증 완료된 purchase UUID */
+/* FIX9: 구매자별 관리 링크는 현재 기기의 브라우저에만 보조 저장한다.
+   기존 발행/수정 권한 구조는 변경하지 않고, 구매 확인 후 수정 진입을 쉽게 찾도록 한다. */
+const BUYER_MANAGE_STORE='wedding:buyerManageRecords:v1';
+let _verifiedBuyerKey=null;
 
 /* ===== 상태 ===== */
 const ST={
@@ -4441,6 +4519,10 @@ async function _proceedPublish(){
       manageUrl.searchParams.set('editCode',_newEditCode);
       if(V('pubManageCopyBtn'))V('pubManageCopyBtn').dataset.url=manageUrl.href;
       try{localStorage.setItem('wedding:lastManageUrl',manageUrl.href);}catch(e){}
+      if(_verifiedBuyerKey){
+        _rememberBuyerManageRecord(_verifiedBuyerKey,{slug:slug,manageUrl:manageUrl.href,groom:g,bride:b,weddingDate:val('f_date'),savedAt:Date.now()});
+        _verifiedBuyerKey=null;
+      }
       if(V('pubEditWrap'))V('pubEditWrap').style.display='block';
     }
   }else{
@@ -4523,6 +4605,123 @@ function downloadPublishedQR(){
   document.head.appendChild(script);
 }
 
+/* ===== FIX9: 구매자 인증 후 내 청첩장 찾기 ===== */
+function _normalizeBuyerName(value){return String(value||'').trim().replace(/\s+/g,'').toLowerCase();}
+function _normalizeBuyerPhone(value){return String(value||'').replace(/\D/g,'');}
+async function _buyerIdentityKey(name,phone){
+  const raw=_normalizeBuyerName(name)+'|'+_normalizeBuyerPhone(phone);
+  if(window.crypto&&crypto.subtle&&window.TextEncoder){
+    try{
+      const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(raw));
+      return Array.from(new Uint8Array(buf)).map(v=>v.toString(16).padStart(2,'0')).join('');
+    }catch(e){}
+  }
+  let h=2166136261;
+  for(let i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h=Math.imul(h,16777619);}
+  return 'f'+(h>>>0).toString(16);
+}
+function _readBuyerManageStore(){
+  try{const v=JSON.parse(localStorage.getItem(BUYER_MANAGE_STORE)||'{}');return v&&typeof v==='object'?v:{};}catch(e){return {};}
+}
+function _writeBuyerManageStore(store){try{localStorage.setItem(BUYER_MANAGE_STORE,JSON.stringify(store));return true;}catch(e){return false;}}
+function _rememberBuyerManageRecord(key,record){
+  if(!key||!record||!record.manageUrl)return;
+  const store=_readBuyerManageStore();
+  const list=Array.isArray(store[key])?store[key]:[];
+  const clean={
+    slug:String(record.slug||''),manageUrl:String(record.manageUrl||''),groom:String(record.groom||''),bride:String(record.bride||''),
+    weddingDate:String(record.weddingDate||''),savedAt:Number(record.savedAt||Date.now())
+  };
+  const next=[clean].concat(list.filter(v=>v&&v.manageUrl!==clean.manageUrl)).slice(0,8);
+  store[key]=next;
+  _writeBuyerManageStore(store);
+}
+function _readBuyerManageRecords(key){
+  const store=_readBuyerManageStore();
+  return Array.isArray(store[key])?store[key].filter(v=>v&&v.manageUrl):[];
+}
+function openBuyerManage(){
+  const ov=V('buyerManageOv');if(!ov)return;
+  resetBuyerManage();
+  ov.classList.add('show');
+  setTimeout(()=>V('mv_buyer_name')?.focus(),80);
+}
+function closeBuyerManage(){V('buyerManageOv')?.classList.remove('show');}
+function resetBuyerManage(){
+  V('buyerManageAuthView')?.style.removeProperty('display');
+  V('buyerManageResultView')?.classList.remove('show');
+  if(V('buyerManageErr'))V('buyerManageErr').textContent='';
+  const btn=V('buyerManageVerifyBtn');if(btn){btn.disabled=false;btn.textContent='구매 확인 후 청첩장 찾기';}
+}
+function _formatManageDate(value){
+  const m=String(value||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[1]}.${m[2]}.${m[3]}`:'';
+}
+function _renderBuyerManageRecords(records,buyerName){
+  const list=V('buyerManageList'),summary=V('buyerManageSummary');if(!list||!summary)return;
+  summary.textContent=`${buyerName||'구매자'}님의 청첩장 ${records.length}개를 찾았습니다.`;
+  if(!records.length){
+    list.innerHTML='<div class="buyer-manage-empty">이 기기에 저장된 청첩장을 찾지 못했습니다.<br>발행 완료 화면에서 받은 관리 링크 또는 수정번호가 있다면 고객센터에 전달해 주세요.</div>';
+  }else{
+    list.innerHTML=records.map((r,i)=>{
+      const names=[r.groom,r.bride].filter(Boolean).join(' ♥ ')||'모바일 청첩장';
+      const date=_formatManageDate(r.weddingDate);
+      const meta=[date,r.slug?`주소 ${r.slug}`:''].filter(Boolean).join(' · ');
+      return `<div class="buyer-manage-card"><div><div class="buyer-manage-card-title">${esc(names)}</div><div class="buyer-manage-card-meta">${esc(meta||'발행된 청첩장')}</div></div><button type="button" class="btn btn-gold" onclick="openBuyerManageRecord(${i})">수정하기</button></div>`;
+    }).join('');
+  }
+  window._buyerManageVisibleRecords=records;
+  V('buyerManageAuthView').style.display='none';
+  V('buyerManageResultView').classList.add('show');
+}
+function openBuyerManageRecord(index){
+  const r=(window._buyerManageVisibleRecords||[])[Number(index)];
+  if(!r||!r.manageUrl){alert('수정 링크를 확인할 수 없습니다.');return;}
+  location.href=r.manageUrl;
+}
+function _recordsFromVerifyResponse(json){
+  const src=Array.isArray(json?.cards)?json.cards:(json?.card?[json.card]:[]);
+  return src.map(v=>{
+    const manageUrl=v.manageUrl||v.manage_url||'';
+    if(!manageUrl&&v.slug&&v.editCode){
+      const u=new URL('editor.html',location.href);u.searchParams.set('slug',v.slug);u.searchParams.set('editCode',v.editCode);v.manageUrl=u.href;
+    }
+    return {slug:v.slug||'',manageUrl:v.manageUrl||manageUrl,groom:v.groom||v.groom_name||'',bride:v.bride||v.bride_name||'',weddingDate:v.weddingDate||v.wedding_date||'',savedAt:Date.now()};
+  }).filter(v=>v.manageUrl);
+}
+async function verifyBuyerForManage(){
+  if(!_requireServer())return;
+  const buyerName=V('mv_buyer_name')?.value.trim();
+  const buyerPhone=_normalizeBuyerPhone(V('mv_phone')?.value);
+  const err=V('buyerManageErr'),btn=V('buyerManageVerifyBtn');
+  if(err)err.textContent='';
+  if(!buyerName||buyerPhone.length<10||buyerPhone.length>11){if(err)err.textContent='구매자 이름과 휴대폰번호를 정확히 입력해주세요.';return;}
+  btn.disabled=true;btn.textContent='구매 내역 확인 중...';
+  const key=await _buyerIdentityKey(buyerName,buyerPhone);
+  let localRecords=_readBuyerManageRecords(key);
+  try{
+    const res=await fetch('https://weddingapi.duckdns.org/verify-order',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({buyerName,buyerPhone,purpose:'manage'})
+    });
+    const json=await res.json();
+    const remoteRecords=_recordsFromVerifyResponse(json);
+    if(remoteRecords.length){
+      remoteRecords.forEach(r=>_rememberBuyerManageRecord(key,r));
+      localRecords=_readBuyerManageRecords(key);
+    }
+    if(json.valid||json.purchaseId||localRecords.length){
+      _renderBuyerManageRecords(localRecords,buyerName);
+      return;
+    }
+    if(err)err.textContent=json.reason||'구매 내역을 확인하지 못했습니다. 입력 정보를 다시 확인해주세요.';
+  }catch(e){
+    if(localRecords.length){_renderBuyerManageRecords(localRecords,buyerName);return;}
+    if(err)err.textContent='서버 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.';
+  }finally{
+    btn.disabled=false;btn.textContent='구매 확인 후 청첩장 찾기';
+  }
+}
+
 /* ===== 주문 인증 ===== */
 function closeOrderModal(){
   V('orderOv').classList.remove('show');
@@ -4560,6 +4759,7 @@ async function verifyOrder(){
     if(json.valid&&json.purchaseId){
       /* 정상 인증 — purchaseId 확보 후 발행 진행 */
       _purchaseId=json.purchaseId;
+      _verifiedBuyerKey=await _buyerIdentityKey(buyerName,buyerPhone);
       V('orderOv').classList.remove('show');
       await _proceedPublish();
     }else{
