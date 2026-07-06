@@ -2573,6 +2573,39 @@ function pickMsg(k,el){
 
 /* ===== 사진 업로드 ===== */
 function readImg(file,cb){const r=new FileReader();r.onload=e=>cb(e.target.result);r.readAsDataURL(file);}
+async function compressImageFile(file,opt){
+  opt=opt||{};
+  if(!file||!(file instanceof File)||!/^image\//i.test(file.type))return file;
+  if(/image\/gif/i.test(file.type)||/image\/svg/i.test(file.type))return file;
+  const maxW=opt.maxW||1800,maxH=opt.maxH||1800,quality=opt.quality||0.82;
+  try{
+    const img=await new Promise(function(resolve,reject){
+      const url=URL.createObjectURL(file);
+      const im=new Image();
+      im.onload=function(){URL.revokeObjectURL(url);resolve(im);};
+      im.onerror=function(){URL.revokeObjectURL(url);reject(new Error('image load failed'));};
+      im.src=url;
+    });
+    let w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;
+    if(!w||!h)return file;
+    const scale=Math.min(1,maxW/w,maxH/h);
+    const tw=Math.max(1,Math.round(w*scale)),th=Math.max(1,Math.round(h*scale));
+    if(scale>=1&&file.size<900*1024)return file;
+    const canvas=document.createElement('canvas');
+    canvas.width=tw;canvas.height=th;
+    const ctx=canvas.getContext('2d',{alpha:false});
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    ctx.drawImage(img,0,0,tw,th);
+    const blob=await new Promise(function(resolve){
+      if(canvas.toBlob)canvas.toBlob(function(b){resolve(b);},'image/jpeg',quality);
+      else resolve(null);
+    });
+    if(!blob)return file;
+    if(blob.size>=file.size&&scale>=1)return file;
+    const name=(file.name||'photo').replace(/\.[^.]+$/,'')+'.jpg';
+    return new File([blob],name,{type:'image/jpeg',lastModified:Date.now()});
+  }catch(e){console.warn('이미지 압축 실패, 원본 사용:',e);return file;}
+}
 async function uploadFile(file,path){
   if(!file||!(file instanceof File))return null;
   if(!sb)return null; /* 서버 없으면 업로드 불가 */
@@ -2604,9 +2637,10 @@ function showUpStatus(msg,id='upMainStatus'){
 
 async function upMain(i){
   if(!i.files[0])return;
-  const file=i.files[0];
+  let file=i.files[0];
   if(!file.type.startsWith('image/')){alert('이미지 파일만 올릴 수 있어요.');return;}
   if(file.size>10*1024*1024){alert('파일 크기가 10MB를 초과해요.');return;}
+  file=await compressImageFile(file,{maxW:2200,maxH:2200,quality:0.86});
 
   /* 새 사진 선택 → 기존 URL 즉시 무효화 (교체 보장) + 업로드 진행 표시 */
   ST.mainPhotoUrl=null;
@@ -2709,7 +2743,7 @@ async function waitForGalleryUploads(){
   while(_galleryUploadBatches.size){await Promise.allSettled(Array.from(_galleryUploadBatches));}
 }
 async function upGal(i){
-  const files=[...i.files].slice(0,40-ST.gallery.length);
+  let files=[...i.files].slice(0,40-ST.gallery.length);
   i.value='';
   if(!files.length)return;
   const invalid=files.filter(f=>!f.type.startsWith('image/'));
@@ -2717,6 +2751,8 @@ async function upGal(i){
   const tooLarge=files.filter(f=>f.size>10*1024*1024);
   if(tooLarge.length){alert('10MB를 초과한 사진이 '+tooLarge.length+'장 있습니다. 크기를 줄인 뒤 다시 올려주세요.');return;}
   if(!sb){try{alert('서버에 연결하지 못했습니다. 인터넷 연결을 확인한 후 다시 시도해 주세요.');}catch(e){}}
+  showUpStatus('사진 최적화 중…','galUploadText');
+  files=await Promise.all(files.map(function(f){return compressImageFile(f,{maxW:1600,maxH:1600,quality:0.78});}));
   const items=[];
   /* FileReader로 30장을 동시에 base64 변환하지 않고 blob URL을 즉시 사용한다.
      선택한 전체 파일이 먼저 배열에 등록되므로 발행을 바로 눌러도 누락되지 않는다. */
@@ -2737,7 +2773,7 @@ async function upGal(i){
 function renderGal(){
   if(!V('galGrid'))return;
   V('galGrid').innerHTML=ST.gallery.map((s,i)=>
-    `<div class="pthumb"><img src="${s}" alt="갤러리${i+1}"/><div class="rm" onclick="rmGal(${i})">×</div></div>`
+    `<div class="pthumb"><img src="${s}" alt="갤러리${i+1}" loading="lazy" decoding="async"/><div class="rm" onclick="rmGal(${i})">×</div></div>`
   ).join('');
   updateLayoutThumbs();
 }
@@ -3040,10 +3076,11 @@ function useMainForShare(){
   if(!ST.mainPhoto){alert('먼저 청첩장 대표사진을 올려 주세요.');return;}
   _setSharePhoto(ST.mainPhoto,'main',null,true);
 }
-function upSharePhoto(input){
-  const file=input&&input.files&&input.files[0];if(!file)return;
+async function upSharePhoto(input){
+  let file=input&&input.files&&input.files[0];if(!file)return;
   if(!file.type.startsWith('image/')){alert('이미지 파일만 선택할 수 있어요.');input.value='';return;}
   if(file.size>10*1024*1024){alert('파일 크기가 10MB를 초과해요.');input.value='';return;}
+  file=await compressImageFile(file,{maxW:2200,maxH:2200,quality:0.86});
   readImg(file,function(data){_setSharePhoto(data,'custom',file,true);});
 }
 function onShareZoom(value){
