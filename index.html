@@ -1,13 +1,2584 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>모바일 청첩장 편집기</title>
-  <meta http-equiv="refresh" content="0; url=./editor.html">
-  <script>location.replace('./editor.html' + location.search + location.hash);</script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>모바일 청첩장</title>
+<!-- SNS/카톡 공유 OG 태그 -->
+<!-- 기본값은 og-default.jpg, 카드 로드 후 대표사진(main_photo_url)이 있으면 JS로 갱신 -->
+<meta property="og:type" content="website"/>
+<meta property="og:title" id="og-title" content="모바일 청첩장"/>
+<meta property="og:description" id="og-desc" content="저희 결혼식에 초대합니다"/>
+<meta property="og:image" id="og-image" content="https://wedding-test-4-2.vercel.app/og-default.jpg"/>
+<meta property="og:image:secure_url" id="og-image-secure" content="https://wedding-test-4-2.vercel.app/og-default.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="600"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" id="tw-title" content="모바일 청첩장"/>
+<meta name="twitter:image" id="tw-image" content="https://wedding-test-4-2.vercel.app/og-default.jpg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;700;800&family=Noto+Sans+JP:wght@300;400&family=Noto+Sans+Thai:wght@300;400&family=Gowun+Batang:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ivory:#fcf9f4;--ivory-2:#f7f1e8;--brown:#3a2f26;--brown-soft:#5c4e42;
+  --brown-mute:#8a7a6a;--gold:#b8945f;--gold-deep:#9a7740;--gold-pale:#e9dcc4;
+  --gold-wash:#f5eedf;--line:#e8ddcc;--white:#ffffff;--ok:#6f8f6a;--sand:#d9c8af;
+  --sh-sm:0 4px 18px -8px rgba(58,47,38,.18);
+  --serif:'Noto Serif KR',serif;--sans:'Noto Sans KR',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-height:100vh;font-weight:300;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word;}
+
+/* 로딩 */
+#loading{position:fixed;inset:0;background:var(--ivory);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity .5s;}
+#loading.hide{opacity:0;pointer-events:none;}
+.loading-logo{font-family:var(--serif);font-size:22px;color:var(--gold-deep);margin-bottom:20px;letter-spacing:2px;}
+.loading-dots{display:flex;gap:8px;}
+.loading-dots span{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:dot .9s ease-in-out infinite;}
+.loading-dots span:nth-child(2){animation-delay:.2s;}
+.loading-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes dot{0%,100%{opacity:.2;transform:scale(.8);}50%{opacity:1;transform:scale(1.2);}}
+
+/* 청첩장 전체 */
+#card{max-width:480px;margin:0 auto;background:var(--white);min-height:100vh;position:relative;overflow:hidden;animation:cardFadeIn .9s .85s ease both;}
+@keyframes cardFadeIn{0%{opacity:0;}100%{opacity:1;}}
+
+/* 오프닝 */
+.op-overlay{position:fixed;inset:0;z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;}
+.op-overlay.done{display:none;}
+.op-names{font-family:var(--serif);font-size:28px;letter-spacing:3px;color:inherit;margin-bottom:12px;}
+.op-sub{font-size:13px;letter-spacing:2px;opacity:.7;}
+
+/* ===== theme별 오프닝 커버 (1.2~1.6초 자동, opacity+transform만) ===== */
+.op-overlay.op-theme{animation:opThemeOut .5s 1.05s ease forwards;}
+.op-overlay.op-theme .op-names{font-family:var(--serif);letter-spacing:4px;white-space:nowrap;}
+.op-overlay.op-theme .op-sub{font-size:12px;letter-spacing:3px;margin-top:14px;opacity:.85;}
+.op-overlay.op-theme .op-lbl{font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;opacity:.7;margin-bottom:16px;}
+@keyframes opThemeOut{to{opacity:0;visibility:hidden;}}
+@keyframes opRiseFade{0%{opacity:0;transform:translateY(6px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes opSoftFade{0%{opacity:0;}100%{opacity:1;}}
+@keyframes opVerySoft{0%{opacity:0;}100%{opacity:1;}}
+@keyframes opCardRise{0%{opacity:0;transform:translateY(8px) scale(.98);}100%{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes opCardIn{0%{opacity:0;transform:scale(.98);}100%{opacity:1;transform:scale(1);}}
+@keyframes opZoomBg{0%{transform:scale(1.08);}100%{transform:scale(1);}}
+@keyframes opLineExpand{0%{transform:scaleX(0);}100%{transform:scaleX(1);}}
+@keyframes opBoxIn{0%{opacity:0;}100%{opacity:1;}}
+@keyframes opGoldGlow{0%{opacity:0;box-shadow:0 0 0 rgba(201,168,106,0);}100%{opacity:1;box-shadow:0 0 14px rgba(201,168,106,.5);}}
+@keyframes opCutIn{0%{opacity:0;}18%{opacity:0;}19%{opacity:1;}100%{opacity:1;}}
+
+/* 1. signature → VOGUE 화보: 사진이 주인공. 이름은 작은 자막. 날짜 없음 */
+.op-overlay.theme-signature{color:#fff;background:#2a231d;overflow:hidden;}
+.op-overlay.theme-signature .op-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(1px) brightness(.85);transform:scale(1.04);z-index:-1;}
+.op-overlay.theme-signature .op-shade{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 60%,rgba(0,0,0,.4));z-index:-1;}
+.op-overlay.theme-signature .op-names{font-size:16px;font-weight:400;letter-spacing:5px;animation:opRiseFade 1.1s .25s ease both;text-shadow:0 1px 14px rgba(0,0,0,.7);}
+
+/* 2. classic-ivory → 밝은 스튜디오: 종이 테두리 + Wedding Invitation 문구가 주인공. 이름은 작은 보조 */
+.op-overlay.theme-classic-ivory{background:#fbf6ec;color:#241c14;animation:opSoftFade .5s ease,opThemeOut .5s 1.15s ease forwards;}
+.op-overlay.theme-classic-ivory .op-box{border:1px solid rgba(176,140,75,.5);padding:30px 40px;animation:opBoxIn .5s ease forwards;}
+.op-overlay.theme-classic-ivory .op-lbl{font-family:'Cormorant Garamond',serif;text-transform:none;font-size:15px;letter-spacing:4px;color:#9a7740;opacity:0;animation:opSoftFade .6s .3s ease forwards;margin-bottom:10px;}
+.op-overlay.theme-classic-ivory .op-names{font-family:'Noto Serif KR',serif;font-size:13px;font-weight:400;letter-spacing:3px;color:#6a5f4d;opacity:0;animation:opSoftFade .7s .5s ease forwards;}
+
+/* 3. hanok → 전통 청첩: 먹선이 주인공. 전통감은 색/여백/선으로. 글꼴은 절제(Song Myung 미사용) */
+.op-overlay.theme-hanok{background:linear-gradient(170deg,#f2e8d2,#e4d4b6);color:#1a1109;animation:opSoftFade .5s ease,opThemeOut .5s 1.15s ease forwards;}
+.op-overlay.theme-hanok .op-line{width:64px;height:2px;margin:0 auto 18px;background:linear-gradient(to right,transparent,#6a2f24,#8a4538,#6a2f24,transparent);transform:scaleX(0);animation:opLineExpand .7s .1s cubic-bezier(.4,0,.2,1) forwards;}
+.op-overlay.theme-hanok .op-lbl{font-family:'Noto Serif KR',serif;font-weight:500;text-transform:none;color:#8a4538;letter-spacing:14px;font-size:20px;opacity:0;animation:opSoftFade .6s .4s ease forwards;margin-bottom:14px;text-indent:14px;}
+.op-overlay.theme-hanok .op-names{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:400;letter-spacing:5px;color:#3a2418;opacity:0;animation:opSoftFade .7s .6s ease forwards;}
+
+/* 4. black → 럭셔리 호텔: 골드 라인 + 이름이 주인공. 회색 글씨 금지 */
+.op-overlay.theme-black{background:#0a0807;color:#f4ecdb;overflow:hidden;}
+.op-overlay.theme-black .op-bg{position:absolute;inset:0;background-size:cover;background-position:center 32%;filter:brightness(.92) contrast(1.04);transform:scale(1.02);z-index:-1;}
+.op-overlay.theme-black .op-shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,8,7,.45),rgba(10,8,7,.35) 45%,rgba(10,8,7,.72));z-index:-1;}
+.op-overlay.theme-black .op-gline{width:54px;height:1px;margin:0 auto 22px;background:linear-gradient(to right,transparent,#c9a86a,transparent);opacity:0;animation:opGoldGlow .8s .1s ease forwards;}
+.op-overlay.theme-black .op-names{display:inline-block;font-family:'Cormorant Garamond','Noto Serif KR',serif;font-size:24px;font-weight:400;letter-spacing:7px;color:#f4ecdb;opacity:0;animation:opRiseFade 1s .4s ease forwards;text-shadow:0 1px 2px rgba(0,0,0,.4);max-width:88vw;white-space:nowrap;text-align:center;}
+.op-overlay.theme-black .op-sub{font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:4.5px;color:#e0c184;opacity:0;animation:opSoftFade .8s .6s ease forwards;text-shadow:0 1px 3px rgba(0,0,0,.45);}
+
+/* 5. fullscreen → 영화 오프닝: A WEDDING FILM + 이름 컷인. 산세리프+넓은 자간으로 영화 타이틀(세리프 호텔형과 차별) */
+.op-overlay.theme-fullscreen{background:radial-gradient(ellipse 70% 55% at 50% 42%,#2c2620,#0c0a08);color:#fdf8f0;}
+.op-overlay.theme-fullscreen .op-lbl{font-family:'Cormorant Garamond',serif;color:rgba(255,248,238,.68);letter-spacing:8px;font-size:12px;animation:opCutIn .6s ease forwards;margin-bottom:20px;}
+.op-overlay.theme-fullscreen .op-vnames{display:flex;flex-direction:row;align-items:center;justify-content:center;font-family:'Noto Sans KR',sans-serif;font-size:28px;font-weight:500;letter-spacing:.5px;line-height:1.15;white-space:nowrap;animation:opCutIn .7s .1s ease forwards;}
+.op-overlay.theme-fullscreen .op-vand{color:rgba(212,184,130,.78);font-weight:400;margin:0 8px;font-size:.7em;vertical-align:middle;}
+.op-overlay.theme-fullscreen .op-subwd{font-family:'Cormorant Garamond',serif;font-size:9px;letter-spacing:4px;color:rgba(212,184,130,.7);text-transform:uppercase;opacity:0;animation:opSoftFade .8s .7s ease forwards;margin-top:6px;}
+
+/* 6. minimal(Fine Art) → 화보집 첫 페이지: 여백 + 작은 Editorial. 이름/날짜 아주 작게 */
+.op-overlay.theme-minimal{background:#faf9f6;color:#241c14;padding:96px 48px 60px;justify-content:center;animation:opThemeOut .5s 1.2s ease forwards;}
+.op-overlay.theme-minimal .op-lbl{font-family:'Cormorant Garamond',serif;text-transform:none;font-size:15px;letter-spacing:5px;color:#9a8568;opacity:0;animation:opVerySoft .9s .15s ease forwards;margin-bottom:18px;}
+.op-overlay.theme-minimal .op-names{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:400;letter-spacing:2px;color:#2d2218;opacity:0;animation:opVerySoft .9s .15s ease forwards;}
+.op-overlay.theme-minimal .op-names .nm-sep{color:#b09870;margin:0 5px;font-size:.62em;vertical-align:middle;}
+.op-overlay.theme-minimal .op-sub{font-size:11px;letter-spacing:3.5px;opacity:0;animation:opVerySoft .9s .15s ease forwards;color:#6e5a47;margin-top:14px;}
+
+/* 7. flower(야외 스냅형) → 자연광 화보 오프닝: 이름 + 날짜 중앙, 베이지 톤 */
+.op-overlay.theme-flower{background:linear-gradient(165deg,#f3ead8,#e4d4b6);color:#2a2018;align-items:center;justify-content:center;padding:0;animation:opThemeOut .5s 1.5s ease forwards;}
+.op-overlay.theme-flower .op-names{font-family:'Noto Serif KR',serif;font-size:30px;font-weight:600;letter-spacing:.5px;line-height:1.2;color:#2a2018;opacity:0;animation:opSoftFade .8s .4s ease forwards;text-align:center;}
+.op-overlay.theme-flower .op-sub{font-family:'Cormorant Garamond',serif;font-size:12px;font-weight:500;letter-spacing:3px;color:#a08458;margin-top:14px;opacity:0;animation:opSoftFade .8s .6s ease forwards;text-align:center;}
+
+/* 8. gold-serif(레터) → 실제 초대장: 카드/봉투 오브젝트 상승. Invitation+이름. 프레임 안 안정(Gowun Batang 미사용) */
+.op-overlay.theme-gold-serif{background:linear-gradient(168deg,#f0e8d8,#e4d8c2);}
+.op-overlay.theme-gold-serif .op-card{background:linear-gradient(172deg,#fffdf8,#f7f0e2);box-shadow:0 14px 44px rgba(120,96,58,.26);padding:36px 32px;position:relative;max-width:80%;animation:opCardRise 1s ease forwards;}
+.op-overlay.theme-gold-serif .op-card::before{content:'';position:absolute;inset:8px;border:1px solid rgba(176,140,75,.4);}
+.op-overlay.theme-gold-serif .op-card::after{content:'';position:absolute;top:8px;left:8px;right:8px;height:26px;background:linear-gradient(180deg,rgba(176,140,75,.12),transparent);clip-path:polygon(0 0,100% 0,50% 100%);}
+.op-overlay.theme-gold-serif .op-lbl{font-family:'Cormorant Garamond',serif;text-transform:none;font-size:13px;color:#9a7740;letter-spacing:4px;margin-bottom:12px;position:relative;}
+.op-overlay.theme-gold-serif .op-names{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:400;letter-spacing:3px;color:#241c12;position:relative;max-width:100%;}
+.op-overlay.theme-gold-serif .op-names .nm-sep{margin:0 6px;color:#9a7740;}
+/* ===== 이름 길이 대응 (자간→구분자→간격 우선, font-size 최소 축소) ===== */
+/* 이름 그룹은 inline-block(콘텐츠 폭) + 템플릿별 max-width 상한 → 너무 넓게 퍼져 찢어져 보이는 것 방지 */
+#card.t-signature .sig-names{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;max-width:84%;margin:0 auto;white-space:normal;font-family:'Noto Serif KR',serif;font-size:28px;font-weight:500;line-height:1.12;letter-spacing:.02em;text-align:center;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.28);}
+#card.t-signature .sig-names .nm-person{display:block;white-space:nowrap;}
+#card.t-classic-ivory .civ-names{display:inline-block;max-width:88%;}
+#card.t-black .bk-names{display:inline-block;max-width:88%;}
+#card.t-flower .fl-names{display:inline-block;max-width:88%;}
+#card.t-hanok .hk-names{display:inline-block;max-width:88%;}
+#card.t-minimal .stl-names{display:inline-block;max-width:86%;}
+#card.t-gold-serif .lt-names{display:inline-block;max-width:96%;}
+#card.t-fullscreen .cn-names{display:inline-block;max-width:100%;}
+/* 사람 이름은 절대 글자 단위로 쪼개지지 않음(span 단위 nowrap), 줄바꿈은 사람 단위로만 */
+#card .nm-person{white-space:nowrap;display:inline-block;}
+#card .nm-sep{white-space:nowrap;display:inline-block;}
+/* 측정 기반 폭 맞춤: 이름 그룹은 기본 한 줄(nowrap), JS(fitName)가 overflow 시 단계적 축소 */
+#card .sig-names,#card .civ-names,#card .bk-names,#card .fl-names,#card .hk-names,#card .stl-names,#card .lt-names{white-space:nowrap;}
+/* JS가 2줄로 전환 시: 사람 단위로만 줄바꿈 */
+#card .nm-twoline{white-space:normal !important;line-height:1.34 !important;word-break:keep-all;}
+#card .nm-twoline .nm-person{display:block;}
+/* A그룹(signature/classic-ivory/hanok/black/minimal/flower): 2줄 시 구분자 완전 제거 → "양군재식\n남궁소영" */
+#card.t-signature .nm-twoline .nm-sep,
+#card.t-classic-ivory .nm-twoline .nm-sep,
+#card.t-hanok .nm-twoline .nm-sep,
+#card.t-black .nm-twoline .nm-sep,
+#card.t-minimal .nm-twoline .nm-sep,
+#card.t-flower .nm-twoline .nm-sep{display:none !important;}
+/* B그룹(gold-serif): 2줄 시 구분자 유지하되 작고 보조적으로 → "양재식 / and / 독고소영" */
+#card.t-gold-serif .nm-twoline .nm-sep{display:block;margin:5px 0;font-size:11px;opacity:.6;font-style:italic;}
+/* 오프닝 오버레이(#card 밖)용 2줄 전환: op-names도 메인과 동일 규칙 */
+.op-overlay .nm-twoline{white-space:normal !important;line-height:1.34 !important;word-break:keep-all;}
+.op-overlay .nm-twoline .nm-person{display:block;}
+.op-overlay .nm-twoline .nm-sep{display:none !important;}
+.op-overlay.theme-gold-serif .nm-twoline .nm-sep{display:block !important;margin:5px 0;font-size:11px;opacity:.6;font-style:italic;color:#9a7740;}
+
+/* 커버 */
+.iv-cover{padding:64px 30px 48px;text-align:center;position:relative;}
+.iv-eyebrow{font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:5px;text-transform:uppercase;opacity:.55;margin-bottom:18px;font-weight:400;}
+.iv-names{font-size:27px;letter-spacing:3px;font-weight:400;line-height:1.55;margin-bottom:6px;}
+.iv-amp{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;margin:0 8px;}
+.iv-photo{width:182px;height:226px;margin:26px auto 0;border-radius:120px 120px 10px 10px;background:var(--gold-wash);display:flex;align-items:center;justify-content:center;font-size:38px;overflow:hidden;border:1px solid var(--line);box-shadow:0 12px 36px -18px rgba(58,47,38,.4);}
+.iv-photo img{width:100%;height:100%;object-fit:cover;}
+.iv-div{width:36px;height:1px;margin:24px auto;background:var(--gold);opacity:.4;}
+.iv-date{font-size:14px;letter-spacing:1.5px;line-height:1.7;}
+.sub-lang{display:block;font-size:.82em;font-weight:300;opacity:.55;margin-top:4px;font-family:'Noto Sans KR','Noto Sans JP','Noto Sans Thai',sans-serif;letter-spacing:.5px;}
+
+/* 섹션 */
+.iv-sec{padding:46px 30px;text-align:center;border-top:1px solid rgba(0,0,0,.05);}
+.iv-sec-t{font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:4px;text-transform:uppercase;opacity:.55;margin-bottom:18px;font-weight:400;}
+.iv-msg{font-size:14.5px;line-height:2.15;font-weight:400;white-space:pre-line;margin-top:4px;letter-spacing:.2px;}
+.iv-info{font-size:14px;line-height:1.95;margin-top:4px;}
+.iv-info b{font-weight:500;}
+.iv-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
+.iv-map{margin-top:18px;}
+.iv-map-label{font-size:11px;letter-spacing:2px;opacity:.65;text-transform:uppercase;}
+.iv-map .iv-chips{margin-top:10px;}
+.iv-map .iv-chip{min-width:84px;text-align:center;}
+.iv-chip{font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:500;padding:11px 20px;border-radius:999px;border:1px solid currentColor;opacity:.6;cursor:pointer;transition:all .25s;text-decoration:none;color:inherit;display:inline-block;letter-spacing:.3px;}
+.iv-chip:hover{opacity:1;transform:translateY(-1px);}
+.iv-gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px;}
+.iv-gal .g{aspect-ratio:1;border-radius:8px;background:var(--ivory-2);overflow:hidden;cursor:pointer;}
+.iv-gal .g img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease;}
+.iv-gal .g:hover img{transform:scale(1.06);}
+/* 매거진형: 2열, 3n+1만 세로(3/4), 나머지 정사각 (editor gal-masonry와 동일) */
+.iv-gal-masonry{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:6px;}
+.iv-gal-masonry .g{border-radius:8px;background:var(--ivory-2);overflow:hidden;cursor:pointer;}
+.iv-gal-masonry .g:nth-child(3n+1){aspect-ratio:3/4;}
+.iv-gal-masonry .g:not(:nth-child(3n+1)){aspect-ratio:1;}
+.iv-gal-masonry .g img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease;}
+.iv-gal-masonry .g:hover img{transform:scale(1.06);}
+/* 가로전체: 세로 1열, 4/3 비율 (editor gal-full과 동일) */
+.iv-gal-full{display:flex;flex-direction:column;gap:6px;margin-top:6px;}
+.iv-gal-full .g{width:100%;aspect-ratio:4/3;border-radius:8px;background:var(--ivory-2);overflow:hidden;cursor:pointer;}
+.iv-gal-full .g img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease;}
+.iv-gal-full .g:hover img{transform:scale(1.06);}
+/* 더보기: 10번째부터 숨김, 펼치면 표시 */
+.iv-gal-wrap .g-more{display:none;}
+.iv-gal-wrap.gal-expanded .g-more{display:block;}
+.gal-more-btn{display:block;width:100%;margin:28px 0 8px;padding:0;background:transparent;border:none;cursor:pointer;text-align:center;font-family:'Noto Serif KR','Cormorant Garamond',serif;color:#9a7740;}
+.gal-more-btn .gm-1{display:block;font-size:14px;font-weight:500;letter-spacing:1px;}
+.gal-more-btn .gm-2{display:block;font-size:11.5px;letter-spacing:.5px;opacity:.55;margin-top:5px;}
+.gal-more-btn:hover .gm-1{opacity:.7;}
+/* 기본: 장식/설명줄 숨김 (gold-serif 외 템플릿은 기존 텍스트형 유지) */
+.gal-more-btn .gm-deco,.gal-more-btn .gm-3{display:none;}
+/* ===== gold-serif 전용: 갤러리 전환 카드 ===== */
+.t-gold-serif .gal-more-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:84%;max-width:300px;min-height:48px;margin:18px auto 8px;padding:14px 20px;background:#fffdf8;border:1px solid rgba(176,140,75,.5);border-radius:3px;text-align:center;}
+.t-gold-serif .gal-more-btn .gm-deco{display:block;width:4px;height:4px;margin:0;transform:rotate(45deg);border:1px solid #b08c4b;flex:0 0 auto;}
+.t-gold-serif .gal-more-btn .gm-1{display:none;}
+.t-gold-serif .gal-more-btn .gm-2{font-size:13px;font-weight:400;letter-spacing:.3px;color:#7a6230;opacity:1;text-transform:none;margin:0;}
+.t-gold-serif .gal-more-btn .gm-count{font-weight:600;color:#5a4a30;}
+#card.t-hanok .gal-more-btn{color:#8a4538;}
+#card.t-hanok .gal-more-btn .gm-2{opacity:.72;}
+.t-gold-serif .gal-more-btn:hover{border-color:rgba(176,140,75,.75);background:#fffaf0;}
+.dday-box{display:flex;justify-content:center;gap:20px;margin-top:6px;}
+.dday-unit{text-align:center;}
+.dday-num{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:400;line-height:1;letter-spacing:1px;}
+/* D-DAY 에디토리얼 (위젯 느낌 제거) */
+.dday-figure{font-family:'Cormorant Garamond',serif;font-size:34.5px;font-weight:300;letter-spacing:2px;line-height:1;margin-top:2px;}
+.dday-date{font-family:'Cormorant Garamond',serif;font-size:14.5px;letter-spacing:3px;opacity:.58;margin-top:11px;}
+.dday-sec .iv-sec-t{margin-bottom:10px;}
+.dday-lbl{font-size:11px;letter-spacing:1.5px;opacity:.55;margin-top:8px;}
+.iv-foot{padding:42px 30px;text-align:center;font-size:11px;opacity:.45;letter-spacing:1.5px;line-height:1.9;}
+
+
+/* 계좌 */
+.acc-box{margin-top:6px;text-align:left;}
+.acc-toggle{cursor:pointer;list-style:none;text-align:center;font-size:12px;letter-spacing:1px;padding:13px 0;border:1px solid currentColor;border-radius:999px;opacity:.45;transition:opacity .25s;width:100%;}
+.acc-toggle:hover{opacity:.7;}
+.acc-toggle::-webkit-details-marker{display:none;}
+.acc-list{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
+.acc-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 16px;border-radius:12px;background:rgba(0,0,0,.025);border:1px solid rgba(0,0,0,.04);}
+.acc-info{display:flex;flex-direction:column;gap:3px;}
+.acc-side{font-size:10px;letter-spacing:1px;opacity:.5;text-transform:uppercase;}
+.acc-bank{font-size:13px;font-weight:500;}
+.acc-num{font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:400;opacity:.85;letter-spacing:.5px;}
+.acc-copy{flex-shrink:0;font-size:11px;padding:9px 15px;border-radius:999px;background:rgba(0,0,0,.06);color:inherit;cursor:pointer;border:none;transition:all .25s;opacity:.7;}
+.acc-copy:hover{opacity:1;background:rgba(0,0,0,.1);}
+.acc-copy.done{background:var(--ok);color:#fff;opacity:1;}
+
+/* 방명록 */
+.guest-form{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
+.guest-form input,.guest-form textarea{width:100%;padding:13px 16px;border:1px solid var(--line);border-radius:12px;background:var(--ivory);font-size:13.5px;font-family:inherit;color:var(--brown);outline:none;resize:none;transition:border-color .25s;}
+.guest-form input:focus,.guest-form textarea:focus{border-color:var(--gold);background:#fff;}
+.guest-submit{background:var(--gold);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;cursor:pointer;width:100%;transition:background .25s;letter-spacing:.5px;}
+.guest-submit:hover{background:var(--gold-deep);}
+.guest-list{margin-top:20px;display:flex;flex-direction:column;gap:10px;}
+.guest-item{background:var(--ivory-2);border-radius:12px;padding:16px 18px;text-align:left;}
+.guest-item .gi-name{font-size:13px;font-weight:500;color:var(--brown);margin-bottom:5px;}
+.guest-item .gi-msg{font-size:13.5px;color:var(--brown-soft);line-height:1.8;}
+.guest-item .gi-date{font-size:11px;color:var(--brown-mute);margin-top:8px;letter-spacing:.5px;}
+
+/* RSVP */
+.rsvp-form{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
+.rsvp-opts{display:flex;gap:10px;}
+.rsvp-opt{flex:1;padding:13px;border:1px solid var(--line);border-radius:12px;font-size:13.5px;text-align:center;cursor:pointer;transition:all .25s;background:var(--white);letter-spacing:.5px;}
+.rsvp-opt.on{background:var(--gold);color:#fff;border-color:var(--gold);}
+.rsvp-form input,.rsvp-form select,.rsvp-form textarea{width:100%;padding:13px 16px;border:1px solid var(--line);border-radius:12px;background:var(--ivory);font-size:13.5px;font-family:inherit;color:var(--brown);outline:none;transition:border-color .25s;}
+.rsvp-form input:focus,.rsvp-form select:focus{border-color:var(--gold);background:#fff;}
+.rsvp-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.rsvp-submit{background:var(--brown);color:#fff;border:none;border-radius:12px;padding:14px;font-size:14px;cursor:pointer;width:100%;transition:background .25s;letter-spacing:.5px;}
+.rsvp-submit:hover{background:var(--gold-deep);}
+.privacy{font-size:11px;color:var(--brown-mute);line-height:1.7;margin-top:10px;text-align:center;opacity:.8;}
+
+/* 갤러리 라이트박스 */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:800;display:none;align-items:center;justify-content:center;}
+.lightbox.show{display:flex;}
+.lightbox img{max-width:90vw;max-height:90vh;border-radius:8px;object-fit:contain;}
+.lb-close{position:absolute;top:20px;right:24px;color:#fff;font-size:28px;cursor:pointer;z-index:2;}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,.12);color:#fff;font-size:26px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s;z-index:2;-webkit-tap-highlight-color:transparent;}
+.lb-nav:hover{background:rgba(255,255,255,.22);}
+.lb-prev{left:14px;}
+.lb-next{right:14px;}
+.lb-counter{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.85);font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:2px;z-index:2;}
+@media(max-width:480px){.lb-nav{width:38px;height:38px;font-size:22px;}.lb-prev{left:8px;}.lb-next{right:8px;}}
+
+/* ================================================================
+   12종 템플릿 CSS
+   각 템플릿은 색감 + 폰트 느낌 + 커버 레이아웃이 모두 다릅니다
+   ================================================================ */
+
+/* ============================================================
+   1. SIGNATURE PHOTO — 거의 풀스크린 사진 (웨딩 매거진 첫 장)
+   ============================================================ */
+.t-signature{background:#0c0a08;color:#3a2f26;}
+.t-signature .iv-cover{padding:0;}
+/* 풀스크린 포토형 — 사진이 주인공, 텍스트 최소 */
+.sig-hero{position:relative;width:100%;height:100svh;min-height:560px;max-height:1000px;overflow:hidden;background:#0c0a08;}
+.sig-photo{position:absolute;inset:0;width:100%;height:100%;}
+.sig-photo img{width:100%;height:100%;object-fit:cover;object-position:center 52%;display:block;}
+@keyframes sigKenburns{from{transform:scale(1.035);}to{transform:scale(1);}}
+/* 하단 안전영역만 살짝 어둡게 — 사진 대부분은 그대로 */
+.sig-scrim{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,6,4,.16) 0%,transparent 24%,transparent 52%,rgba(8,6,4,.34) 78%,rgba(8,6,4,.62) 100%);}
+/* 텍스트는 하단 안전영역에 작고 얇게 + 국소 보강으로 어떤 사진이든 가독 */
+.sig-overlay{position:absolute;left:0;right:0;bottom:0;padding:0 30px calc(82px + env(safe-area-inset-bottom,0px));text-align:center;z-index:2;}
+.sig-textwrap{display:inline-block;max-width:100%;padding:0;position:relative;}
+.sig-textwrap::before{content:'';position:absolute;inset:-8px -20px;background:radial-gradient(ellipse 75% 100% at 50% 60%,rgba(6,4,3,.5),transparent 75%);z-index:-1;filter:blur(2px);}
+.sig-names{font-family:'Noto Serif KR',serif;font-size:28px;font-weight:500;letter-spacing:.02em;color:#fff;line-height:1.12;text-align:center;text-shadow:0 1px 8px rgba(0,0,0,.28);}
+.sig-date{font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:500;line-height:1;letter-spacing:.14em;margin-top:11px;color:rgba(255,255,255,.92);text-shadow:0 1px 6px rgba(0,0,0,.25);text-align:center;white-space:nowrap;}
+.sig-time{font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:400;line-height:1;letter-spacing:.08em;margin-top:8px;color:rgba(255,255,255,.88);text-shadow:0 1px 6px rgba(0,0,0,.25);text-align:center;white-space:nowrap;}
+@media (max-width:380px){
+  #card.t-signature .sig-names{font-size:26px;letter-spacing:.02em;}
+  .sig-date{font-size:12px;letter-spacing:.12em;}
+  .sig-time{font-size:11px;letter-spacing:.06em;}
+}
+@keyframes sigScroll{0%{transform:translateY(-12px);opacity:0;}40%{opacity:1;}100%{transform:translateY(34px);opacity:0;}}
+.t-signature .iv-sec{border-top:1px solid rgba(184,148,95,.14);}
+.t-signature .iv-sec-t{color:#9a7740;}
+.t-signature .iv-names{font-family:'Cormorant Garamond',serif;}
+
+/* ============================================================
+   2. CLASSIC IVORY — 고급 종이청첩장 첫 장 (골드 더블라인 + 명조)
+   ============================================================ */
+.t-classic-ivory{background:#f6efe0;color:#3a2f26;}
+.t-classic-ivory .iv-cover{padding:0;}
+/* B안 안전형: 사진(72%) + 아이보리 정보 패널(28%) */
+.civ-stage{position:relative;width:100%;height:100vh;min-height:600px;max-height:1000px;display:flex;flex-direction:column;background:#f6efe0;overflow:hidden;}
+.civ-photo-area{position:relative;flex:0 0 75%;overflow:hidden;background:#e8dcc6;}
+.civ-photo{position:absolute;inset:0;width:100%;height:100%;}
+.civ-photo img{width:100%;height:100%;object-fit:cover;object-position:center 32%;display:block;}
+.civ-photo-fade{position:absolute;left:0;right:0;bottom:0;height:15%;background:linear-gradient(to bottom,transparent,rgba(253,252,248,.35) 65%,#fdfcf8);pointer-events:none;}
+.civ-info{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;background:linear-gradient(170deg,#fdfcf8,#f3ead8);padding:0 28px calc(0px + env(safe-area-inset-bottom,0px));position:relative;z-index:2;}
+.civ-info::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 90% 70% at 50% 38%,rgba(255,255,255,.5),transparent 70%);pointer-events:none;}
+.civ-info>*{position:relative;}
+.civ-names{font-family:'Noto Serif KR','Cormorant Garamond',serif;font-size:30px;font-weight:500;letter-spacing:4px;color:#241c14;line-height:1.2;white-space:nowrap;}
+.civ-names .civ-dot{font-family:'Cormorant Garamond',serif;font-size:11px;font-weight:400;font-style:italic;color:#b79a62;margin:0 5px;vertical-align:middle;}
+.civ-when{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.civ-date{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:500;line-height:1;letter-spacing:.12em;color:#4a3c2c;white-space:nowrap;}
+.civ-time{font-family:'Noto Serif KR',serif;font-size:11px;font-weight:400;line-height:1;letter-spacing:.08em;color:#6a5a46;white-space:nowrap;}
+
+/* ===== 묶음2: black/flower/hanok/minimal 사진형 커버 (실제 카드 100vh) ===== */
+.t-black .bk-stage{position:relative;width:100%;height:100vh;min-height:600px;max-height:1000px;display:flex;flex-direction:column;background:#100d0a;overflow:hidden;}
+.t-black .bk-photo-area{position:relative;flex:0 0 76%;overflow:hidden;background:#0a0807;}
+.t-black .bk-photo{position:absolute;inset:0;width:100%;height:100%;}
+.t-black .bk-photo img{width:100%;height:100%;object-fit:cover;object-position:center 32%;display:block;}
+.t-black .bk-photo-fade{position:absolute;left:0;right:0;bottom:0;height:20%;background:linear-gradient(to bottom,transparent,rgba(16,13,10,.35) 70%,#100d0a);pointer-events:none;}
+.t-black .bk-info{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#100d0a;padding:0 28px calc(48px + env(safe-area-inset-bottom,0px));z-index:2;}
+.t-black .bk-names{font-family:'Cormorant Garamond','Noto Serif KR',serif;font-size:32px;font-weight:400;letter-spacing:4px;color:#f4ecdb;line-height:1;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.45);}
+.t-black .bk-names .bk-dot{margin:0 10px;color:#c9a86a;font-size:16px;}
+.t-black .bk-when{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:14px;}
+.t-black .bk-date{font-family:'Cormorant Garamond',serif;font-size:16px;letter-spacing:3px;color:rgba(240,231,214,.96);white-space:nowrap;}
+.t-black .bk-time{font-family:'Noto Serif KR',serif;font-size:12.5px;letter-spacing:1px;color:rgba(220,190,135,.85);white-space:nowrap;}
+.t-flower .fl-hero{position:relative;width:100%;height:100vh;min-height:600px;max-height:1000px;overflow:hidden;background:#fff;display:flex;flex-direction:column;}
+.t-flower .fl-photo-area{position:relative;flex:0 0 78%;overflow:hidden;background:#cabfae;}
+.t-flower .fl-photo{position:absolute;inset:0;width:100%;height:100%;}
+.t-flower .fl-photo img{width:100%;height:100%;object-fit:cover;object-position:center 38%;display:block;animation:sigKenburns 22s ease-out forwards;}
+.t-flower .fl-info{position:relative;flex:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;padding:24px 30px calc(36px + env(safe-area-inset-bottom,0px));background:#fff;z-index:2;}
+.t-flower .fl-names{font-family:'Noto Serif KR',serif;font-size:28px;font-weight:600;letter-spacing:.5px;color:#2a2018;line-height:1.2;white-space:nowrap;}
+.t-flower .fl-names .fl-dot{font-family:'Cormorant Garamond',serif;font-style:italic;color:#9a8a76;margin:0 9px;font-weight:400;}
+.t-flower .fl-when{display:flex;flex-direction:column;align-items:flex-start;gap:3px;margin-top:6px;}
+.t-flower .fl-date{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:2px;color:#6a5e50;text-transform:uppercase;white-space:nowrap;}
+.t-flower .fl-time{font-family:'Noto Serif KR',serif;font-size:12px;font-weight:400;letter-spacing:1px;color:#8a7a66;white-space:nowrap;}
+.t-hanok .hk-stage{position:relative;box-sizing:border-box;width:100%;height:100vh;height:100svh;height:100dvh;min-height:600px;max-height:1000px;display:flex;flex-direction:column;background:#efe6d4;overflow:hidden;}
+.t-hanok .hk-photo-area{position:relative;flex:0 0 70%;overflow:hidden;background:#d8cab0;}
+.t-hanok .hk-photo{position:absolute;inset:0;width:100%;height:100%;}
+.t-hanok .hk-photo img{width:100%;height:100%;object-fit:cover;object-position:center 32%;display:block;}
+.t-hanok .hk-photo-fade{position:absolute;left:0;right:0;bottom:0;height:16%;background:linear-gradient(to bottom,transparent,rgba(239,230,212,.42) 65%,#efe6d4);pointer-events:none;}
+.t-hanok .hk-info{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;background:linear-gradient(170deg,#f2e8d2,#e4d4b6);padding:0 28px calc(0px + env(safe-area-inset-bottom,0px));z-index:2;}
+.t-hanok .hk-names{font-family:'Noto Serif KR',serif;font-size:29px;font-weight:500;letter-spacing:6px;color:#1a1109;line-height:1;white-space:nowrap;}
+.t-hanok .hk-names .hk-dot{margin:0 13px;color:#8a3a2a;}
+.t-hanok .hk-when{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.t-hanok .hk-date{font-family:'Noto Serif KR',serif;font-size:14px;letter-spacing:3px;color:#4a3820;white-space:nowrap;}
+.t-hanok .hk-time{font-family:'Noto Serif KR',serif;font-size:12px;letter-spacing:1px;color:#8a7450;white-space:nowrap;}
+.t-minimal .stl-stage{position:relative;width:100%;height:100vh;min-height:600px;max-height:1000px;display:flex;flex-direction:column;background:#fbf6ec;overflow:hidden;}
+.t-minimal .stl-photo-area{position:relative;flex:0 0 78%;overflow:hidden;background:#cabfae;}
+.t-minimal .stl-photo{position:absolute;inset:0;width:100%;height:100%;}
+.t-minimal .stl-photo img{width:100%;height:100%;object-fit:cover;object-position:center 36%;display:block;}
+.t-minimal .stl-info{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:0 22px calc(28px + env(safe-area-inset-bottom,0px));background:#fbf6ec;z-index:2;}
+.t-minimal .stl-names{font-family:'Cormorant Garamond','Noto Serif KR',serif;font-size:20px;font-weight:400;letter-spacing:1.2px;color:#241c14;line-height:1.3;white-space:nowrap;}
+.t-minimal .stl-names .stl-amp{font-style:normal;color:#b09870;margin:0 5px;font-weight:400;font-size:.62em;vertical-align:middle;}
+.t-minimal .stl-when{display:flex;flex-direction:column;align-items:center;gap:5px;margin-top:10px;}
+.t-minimal .stl-date{font-family:'Cormorant Garamond',serif;font-size:16px;letter-spacing:1.8px;color:#4a3c2c;white-space:nowrap;}
+.t-minimal .stl-time{font-family:'Noto Sans KR',sans-serif;font-size:13.5px;font-weight:400;letter-spacing:.3px;color:#6a5a48;white-space:nowrap;}
+/* flower 자연광 강조 */
+.t-flower .fl-glow{display:none;}
+/* 시네마 타이포형 (무사진, 100vh) */
+.t-fullscreen .cn-stage{position:relative;width:100%;height:100vh;min-height:600px;max-height:1000px;background:radial-gradient(ellipse 70% 55% at 50% 40%,#2c2620,#16120e 70%,#0c0a08 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.t-fullscreen .cn-inner{position:relative;z-index:2;text-align:center;padding:0 32px;transform:translateY(4%);}
+.t-fullscreen .cn-names{font-family:'Noto Sans KR',sans-serif;font-size:29px;font-weight:450;letter-spacing:.5px;color:#fdf8f0;line-height:1.15;white-space:nowrap;}
+.t-fullscreen .cn-mid{color:rgba(212,184,130,.78);font-weight:400;margin:0 8px;font-size:.7em;vertical-align:middle;}
+.t-fullscreen .cn-filmlbl{font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:4px;color:rgba(255,248,238,.62);text-transform:uppercase;margin-bottom:18px;}
+.t-fullscreen .cn-when{display:flex;flex-direction:column;align-items:center;gap:5px;margin-top:18px;}
+.t-fullscreen .cn-date{font-family:'Cormorant Garamond',serif;font-size:15.5px;letter-spacing:4px;color:rgba(255,248,238,.96);}
+.t-fullscreen .cn-weekday{font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:3px;color:rgba(212,184,130,.85);text-transform:uppercase;}
+.t-fullscreen .cn-time{font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:400;letter-spacing:1px;color:rgba(212,184,130,.82);}
+/* 레터 미니멀형 (무사진, 100vh) */
+.t-gold-serif .lt-stage{position:relative;width:100%;height:100vh;min-height:600px;max-height:1000px;background:linear-gradient(168deg,#f0e8d8,#e4d8c2);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.t-gold-serif .lt-stage::before{content:'';position:absolute;inset:0;opacity:.5;background:repeating-linear-gradient(0deg,rgba(180,160,120,.04) 0,rgba(180,160,120,.04) 1px,transparent 1px,transparent 3px),radial-gradient(ellipse 66% 48% at 50% 30%,rgba(255,252,244,.7),transparent 62%);pointer-events:none;}
+.t-gold-serif .lt-frame{position:relative;width:90%;background:linear-gradient(172deg,#fffdf8,#f7f0e2);box-shadow:0 6px 30px rgba(120,96,58,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 28px;text-align:center;z-index:2;}
+.t-gold-serif .lt-frame::before{content:'';position:absolute;inset:9px;border:1.5px solid rgba(176,140,75,.4);pointer-events:none;}
+.t-gold-serif .lt-frame::after{content:'';position:absolute;inset:14px;border:.5px solid rgba(176,140,75,.22);pointer-events:none;}
+.t-gold-serif .lt-mono{position:relative;width:40px;height:40px;border-radius:50%;border:.5px solid rgba(176,140,75,.55);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:#a88a55;letter-spacing:.5px;background:radial-gradient(circle,#fdf9ef,#f4ecd9);}
+.t-gold-serif .lt-label{font-family:'Cormorant Garamond',serif;font-size:9.5px;letter-spacing:4px;color:#9a7740;margin-bottom:16px;text-transform:uppercase;}
+.t-gold-serif .lt-names{font-family:'Noto Serif KR',serif;font-size:29px;font-weight:400;letter-spacing:3px;color:#241c12;line-height:1.3;white-space:nowrap;}
+.t-gold-serif .lt-and{font-family:'Cormorant Garamond',serif;font-style:italic;color:#bfa05c;margin:0 8px;font-size:.62em;font-weight:400;vertical-align:middle;}
+.t-gold-serif .lt-rule{display:flex;align-items:center;gap:9px;justify-content:center;margin:16px auto;}
+.t-gold-serif .lt-rule::before,.t-gold-serif .lt-rule::after{content:'';width:26px;height:1px;background:linear-gradient(to right,transparent,#cbb27a,transparent);}
+.t-gold-serif .lt-msg{font-family:'Noto Serif KR',serif;font-size:14px;line-height:1.85;color:#4a4030;margin:0;letter-spacing:.3px;white-space:pre-line;}
+.t-gold-serif .lt-when{display:flex;flex-direction:column;align-items:center;gap:5px;margin-top:14px;}
+.t-gold-serif .lt-date{font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:3px;color:#6a5a3f;}
+.t-gold-serif .lt-time{font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:400;letter-spacing:1px;color:#7a6a4f;}
+
+/* ===== 묶음2: 사진형 6개 약한 톤 보정 filter (원본 불변, 표시용) ===== */
+.sig-photo img{filter:contrast(1.05) saturate(1.03) brightness(1.02) sepia(.04);}
+.civ-photo img{filter:brightness(1.05) contrast(.97) saturate(.98);}
+.t-black .bk-photo img{filter:contrast(1.06) brightness(1.0) saturate(1.05);}
+.t-flower .fl-photo img{filter:sepia(.08) saturate(1.04) brightness(1.03) contrast(.98);}
+.t-hanok .hk-photo img{filter:sepia(.14) saturate(.92) contrast(1) brightness(1);}
+.t-minimal .stl-photo img{filter:contrast(1.1) saturate(.9);}
+@media (max-width:380px){
+  .t-black .bk-names,.t-flower .fl-names,.t-hanok .hk-names{font-size:25px;letter-spacing:3px;}
+  .t-flower .fl-names{letter-spacing:.5px;}
+  .t-minimal .stl-names{font-size:22px;}
+}
+@media (max-width:380px){
+  .civ-names{font-size:26px;letter-spacing:3px;}
+  .civ-names .civ-dot{margin:0 5px;font-size:11px;}
+  .civ-date{font-size:13px;letter-spacing:.12em;}
+}
+.t-classic-ivory .cls-paper{position:relative;text-align:center;}
+.cls-topline,.cls-botline{width:1px;height:54px;margin:0 auto;background:linear-gradient(to bottom,transparent,#bfa063);}
+.cls-botline{background:linear-gradient(to top,transparent,#bfa063);margin-top:8px;}
+.cls-invite{font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:9px;color:#9a7740;margin-top:30px;}
+.cls-sub{font-family:'Noto Serif KR',serif;font-size:12px;letter-spacing:4px;color:#a89576;margin-top:12px;}
+.cls-sym{font-size:15px;color:#c8a878;margin:26px 0 4px;opacity:.7;}
+.cls-names{font-family:'Noto Serif KR',serif;font-size:30px;font-weight:400;letter-spacing:6px;line-height:1.75;color:#2c2218;margin-top:18px;}
+.cls-names .iv-amp{font-family:'Cormorant Garamond',serif;font-style:italic;color:#bfa063;font-weight:400;font-size:24px;margin:0 6px;}
+.cls-photo{width:158px;height:200px;margin:34px auto 30px;overflow:hidden;border:1px solid rgba(191,160,99,.4);padding:6px;background:#fff;}
+.cls-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+.cls-divider{display:flex;align-items:center;justify-content:center;gap:12px;margin:34px auto 0;}
+.cls-dash{width:46px;height:1px;background:#cbb277;}
+.cls-diamond{font-size:9px;color:#bfa063;}
+.cls-date{font-family:'Cormorant Garamond',serif;font-size:21px;letter-spacing:4px;color:#4a3f33;margin-top:24px;}
+.cls-time{font-family:'Noto Serif KR',serif;font-size:12px;letter-spacing:3px;color:#8a7a6a;margin-top:10px;}
+.t-classic-ivory .iv-sec{border-top:1px solid rgba(168,138,88,.16);}
+.t-classic-ivory .iv-sec-t{color:#9a7740;}
+.t-classic-ivory .iv-names{font-family:'Noto Serif KR',serif;}
+
+/* ============================================================
+   3. MAGAZINE COVER — 진짜 웨딩 매거진 표지 (초대형 타이틀 + 사이드 라벨)
+   ============================================================ */
+.t-magazine{background:#15110d;color:#f4f1ea;}
+.t-magazine .iv-cover{padding:0;}
+.mag-hero{position:relative;width:100%;height:96vh;min-height:600px;max-height:940px;overflow:hidden;background:#1c1814;}
+.mag-photo{position:absolute;inset:0;width:100%;height:100%;}
+.mag-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+.mag-scrim{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.5) 0%,rgba(0,0,0,.12) 26%,rgba(0,0,0,.06) 52%,rgba(0,0,0,.34) 80%,rgba(0,0,0,.6) 100%);}
+.mag-top{position:absolute;top:26px;left:24px;right:24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:14px;}
+.mag-brand{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;color:rgba(255,255,255,.95);}
+.mag-issue{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.78);}
+.mag-side{position:absolute;top:50%;font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:5px;color:rgba(255,255,255,.75);writing-mode:vertical-rl;text-shadow:0 1px 10px rgba(0,0,0,.5);}
+.mag-side-l{left:18px;transform:translateY(-50%) rotate(180deg);}
+.mag-side-r{right:18px;transform:translateY(-50%);}
+.mag-center{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);text-align:center;padding:0 20px;}
+.mag-bigtitle{font-family:'Cormorant Garamond',serif;font-size:clamp(60px,21vw,108px);font-weight:300;letter-spacing:2px;line-height:.88;color:#fff;text-shadow:0 6px 40px rgba(0,0,0,.5);}
+.mag-namebar{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:22px;}
+.mag-line{width:34px;height:1px;background:rgba(255,255,255,.6);}
+.mag-names{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:400;letter-spacing:5px;color:rgba(255,255,255,.96);text-shadow:0 2px 14px rgba(0,0,0,.5);}
+.mag-names .iv-amp{font-family:'Cormorant Garamond',serif;font-style:italic;margin:0 5px;opacity:.85;}
+.mag-bottom{position:absolute;bottom:30px;left:24px;right:24px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.28);padding-top:14px;}
+.mag-date{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;color:rgba(255,255,255,.92);}
+.mag-tag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:1px;color:rgba(255,255,255,.8);}
+.t-magazine .iv-sec{border-top:1px solid #2a241e;background:#1a1612;}
+.t-magazine .iv-sec-t{font-family:'Cormorant Garamond',serif;letter-spacing:5px;color:rgba(244,241,234,.5);}
+.t-magazine .iv-msg,.t-magazine .iv-info{color:rgba(244,241,234,.84);}
+.t-magazine .iv-names{font-family:'Cormorant Garamond',serif;}
+.t-magazine .iv-div{background:rgba(255,255,255,.3);}
+.t-magazine .iv-chip{border-color:rgba(255,255,255,.3);}
+.t-magazine .acc-row{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08);}
+.t-magazine .acc-toggle{opacity:.6;}
+.t-magazine .guest-item{background:rgba(255,255,255,.05);}
+.t-magazine .guest-form input,.t-magazine .guest-form textarea,
+.t-magazine .rsvp-form input,.t-magazine .rsvp-form select{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);color:#f0ede6;}
+.t-magazine .rsvp-opt{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);}
+.t-magazine .iv-foot{color:rgba(244,241,234,.5);}
+
+/* 4. film — 따뜻한 필름 감성 */
+.t-film{background:#f4efe6;color:#2c2420;}
+.t-film .iv-cover{padding:0 0 36px;position:relative;}
+.t-film .iv-photo-full{width:100%;height:66vw;max-height:330px;object-fit:cover;display:block;filter:sepia(14%) contrast(1.04) saturate(1.05);}
+.t-film .iv-film-strip{display:flex;gap:3px;padding:0 3px;background:#1a1a1a;margin-bottom:22px;height:11px;}
+.t-film .iv-film-strip span{flex:1;background:#f4efe6;opacity:.25;}
+.t-film .iv-cover-inner{padding:0 26px;text-align:center;}
+.t-film .iv-eyebrow{font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:6px;color:#8a7a6a;margin-bottom:10px;}
+.t-film .iv-names{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;letter-spacing:2px;}
+.t-film .iv-div{background:#8a7a6a;width:28px;}
+.t-film .iv-sec{border-top:1px solid rgba(44,36,32,.09);}
+.t-film .iv-sec-t{font-family:'Cormorant Garamond',serif;letter-spacing:4px;color:#8a7a6a;}
+
+/* 5. minimal — 타이포 중심, 사진 적어도 예쁨 */
+.t-minimal{background:#ffffff;color:#1a1a1a;}
+.t-minimal .iv-cover{padding:84px 34px 64px;text-align:left;}
+.t-minimal .iv-eyebrow{font-size:10px;letter-spacing:7px;color:#aaa;text-transform:uppercase;margin-bottom:24px;}
+.t-minimal .iv-names{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;letter-spacing:-.5px;line-height:1.15;}
+.t-minimal .iv-amp{font-style:italic;color:#ccc;font-weight:300;}
+.t-minimal .iv-photo{display:none;}
+.t-minimal .iv-div{background:#1a1a1a;width:36px;height:1px;margin:28px 0;}
+.t-minimal .iv-date{font-size:12px;letter-spacing:2.5px;color:#999;}
+.t-minimal .iv-sec{border-top:1px solid #f2f2f2;padding:40px 34px;text-align:left;}
+.t-minimal .iv-sec-t{letter-spacing:5px;color:#bbb;}
+.t-minimal .iv-msg,.t-minimal .iv-info{text-align:left;}
+.t-minimal .iv-chips{justify-content:flex-start;}
+
+/* 6. gold-serif — 세리프 + 골드 포인트 */
+.t-gold-serif{background:linear-gradient(180deg,#fdfbf5,#f6efdf);color:#2c2218;}
+.t-gold-serif .iv-cover{padding:50px 30px 42px;text-align:center;border-bottom:1px solid rgba(184,148,95,.28);}
+.t-gold-serif .iv-cover::before{content:'';display:block;width:64px;height:1px;background:linear-gradient(90deg,transparent,#b8945f,transparent);margin:0 auto 30px;}
+.t-gold-serif .iv-eyebrow{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:7px;color:#9a7740;}
+.t-gold-serif .iv-names{font-family:'Noto Serif KR',serif;font-size:25px;font-weight:500;letter-spacing:5px;}
+.t-gold-serif .iv-amp{font-family:'Cormorant Garamond',serif;font-style:italic;color:#b8945f;}
+.t-gold-serif .iv-photo{width:148px;height:148px;border-radius:50%;border:2px solid #b8945f;padding:4px;background:var(--ivory);box-shadow:0 12px 36px -18px rgba(184,148,95,.6);}
+.t-gold-serif .iv-photo img{border-radius:50%;}
+.t-gold-serif .iv-div{background:linear-gradient(90deg,transparent,#b8945f,transparent);width:64px;}
+.t-gold-serif .iv-sec{border-top:1px solid rgba(184,148,95,.18);}
+.t-gold-serif .iv-sec-t{color:#9a7740;letter-spacing:5px;}
+
+/* 7. fullscreen — 풀스크린 사진 + 오버레이 */
+.t-fullscreen{background:#161616;color:#fff;}
+.t-fullscreen .iv-cover{position:relative;min-height:0;max-height:none;padding:0;overflow:hidden;}
+.t-fullscreen .iv-photo-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8;}
+.t-fullscreen .iv-cover-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72) 0%,rgba(0,0,0,.08) 52%,rgba(0,0,0,.2) 100%);}
+.t-fullscreen .iv-cover-text{position:absolute;bottom:0;left:0;right:0;padding:34px 30px 40px;text-align:center;color:#fff;}
+.t-fullscreen .iv-eyebrow{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:6px;opacity:.75;}
+.t-fullscreen .iv-names{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;letter-spacing:2px;color:#fff;}
+.t-fullscreen .iv-amp{font-style:italic;opacity:.85;}
+.t-fullscreen .iv-div{background:rgba(255,255,255,.35);width:34px;}
+.t-fullscreen .iv-date{font-size:12px;opacity:.7;letter-spacing:1.5px;}
+.t-fullscreen .iv-sec{border-top:1px solid rgba(255,255,255,.08);background:#1a1a1a;}
+.t-fullscreen .iv-sec-t{color:rgba(255,255,255,.45);letter-spacing:5px;}
+.t-fullscreen .iv-msg,.t-fullscreen .iv-info{color:rgba(245,238,224,.92);}
+.t-fullscreen .acc-row{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08);}
+.t-fullscreen .acc-toggle{opacity:.55;}
+.t-fullscreen .guest-item{background:rgba(255,255,255,.05);}
+.t-fullscreen .guest-form input,.t-fullscreen .guest-form textarea,
+.t-fullscreen .rsvp-form input,.t-fullscreen .rsvp-form select{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:#eee;}
+.t-fullscreen .rsvp-opt{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);}
+
+/* 8. calendar — 날짜·달력 강조 */
+.t-calendar{background:#fff;color:#2a2a2a;}
+.t-calendar .iv-cover{padding:54px 30px 42px;text-align:center;}
+.t-calendar .iv-eyebrow{font-size:10px;letter-spacing:5px;color:#aaa;text-transform:uppercase;}
+.t-calendar .iv-names{font-family:'Noto Serif KR',serif;font-size:25px;letter-spacing:3px;margin:14px 0;font-weight:500;}
+.t-calendar .iv-photo{width:84px;height:84px;border-radius:50%;margin:0 auto;}
+.t-calendar .iv-div{display:none;}
+.t-calendar .iv-sec{border-top:1px solid #f2f2f2;}
+.t-calendar .iv-sec-t{letter-spacing:4px;color:#bbb;}
+
+/* 9. hanok — 한국적 차분한 무드 */
+.t-hanok{background:linear-gradient(180deg,#f9f5ed,#efe6d2);color:#1e1a14;}
+.t-hanok .iv-cover{padding:54px 30px 46px;text-align:center;position:relative;}
+.t-hanok .iv-cover::before,.t-hanok .iv-cover::after{content:'';position:absolute;left:26px;right:26px;height:1px;background:linear-gradient(90deg,transparent,#8a7a50,transparent);}
+.t-hanok .iv-cover::before{top:26px;}
+.t-hanok .iv-cover::after{bottom:26px;}
+.t-hanok .iv-eyebrow{font-family:'Noto Serif KR',serif;font-size:11px;letter-spacing:5px;color:#8a7a50;}
+.t-hanok .iv-names{font-family:'Noto Serif KR',serif;font-size:27px;font-weight:500;letter-spacing:7px;}
+.t-hanok .iv-amp{font-size:.68em;vertical-align:middle;letter-spacing:0;color:#8a7a50;}
+.t-hanok .iv-photo{width:156px;height:156px;border-radius:4px;border:1px solid #c4b080;}
+.t-hanok .iv-div{background:linear-gradient(90deg,transparent,#8a7a50,transparent);width:54px;}
+.t-hanok .iv-sec-t{font-family:'Noto Serif KR',serif;letter-spacing:5px;color:#8a7a50;}
+
+/* 10. flower 야외스냅형 — 자연광 야외 웨딩스냅 */
+.t-flower{background:linear-gradient(180deg,#fffbf8,#fcefe9);color:#5a3a32;}
+.t-flower .iv-cover{padding:60px 30px 48px;text-align:center;position:relative;}
+.t-flower .iv-deco-top{display:block;font-size:26px;margin-bottom:10px;opacity:.6;letter-spacing:6px;}
+.t-flower .iv-eyebrow{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:6px;color:#c49080;}
+.t-flower .iv-names{font-family:'Noto Sans KR',sans-serif;font-size:24px;font-weight:700;letter-spacing:1px;}
+.t-flower .iv-amp{font-family:'Cormorant Garamond',serif;font-style:italic;color:#e0998a;}
+.t-flower .iv-photo{width:166px;height:206px;border-radius:84px 84px 12px 12px;border:2px solid rgba(224,153,138,.35);}
+.t-flower .iv-div{background:linear-gradient(90deg,transparent,#e0998a,transparent);width:54px;}
+.t-flower .iv-sec{border-top:1px solid rgba(224,153,138,.22);}
+.t-flower .iv-sec-t{color:#c49080;letter-spacing:4px;}
+
+/* 11. black-premium — 블랙/골드 프리미엄 */
+.t-black{background:linear-gradient(180deg,#141414,#080808);color:#d4c4a0;}
+.t-black .iv-cover{padding:56px 30px 44px;text-align:center;}
+.t-black .iv-eyebrow{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:7px;color:#a07840;text-transform:uppercase;}
+.t-black .iv-names{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;letter-spacing:3px;color:#e8d8b0;}
+.t-black .iv-amp{font-style:italic;color:#b8945f;}
+.t-black .iv-photo{border:1px solid #b8945f;border-radius:4px;box-shadow:0 16px 44px -20px rgba(184,148,95,.5);}
+.t-black .iv-div{background:linear-gradient(90deg,transparent,#b8945f,transparent);width:54px;}
+.t-black .iv-date{color:#a0906a;font-size:12px;letter-spacing:2px;}
+.t-black .iv-sec{border-top:1px solid rgba(184,148,95,.13);}
+.t-black .iv-sec-t{color:#9a7440;letter-spacing:6px;}
+.t-black .iv-msg,.t-black .iv-info{color:#f0e8d8;line-height:1.8;letter-spacing:.3px;}
+.t-black .acc-row{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.07);}
+.t-black .guest-item{background:rgba(255,255,255,.04);}
+.t-black .guest-form input,.t-black .guest-form textarea,
+.t-black .rsvp-form input,.t-black .rsvp-form select{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1);color:#d4c4a0;}
+.t-black .rsvp-opt{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1);}
+
+/* 12. global — 다국어/국제커플, 심플 고급 */
+.t-global{background:#fafafa;color:#1a1a1a;}
+.t-global .iv-cover{padding:54px 30px 42px;text-align:center;}
+.t-global .iv-eyebrow{font-size:10px;letter-spacing:6px;color:#999;text-transform:uppercase;}
+.t-global .iv-names{font-family:'Cormorant Garamond',serif;font-size:30px;letter-spacing:2px;}
+.t-global .iv-amp{font-style:italic;color:#888;}
+.t-global .iv-photo{border-radius:6px;}
+.t-global .iv-div{background:#ccc;width:34px;}
+.t-global .iv-date{font-size:13px;letter-spacing:1px;}
+.t-global .sub-lang{color:#999;font-size:.82em;}
+.t-global .iv-sec{border-top:1px solid #ececec;}
+.t-global .iv-sec-t{letter-spacing:5px;color:#aaa;}
+.t-global .iv-flag{font-size:14px;margin-left:6px;opacity:.7;}
+
+/* 공통 - 섹션 구분선 */
+.iv-sec-divider{width:24px;height:1px;margin:0 auto 6px;opacity:.3;background:currentColor;}
+
+/* 404 */
+.not-found{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:40px;}
+.not-found h2{font-family:var(--serif);font-size:24px;color:var(--brown);margin-bottom:12px;}
+.not-found p{font-size:14px;color:var(--brown-mute);}
+
+/* 워터마크 */
+.watermark{position:static;transform:none;z-index:auto;margin:22px auto calc(20px + env(safe-area-inset-bottom,0px));width:fit-content;background:rgba(252,249,244,.92);border:1px solid var(--line);border-radius:999px;padding:9px 18px;display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--brown-mute);letter-spacing:.3px;}
+.watermark b{color:var(--gold-deep);font-weight:500;}
+.watermark a{color:var(--gold-deep);text-decoration:none;font-weight:500;}
+.watermark.hidden{display:none;}
+
+/* 플로팅 액션 버튼 */
+.fab-wrap{position:fixed;bottom:20px;right:18px;z-index:100;display:flex;flex-direction:column;align-items:flex-end;gap:11px;}
+.fab-main{width:54px;height:54px;border-radius:50%;background:var(--brown);color:var(--ivory);font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 26px -8px rgba(58,47,38,.5);transition:all .3s;cursor:pointer;border:none;}
+.fab-main:hover{background:var(--gold-deep);transform:translateY(-2px);}
+.fab-menu{display:flex;flex-direction:column;align-items:flex-end;gap:9px;opacity:0;pointer-events:none;transform:translateY(12px);transition:all .3s cubic-bezier(.2,.7,.2,1);}
+.fab-menu.open{opacity:1;pointer-events:all;transform:none;}
+.fab-item{display:flex;align-items:center;gap:10px;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:11px 18px;font-size:13px;color:var(--brown);box-shadow:var(--sh-sm);cursor:pointer;white-space:nowrap;transition:all .25s;letter-spacing:.3px;}
+.fab-item:hover{background:var(--gold-wash);border-color:var(--gold);transform:translateX(-2px);}
+.fab-item .fi{font-size:16px;}
+
+/* QR 모달 */
+.qr-ov{position:fixed;inset:0;background:rgba(20,16,12,.65);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s;}
+.qr-ov.show{opacity:1;pointer-events:all;}
+.qr-modal{background:var(--white);border-radius:24px;padding:36px 30px;text-align:center;max-width:320px;width:100%;box-shadow:0 26px 70px rgba(58,47,38,.16);}
+.qr-modal h3{font-family:var(--serif);font-size:20px;color:var(--brown);margin-bottom:6px;font-weight:400;}
+.qr-modal p{font-size:13px;color:var(--brown-mute);margin-bottom:20px;line-height:1.7;}
+#qrCanvas{border-radius:12px;margin:0 auto 18px;display:block;}
+.qr-modal .qr-url{font-size:11px;color:var(--brown-mute);background:var(--ivory-2);padding:10px;border-radius:8px;word-break:break-all;margin-bottom:18px;}
+.qr-btns{display:flex;gap:10px;}
+.qr-btns button{flex:1;padding:12px;border-radius:999px;font-size:13px;cursor:pointer;font-family:inherit;transition:all .2s;}
+.qr-dl{background:var(--gold);color:#fff;border:none;}
+.qr-dl:hover{background:var(--gold-deep);}
+.qr-close-btn{background:transparent;border:1px solid var(--sand);color:var(--brown-soft);}
+.qr-close-btn:hover{border-color:var(--gold);}
+
+/* 달력 추가 토스트 */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--brown);color:var(--ivory);padding:12px 24px;border-radius:999px;font-size:13px;opacity:0;pointer-events:none;transition:all .3s;z-index:300;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* === theme별 상세영역 디자인: 모든 theme 오버라이드보다 뒤(우선 적용) === */
+/* ================================================================
+   theme별 상세영역 디자인 (배경/글자/제목/구분선/버튼/카드 차별화)
+   레이아웃·기능 불변, 색·스타일만
+   ================================================================ */
+/* 1. signature — 고급 웨딩 매거진: 화이트크림 배경, 진회색, 채움 버튼, 여백 넓게 */
+#card.t-signature{background:#fdfbf7;}
+.t-signature .iv-sec{background:#fdfbf7;border-top:none;padding:54px 32px;}
+.t-signature .iv-sec-t{font-family:'Noto Serif KR',serif;color:#b89a6a;letter-spacing:6px;font-size:11px;}
+.t-signature .iv-msg,.t-signature .iv-info{color:#3a352e;line-height:1.9;letter-spacing:.3px;}
+.t-signature .iv-div{background:#d8c8a8;opacity:.5;width:28px;}
+.t-signature .iv-chip{background:#3a352e;color:#fdfbf7;border:none;opacity:1;padding:12px 22px;}
+.t-signature .iv-chip:hover{background:#5a5248;}
+.t-signature .dday-num{color:#b89a6a;}
+
+/* 2. classic-ivory — 깨끗한 스튜디오: 오프화이트, 다크그레이, 정석형 */
+#card.t-classic-ivory{background:#f8f5ef;}
+.t-classic-ivory .iv-sec{background:#f8f5ef;border-top:1px solid rgba(168,138,88,.14);padding:48px 32px;}
+.t-classic-ivory .iv-sec-t{font-family:'Gowun Batang','Noto Serif KR',serif;color:#8a7350;letter-spacing:5px;font-size:13px;}
+.t-classic-ivory .iv-msg,.t-classic-ivory .iv-info{color:#3c3630;line-height:1.95;letter-spacing:.2px;}
+.t-classic-ivory .iv-div{background:#c0a878;opacity:.45;}
+.t-classic-ivory .iv-chip{border:1px solid #a8895a;color:#7a6440;opacity:.85;}
+.t-classic-ivory .iv-chip:hover{background:#a8895a;color:#fff;opacity:1;}
+.t-classic-ivory .dday-num{color:#8a7350;}
+
+/* 3. minimal(Fine Art) — 웨딩 화보집: 화이트, 매우 넓은 여백, 에디토리얼 제목, 본문 작게 */
+#card.t-minimal{background:#ffffff;}
+.t-minimal .iv-sec{background:#fff;border-top:1px solid #eee;padding:60px 38px;text-align:left;}
+.t-minimal .iv-sec-t{font-family:'Noto Serif KR',serif;color:#4a3c2c;letter-spacing:6px;font-size:11px;font-weight:500;}
+/* minimal 하단 3섹션: 여백 축소 + 제목 대비 강화 */
+#card.t-minimal .rsvp-sec{padding-top:38px;padding-bottom:38px;}
+#card.t-minimal .guest-sec{padding-top:36px;padding-bottom:36px;}
+#card.t-minimal .acc-sec{padding-top:34px;padding-bottom:34px;}
+#card.t-minimal .rsvp-sec .iv-sec-t,#card.t-minimal .guest-sec .iv-sec-t,#card.t-minimal .acc-sec .iv-sec-t{color:#322619;font-size:13px;letter-spacing:4px;text-align:center;}
+#card.t-minimal .rsvp-sec .hk-sec-desc,#card.t-minimal .guest-sec .hk-sec-desc,#card.t-minimal .acc-sec .hk-sec-desc{text-align:center;margin-top:15px;margin-bottom:20px;}
+/* minimal 하단 버튼 공통 규격 (알약 제거, 44px, radius3, 중앙) */
+#card.t-minimal .hk-open-btn,#card.t-minimal .rsvp-submit,#card.t-minimal .guest-submit{box-sizing:border-box;width:min(100%,184px);min-height:44px;margin-left:auto;margin-right:auto;display:flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:3px;font-size:14px;font-weight:500;letter-spacing:.3px;box-shadow:none;cursor:pointer;}
+/* RSVP 1차: 브론즈 채움 */
+#card.t-minimal .rsvp-submit,#card.t-minimal .rsvp-sec .hk-open-btn{background:#897763;color:#faf6ee;border:1px solid #897763;opacity:1;}
+#card.t-minimal .rsvp-submit:hover,#card.t-minimal .rsvp-sec .hk-open-btn:hover{background:#766753;border-color:#766753;}
+/* 방명록 2차: 회갈 외곽선 */
+#card.t-minimal .guest-submit,#card.t-minimal .guest-sec .hk-open-btn{background:transparent;color:#5a4a36;border:1px solid #8a7355;opacity:1;}
+#card.t-minimal .guest-submit:hover,#card.t-minimal .guest-sec .hk-open-btn:hover{background:rgba(138,115,85,.08);}
+/* 계좌 보조: 약한 외곽선 */
+#card.t-minimal .acc-toggle{box-sizing:border-box;list-style:none;display:flex;align-items:center;justify-content:center;width:min(100%,184px);min-height:44px;padding:11px 16px;margin:0 auto;border:1px solid rgba(120,98,68,.68);background:transparent;border-radius:3px;color:#5d4c33;font-size:14px;font-weight:500;letter-spacing:.3px;box-shadow:none;cursor:pointer;}
+#card.t-minimal .acc-toggle:hover{background:rgba(138,115,85,.07);}
+#card.t-minimal .acc-toggle::-webkit-details-marker{display:none;}
+/* 푸터 대비 강화 (회갈) */
+#card.t-minimal .iv-foot{opacity:1;color:#5a4a36;}
+.t-minimal .iv-msg,.t-minimal .iv-info{color:#444;font-size:15px;line-height:1.9;letter-spacing:.2px;text-align:left;}
+.t-minimal .iv-div{background:#1a1a1a;opacity:.25;margin:24px 0;width:40px;}
+.t-minimal .iv-chip{border:1px solid #1a1a1a;color:#1a1a1a;opacity:.7;border-radius:0;}
+.t-minimal .iv-chip:hover{background:#1a1a1a;color:#fff;opacity:1;}
+#card.t-minimal .iv-map .iv-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;max-width:300px;margin:10px auto 0;justify-content:center;flex-wrap:nowrap;}
+#card.t-minimal .iv-map .iv-chip{width:100%;min-width:0;min-height:44px;display:flex;align-items:center;justify-content:center;padding:10px 5px;font-size:13px;white-space:nowrap;border-radius:2px;box-shadow:none;}
+.t-minimal .dday-num{color:#1a1a1a;}
+#card.t-minimal .dday-figure{color:#33271c;font-size:33px;letter-spacing:1px;}
+#card.t-minimal .dday-date{color:#4a3c2c;opacity:.78;}
+
+/* 4. hanok — 전통 청첩장: 한지색, 먹색, 전통 갈색 포인트 */
+#card.t-hanok{background:#f2ebd9;}
+.t-hanok .iv-sec{background:#f2ebd9;border-top:1px solid rgba(138,69,56,.1);padding:44px 32px;}
+/* 한옥 하단 섹션별 여백 차등 (반복감 완화) */
+#card.t-hanok .rsvp-sec{padding-top:35px;padding-bottom:35px;border-top-color:rgba(138,69,56,.085);}
+#card.t-hanok .guest-sec{padding-top:33px;padding-bottom:33px;border-top-color:rgba(138,69,56,.07);}
+#card.t-hanok .acc-sec{padding-top:30px;padding-bottom:30px;border-top-color:rgba(138,69,56,.06);background:#f0e8d3;}
+/* 한옥 섹션 설명 줄바꿈/톤 */
+#card.t-hanok .hk-sec-desc{max-width:280px;margin-left:auto;margin-right:auto;word-break:keep-all;line-height:1.7;}
+#card.t-hanok .acc-sec .hk-sec-desc{color:#5d4b2c;opacity:1;max-width:280px;}
+.t-hanok .iv-sec-t{font-family:'Noto Serif KR',serif;font-weight:500;color:#8a4538;letter-spacing:5px;}
+.t-hanok .iv-msg,.t-hanok .iv-info{color:#2a1d12;line-height:1.9;letter-spacing:.4px;}
+.t-hanok .iv-div{background:#8a4538;opacity:.6;width:30px;height:1.5px;}
+.t-hanok .iv-chip{border:1px solid #8a4538;color:#6a3528;opacity:.85;border-radius:2px;}
+#card.t-hanok .iv-map .iv-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;max-width:286px;margin:10px auto 0;flex-wrap:nowrap;}
+#card.t-hanok .iv-map .iv-chip{width:100%;min-width:0;min-height:44px;display:flex;align-items:center;justify-content:center;padding:10px 5px;font-size:13px;font-weight:500;white-space:nowrap;box-shadow:none;}
+/* 한옥 RSVP·방명록·계좌 버튼 통일 (적갈색 사각, 44px) */
+/* 한옥 하단 버튼: 공통 규격 (186px·44px·radius3·14px·중앙) */
+#card.t-hanok .hk-open-btn,#card.t-hanok .rsvp-submit,#card.t-hanok .guest-submit{box-sizing:border-box;width:min(100%,186px);min-height:44px;margin-left:auto;margin-right:auto;display:flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:3px;font-size:14px;font-weight:500;letter-spacing:.2px;box-shadow:none;cursor:pointer;}
+/* RSVP만 1차 행동: 채움형 */
+#card.t-hanok .rsvp-submit{background:#92564a;color:#f5ecdb;border:1px solid #92564a;opacity:1;}
+#card.t-hanok .rsvp-submit:hover{background:#7e4438;border-color:#7e4438;}
+/* RSVP 열기 버튼도 1차 채움형(초기 노출 버튼) */
+#card.t-hanok .rsvp-sec .hk-open-btn{background:#92564a;color:#f5ecdb;border:1px solid #92564a;}
+#card.t-hanok .rsvp-sec .hk-open-btn:hover{background:#7e4438;}
+/* 방명록·계좌·방명록 열기: 외곽선형(2차) */
+#card.t-hanok .guest-submit,#card.t-hanok .hk-open-btn{background:rgba(255,250,242,.5);color:#8a4538;border:1px solid #8a4538;opacity:.92;}
+#card.t-hanok .guest-submit:hover{opacity:1;background:rgba(138,69,56,.07);}
+/* 계좌 토글: 조용한 텍스트 링크형 (박스/배경 없음, 44px 터치 유지) */
+#card.t-hanok .acc-toggle{list-style:none;box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:min(100%,168px);min-height:44px;padding:11px 16px;margin:0 auto;border:1px solid #92564a;background:transparent;border-radius:3px;color:#723a2f;font-size:13.5px;font-weight:500;letter-spacing:.2px;box-shadow:none;cursor:pointer;}
+#card.t-hanok .acc-toggle:hover{background:rgba(146,86,74,.07);color:#723a2f;}
+#card.t-hanok .acc-toggle::-webkit-details-marker{display:none;}
+.t-hanok .iv-chip:hover{background:#8a4538;color:#f2ebd9;opacity:1;}
+.t-hanok .dday-num{color:#8a4538;}
+#card.t-hanok .hk-dday-num{font-family:'Noto Serif KR',serif;font-size:46px;font-weight:500;line-height:1;color:#8a4538;letter-spacing:1px;}
+#card.t-hanok .hk-dday-unit{font-family:'Noto Serif KR',serif;font-size:15px;color:#5a4428;margin-top:11px;letter-spacing:1px;}
+#card.t-hanok .hk-dday-date{font-family:'Noto Serif KR',serif;font-size:13px;color:#8a7450;margin-top:13px;letter-spacing:1.5px;}
+
+/* 5. black — 럭셔리 호텔: 블랙 배경, 아이보리 글자(밝게), 골드 포인트 */
+#card.t-black{background:#0e0c0a;}
+.t-black .iv-sec{background:#0e0c0a;border-top:1px solid rgba(201,168,106,.16);padding:50px 32px;}
+.t-black .iv-sec-t{font-family:'Noto Serif KR',serif;color:#d2b478;letter-spacing:6px;}
+.t-black .iv-msg,.t-black .iv-info{color:#f0e8d8;line-height:1.8;letter-spacing:.3px;}
+.t-black .iv-div{background:#c9a86a;opacity:.7;}
+.t-black .iv-chip{border:1px solid #c9a86a;color:#e9dcc4;opacity:.95;}
+.t-black .iv-chip:hover{background:#c9a86a;color:#0e0c0a;opacity:1;}
+#card.t-black .iv-map .iv-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;max-width:286px;margin:10px auto 0;flex-wrap:nowrap;}
+#card.t-black .iv-map .iv-chip{width:100%;min-width:0;min-height:44px;display:flex;align-items:center;justify-content:center;padding:10px 5px;font-size:13px;white-space:nowrap;border-radius:3px;box-shadow:none;}
+.t-black .dday-num{color:#d2b478;}
+#card.t-black .dday-figure{color:#f0e8d8;font-size:32px;font-weight:300;letter-spacing:1.5px;margin-top:4px;margin-bottom:4px;}
+#card.t-black .dday-date{color:#c9a86a;opacity:.92;}
+/* black 갤러리: 2열 균형 grid + 정사각 cover */
+#card.t-black .iv-gal,#card.t-black .iv-gal-masonry{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;grid-auto-flow:row;}
+#card.t-black .iv-gal-wrap .g{position:relative;aspect-ratio:1/1;overflow:hidden;}
+#card.t-black .iv-gal-wrap .g img{width:100%;height:100%;object-fit:cover;display:block;}
+/* 더보기 문구 중복 제거: gm-1 숨기고 gm-2만 */
+#card.t-black .gal-more-btn .gm-1{display:none;}
+#card.t-black .gal-more-btn{color:#c9a86a;}
+#card.t-black .gal-more-btn .gm-2{opacity:1;font-size:14px;color:#c9a86a;}
+/* 홀수 마지막 사진: 2열 전체폭으로 확장 (혼자 왼쪽 방치 방지) */
+#card.t-black .iv-gal-wrap:not(.gal-expanded) .g:nth-child(9){grid-column:1 / -1;aspect-ratio:2/1;}
+#card.t-black .iv-gal-wrap.gal-expanded .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
+/* CINEMA 갤러리: 2열 영화 프레임 + 9번째 전체폭, radius 3px */
+#card.t-fullscreen .iv-gal,#card.t-fullscreen .iv-gal-masonry,#card.t-fullscreen .iv-gal-wrap{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;grid-auto-flow:row;}
+#card.t-fullscreen .iv-gal-wrap .g{position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:3px;background:#0c0a08;cursor:pointer;}
+#card.t-fullscreen .iv-gal-wrap .g img{width:100%;height:100%;object-fit:cover;display:block;}
+#card.t-fullscreen .iv-gal-wrap:not(.gal-expanded) .g:nth-child(9){grid-column:1 / -1;aspect-ratio:2/1;}
+#card.t-fullscreen .iv-gal-wrap.gal-expanded .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
+/* LETTER 갤러리: 2열 + 홀수 마지막 전체폭, radius 4px */
+#card.t-gold-serif .iv-gal,#card.t-gold-serif .iv-gal-masonry,#card.t-gold-serif .iv-gal-wrap{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;grid-auto-flow:row;}
+#card.t-gold-serif .iv-gal-wrap .g{position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:4px;background:var(--ivory-2);cursor:pointer;}
+#card.t-gold-serif .iv-gal-wrap .g img{width:100%;height:100%;object-fit:cover;display:block;}
+#card.t-gold-serif .iv-gal-wrap:not(.gal-expanded) .g:nth-child(9){grid-column:1 / -1;aspect-ratio:2/1;}
+#card.t-gold-serif .iv-gal-wrap.gal-expanded .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
+#card.t-fullscreen .gal-more-btn .gm-1{display:none;}
+#card.t-fullscreen .gal-more-btn{color:rgba(214,186,132,.9);}
+#card.t-fullscreen .gal-more-btn .gm-2{opacity:1;font-size:14px;color:rgba(214,186,132,.9);}
+/* minimal 편집 화보형 갤러리: 첫 사진 전체폭 + 이후 2열 + 홀수 마지막 전체폭 */
+#card.t-minimal .iv-gal-wrap{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;grid-auto-flow:row;}
+#card.t-minimal .iv-gal-wrap .g{position:relative;aspect-ratio:1/1;overflow:hidden;border-radius:3px;background:var(--ivory-2);cursor:pointer;}
+#card.t-minimal .iv-gal-wrap .g img{width:100%;height:100%;object-fit:cover;display:block;}
+#card.t-minimal .iv-gal-wrap:not(.gal-expanded) .g:nth-child(9){grid-column:1 / -1;aspect-ratio:2/1;}
+#card.t-minimal .iv-gal-wrap.gal-expanded .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
+/* 더보기 문구 중복 제거: gm-1 숨기고 gm-2만 (회갈 대비) */
+#card.t-minimal .gal-more-btn .gm-1{display:none;}
+#card.t-minimal .gal-more-btn .gm-2{opacity:1;font-size:13.5px;color:#62503e;margin-top:0;}
+.t-black .dday-lbl{color:rgba(240,232,216,.7);}
+/* black 하단 3섹션: 여백 차등 + 구분선 연하게 */
+#card.t-black .rsvp-sec{padding-top:42px;padding-bottom:42px;border-top-color:rgba(201,168,106,.1);}
+#card.t-black .rsvp-sec .iv-sec-t,#card.t-black .guest-sec .iv-sec-t,#card.t-black .acc-sec .iv-sec-t{color:#dcc089;}
+#card.t-black .guest-sec{padding-top:39px;padding-bottom:39px;border-top-color:rgba(201,168,106,.085);}
+#card.t-black .acc-sec{padding-top:36px;padding-bottom:36px;border-top-color:rgba(201,168,106,.07);}
+/* black 하단 버튼 공통 규격 (알약 제거, 44px, radius3) */
+#card.t-black .hk-open-btn,#card.t-black .rsvp-submit,#card.t-black .guest-submit{box-sizing:border-box;width:min(100%,190px);min-height:44px;margin-left:auto;margin-right:auto;display:flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:3px;font-size:14px;font-weight:500;letter-spacing:.3px;box-shadow:none;cursor:pointer;}
+/* RSVP 1차: 저채도 골드 채움 */
+#card.t-black .rsvp-submit,#card.t-black .rsvp-sec .hk-open-btn{background:#9e7d44;color:#f0e8d8;border:1px solid #9e7d44;opacity:1;}
+#card.t-black .rsvp-submit:hover,#card.t-black .rsvp-sec .hk-open-btn:hover{background:#b8975a;border-color:#b8975a;}
+/* 방명록 2차: 골드 외곽선 */
+#card.t-black .guest-submit,#card.t-black .guest-sec .hk-open-btn{background:transparent;color:#d2b478;border:1px solid #b89559;opacity:1;}
+#card.t-black .guest-submit:hover,#card.t-black .guest-sec .hk-open-btn:hover{background:rgba(201,168,106,.1);}
+/* 계좌 보조: 약한 외곽선 */
+#card.t-black .acc-toggle{box-sizing:border-box;list-style:none;display:flex;align-items:center;justify-content:center;width:min(100%,180px);min-height:44px;padding:11px 16px;margin:0 auto;border:1px solid rgba(201,168,106,.55);background:transparent;border-radius:3px;color:#c9a86a;font-size:13.5px;font-weight:500;letter-spacing:.3px;opacity:.92;box-shadow:none;cursor:pointer;}
+#card.t-black .acc-toggle:hover{opacity:1;background:rgba(201,168,106,.08);}
+#card.t-black .acc-toggle::-webkit-details-marker{display:none;}
+/* 푸터 대비 강화 (저채도 골드, 읽히게) */
+#card.t-black .iv-foot{color:rgba(224,202,156,.95);}
+
+/* 6. flower 야외스냅형 — 자연광 야외 웨딩스냅: 웜 화이트, 올리브 포인트, 부드러운 타이포, 장식 최소 */
+#card.t-flower{background:#ffffff;}
+.t-flower .iv-sec{background:#fff;border-top:1px solid #ededed;padding:52px 34px;}
+.t-flower .iv-sec-t{font-family:'Noto Sans KR',sans-serif;color:#1a1a1a;letter-spacing:2px;font-size:11px;text-transform:none;}
+.t-flower .iv-msg,.t-flower .iv-info{color:#2a2a2a;line-height:1.8;letter-spacing:.2px;}
+.t-flower .iv-msg{line-height:1.9;}
+.t-flower .iv-div{background:#1a1a1a;opacity:.18;width:30px;}
+.t-flower .iv-chip{border:1px solid #1a1a1a;color:#1a1a1a;opacity:.75;border-radius:0;font-family:'Noto Sans KR',sans-serif;}
+.t-flower .iv-chip:hover{background:#1a1a1a;color:#fff;opacity:1;}
+.t-flower .dday-num{color:#1a1a1a;font-family:'Noto Sans KR',sans-serif;}
+
+/* 7. fullscreen(시네마) — 영화 오프닝: 블랙, 화이트, 영화 크레딧 제목 */
+#card.t-fullscreen{background:#000;}
+.t-fullscreen .iv-sec{background:#000;border-top:1px solid rgba(255,255,255,.1);padding:52px 32px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;}
+.t-fullscreen .iv-sec-t{font-family:'Cormorant Garamond',serif;color:rgba(214,186,132,.92);letter-spacing:6px;font-size:11px;}
+/* CINEMA 하단 3섹션: 여백 + 제목 대비 강화 */
+#card.t-fullscreen .rsvp-sec{padding-top:38px;padding-bottom:38px;border-top-color:rgba(255,255,255,.06);}
+#card.t-fullscreen .guest-sec{padding-top:36px;padding-bottom:36px;}
+#card.t-fullscreen .acc-sec{padding-top:34px;padding-bottom:34px;}
+#card.t-fullscreen .rsvp-sec .iv-sec-t,#card.t-fullscreen .guest-sec .iv-sec-t,#card.t-fullscreen .acc-sec .iv-sec-t{color:rgba(222,196,146,1);letter-spacing:5px;}
+#card.t-fullscreen .rsvp-sec .hk-sec-desc,#card.t-fullscreen .guest-sec .hk-sec-desc,#card.t-fullscreen .acc-sec .hk-sec-desc{color:rgba(245,238,224,.88);margin-top:15px;margin-bottom:20px;}
+/* CINEMA 하단 버튼 공통: 44px, radius3, 사각, 중앙 */
+#card.t-fullscreen .hk-open-btn,#card.t-fullscreen .rsvp-submit,#card.t-fullscreen .guest-submit{box-sizing:border-box;width:min(100%,184px);min-height:44px;margin-left:auto;margin-right:auto;display:flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:3px;font-size:14px;font-weight:500;letter-spacing:.3px;box-shadow:none;cursor:pointer;}
+/* RSVP 1차: 브론즈 골드 채움 */
+#card.t-fullscreen .rsvp-submit,#card.t-fullscreen .rsvp-sec .hk-open-btn{background:#b08e5a;color:#f7efe0;border:1px solid #b08e5a;opacity:1;}
+#card.t-fullscreen .rsvp-submit:hover,#card.t-fullscreen .rsvp-sec .hk-open-btn:hover{background:#9c7c4c;border-color:#9c7c4c;}
+/* 방명록 2차: 골드 외곽선 */
+#card.t-fullscreen .guest-submit,#card.t-fullscreen .guest-sec .hk-open-btn{background:transparent;color:rgba(214,186,132,.95);border:1px solid rgba(214,186,132,.7);opacity:1;}
+#card.t-fullscreen .guest-submit:hover,#card.t-fullscreen .guest-sec .hk-open-btn:hover{background:rgba(214,186,132,.1);}
+/* 계좌 3차: 약한 골드 사각 외곽선 (알약 제거) */
+#card.t-fullscreen .acc-toggle{box-sizing:border-box;list-style:none;display:flex;align-items:center;justify-content:center;width:min(100%,178px);min-height:43px;padding:11px 16px;margin:0 auto;border:1px solid rgba(214,186,132,.42);background:transparent;border-radius:3px;color:rgba(214,186,132,.78);font-size:14px;font-weight:500;letter-spacing:.3px;box-shadow:none;cursor:pointer;opacity:1;}
+#card.t-fullscreen .acc-toggle:hover{background:rgba(214,186,132,.07);}
+#card.t-fullscreen .acc-toggle::-webkit-details-marker{display:none;}
+/* 펼친 폼: 검정 배경 + 골드 테두리 + 아이보리 글자 */
+#card.t-fullscreen .rsvp-form input,#card.t-fullscreen .rsvp-form select,#card.t-fullscreen .guest-form input,#card.t-fullscreen .guest-form textarea{background:#0c0a08;border:1px solid rgba(214,186,132,.32);color:#f5eee0;border-radius:3px;}
+#card.t-fullscreen .rsvp-form input::placeholder,#card.t-fullscreen .guest-form input::placeholder,#card.t-fullscreen .guest-form textarea::placeholder{color:rgba(245,238,224,.5);}
+/* 푸터 대비 강화 (어두운 골드/회갈) */
+#card.t-fullscreen .iv-foot{color:rgba(232,216,184,.82);}
+.t-fullscreen .iv-msg,.t-fullscreen .iv-info{color:rgba(245,238,224,.92);line-height:1.75;letter-spacing:.5px;}
+.t-fullscreen .iv-div{background:rgba(214,186,132,.45);width:50px;}
+.t-fullscreen .iv-chip{border:1px solid rgba(214,186,132,.55);color:#f5eee0;opacity:1;letter-spacing:2px;}
+.t-fullscreen .iv-chip:hover{background:rgba(214,186,132,.9);color:#16120e;opacity:1;}
+#card.t-fullscreen .iv-map .iv-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;max-width:300px;margin:10px auto 0;justify-content:center;flex-wrap:nowrap;}
+#card.t-fullscreen .iv-map .iv-chip{box-sizing:border-box;width:100%;min-width:0;min-height:44px;display:flex;align-items:center;justify-content:center;padding:11px 5px;font-size:12.5px;letter-spacing:1px;white-space:nowrap;background:#000;border-radius:2px;box-shadow:none;}
+.t-fullscreen .dday-num{color:#f5eee0;}
+.t-fullscreen .dday-lbl{color:rgba(214,186,132,.82);}
+#card.t-fullscreen .dday-date{color:rgba(214,186,132,.9);opacity:1;}
+.t-fullscreen .iv-foot{color:rgba(232,216,184,.62);}
+
+/* 8. gold-serif(레터) — 실제 초대장: 종이색 배경, 잉크색 글자, 종이 질감 카드 */
+#card.t-gold-serif{background:#f5efe2;}
+.t-gold-serif .iv-sec{background:#f5efe2;border-top:1px solid rgba(176,140,75,.2);padding:48px 32px;}
+.t-gold-serif .iv-sec-t{font-family:'Noto Serif KR',serif;color:#8a6a30;letter-spacing:5px;font-size:13px;}
+/* LETTER 하단 3섹션: 여백 + 제목 대비 */
+#card.t-gold-serif .rsvp-sec{padding-top:36px;padding-bottom:36px;}
+#card.t-gold-serif .guest-sec{padding-top:36px;padding-bottom:36px;}
+#card.t-gold-serif .acc-sec{padding-top:34px;padding-bottom:34px;}
+#card.t-gold-serif .rsvp-sec .iv-sec-t,#card.t-gold-serif .guest-sec .iv-sec-t,#card.t-gold-serif .acc-sec .iv-sec-t{color:#7a5a28;letter-spacing:4.5px;}
+#card.t-gold-serif .rsvp-sec .hk-sec-desc,#card.t-gold-serif .guest-sec .hk-sec-desc,#card.t-gold-serif .acc-sec .hk-sec-desc{color:#3a2e1a;margin-top:14px;margin-bottom:18px;}
+/* LETTER 하단 버튼 공통: 44px, radius3, 사각, 중앙 */
+#card.t-gold-serif .hk-open-btn,#card.t-gold-serif .rsvp-submit,#card.t-gold-serif .guest-submit{box-sizing:border-box;width:min(100%,178px);min-height:44px;margin-left:auto;margin-right:auto;display:flex;align-items:center;justify-content:center;padding:11px 18px;border-radius:3px;font-family:'Noto Serif KR',serif;font-size:14px;font-weight:500;letter-spacing:.3px;box-shadow:none;cursor:pointer;}
+/* RSVP 1차: 골드 브라운 채움 */
+#card.t-gold-serif .rsvp-submit,#card.t-gold-serif .rsvp-sec .hk-open-btn{background:#b08c4b;color:#fffdf6;border:1px solid #b08c4b;opacity:1;}
+#card.t-gold-serif .rsvp-submit:hover,#card.t-gold-serif .rsvp-sec .hk-open-btn:hover{background:#9a7a3c;border-color:#9a7a3c;}
+/* 방명록 2차: 골드 브라운 외곽선 */
+#card.t-gold-serif .guest-submit,#card.t-gold-serif .guest-sec .hk-open-btn{background:transparent;color:#5a4a2a;border:1px solid #b08c4b;opacity:1;}
+#card.t-gold-serif .guest-submit:hover,#card.t-gold-serif .guest-sec .hk-open-btn:hover{background:rgba(176,140,75,.08);}
+/* 계좌 3차: 옅은 외곽선 사각 (알약 제거) */
+#card.t-gold-serif .acc-toggle{box-sizing:border-box;list-style:none;display:flex;align-items:center;justify-content:center;width:min(100%,176px);min-height:43px;padding:11px 16px;margin:0 auto;border:1px solid rgba(176,140,75,.55);background:transparent;border-radius:3px;font-family:'Noto Serif KR',serif;color:#6a5630;font-size:14px;font-weight:500;letter-spacing:.3px;box-shadow:none;cursor:pointer;opacity:1;}
+#card.t-gold-serif .acc-toggle:hover{background:rgba(176,140,75,.07);}
+#card.t-gold-serif .acc-toggle::-webkit-details-marker{display:none;}
+/* 펼친 폼: 아이보리 배경 + 골드 테두리 + 짙은 브라운 */
+#card.t-gold-serif .rsvp-form input,#card.t-gold-serif .rsvp-form select,#card.t-gold-serif .guest-form input,#card.t-gold-serif .guest-form textarea{background:#fffdf8;border:1px solid rgba(176,140,75,.4);color:#2a241a;border-radius:3px;}
+#card.t-gold-serif .rsvp-form input::placeholder,#card.t-gold-serif .guest-form input::placeholder,#card.t-gold-serif .guest-form textarea::placeholder{color:rgba(90,74,42,.6);}
+/* 푸터 대비 강화 (회갈) */
+#card.t-gold-serif .iv-foot{color:#7a6644;}
+.t-gold-serif .iv-msg,.t-gold-serif .iv-info{color:#2a241a;font-family:'Noto Serif KR',serif;line-height:1.9;letter-spacing:.3px;}
+.t-gold-serif .iv-div{background:#b08c4b;opacity:.5;}
+.t-gold-serif .iv-chip{border:1px solid #b08c4b;color:#7a5f30;opacity:.85;background:rgba(255,253,248,.5);}
+.t-gold-serif .iv-chip:hover{background:#b08c4b;color:#fffdf8;opacity:1;}
+#card.t-gold-serif .iv-map .iv-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;width:100%;max-width:300px;margin:10px auto 0;justify-content:center;flex-wrap:nowrap;}
+#card.t-gold-serif .iv-map .iv-chip{box-sizing:border-box;width:100%;min-width:0;min-height:43px;display:flex;align-items:center;justify-content:center;padding:10px 5px;font-size:12.5px;letter-spacing:.5px;white-space:nowrap;border-radius:3px;box-shadow:none;opacity:1;}
+.t-gold-serif .dday-num{color:#5a4a30;font-family:'Cormorant Garamond',serif;}
+#card.t-gold-serif .dday-date{color:#9a7740;opacity:.92;}
+/* ================================================================
+   폰트 체계 (템플릿당 제목1+본문1, 로드된 7종 내 조합)
+   계층: 이름(H1) > 섹션제목(H2) > 본문 > 캡션
+   ================================================================ */
+#card.t-signature .iv-msg{font-family:'Noto Serif KR',serif;font-weight:400;}
+#card.t-signature .iv-info{font-family:'Noto Sans KR',sans-serif;font-weight:400;}
+#card.t-classic-ivory .iv-msg{font-family:'Gowun Batang','Noto Serif KR',serif;font-weight:400;}
+#card.t-classic-ivory .iv-info{font-family:'Noto Sans KR',sans-serif;font-weight:400;}
+#card.t-minimal .iv-msg{font-family:'Noto Serif KR',serif;font-weight:400;}
+#card.t-minimal .iv-info{font-family:'Noto Sans KR',sans-serif;font-weight:400;}
+#card.t-hanok .iv-msg{font-family:'Noto Serif KR',serif;font-weight:400;}
+#card.t-hanok .iv-info{font-family:'Noto Sans KR',sans-serif;font-weight:400;}
+#card.t-black .iv-msg{font-family:'Noto Serif KR',serif;font-weight:400;}
+#card.t-black .iv-info{font-family:'Noto Sans KR',sans-serif;font-weight:400;}
+#card.t-flower .iv-msg{font-family:'Gowun Batang','Noto Serif KR',serif;font-weight:400;}
+#card.t-flower .iv-info{font-family:'Noto Sans KR',sans-serif;font-weight:400;}
+#card.t-fullscreen .iv-msg,#card.t-fullscreen .iv-info{font-family:'Noto Sans KR',sans-serif;font-weight:400;}
+#card.t-gold-serif .iv-msg,#card.t-gold-serif .iv-info{font-family:'Noto Serif KR',serif;font-weight:400;}
+#card.t-flower .iv-sec-t{font-family:'Noto Sans KR',sans-serif;font-weight:700;}
+#card.t-fullscreen .iv-sec-t{font-family:'Noto Sans KR',sans-serif;font-weight:700;letter-spacing:5.5px;}
+.iv-sec-t{font-size:11px;font-weight:500;}
+.iv-msg{font-size:15.5px;line-height:1.85;}
+.iv-info{font-size:15px;line-height:1.8;}
+.dday-lbl,.iv-foot{font-size:12px;}
+.iv-date{font-size:15px;letter-spacing:1px;}
+/* ================================================================
+   브랜드 연상 타이포그래피 (고객이 보자마자 떠올려야 할 매체)
+   폰트가 아니라 "처리 방식"으로 연상을 만든다: 자간/굵기/대문자/위계
+   ================================================================ */
+/* ① 웨딩화보형 → VOGUE 표지: 넓은 자간 마스트헤드, 가는 굵기, 대문자 라벨 */
+#card.t-signature .sig-names{font-weight:500;letter-spacing:.02em;}
+#card.t-signature .iv-sec-t{text-transform:uppercase;letter-spacing:6px;font-weight:400;}
+/* ② 밝은 스튜디오형 → 정석 청첩장 인쇄소: 또렷·단정, 과한 자간 금지 */
+#card.t-classic-ivory .civ-names{font-family:'Noto Serif KR',serif;font-size:25px;font-weight:500;line-height:1.18;letter-spacing:3px;color:#241c14;text-align:center;white-space:nowrap;}
+#card.t-classic-ivory .iv-sec-t{text-transform:uppercase;letter-spacing:3px;}
+/* === classic-ivory 상세영역 1차 정밀 보정 === */
+/* 구분선 완화 */
+#card.t-classic-ivory .iv-sec{border-top:1px solid rgba(168,138,88,.09);}
+/* 섹션 제목 가독성 */
+#card.t-classic-ivory .iv-sec-t{font-family:'Gowun Batang','Noto Serif KR',serif;color:#826b47;opacity:1;font-size:12px;font-weight:500;letter-spacing:3px;line-height:1.45;}
+/* 지도 버튼 3분할 */
+#card.t-classic-ivory .iv-map .iv-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;max-width:286px;margin:10px auto 0;}
+#card.t-classic-ivory .iv-map .iv-chip{width:100%;min-width:0;min-height:42px;display:flex;align-items:center;justify-content:center;padding:10px 5px;border:1px solid rgba(168,138,88,.48);border-radius:8px;background:rgba(255,255,255,.42);color:#6f5a3d;opacity:1;font-size:13px;font-weight:500;white-space:nowrap;box-shadow:none;}
+/* RSVP·방명록 주요 버튼 통일 */
+#card.t-classic-ivory .rsvp-submit,#card.t-classic-ivory .guest-submit{background:#8a7350;color:#fffdf8;border:1px solid #8a7350;border-radius:9px;min-height:44px;padding:12px 18px;font-size:13.5px;font-weight:500;letter-spacing:.2px;opacity:1;box-shadow:none;}
+#card.t-classic-ivory .rsvp-submit:hover,#card.t-classic-ivory .guest-submit:hover{background:#75603f;}
+/* RSVP 선택 버튼 + 입력폼 */
+#card.t-classic-ivory .rsvp-opt,#card.t-classic-ivory .rsvp-form input,#card.t-classic-ivory .rsvp-form select,#card.t-classic-ivory .guest-form input,#card.t-classic-ivory .guest-form textarea{border:1px solid rgba(168,138,88,.28);border-radius:9px;background:rgba(255,255,255,.58);color:#3c3630;box-shadow:none;}
+#card.t-classic-ivory .rsvp-opt.on{background:#8a7350;color:#fffdf8;border-color:#8a7350;}
+#card.t-classic-ivory .rsvp-form input:focus,#card.t-classic-ivory .rsvp-form select:focus,#card.t-classic-ivory .guest-form input:focus,#card.t-classic-ivory .guest-form textarea:focus{border-color:#a8895a;background:#fffdf8;outline:none;}
+/* 계좌 펼침 버튼 */
+#card.t-classic-ivory .acc-toggle{border:1px solid rgba(138,115,80,.52);border-radius:9px;background:rgba(255,255,255,.38);color:#6f5a3d;opacity:1;min-height:42px;font-size:12.5px;font-weight:500;box-shadow:none;}
+/* 계좌 복사 버튼 (펼침보다 약하게) */
+#card.t-classic-ivory .acc-copy{background:rgba(168,138,88,.12);color:#6f5a3d;border:1px solid rgba(168,138,88,.32);border-radius:8px;opacity:1;box-shadow:none;}
+/* 커버 날짜·시간 가독성 */
+#card.t-classic-ivory .civ-date{font-size:14px;letter-spacing:.10em;}
+#card.t-classic-ivory .civ-time{font-size:12px;letter-spacing:.06em;}
+/* 푸터: 글자색으로 위계 (전체 opacity 대신) */
+#card.t-classic-ivory .iv-foot{background:#f3ecdf;opacity:1;color:rgba(60,54,48,.48);}
+/* ③ Fine Art → 갤러리 도록: 극세 굵기, 넓은 여백, 작은 캡션 라벨 */
+#card.t-minimal .stl-names{font-weight:400;letter-spacing:4px;}
+#card.t-minimal .iv-sec-t{text-transform:uppercase;letter-spacing:5px;font-weight:500;font-size:11px;}
+/* ④ 한복 → 전통 인쇄/한지: 자간 절제(비석체 회피), 묵직 */
+#card.t-hanok .hk-names{font-weight:400;letter-spacing:5px;}
+#card.t-hanok .iv-sec-t{letter-spacing:2.5px;color:#56291f;opacity:1;font-size:13.5px;font-weight:600;}
+#card.t-hanok .hk-parent-label{color:#776655;}
+/* 한옥 공유 플로팅 버튼: 검정→아이보리/적갈, 작게, 약하게 (기능 유지) */
+#card.t-hanok .fab-main{width:34px;height:34px;font-size:16px;background:#f3ece0;color:#8a4538;border:1px solid rgba(138,69,56,.35);opacity:.85;box-shadow:0 3px 10px -5px rgba(58,47,38,.3);}
+#card.t-hanok .fab-main:hover{background:#ece0cd;opacity:1;transform:translateY(-1px);}
+#card.t-hanok .iv-foot{opacity:1;color:rgba(92,74,57,.84);}
+/* ⑤ 호텔 → 5성급 인비테이션: 가는 세리프 + 넓은 대문자 골드 라벨 */
+#card.t-black .bk-names{font-weight:400;letter-spacing:6px;}
+#card.t-black .iv-sec-t{text-transform:uppercase;letter-spacing:6px;font-weight:400;}
+/* ⑥ flower 야외스냅형 → 자연광 야외 웨딩스냅: 부드러운 자간, 좌측정렬 이름 */
+#card.t-flower .fl-names{font-weight:600;letter-spacing:.5px;}
+#card.t-flower .iv-sec-t{text-transform:uppercase;letter-spacing:2.5px;font-weight:800;font-size:11px;}
+/* ⑦ 시네마 → 영화 크레딧: 넓은 대문자 자간, 가는 굵기 */
+#card.t-fullscreen .cn-names{font-weight:450;letter-spacing:.5px;}
+#card.t-fullscreen .iv-sec-t{text-transform:uppercase;letter-spacing:5.5px;}
+/* ⑧ 레터 → 손으로 건넨 고급 청첩장: 차분, 자간 절제, 본문도 세리프 */
+#card.t-gold-serif .lt-names{font-weight:400;letter-spacing:3px;}
+#card.t-gold-serif .iv-sec-t{letter-spacing:3.6px;}
+/* ================================================================
+   타이포그래피 시스템 — "3초 안에 비싸 보임"
+   원리: 요소 최소화 + 여백 최대화 + 크기대비 명확 + 정렬 정확
+   ================================================================ */
+/* 웨딩화보형 → 잡지 화보: 이름 작게(사진이 주인공), 넓은 자간, 캡션처럼 */
+#card.t-signature .sig-names{font-size:28px;letter-spacing:.02em;font-weight:500;line-height:1.12;white-space:normal;}
+#card.t-signature .sig-date{font-size:13px;letter-spacing:.14em;}
+/* === signature 상세영역 2-B 정밀 보정 === */
+/* 섹션 제목: 가독성(골드 #a8895f, opacity1, 자간 6→4px, 12px, line-height) */
+#card.t-signature .iv-sec-t{color:#a8895f;opacity:1;font-size:12px;letter-spacing:4px;line-height:1.45;font-weight:500;margin-bottom:20px;}
+/* 세로 리듬: 54→48px 소폭 정돈 */
+#card.t-signature .iv-sec{padding:48px 32px;}
+/* 카운트다운 앞뒤 여백 소폭 축소 + 제목 골드 통일 */
+#card.t-signature .dday-sec{padding-top:42px;padding-bottom:42px;}
+#card.t-signature .dday-num{color:#a8895f;}
+/* RSVP·방명록 주요 실행 버튼: 다크브라운 + 직사각 정돈 + 폭 안정 */
+#card.t-signature .rsvp-submit,#card.t-signature .guest-submit{background:#3a352e;color:#fdfbf7;border:1px solid #3a352e;box-shadow:none;opacity:1;font-weight:500;border-radius:9px;min-height:44px;padding:13px 20px;width:min(100%,240px);margin-left:auto;margin-right:auto;display:block;font-size:13px;letter-spacing:.2px;}
+#card.t-signature .rsvp-submit:hover,#card.t-signature .guest-submit:hover{background:#2c2823;}
+/* 지도 버튼: 3분할 한 줄 정렬 */
+#card.t-signature .iv-map .iv-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;max-width:270px;margin-left:auto;margin-right:auto;}
+#card.t-signature .iv-map .iv-chip{width:100%;min-width:0;min-height:42px;padding:0 6px;border-radius:9px;background:#3a352e;color:#fdfbf7;border:1px solid #3a352e;font-size:13px;font-weight:500;line-height:1.2;white-space:nowrap;box-shadow:none;display:flex;align-items:center;justify-content:center;}
+/* 계좌 펼침 버튼: 알약 완화 + 가독성 + 폭 정돈 */
+#card.t-signature .acc-toggle{opacity:1;color:#4b4034;border:1px solid rgba(184,154,106,.38);background:rgba(184,154,106,.05);box-shadow:none;border-radius:9px;width:min(100%,260px);min-height:42px;margin-left:auto;margin-right:auto;font-size:13px;font-weight:500;letter-spacing:.2px;}
+/* 계좌 복사 버튼: 연한 골드 유지 + 모서리 정돈 (펼침보다 약하게) */
+#card.t-signature .acc-copy{background:rgba(184,154,106,.10);color:#6f5a3d;border:1px solid rgba(184,154,106,.30);opacity:1;box-shadow:none;border-radius:8px;}
+/* 갤러리 더보기: 제목 골드와 통일 */
+#card.t-signature .gal-more-btn{color:#a8895f;}
+/* 푸터: 전체 opacity 대신 글자색만 반투명 (아이보리 배경 유지, 회색 띠 방지) */
+#card.t-signature .iv-foot{background:#fdfbf7;opacity:1;color:rgba(58,53,46,.52);}
+/* 갤러리→RSVP 경계: gallery bottom 30→16px, 총 78→64px, 약 18% 축소 */
+#card.t-signature .iv-sec.iv-gal-sec{padding-bottom:16px;}
+/* 호텔형 → 럭셔리 초대장: 이름보다 여백, 자간 극대, 정확한 중앙정렬 */
+#card.t-black .bk-names{font-size:27px;letter-spacing:6px;font-weight:400;}
+#card.t-black .bk-info{gap:14px;}
+#card.t-black .bk-date{font-size:12px;letter-spacing:6px;}
+/* flower 야외스냅형 → 자연광 야외 웨딩스냅: 좌측정렬 유지, 장식 최소 */
+#card.t-flower .fl-names{font-size:28px;letter-spacing:.5px;font-weight:600;line-height:1.2;}
+#card.t-flower .fl-date{font-size:10px;letter-spacing:1px;}
+/* ===== flower 야외스냅형 1차 최종 보정 (자연광 야외 웨딩스냅, 모든 flower 규칙보다 뒤) ===== */
+#card.t-flower .iv-cover{padding:24px 24px 0;background:#f5f2e9;}
+#card.t-flower .fl-hero{height:calc(100vh - 24px);height:calc(100svh - 24px);min-height:600px;max-height:900px;background:#f5f2e9;}
+#card.t-flower .fl-photo-area{flex:0 0 76%;background:#d8d5ca;}
+#card.t-flower .fl-photo img{object-position:center 34%;}
+#card.t-flower .fl-info{flex:1;align-items:flex-start;justify-content:center;gap:0;padding:22px 26px 28px;background:#fbfaf6;}
+#card.t-flower .fl-names{font-family:'Noto Serif KR',serif;font-size:28px;font-weight:600;line-height:1.2;letter-spacing:.5px;color:#2f2e29;}
+#card.t-flower .fl-names .fl-dot{font-family:'Cormorant Garamond',serif;font-style:italic;color:#74785f;margin:0 8px;font-weight:400;}
+#card.t-flower .fl-when{display:flex;flex-direction:column;align-items:flex-start;gap:5px;margin-top:9px;}
+#card.t-flower .fl-date{font-family:'Cormorant Garamond',serif;font-size:13.5px;font-weight:500;letter-spacing:1.6px;color:#65694f;text-transform:uppercase;white-space:nowrap;}
+#card.t-flower .fl-time{font-family:'Noto Serif KR',serif;font-size:12px;font-weight:400;letter-spacing:.7px;color:#797a6d;white-space:nowrap;}
+#card.t-flower{background:#fbfaf6;}
+#card.t-flower .iv-sec{background:#fbfaf6;border-top:1px solid rgba(116,120,95,.10);padding:48px 32px;}
+#card.t-flower .iv-sec-t{font-family:'Noto Sans KR',sans-serif;color:#74785f;opacity:1;font-size:11.5px;font-weight:500;letter-spacing:2.4px;line-height:1.45;text-transform:uppercase;margin-bottom:12px;}
+#card.t-flower .iv-msg,#card.t-flower .iv-info{color:#3f3d36;}
+#card.t-flower .iv-msg{font-family:'Gowun Batang','Noto Serif KR',serif;font-weight:400;line-height:1.9;letter-spacing:.15px;}
+#card.t-flower .iv-info{font-family:'Noto Sans KR',sans-serif;font-weight:400;line-height:1.8;letter-spacing:.1px;}
+#card.t-flower .iv-map-label{color:#74785f;opacity:.72;}
+#card.t-flower .iv-map .iv-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;max-width:292px;margin:12px auto 0;}
+#card.t-flower .iv-map .iv-chip{width:100%;min-width:0;min-height:42px;display:flex;align-items:center;justify-content:center;padding:10px 5px;border:1px solid rgba(116,120,95,.46);border-radius:10px;background:rgba(255,255,255,.62);color:#5f634d;opacity:1;font-size:13px;font-weight:500;white-space:nowrap;box-shadow:none;}
+#card.t-flower .rsvp-submit,#card.t-flower .guest-submit{min-height:44px;padding:12px 18px;border:1px solid #74785f;border-radius:10px;background:#74785f;color:#fffef9;font-size:13.5px;font-weight:500;letter-spacing:.2px;opacity:1;box-shadow:none;}
+#card.t-flower .rsvp-submit:hover,#card.t-flower .guest-submit:hover{background:#65694f;border-color:#65694f;}
+#card.t-flower .rsvp-opt,#card.t-flower .rsvp-form input,#card.t-flower .rsvp-form select,#card.t-flower .rsvp-form textarea,#card.t-flower .guest-form input,#card.t-flower .guest-form textarea{border:1px solid rgba(116,120,95,.27);border-radius:10px;background:rgba(255,255,255,.66);color:#3f3d36;box-shadow:none;}
+#card.t-flower .rsvp-opt.on{background:#74785f;color:#fffef9;border-color:#74785f;}
+#card.t-flower .rsvp-form input:focus,#card.t-flower .rsvp-form select:focus,#card.t-flower .rsvp-form textarea:focus,#card.t-flower .guest-form input:focus,#card.t-flower .guest-form textarea:focus{border-color:#8b8f74;background:#fffef9;outline:none;}
+#card.t-flower .guest-item{background:#f3f1e9;border:1px solid rgba(116,120,95,.10);border-radius:10px;box-shadow:none;}
+#card.t-flower .acc-toggle{width:100%;min-height:44px;border:1px solid rgba(116,120,95,.48);border-radius:10px;background:rgba(255,255,255,.58);color:#5f634d;opacity:1;font-size:13px;font-weight:500;letter-spacing:.2px;box-shadow:none;}
+#card.t-flower .acc-row{background:#f3f1e9;border:1px solid rgba(116,120,95,.10);border-radius:10px;box-shadow:none;}
+#card.t-flower .acc-copy{border:1px solid rgba(116,120,95,.28);border-radius:8px;background:rgba(116,120,95,.10);color:#5f634d;opacity:1;box-shadow:none;}
+#card.t-flower .dday-figure{color:#65694f;}
+#card.t-flower .dday-date{color:#797a6d;opacity:.68;}
+#card.t-flower .iv-foot{background:#f0eee5;color:rgba(63,61,54,.46);opacity:1;}
+/* ===== flower 야외스냅형 갤러리 2차 — 비대칭 자연광 화보 배열 ===== */
+/* 갤러리 섹션 좌우 패딩 소폭 축소(사진 호흡) */
+#card.t-flower .iv-sec.iv-gal-sec{padding-left:24px;padding-right:24px;}
+/* masonry → 12열 비대칭 그리드 (HTML 불변, grid-column/nth-child만) */
+#card.t-flower .iv-gal-masonry{grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-flow:row dense;gap:8px;align-items:start;}
+/* 공통 3n+1 비율 규칙 무력화 + 6n 패턴 재정의 (구체성 우위) */
+#card.t-flower .iv-gal-masonry .g{border-radius:6px;}
+#card.t-flower .iv-gal-masonry .g:nth-child(6n+1){grid-column:span 7;aspect-ratio:4/5;}
+#card.t-flower .iv-gal-masonry .g:nth-child(6n+2){grid-column:span 5;aspect-ratio:1;margin-top:20px;}
+#card.t-flower .iv-gal-masonry .g:nth-child(6n+3){grid-column:span 12;aspect-ratio:3/2;}
+#card.t-flower .iv-gal-masonry .g:nth-child(6n+4){grid-column:span 5;aspect-ratio:1;margin-top:20px;}
+#card.t-flower .iv-gal-masonry .g:nth-child(6n+5){grid-column:span 7;aspect-ratio:4/5;}
+#card.t-flower .iv-gal-masonry .g:nth-child(6n+6){grid-column:span 12;aspect-ratio:5/4;}
+/* 마지막 사진이 6n+1/6n+4(단독 잔류)면 가로 전체로 채움 */
+#card.t-flower .iv-gal-masonry .g:last-child:nth-child(6n+1),#card.t-flower .iv-gal-masonry .g:last-child:nth-child(6n+4){grid-column:span 12;margin-top:0;aspect-ratio:3/2;}
+/* grid(정사각 .iv-gal)/full 선택 시에도 flower 팔레트 유지 */
+#card.t-flower .iv-gal{gap:8px;}
+#card.t-flower .iv-gal .g,#card.t-flower .iv-gal-full .g{border-radius:6px;}
+#card.t-flower .iv-gal-full{gap:10px;}
+/* 더보기·접기 버튼: 올리브 팔레트 + 중앙 짧은 장식선 */
+#card.t-flower .gal-more-btn{color:#65694f;padding-top:16px;}
+#card.t-flower .gal-more-btn::before{content:'';display:block;width:38px;height:1px;background:rgba(116,120,95,.28);margin:0 auto 14px;}
+#card.t-flower .gal-more-btn:hover{color:#797a6d;}
+/* 시네마 → 영화 타이틀: 자간 크게, 제목 존재감 강하게 */
+#card.t-fullscreen .cn-names{font-size:29px;letter-spacing:.5px;font-weight:450;line-height:1.15;}
+#card.t-fullscreen .cn-date{font-size:12px;letter-spacing:7px;}
+/* 레터 → 실제 초대장: 이름과 문구 균형(크기 차이 축소), 자간 절제 */
+#card.t-gold-serif .lt-names{font-size:29px;letter-spacing:4px;font-weight:400;line-height:1.3;}
+#card.t-gold-serif .lt-msg{font-size:14px;line-height:1.85;}
+#card.t-gold-serif .lt-date{font-size:14px;letter-spacing:3px;}
+/* ===== 배경 연출 (배경 연출 엔진, 첫 화면 한정) ===== */
+.ambient-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;opacity:1;transition:opacity .6s ease;}
+.ambient-layer.amb-hidden{opacity:0;}
+.ambient-layer.amb-hidden .ambient-particle{animation-play-state:paused;}
+.ambient-particle{position:absolute;top:-10%;border-radius:50%;will-change:top,transform,opacity;}
+/* 겨울눈: 작은 흰 원, top 기반으로 첫 화면 전체 낙하 + 좌우 흔들림 */
+.ambient-winter-snow .ambient-particle{background:radial-gradient(circle,rgba(255,255,255,.92),rgba(255,255,255,.4));box-shadow:0 0 3px rgba(255,255,255,.4);animation:ambSnowFall linear infinite,ambSnowSway ease-in-out infinite alternate;}
+@keyframes ambSnowFall{0%{top:-10%;opacity:0;}10%{opacity:var(--amb-op,.5);}90%{opacity:var(--amb-op,.5);}100%{top:110%;opacity:0;}}
+@keyframes ambSnowSway{0%{transform:translateX(calc(var(--amb-sway,6px) * -1));}100%{transform:translateX(var(--amb-sway,6px));}}
+/* 골드 더스트: 입자는 이동+fade(opacity), 반짝임은 ::after의 scale/brightness만 (opacity 충돌 제거) */
+.ambient-gold-dust .ambient-particle{background:none;animation:ambDustFloat linear infinite;}
+.ambient-gold-dust .ambient-particle::after{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,var(--amb-core,rgba(255,225,145,.95)) 0%,var(--amb-edge,rgba(196,136,44,.35)) 70%,transparent 100%);box-shadow:0 0 var(--amb-glow,5px) var(--amb-glowc,rgba(212,170,90,.5));animation:ambDustTwinkle ease-in-out infinite;transform-origin:center;}
+@keyframes ambDustFloat{0%{top:-10%;transform:translateX(0);opacity:0;}14%{opacity:var(--amb-op,.6);}86%{opacity:var(--amb-op,.6);}100%{top:110%;transform:translateX(var(--amb-drift,8px));opacity:0;}}
+@keyframes ambDustTwinkle{0%,100%{transform:scale(.82);filter:brightness(.9);}50%{transform:scale(1.08);filter:brightness(1.15);}}
+/* 배경 연출: gold-serif 카드 프레임 내부 텍스트는 입자 위 */
+.t-gold-serif .lt-frame>*{position:relative;z-index:2;}
+.t-gold-serif .lt-frame>.ambient-layer.ambient-layer{z-index:1;}
+/* === 진주 보케: 큰 원형 blur, 느리게 부유 === */
+.ambient-pearl-bokeh .ambient-particle{background:radial-gradient(circle,var(--amb-core,rgba(255,252,248,.5)),var(--amb-edge,rgba(238,230,224,.18)) 60%,transparent 75%);box-shadow:var(--amb-ring,none);filter:blur(1.5px);animation:ambBokehFloat linear infinite,ambBokehPulse ease-in-out infinite;}
+@keyframes ambBokehFloat{0%{top:-12%;transform:translateX(0);opacity:0;}20%{opacity:var(--amb-op,.4);}80%{opacity:var(--amb-op,.4);}100%{top:112%;transform:translateX(var(--amb-drift,8px));opacity:0;}}
+@keyframes ambBokehPulse{0%,100%{transform:scale(.9);}50%{transform:scale(1.06);}}
+/* === 필름 더스트: 미세 그레인, 거의 정적 === */
+.ambient-film-dust .ambient-particle{background:var(--amb-core,rgba(255,250,240,.6));border-radius:50%;animation:ambGrainDrift linear infinite,ambGrainFlick steps(3) infinite;}
+@keyframes ambGrainDrift{0%{top:-6%;opacity:0;}25%{opacity:var(--amb-op,.3);}75%{opacity:var(--amb-op,.3);}100%{top:106%;opacity:0;}}
+@keyframes ambGrainFlick{0%{transform:translateX(0);}33%{transform:translateX(1.5px);}66%{transform:translateX(-1.5px);}100%{transform:translateX(0);}}
+@media (prefers-reduced-motion:reduce){.ambient-layer{display:none!important;}}
+
+</style>
 </head>
 <body>
-  <p>편집기로 이동 중입니다. <a href="./editor.html">여기를 눌러주세요.</a></p>
+
+<!-- 로딩 -->
+<div id="loading">
+  <div class="loading-logo">MemoryRetouch</div>
+  <div class="loading-dots"><span></span><span></span><span></span></div>
+</div>
+
+<!-- 오프닝 오버레이 (theme별 내용은 playOpening에서 주입) -->
+<div class="op-overlay" id="opOverlay"></div>
+
+<!-- 청첩장 본체 -->
+<div id="card"></div>
+
+<!-- 갤러리 라이트박스 -->
+<div class="lightbox" id="lb">
+  <span class="lb-close" onclick="closeLb()">×</span>
+  <button type="button" class="lb-nav lb-prev" onclick="lbStep(-1)" aria-label="이전">‹</button>
+  <img id="lbImg" src="" alt=""/>
+  <button type="button" class="lb-nav lb-next" onclick="lbStep(1)" aria-label="다음">›</button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<!-- 워터마크 (구매 전) -->
+<div class="watermark" id="watermark">
+  <span>✦</span>
+  <span>Made by <b><a href="https://kkacmn-cpu.github.io/wedding/wedding-store.html" target="_blank">MemoryRetouch</a></b></span>
+</div>
+
+<!-- 플로팅 액션 버튼 -->
+<div class="fab-wrap">
+  <div class="fab-menu" id="fabMenu">
+    <div class="fab-item" onclick="shareKakao()"><span class="fi">💛</span>카카오톡 공유하기</div>
+    <div class="fab-item" onclick="copyCardLink()"><span class="fi">🔗</span>링크 복사</div>
+    <div class="fab-item" onclick="showQR()"><span class="fi">🔳</span>QR 코드</div>
+    <div class="fab-item" onclick="addCalendar()"><span class="fi">📅</span>달력에 저장</div>
+    <div class="fab-item" onclick="openEditModal()"><span class="fi">✏️</span>수정하기</div>
+  </div>
+  <button class="fab-main" id="fabMain" onclick="toggleFab()">⋯</button>
+</div>
+
+<!-- QR 모달 -->
+<div class="qr-ov" id="qrOv">
+  <div class="qr-modal">
+    <h3>QR 코드</h3>
+    <p>스캔하면 청첩장으로 바로 이동해요</p>
+    <div id="qrContainer" style="width:200px;height:200px;margin:0 auto 18px;border-radius:12px;overflow:hidden;"></div>
+    <div class="qr-url" id="qrUrl"></div>
+    <div class="qr-btns">
+      <button class="qr-dl" onclick="downloadQR()">⬇ 다운로드</button>
+      <button class="qr-close-btn" onclick="closeQR()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 토스트 -->
+<div class="toast" id="toast"></div>
+
+<!-- 수정번호 입력 모달 -->
+<div class="qr-ov" id="editOv">
+  <div class="qr-modal">
+    <h3>청첩장 수정</h3>
+    <p>발행 시 받으신 <b>6자리 수정번호</b>를 입력해주세요.</p>
+    <input id="editCodeInput" inputmode="numeric" maxlength="6" placeholder="••••••"
+      style="width:100%;text-align:center;font-size:24px;letter-spacing:8px;padding:14px;border:1.5px solid var(--line,#e6ddd0);border-radius:12px;margin-bottom:8px;box-sizing:border-box;"/>
+    <div id="editErr" style="color:#c0392b;font-size:13px;min-height:18px;margin-bottom:12px;"></div>
+    <div class="qr-btns">
+      <button class="qr-dl" id="editGoBtn" onclick="submitEditCode()">수정하기</button>
+      <button class="qr-close-btn" onclick="closeEditModal()">닫기</button>
+    </div>
+    <p style="font-size:11.5px;color:var(--brown-mute,#a89a86);margin-top:14px;line-height:1.6;">
+      수정번호를 잃어버리셨나요?<br>구매하신 판매자에게 문의해주세요.
+    </p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- 카카오 JavaScript SDK -->
+<!-- ※ Kakao Developers(developers.kakao.com)에서 앱 등록 후 JavaScript Key 발급 필요 -->
+<!-- ※ Kakao Developers > 플랫폼 > Web에 실제 배포 도메인 및 Preview 도메인 등록 필요 -->
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
+  integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4"
+  crossorigin="anonymous"></script>
+<script>
+const SUPA_URL='https://jchohaqvaoytplinlylt.supabase.co';
+const SUPA_KEY='sb_publishable_pinNIcaU11HhbSz3TR__mQ_Ln4cJ79a';
+const SHARE_API_BASE=(location.origin&&/^https?:/i.test(location.origin))?location.origin:'https://wedding-test-4-2.vercel.app';
+const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
+
+/* ===== 카카오 설정 ===== */
+const KAKAO_JS_KEY='595f376e62ae3df09dea25e6825e94a4';
+(function(){
+  try{
+    if(window.Kakao&&!Kakao.isInitialized()){
+      Kakao.init(KAKAO_JS_KEY);
+    }
+  }catch(e){console.warn('Kakao SDK 초기화 실패:',e);}
+})();
+
+/* ===== XSS 방어 유틸 ===== */
+function esc(str){
+  if(str==null)return'';
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#x27;');
+}
+function safeUrl(url){
+  if(!url)return'';
+  try{const u=new URL(url);if(['http:','https:'].includes(u.protocol))return url;}catch{}
+  return'';
+}
+
+/* slug 파싱 */
+const slug=new URLSearchParams(location.search).get('slug');
+
+/* 폰트 매핑 (premium=Cormorant+명조 조합 / 기존 값은 하위호환 유지) */
+const FONTS={serif:"'Noto Serif KR',serif",gowunb:"'Noto Serif KR',serif",sans:"'Noto Sans KR',sans-serif",premium:"'Cormorant Garamond','Noto Serif KR',serif",nanum:"'Noto Serif KR',serif",song:"'Cormorant Garamond','Noto Serif KR',serif",dodum:"'Noto Sans KR',sans-serif",gaegu:"'Noto Serif KR',serif"};
+
+/* ===== 측정 기반 이름 폭 맞춤 (글자수 아님, 실제 렌더 폭 기준) ===== */
+function fitName(el){
+  if(!el)return;
+  /* cn-names(시네마): 이미 <br>로 세로 3줄. 사람 이름 내부만 안 넘치게 자간·폰트만 축소(2줄 토글 안 함) */
+  const isVertical=el.classList.contains('cn-names');
+  if(!isVertical)el.classList.remove('nm-twoline');
+  el.style.letterSpacing='';el.style.fontSize='';
+  const sep=el.querySelector('.nm-sep');
+  if(sep){sep.style.margin='';sep.style.fontSize='';}
+  const over=()=>el.scrollWidth>el.clientWidth;
+  if(!over())return;
+  const baseFs=parseFloat(getComputedStyle(el).fontSize)||30;
+  const baseLs=parseFloat(getComputedStyle(el).letterSpacing)||0;
+  for(const ls of [baseLs*0.6,baseLs*0.3,0,baseFs*-0.02,baseFs*-0.04]){el.style.letterSpacing=ls+'px';if(!over())return;}
+  if(isVertical){
+    /* 세로구조: 구분자 간격/2줄 단계 없이 font-size만 단계 축소(최대 ~18%) */
+    for(const f of [0.94,0.88,0.82]){el.style.fontSize=(baseFs*f)+'px';if(!over())return;}
+    return;
+  }
+  if(sep){const sm=parseFloat(getComputedStyle(sep).marginLeft)||0;for(const f of [0.7,0.5,0.35]){sep.style.margin=`0 ${Math.max(2,sm*f)}px`;if(!over())return;}}
+  if(sep){const sf=parseFloat(getComputedStyle(sep).fontSize)||baseFs;for(const f of [0.85,0.78,0.72]){sep.style.fontSize=(sf*f)+'px';if(!over())return;}}
+  for(const f of [0.97,0.94,0.90]){el.style.fontSize=(baseFs*f)+'px';if(!over())return;}
+  el.classList.add('nm-twoline');
+  /* 브라우저 서브픽셀 반올림으로 1px 남는 경우까지 제거 */
+  if(over()){for(const f of [0.88,0.86,0.84]){el.style.fontSize=(baseFs*f)+'px';if(!over())break;}}
+}
+function fitAllNames(root){
+  if(!root)return;
+  root.querySelectorAll('.sig-names,.civ-names,.bk-names,.fl-names,.hk-names,.stl-names,.lt-names,.cn-names').forEach(fitName);
+}
+
+/* 날짜 포맷 */
+function fmtDate(d){
+  if(!d)return null;
+  const dt=new Date(d),dy=['일','월','화','수','목','금','토'];
+  return`${dt.getFullYear()}. ${dt.getMonth()+1}. ${dt.getDate()} ${dy[dt.getDay()]}요일`;
+}
+function fmtTime(t){
+  if(!t)return'';
+  let[h,m]=t.split(':').map(Number);
+  return`${h<12?'오전':'오후'} ${h%12||12}시${m?' '+m+'분':''}`;
+}
+function fmtDateLang(d,t,lang){
+  if(!d||!lang)return'';
+  const dt=new Date(d);
+  const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const DEN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  if(lang==='en')return`${DEN[dt.getDay()]}, ${M[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()}${t?' · '+t:''}`;
+  if(lang==='vi')return`${dt.getDate()}/${dt.getMonth()+1}/${dt.getFullYear()}`;
+  if(lang==='th')return`${dt.getDate()}/${dt.getMonth()+1}/${dt.getFullYear()+543}`;
+  if(lang==='ja')return`${dt.getFullYear()}年${dt.getMonth()+1}月${dt.getDate()}日`;
+  return'';
+}
+function dday(d){if(!d)return null;const a=new Date();a.setHours(0,0,0,0);const b=new Date(d);b.setHours(0,0,0,0);return Math.round((b-a)/864e5);}
+
+/* 오프닝 연출 — theme별 (0.8~1.2초 자동, 터치 불필요) */
+function playOpening(card){
+  const ov=document.getElementById('opOverlay');
+  if(!ov)return;
+  const rawTheme=card.theme||'classic-ivory';
+  const theme=(TPL_MAP[rawTheme]||rawTheme);
+  const g=esc(card.groom_name||'신랑'),b=esc(card.bride_name||'신부');
+  const order=card.options?.order_gb!==false;
+  const ef=order?g:b, es=order?b:g;
+  /* 날짜는 항상 YYYY · MM · DD (하드코딩 금지) */
+  let dt='';
+  /* fullscreen 오프닝 전용: 점 형식 날짜 + 요일 */
+  let cnDt='',cnWd='';
+  if(card.wedding_date){const _d=new Date(card.wedding_date);if(!isNaN(_d.getTime())){dt=`${_d.getFullYear()} · ${String(_d.getMonth()+1).padStart(2,'0')} · ${String(_d.getDate()).padStart(2,'0')}`;cnDt=`${_d.getFullYear()}.${String(_d.getMonth()+1).padStart(2,'0')}.${String(_d.getDate()).padStart(2,'0')}`;cnWd=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'][_d.getDay()];}}
+  const photo=card.main_photo_url?safeUrl(card.main_photo_url):'';
+  const mi=(ef||'민').trim().charAt(0), mj=(es||'준').trim().charAt(0);
+
+  let inner='';
+  if(theme==='signature'){
+    /* VOGUE 화보: 사진이 주인공. 이름은 사진 위 작은 자막만. 날짜 화면 없음 */
+    inner=`${photo?`<div class="op-bg" style="background-image:url('${photo}')"></div>`:''}<div class="op-shade"></div>
+      <div class="op-names"><span class="nm-person">${ef}</span><span class="nm-sep"> &amp; </span><span class="nm-person">${es}</span></div>`;
+  }else if(theme==='classic-ivory'){
+    /* 따뜻한 스튜디오: Wedding Invitation 문구 + 종이 테두리 */
+    inner=`<div class="op-box"><div class="op-lbl">Wedding Invitation</div><div class="op-names"><span class="nm-person">${ef}</span><span class="nm-sep"> &amp; </span><span class="nm-person">${es}</span></div></div>`;
+  }else if(theme==='hanok'){
+    /* 전통 청첩: 먹색 라인 펼침 + 謹請 문구 */
+    inner=`<div class="op-line"></div><div class="op-lbl">謹 請</div><div class="op-names"><span class="nm-person">${ef}</span><span class="nm-sep"> &amp; </span><span class="nm-person">${es}</span></div>`;
+  }else if(theme==='black'){
+    /* 럭셔리 호텔: 대표사진 위 골드 라인 + 이름 + 날짜 */
+    inner=`${photo?`<div class="op-bg" style="background-image:url('${photo}')"></div>`:''}<div class="op-shade"></div>
+      <div class="op-gline"></div><div class="op-names"><span class="nm-person">${ef}</span><span class="nm-sep"> &amp; </span><span class="nm-person">${es}</span></div>${dt?`<div class="op-sub">${dt}</div>`:''}`;
+  }else if(theme==='fullscreen'){
+    /* 영화 오프닝: A WEDDING FILM + 이름 한 줄 + 날짜 (실제 커버와 통일) */
+    inner=`<div class="op-lbl">A WEDDING FILM</div><div class="op-vnames"><span class="nm-person">${ef}</span><span class="op-vand nm-sep">·</span><span class="nm-person">${es}</span></div>${cnDt?`<div class="op-sub">${cnDt}</div>`:''}${cnWd?`<div class="op-subwd">${cnWd}</div>`:''}`;
+  }else if(theme==='minimal'){
+    /* 화보집 첫 페이지: Editorial 문구 + 조용히 작게 */
+    inner=`<div class="op-lbl">Editorial</div><div class="op-names"><span class="nm-person">${ef}</span><span class="nm-sep">·</span><span class="nm-person">${es}</span></div>${dt?`<div class="op-sub">${dt}</div>`:''}`;
+  }else if(theme==='flower'){
+    /* 야외 스냅 화보: 조용한 이름 + 날짜 (실제 커버와 동일 무드) */
+    inner=`<div class="op-names"><span class="nm-person">${ef}</span><span class="nm-sep"> &amp; </span><span class="nm-person">${es}</span></div>${dt?`<div class="op-sub">${dt}</div>`:''}`;
+  }else if(theme==='gold-serif'){
+    /* 실제 초대장: Invitation + 카드 상승, 프레임 안 안정 */
+    inner=`<div class="op-card"><div class="op-lbl">Invitation</div><div class="op-names"><span class="nm-person">${ef}</span><span class="nm-sep"> &amp; </span><span class="nm-person">${es}</span></div></div>`;
+  }else{ /* 기타 fallback */
+    inner=`<div class="op-names"><span class="nm-person">${ef}</span><span class="nm-sep"> &amp; </span><span class="nm-person">${es}</span></div>`;
+  }
+  ov.innerHTML=inner;
+  ov.className=`op-overlay op-theme theme-${theme}`;
+  /* 오프닝 이름도 메인과 동일한 줄바꿈 엔진(fitName) 공유: black·gold-serif 적용 (다른 템플릿 미변경) */
+  if(theme==='black'||theme==='gold-serif'){
+    const _opNm=ov.querySelector('.op-names,.op-vnames');
+    if(_opNm)requestAnimationFrame(()=>fitName(_opNm));
+  }
+  /* 자동으로 사라짐 (애니메이션 종료 시점 ~1.55s) */
+  setTimeout(()=>ov.classList.add('done'),1600);
+}
+
+/* ================================================================
+   12종 템플릿 매핑 (editor의 14종 ID → card의 12종 구조로 매핑)
+   ================================================================ */
+const TPL_MAP={
+  'ivory':'classic-ivory','blush':'flower','dark':'black',
+  'sage':'classic-ivory','lavender':'flower','sand':'classic-ivory',
+  'midnight':'black','rose':'flower','olive':'classic-ivory',
+  'charcoal':'black','peach':'flower','mint':'global',
+  'burgundy':'black','cream':'classic-ivory',
+  /* 신규 12종 직접 매핑 */
+  'signature':'signature','classic-ivory':'classic-ivory',
+  'magazine':'magazine','film':'film','minimal':'minimal',
+  'gold-serif':'gold-serif','fullscreen':'fullscreen',
+  'calendar':'calendar','hanok':'hanok','flower':'flower',
+  'black':'black','global':'global'
+};
+
+/* 커버 HTML 빌더 (템플릿별 완전히 다른 레이아웃) */
+function buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,weddingDateRaw){
+  /* names: "신랑 & 신부" 또는 "신부 & 신랑" (순서 반영된 한 줄)
+     namesStacked: 줄바꿈 형태로도 같은 순서 반영 */
+  const _first=names.startsWith(b+'<')?b:g;
+  const _second=_first===g?b:g;
+  const namesStacked=`${_first}<br><span class="iv-amp">&amp;</span><br>${_second}`;
+  const namesStackedInline=`${_first}<br><span class="iv-amp">&amp;</span> ${_second}`;
+  /* 사진 없을 때 고급 fallback (가는 선 꽃 모티브) */
+  const _dark=(tpl==='black'||tpl==='fullscreen');
+  const _fbColor=_dark?'rgba(255,255,255,.35)':'rgba(140,122,90,.4)';
+  const _fbBg=_dark?'rgba(255,255,255,.04)':'rgba(184,148,95,.06)';
+  const _fb=`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:${_fbBg};">`+
+    `<svg width="46" height="46" viewBox="0 0 48 48" fill="none" stroke="${_fbColor}" stroke-width="1.1">`+
+    `<circle cx="24" cy="24" r="5"/>`+
+    `<path d="M24 19c0-6 4-10 4-10s-1 6-4 10zM24 29c0 6 4 10 4 10s-1-6-4-10zM19 24c-6 0-10 4-10 4s6-1 10-4zM29 24c6 0 10 4 10 4s-6-1-10-4z"/>`+
+    `</svg></div>`;
+  const ph=mainPhoto?`<img src="${mainPhoto}" alt="대표사진" style="width:100%;height:100%;object-fit:cover;"/>`:'';
+  const phFallback=mainPhoto?`<img src="${mainPhoto}" alt="대표사진" style="width:100%;height:100%;object-fit:cover;display:block;"/>`:_fb;
+
+  if(tpl==='signature'){
+    /* 풀스크린 포토형 — 좋은 세로 웨딩사진 전용. 텍스트 최소화 */
+    let sigDate=dateStr||'';
+    if(weddingDateRaw){
+      const _d=new Date(weddingDateRaw+'T00:00:00');
+      if(!isNaN(_d.getTime())){
+        const _mm=String(_d.getMonth()+1).padStart(2,'0');
+        const _dd=String(_d.getDate()).padStart(2,'0');
+        sigDate=`${_d.getFullYear()} · ${_mm} · ${_dd}`;
+      }
+    }
+    return`<div class="iv-cover t-signature">
+      <div class="sig-hero">
+        <div class="sig-photo">${phFallback}</div>
+        <div class="sig-scrim"></div>
+        <div class="sig-overlay">
+          <div class="sig-textwrap">
+            <div class="sig-names"><span class="nm-person">${_first}</span><span class="nm-person">${_second}</span></div>
+            <div class="sig-date">${sigDate}</div>
+            ${timeStr?`<div class="sig-time">${timeStr}</div>`:''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+  if(tpl==='magazine'){
+    const yr=(weddingDateRaw||'').slice(0,4)||'';
+    return`<div class="iv-cover t-magazine">
+      <div class="mag-hero">
+        <div class="mag-photo">${phFallback}</div>
+        <div class="mag-scrim"></div>
+        <div class="mag-top">
+          <span class="mag-brand">MEMORY&nbsp;RETOUCH</span>
+          <span class="mag-issue">ISSUE · ${yr}</span>
+        </div>
+        <div class="mag-side mag-side-l">CELEBRATE</div>
+        <div class="mag-side mag-side-r">LOVE&nbsp;&amp;&nbsp;JOY</div>
+        <div class="mag-center">
+          <div class="mag-bigtitle">WEDDING</div>
+          <div class="mag-namebar">
+            <span class="mag-line"></span>
+            <span class="mag-names">${names}</span>
+            <span class="mag-line"></span>
+          </div>
+        </div>
+        <div class="mag-bottom">
+          <span class="mag-date">${dateStr||''}</span>
+          <span class="mag-tag">THE ONLY ISSUE</span>
+        </div>
+      </div>
+    </div>`;
+  }
+  if(tpl==='film'){
+    return`<div class="iv-cover t-film" style="padding:0 0 28px;">
+      <div style="width:100%;height:65vw;max-height:320px;overflow:hidden;">${phFallback}</div>
+      <div style="display:flex;gap:3px;padding:0 3px;background:#1a1a1a;height:10px;margin-bottom:16px;">
+        ${Array(12).fill('<span style="flex:1;background:#f5f0e8;opacity:.25;"></span>').join('')}
+      </div>
+      <div class="iv-cover-inner" style="padding:0 24px;text-align:center;">
+        <div class="iv-eyebrow">Film Memory</div>
+        <div class="iv-names">${names}</div>
+        <div class="iv-div"></div>
+        <div class="iv-date">${dateStr||''}</div>
+      </div></div>`;
+  }
+  if(tpl==='minimal'){
+    let stlDate=dateStr||'';
+    if(weddingDateRaw){const _d=new Date(weddingDateRaw+'T00:00:00');if(!isNaN(_d.getTime())){const _wd=['SUN','MON','TUE','WED','THU','FRI','SAT'][_d.getDay()];stlDate=`${_d.getFullYear()}. ${String(_d.getMonth()+1).padStart(2,'0')}. ${String(_d.getDate()).padStart(2,'0')} ${_wd}`;}}
+    return`<div class="iv-cover t-minimal">
+      <div class="stl-stage">
+        <div class="stl-photo-area"><div class="stl-photo">${phFallback}</div></div>
+        <div class="stl-info">
+          <div class="stl-names"><span class="nm-person">${_first}</span><span class="stl-amp nm-sep">·</span><span class="nm-person">${_second}</span></div>
+          <div class="stl-when">
+            <span class="stl-date">${stlDate}</span>
+            ${timeStr?`<span class="stl-time">${timeStr}</span>`:''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+  if(tpl==='gold-serif'){
+    let ltDate=dateStr||'';
+    if(weddingDateRaw){const _d=new Date(weddingDateRaw+'T00:00:00');if(!isNaN(_d.getTime())){ltDate=`${_d.getFullYear()}. ${String(_d.getMonth()+1).padStart(2,'0')}. ${String(_d.getDate()).padStart(2,'0')}`;}}
+    const _mi=(_first||'민').trim().charAt(0), _mj=(_second||'준').trim().charAt(0);
+    return`<div class="iv-cover t-gold-serif">
+      <div class="lt-stage">
+        <div class="lt-frame">
+          <div class="lt-mono">${esc(_mi)}&amp;${esc(_mj)}</div>
+          <div class="lt-label">Invitation</div>
+          <div class="lt-names"><span class="nm-person">${_first}</span><span class="lt-and nm-sep">&amp;</span><span class="nm-person">${_second}</span></div>
+          <div class="lt-when">
+            <span class="lt-date">${ltDate}</span>
+            ${timeStr?`<span class="lt-time">${timeStr}</span>`:''}
+          </div>
+          <div class="lt-rule"></div>
+          <div class="lt-msg">두 사람이
+하나가 되는 자리에
+귀한 걸음으로 함께해 주세요</div>
+        </div>
+      </div>
+    </div>`;
+  }
+  if(tpl==='fullscreen'){
+    let cnDate=dateStr||'';
+    let cnWeekday='';
+    if(weddingDateRaw){const _d=new Date(weddingDateRaw+'T00:00:00');if(!isNaN(_d.getTime())){cnDate=`${_d.getFullYear()}.${String(_d.getMonth()+1).padStart(2,'0')}.${String(_d.getDate()).padStart(2,'0')}`;cnWeekday=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'][_d.getDay()];}}
+    return`<div class="iv-cover t-fullscreen">
+      <div class="cn-stage">
+        <div class="cn-inner">
+          <div class="cn-filmlbl">A WEDDING FILM</div>
+          <div class="cn-names"><span class="nm-person">${_first}</span><span class="cn-mid nm-sep">·</span><span class="nm-person">${_second}</span></div>
+          <div class="cn-when">
+            <span class="cn-date">${cnDate}</span>
+            ${cnWeekday?`<span class="cn-weekday">${cnWeekday}</span>`:''}
+            ${timeStr?`<span class="cn-time">${timeStr}</span>`:''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+  if(tpl==='calendar'){
+    /* weddingDateRaw: 원본 ISO 날짜 (YYYY-MM-DD) 기준으로 파싱 — Invalid Date 방지 */
+    const mo=weddingDateRaw?new Date(weddingDateRaw+'T00:00:00'):new Date();
+    const months=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    return`<div class="iv-cover t-calendar" style="padding:48px 28px 36px;text-align:center;">
+      <div class="iv-eyebrow">Save the date</div>
+      <div class="iv-names">${names}</div>
+      <div style="width:180px;border:1px solid #e0e0e0;border-radius:14px;overflow:hidden;margin:20px auto;">
+        <div style="background:#2a2a2a;color:#fff;padding:8px 16px;font-size:11px;letter-spacing:3px;text-align:center;">
+          ${mo.getFullYear()} ${months[mo.getMonth()]}
+        </div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:#2a2a2a;text-align:center;padding:8px 16px 4px;line-height:1;">
+          ${mo.getDate()}
+        </div>
+        <div style="font-size:10px;letter-spacing:2px;color:#aaa;text-align:center;padding-bottom:12px;">
+          ${days[mo.getDay()]}
+        </div>
+      </div>
+      <div class="iv-date">${timeStr||''}</div>
+    </div>`;
+  }
+  if(tpl==='hanok'){
+    let hkDate=dateStr||'';
+    if(weddingDateRaw){const _d=new Date(weddingDateRaw+'T00:00:00');if(!isNaN(_d.getTime())){hkDate=`${_d.getFullYear()}. ${String(_d.getMonth()+1).padStart(2,'0')}. ${String(_d.getDate()).padStart(2,'0')}`;}}
+    return`<div class="iv-cover t-hanok">
+      <div class="hk-stage">
+        <div class="hk-photo-area"><div class="hk-photo">${phFallback}</div><div class="hk-photo-fade"></div></div>
+        <div class="hk-info">
+          <div class="hk-names"><span class="nm-person">${_first}</span><span class="hk-dot nm-sep">·</span><span class="nm-person">${_second}</span></div>
+          <div class="hk-when">
+            <span class="hk-date">${hkDate}</span>
+            ${timeStr?`<span class="hk-time">${timeStr}</span>`:''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+  if(tpl==='flower'){
+    let flDate=dateStr||'';
+    if(weddingDateRaw){const _d=new Date(weddingDateRaw+'T00:00:00');if(!isNaN(_d.getTime())){flDate=`${_d.getFullYear()} · ${String(_d.getMonth()+1).padStart(2,'0')} · ${String(_d.getDate()).padStart(2,'0')}`;}}
+    return`<div class="iv-cover t-flower">
+      <div class="fl-hero">
+        <div class="fl-photo-area"><div class="fl-photo">${phFallback}</div></div>
+        <div class="fl-info">
+          <div class="fl-names"><span class="nm-person">${_first}</span><span class="fl-dot nm-sep">&amp;</span><span class="nm-person">${_second}</span></div>
+          <div class="fl-when">
+            <span class="fl-date">${flDate}</span>
+            ${timeStr?`<span class="fl-time">${timeStr}</span>`:''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+  if(tpl==='black'){
+    let bkDate=dateStr||'';
+    if(weddingDateRaw){const _d=new Date(weddingDateRaw+'T00:00:00');if(!isNaN(_d.getTime())){bkDate=`${_d.getFullYear()}. ${String(_d.getMonth()+1).padStart(2,'0')}. ${String(_d.getDate()).padStart(2,'0')}`;}}
+    return`<div class="iv-cover t-black">
+      <div class="bk-stage">
+        <div class="bk-photo-area"><div class="bk-photo">${phFallback}</div><div class="bk-photo-fade"></div></div>
+        <div class="bk-info">
+          <div class="bk-names"><span class="nm-person">${_first}</span><span class="bk-dot nm-sep">·</span><span class="nm-person">${_second}</span></div>
+          <div class="bk-when">
+            <span class="bk-date">${bkDate}</span>
+            ${timeStr?`<span class="bk-time">${timeStr}</span>`:''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+  if(tpl==='global'){
+    return`<div class="iv-cover t-global" style="padding:48px 28px 36px;text-align:center;">
+      <div class="iv-eyebrow">Wedding Invitation</div>
+      <div class="iv-names">${names}</div>
+      <div style="width:160px;height:200px;border-radius:4px;overflow:hidden;border:1px solid #e8e8e8;margin:18px auto;">${phFallback}</div>
+      <div class="iv-div"></div>
+      <div class="iv-date">${dateStr||''}${timeStr?' '+timeStr:''}
+        ${lang2?`<br><span class="sub-lang">${langDate}</span>`:''}
+      </div>
+    </div>`;
+  }
+  /* default: classic-ivory — 사진 + 하단 정보 패널 (안전형, 어떤 사진이든 안정) */
+  let civDate=dateStr||'';
+  if(weddingDateRaw){
+    const _d=new Date(weddingDateRaw+'T00:00:00');
+    if(!isNaN(_d.getTime())){
+      const _mm=String(_d.getMonth()+1).padStart(2,'0');
+      const _dd=String(_d.getDate()).padStart(2,'0');
+      const _wd=['SUN','MON','TUE','WED','THU','FRI','SAT'][_d.getDay()];
+      civDate=`${_d.getFullYear()}. ${_mm}. ${_dd} ${_wd}`;
+    }
+  }
+  return`<div class="iv-cover t-classic-ivory">
+    <div class="civ-stage">
+      <div class="civ-photo-area">
+        <div class="civ-photo">${phFallback}</div>
+        <div class="civ-photo-fade"></div>
+      </div>
+      <div class="civ-info">
+        <div class="civ-names"><span class="nm-person">${_first}</span><span class="civ-dot nm-sep">&amp;</span><span class="nm-person">${_second}</span></div>
+        <div class="civ-when">
+          <span class="civ-date">${civDate}</span>
+          ${timeStr?`<span class="civ-time">${timeStr}</span>`:''}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* 카드 렌더링 */
+function renderCard(card){
+  /* BGM 재생 */
+  var BGM_BASE='music/';
+  var bgmMode=card.options?.bgm_mode||(card.options?.bgm_url?'custom':'none');
+  var bgmSrc='';
+  if(bgmMode==='preset'&&card.options?.bgm_preset)bgmSrc=BGM_BASE+card.options.bgm_preset+'.mp3';
+  else if(bgmMode==='custom')bgmSrc=safeUrl(card.options?.bgm_url)||'';
+  if(card.options?.music&&bgmSrc){
+    const audio=document.createElement('audio');
+    audio.src=bgmSrc;audio.loop=true;audio.volume=0.3;
+    document.body.appendChild(audio);
+    let played=false;
+    const tryPlay=()=>{if(!played){played=true;audio.play().catch(()=>{});}};
+    document.addEventListener('touchstart',tryPlay,{once:true});
+    document.addEventListener('click',tryPlay,{once:true});
+    window._bgmAudio=audio;
+  }
+
+  const card_el=document.getElementById('card');
+  const rawTheme=card.theme||'ivory';
+  const tpl=TPL_MAP[rawTheme]||'classic-ivory';
+  const font=FONTS[card.font]||FONTS.serif;
+  const opts=card.options||{};
+
+  /* 모든 텍스트 escape */
+  const g=esc(card.groom_name||'신랑'), b=esc(card.bride_name||'신부');
+  const venueN=esc(card.venue_name||'');
+  const venueH=esc(card.venue_hall||'');
+  const venueA=esc(card.venue_address||'');
+  const msg=esc(card.message||'');
+  const msgL2=esc(card.message_lang2||'');
+  const gParentRaw=esc(opts.groom_parents||'');
+  const bParentRaw=esc(opts.bride_parents||'');
+  const gParent=gParentRaw?((opts.groom_parent_deceased?'故 ':'')+gParentRaw):'';
+  const bParent=bParentRaw?((opts.bride_parent_deceased?'故 ':'')+bParentRaw):'';
+  const venueL2=esc(card.venue_lang2||'');
+  const addressL2=esc(card.address_lang2||'');
+  const groomBank=esc(card.groom_bank||'');
+  const groomHolder=esc(card.groom_holder||'');
+  const groomAcc=esc(card.groom_account||'');
+  const brideBank=esc(card.bride_bank||'');
+  const brideHolder=esc(card.bride_holder||'');
+  const brideAcc=esc(card.bride_account||'');
+  const gpBank=esc(card.groom_parent_bank||'');
+  const gpHolder=esc(card.groom_parent_holder||'');
+  const gpAcc=esc(card.groom_parent_account||'');
+  const bpBank=esc(card.bride_parent_bank||'');
+  const bpHolder=esc(card.bride_parent_holder||'');
+  const bpAcc=esc(card.bride_parent_account||'');
+  /* 신랑/신부 표시 순서: options.order_gb===false 이면 신부 먼저 */
+  const orderGb=card.options?.order_gb!==false;
+  const names=orderGb
+    ?`${g}<span class="iv-amp">&amp;</span>${b}`
+    :`${b}<span class="iv-amp">&amp;</span>${g}`;
+  const namesPlain=orderGb?`${g} ♥ ${b}`:`${b} ♥ ${g}`;
+  const lang2=card.lang2;
+  const weddingDateRaw=card.wedding_date||'';   /* ISO 원본값 (YYYY-MM-DD) */
+  const dateStr=fmtDate(weddingDateRaw);
+  const timeStr=card.wedding_time?fmtTime(card.wedding_time):'';
+  const langDate=fmtDateLang(weddingDateRaw,card.wedding_time,lang2);
+  const mainPhoto=safeUrl(card.main_photo_url);
+  const galleryUrls=(Array.isArray(card.gallery_urls)?card.gallery_urls:[]).map(safeUrl).filter(Boolean).slice(0,40);
+
+  /* 테마 클래스 설정 */
+  card_el.className=`t-${tpl}`;
+  card_el.style.fontFamily=font;
+
+  let html='';
+
+  /* ① 커버 (템플릿별 레이아웃) */
+  html+=buildCoverHtml(tpl,g,b,names,dateStr,timeStr,mainPhoto,lang2,langDate,weddingDateRaw);
+
+  /* ② 인사말 */
+  if(msg){
+    html+=`<div class="iv-sec">
+      <div class="iv-sec-t">${tpl==='hanok'?'초대합니다':'Invitation'}</div>
+      <div class="iv-msg" style="white-space:pre-line;margin-top:12px;">${msg}
+        ${lang2&&msgL2?`<span class="sub-lang" style="display:block;margin-top:10px;font-style:italic;">${msgL2}</span>`:''}
+      </div>
+    </div>`;
+  }
+
+  /* ②-b 혼주 (선택 — 비어있으면 영역 숨김) */
+  if(gParent||bParent){
+    html+=`<div class="iv-sec">
+      <div class="iv-sec-t">${tpl==='hanok'?'양가 부모님':'With Parents'}</div>
+      <div class="iv-parents" style="margin-top:12px;display:flex;flex-direction:column;gap:14px;text-align:center;">
+        ${gParent?`<div><div class="${tpl==='hanok'?'hk-parent-label':''}" style="font-size:11px;letter-spacing:1.5px;${tpl==='hanok'?'':(tpl==='fullscreen'?'color:rgba(214,186,132,.85);':(tpl==='gold-serif'?'color:#8a6a38;':'color:var(--brown-mute);'))}margin-bottom:4px;">신랑측 혼주</div><div style="font-size:14.25px;word-break:keep-all;line-height:1.6;">${gParent}</div></div>`:''}
+        ${bParent?`<div><div class="${tpl==='hanok'?'hk-parent-label':''}" style="font-size:11px;letter-spacing:1.5px;${tpl==='hanok'?'':(tpl==='fullscreen'?'color:rgba(214,186,132,.85);':(tpl==='gold-serif'?'color:#8a6a38;':'color:var(--brown-mute);'))}margin-bottom:4px;">신부측 혼주</div><div style="font-size:14.25px;word-break:keep-all;line-height:1.6;">${bParent}</div></div>`:''}
+      </div>
+    </div>`;
+  }
+
+  /* ③ 날짜·장소 (인사말 바로 다음) */
+  if(venueN||dateStr){
+    const addrQ=encodeURIComponent(((card.venue_address||card.venue_name||'')).trim());
+    html+=`<div class="iv-sec">
+      <div class="iv-sec-t">예식 안내</div>
+      <div class="iv-info" style="margin-top:12px;">
+        ${dateStr?`<div style="font-size:16px;font-family:'Noto Serif KR',serif;font-weight:500;margin-bottom:6px;">${dateStr}${timeStr?` <span style="font-weight:300;">${timeStr}</span>`:''}</div>`:''}
+        ${venueN?`<div><b>${venueN}</b>${venueH?' '+venueH:''}</div>`:''}
+        ${venueA?`<div class="bk-addr" style="color:${(tpl==='black'||tpl==='fullscreen')?'rgba(232,222,202,.82)':(tpl==='gold-serif'?'rgba(58,48,32,.82)':'rgba(58,53,46,.65)')};opacity:1;font-size:12px;margin-top:4px;word-break:keep-all;line-height:1.6;">${tpl==='hanok'?venueA.replace(/\s+(\S{1,4})\s*$/,'\u00a0$1'):venueA}</div>`:''}
+        ${lang2&&venueL2?`<div class="sub-lang" style="margin-top:6px;">${venueL2}</div>`:''}
+        ${lang2&&addressL2?`<div class="sub-lang" style="margin-top:4px;word-break:keep-all;line-height:1.6;">${addressL2}</div>`:''}
+      </div>
+      ${venueA?`<div class="iv-map">
+        <div class="iv-map-label">길 찾기</div>
+        <div class="iv-chips" style="margin-top:10px;">
+        <a class="iv-chip" href="https://map.naver.com/v5/search/${addrQ}" target="_blank" rel="noopener noreferrer">네이버</a>
+        <a class="iv-chip" href="https://map.kakao.com/link/search/${addrQ}" target="_blank" rel="noopener noreferrer">카카오</a>
+        <a class="iv-chip" href="https://www.google.com/maps/search/?api=1&query=${addrQ}" target="_blank" rel="noopener noreferrer">구글</a>
+        </div>
+      </div>`:''}
+    </div>`;
+  }
+
+  /* ④ D-Day */
+  if(opts.dday!==false&&card.wedding_date){
+    const dd=dday(card.wedding_date);
+    if(dd!==null&&dd>=0){
+      const _dd=new Date(card.wedding_date);
+      const _valid=!isNaN(_dd.getTime());
+      if(tpl==='hanok'){
+        const _kDate=_valid?`${_dd.getFullYear()}년 ${_dd.getMonth()+1}월 ${_dd.getDate()}일`:'';
+        const _kBody=(dd===0)
+          ?`<div class="hk-dday-num">D-DAY</div><div class="hk-dday-unit">두 사람이 부부가 되는 날입니다</div>`
+          :`<div class="hk-dday-num">D-${dd}</div><div class="hk-dday-unit">두 사람의 예식이 다가옵니다</div>`;
+        html+=`<div class="iv-sec dday-sec">
+        <div class="iv-sec-t">예식일까지</div>
+        ${_kBody}
+        ${_kDate?`<div class="hk-dday-date">${_kDate}</div>`:''}
+      </div>`;
+      }else{
+      const _M=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      const _ddStr=_valid?`${_M[_dd.getMonth()]} ${_dd.getDate()}, ${_dd.getFullYear()}`:'';
+      html+=`<div class="iv-sec dday-sec">
+        <div class="iv-sec-t">Until Our Wedding</div>
+        <div class="dday-figure">${dd===0?'D-DAY':'D-'+dd}</div>
+        ${_ddStr?`<div class="dday-date">${_ddStr}</div>`:''}
+      </div>`;
+      }
+    }
+  }
+
+  /* ⑤ 갤러리 — 빈 자리표시로 렌더, DOM 삽입 후 preload로 성공 이미지만 채움 */
+  if(opts.gallery!==false&&galleryUrls.length){
+    const layoutClass={grid:'iv-gal',masonry:'iv-gal-masonry',full:'iv-gal-full'}[opts.gallery_layout||'masonry']||'iv-gal';
+    /* 성공 이미지 기준 재계산은 hydrateGallery()가 처리. 여기선 컨테이너만 생성 */
+    html+=`<div class="iv-sec iv-gal-sec" id="galSec" data-gallery='${esc(JSON.stringify(galleryUrls))}' data-layout="${layoutClass}" data-hanok="${tpl==='hanok'?1:0}" style="display:none;">
+      <div class="iv-sec-t">${tpl==='hanok'?'우리의 순간':'Gallery'}</div>
+      <div class="${layoutClass} iv-gal-wrap" id="galWrap" style="margin-top:14px;"></div>
+    </div>`;
+  }
+
+  /* ⑥ RSVP */
+  if(opts.rsvp!==false){
+    html+=`<div class="iv-sec rsvp-sec">
+      <div class="iv-sec-t">참석 안내</div>
+      <div class="hk-sec-desc" style="font-size:13px;color:inherit;opacity:.7;margin-top:8px;margin-bottom:14px;">귀한 발걸음을 기다립니다</div>
+      ${(tpl==='hanok'||tpl==='black'||tpl==='minimal'||tpl==='fullscreen'||tpl==='gold-serif')?`<button type="button" class="hk-open-btn" onclick="this.style.display='none';document.getElementById('rsvpForm').style.display='flex';">참석 여부 남기기</button>`:''}
+      <div class="rsvp-form" id="rsvpForm"${(tpl==='hanok'||tpl==='black'||tpl==='minimal'||tpl==='fullscreen'||tpl==='gold-serif')?' style="display:none;"':''}>
+        <div class="rsvp-opts">
+          <div class="rsvp-opt on" onclick="rsvpPick(this)">참석</div>
+          <div class="rsvp-opt" onclick="rsvpPick(this)">불참</div>
+        </div>
+        <div class="rsvp-row">
+          <select id="rv_side"><option value="groom">신랑측</option><option value="bride">신부측</option></select>
+          <input id="rv_name" placeholder="성함" maxlength="20"/>
+        </div>
+        <div class="rsvp-row">
+          <select id="rv_meal"><option value="yes">식사 함</option><option value="no">식사 안 함</option></select>
+          <select id="rv_plus"><option value="0">동반 0명</option><option value="1">1명</option><option value="2">2명</option><option value="3">3명</option><option value="4">4명+</option></select>
+        </div>
+        <input id="rv_phone" placeholder="연락처 (선택)" maxlength="20"/>
+        <input id="rv_memo" placeholder="메모" maxlength="100"/>
+        <button class="rsvp-submit" onclick="submitRsvp('${esc(card.id)}')">참석 여부 남기기</button>
+        <p class="privacy">입력하신 정보는 예식 준비 목적으로만 사용됩니다.</p>
+      </div>
+    </div>`;
+  }
+
+  /* ⑦ 방명록 */
+  if(opts.guest!==false){
+    html+=`<div class="iv-sec guest-sec">
+      <div class="iv-sec-t">축하의 글</div>
+      <div class="hk-sec-desc" style="font-size:13px;color:inherit;opacity:.7;margin-top:8px;margin-bottom:14px;">두 사람에게 따뜻한 마음을 전해주세요</div>
+      ${(tpl==='hanok'||tpl==='black'||tpl==='minimal'||tpl==='fullscreen'||tpl==='gold-serif')?`<button type="button" class="hk-open-btn" onclick="this.style.display='none';this.nextElementSibling.style.display='flex';">마음 남기기</button>`:''}
+      <div class="guest-form"${(tpl==='hanok'||tpl==='black'||tpl==='minimal'||tpl==='fullscreen'||tpl==='gold-serif')?' style="display:none;"':''}>
+        <input id="gb_name" placeholder="성함" maxlength="20"/>
+        <textarea id="gb_msg" rows="3" placeholder="두 사람에게 따뜻한 마음을 전해주세요" maxlength="300"></textarea>
+        <button class="guest-submit" onclick="submitGuest('${esc(card.id)}')">마음 남기기</button>
+      </div>
+      <div class="guest-list" id="guestList"></div>
+    </div>`;
+  }
+
+  /* ⑧ 계좌 (마지막 — 감성 → 정보 → 기능 → 계좌 순서) */
+  if(opts.account!==false&&(groomAcc||brideAcc||gpAcc||bpAcc)){
+    html+=`<div class="iv-sec acc-sec">
+      <div class="iv-sec-t">마음 전하실 곳</div>
+      <div class="hk-sec-desc" style="font-size:13px;opacity:${tpl==='hanok'?'.9':'.55'};margin-top:6px;margin-bottom:12px;">${tpl==='hanok'?'마음을 전하실 분들을 위해 준비했습니다':'참석이 어려우신 분들을 위한 안내입니다'}</div>
+      <details class="acc-box">
+        <summary class="acc-toggle">계좌번호 확인하기</summary>
+        <div class="acc-list">
+          ${groomAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${groomBank} ${groomHolder}</span><span class="acc-num">${groomAcc}</span></div><button class="acc-copy" data-acc="${groomAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
+          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button class="acc-copy" data-acc="${gpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
+          ${brideAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${brideBank} ${brideHolder}</span><span class="acc-num">${brideAcc}</span></div><button class="acc-copy" data-acc="${brideAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
+          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button class="acc-copy" data-acc="${bpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
+        </div>
+      </details>
+    </div>`;
+  }
+
+  /* ⑨ 푸터 */
+  html+=`<div class="iv-foot">
+    ${tpl==='minimal'?`${namesPlain.replace('♥','·')} · ${esc(card.wedding_date||'')}`:`${tpl==='hanok'?namesPlain.replace('♥','·'):namesPlain}<br>
+    ${esc(card.wedding_date||'')}`}${(tpl==='hanok'||tpl==='black'||tpl==='minimal'||tpl==='fullscreen'||tpl==='gold-serif')?'':`<br>
+    <span style="font-family:'Cormorant Garamond',serif;letter-spacing:2px;font-size:12px;">MemoryRetouch</span>`}
+  </div>`;
+
+  card_el.innerHTML=html;
+  /* 갤러리: 성공 이미지만 채우고 9장 노출·더보기·라이트박스 목록 재계산 */
+  hydrateGallery();
+  /* 측정 기반 이름 폭 맞춤 (렌더 직후) */
+  requestAnimationFrame(()=>fitAllNames(card_el));
+  /* 배경 연출 (첫 화면 커버 한정) */
+  requestAnimationFrame(function(){
+    var coverEl=card_el.querySelector('.iv-cover');
+    if(coverEl) applyAmbient(tpl, card.options?.particle_effect||'auto', coverEl);
+  });
+  document.title=`${card.groom_name||'신랑'} ♥ ${card.bride_name||'신부'}의 결혼식`;
+  /* guestList가 DOM에 추가된 이후에 방명록 목록 로드 */
+  if(opts.guest!==false) loadGuests(card.id);
+}
+/* RSVP 선택 */
+let rsvpChoice='참석';
+function rsvpPick(el){rsvpChoice=el.textContent;el.parentElement.querySelectorAll('.rsvp-opt').forEach(o=>o.classList.remove('on'));el.classList.add('on');}
+
+/* RSVP 제출 */
+async function submitRsvp(cardId){
+  const name=document.getElementById('rv_name')?.value.trim();
+  if(!name){alert('성함을 입력해주세요.');return;}
+  const btn=document.querySelector('#rsvpForm .rsvp-submit')||document.querySelector('.rsvp-submit');
+  if(btn){btn.textContent='전송 중...';btn.disabled=true;}
+  const{error}=await sb.from('rsvp').insert({
+    card_id:cardId,
+    name,
+    side:document.getElementById('rv_side')?.value,
+    attendance:rsvpChoice,
+    meal:document.getElementById('rv_meal')?.value,
+    plus_count:parseInt(document.getElementById('rv_plus')?.value||'0'),
+    phone:document.getElementById('rv_phone')?.value.trim()||null,
+    memo:document.getElementById('rv_memo')?.value.trim()||null
+  });
+  if(error){alert('전송 실패. 다시 시도해주세요.');if(btn){btn.textContent='참석 여부 남기기';btn.disabled=false;}return;}
+  const form=document.getElementById('rsvpForm');
+  if(form)form.innerHTML=`<div style="text-align:center;padding:20px;font-size:15px;color:var(--gold-deep);">감사합니다 💌<br><span style="font-size:13px;opacity:.7">참석 여부가 전달됐어요</span></div>`;
+}
+
+/* 방명록 로드 */
+async function loadGuests(cardId){
+  const{data}=await sb.rpc('get_guestbook_by_card',{p_card_id:cardId,p_limit:20});
+  const list=document.getElementById('guestList');
+  if(!list||!data?.length)return;
+  list.innerHTML=data.map(g=>`
+    <div class="guest-item">
+      <div class="gi-name">${esc(g.name)}</div>
+      <div class="gi-msg">${esc(g.message)}</div>
+      <div class="gi-date">${new Date(g.created_at).toLocaleDateString('ko-KR')}</div>
+    </div>`).join('');
+}
+
+/* 방명록 제출 */
+async function submitGuest(cardId){
+  const name=document.getElementById('gb_name')?.value.trim();
+  const msg=document.getElementById('gb_msg')?.value.trim();
+  if(!name||!msg){alert('성함과 메시지를 입력해주세요.');return;}
+  const btn=document.querySelector('.guest-form .guest-submit')||document.querySelector('.guest-submit');
+  if(btn){btn.textContent='남기는 중...';btn.disabled=true;}
+  const{error}=await sb.from('guestbook').insert({card_id:cardId,name,message:msg});
+  if(error){alert('전송 실패. 다시 시도해주세요.');if(btn){btn.textContent='마음 남기기';btn.disabled=false;}return;}
+  document.getElementById('gb_name').value='';
+  document.getElementById('gb_msg').value='';
+  if(btn){btn.textContent='마음 남기기';btn.disabled=false;}
+  loadGuests(cardId);
+}
+
+/* 계좌 복사 — 공통 안내 toast (재사용, 누적 방지, aria-live) */
+var _copyToastTimer=null;
+function _showCopyToast(msg,ok){
+  var el=document.getElementById('copyToast');
+  if(!el){
+    el=document.createElement('div');
+    el.id='copyToast';
+    el.setAttribute('role','status');
+    el.setAttribute('aria-live','polite');
+    el.style.cssText='position:fixed;left:50%;bottom:32px;transform:translateX(-50%);max-width:88%;z-index:900;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;letter-spacing:.2px;text-align:center;box-shadow:0 6px 24px rgba(0,0,0,.22);opacity:0;transition:opacity .25s;pointer-events:none;word-break:keep-all;line-height:1.5;';
+    document.body.appendChild(el);
+  }
+  el.textContent=msg;
+  el.style.background=ok?'rgba(46,40,32,.94)':'rgba(150,52,52,.95)';
+  el.style.color='#fff';
+  /* 한 번에 하나만 — 기존 타이머 정리(메시지 DOM 누적 방지) */
+  if(_copyToastTimer)clearTimeout(_copyToastTimer);
+  void el.offsetWidth;
+  el.style.opacity='1';
+  _copyToastTimer=setTimeout(function(){el.style.opacity='0';},2200);
+}
+/* 실제 복사 성공 여부를 boolean으로 판정 (clipboard API → textarea+execCommand fallback) */
+function _doCopy(txt){
+  return new Promise(function(resolve){
+    if(window.isSecureContext&&navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){resolve(true);}).catch(function(){resolve(_fallbackCopy(txt));});
+    }else{
+      resolve(_fallbackCopy(txt));
+    }
+  });
+}
+function _fallbackCopy(txt){
+  var ok=false, ta=null;
+  try{
+    ta=document.createElement('textarea');
+    ta.value=txt;ta.setAttribute('readonly','');
+    ta.style.cssText='position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
+    document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,txt.length);
+    ok=(document.execCommand('copy')===true); /* 반환값 반드시 확인 */
+  }catch(e){ ok=false; }
+  if(ta&&ta.parentNode)ta.parentNode.removeChild(ta); /* 성공·실패 무관 제거 */
+  return ok;
+}
+function copyAcc(btn){
+  /* 클릭한 행의 data-acc만 사용 (다른 계좌 혼입 방지), 하이픈·공백 원본 그대로 */
+  var txt=btn.dataset.acc||'';
+  if(!txt){ _showCopyToast('복사하지 못했습니다. 계좌번호를 직접 선택해 주세요.',false); return; }
+  _doCopy(txt).then(function(ok){
+    if(ok){
+      /* 실제 복사 성공한 경우에만 표시 */
+      var orig=btn.dataset.label||'복사';
+      btn.dataset.label=orig;
+      btn.textContent='복사됨 ✓';btn.classList.add('done');
+      setTimeout(function(){btn.textContent=orig;btn.classList.remove('done');},1400);
+      _showCopyToast('계좌번호가 클립보드에 복사되었습니다.',true);
+    }else{
+      /* 실패 — 버튼은 원래 상태 유지, 거짓 성공 표시 안 함 */
+      _showCopyToast('복사하지 못했습니다. 계좌번호를 직접 선택해 주세요.',false);
+    }
+  });
+}
+
+/* 갤러리 */
+var _lbIndex=0;
+var _lbPrevOverflow=null; /* 라이트박스 열기 전 body overflow 저장 */
+function openLb(arg){
+  var urls=window._lbUrls||[];
+  var idx=0;
+  if(typeof arg==='number')idx=arg;
+  else { var f=urls.indexOf(arg); idx=f>=0?f:0; } /* src 호환 */
+  if(!urls.length)return;
+  _lbIndex=(idx+urls.length)%urls.length;
+  _lbRender();
+  document.getElementById('lb').classList.add('show');
+  /* 배경 페이지 스크롤 잠금 (현재 overflow 저장 후 hidden) */
+  if(_lbPrevOverflow===null){ _lbPrevOverflow=document.body.style.overflow||''; }
+  document.body.style.overflow='hidden';
+}
+function _lbRender(){
+  var urls=window._lbUrls||[];
+  if(!urls.length)return;
+  var img=document.getElementById('lbImg');
+  if(img)img.src=urls[_lbIndex];
+  var c=document.getElementById('lbCounter');
+  if(c)c.textContent=(_lbIndex+1)+' / '+urls.length;
+  var multi=urls.length>1;
+  var p=document.querySelector('.lb-prev'), n=document.querySelector('.lb-next');
+  if(p)p.style.display=multi?'flex':'none';
+  if(n)n.style.display=multi?'flex':'none';
+}
+function lbStep(dir){
+  var urls=window._lbUrls||[];
+  if(!urls.length)return;
+  _lbIndex=(_lbIndex+dir+urls.length)%urls.length; /* 순환 */
+  _lbRender();
+}
+function closeLb(){
+  var lb=document.getElementById('lb');
+  if(lb)lb.classList.remove('show');
+  /* 배경 스크롤 복원 (저장된 값으로, 누적·재진입 안전) */
+  if(_lbPrevOverflow!==null){ document.body.style.overflow=_lbPrevOverflow; _lbPrevOverflow=null; }
+  else { document.body.style.overflow=''; }
+}
+/* 키보드 ←/→/ESC */
+document.addEventListener('keydown',function(e){
+  var lb=document.getElementById('lb');
+  if(!lb||!lb.classList.contains('show'))return;
+  if(e.key==='ArrowLeft')lbStep(-1);
+  else if(e.key==='ArrowRight')lbStep(1);
+  else if(e.key==='Escape')closeLb();
+});
+/* 모바일 좌우 스와이프 */
+(function(){
+  var sx=0,sy=0,tracking=false;
+  var lb=document.getElementById('lb');
+  if(!lb)return;
+  lb.addEventListener('touchstart',function(e){
+    if(e.touches.length!==1)return;
+    sx=e.touches[0].clientX;sy=e.touches[0].clientY;tracking=true;
+  },{passive:true});
+  lb.addEventListener('touchend',function(e){
+    if(!tracking)return;tracking=false;
+    var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){ lbStep(dx<0?1:-1); }
+  },{passive:true});
+})();
+/* 배경 클릭 시 닫기 (이미지/버튼 클릭은 제외) */
+(function(){
+  var lb=document.getElementById('lb');
+  if(!lb)return;
+  lb.addEventListener('click',function(e){ if(e.target===lb)closeLb(); });
+})();
+/* 갤러리 하이드레이션: 저장된 URL을 즉시 렌더하고, 실패한 이미지만 개별 제거한다.
+   - 8초 일괄 타임아웃 제거: 느린 정상 사진을 실패로 오판하지 않음
+   - 최초 9장은 즉시 로드, 나머지는 더보기 후 지연 로드
+   - 더보기 숫자와 라이트박스 목록은 현재 정상 URL 기준으로 유지 */
+var _galGen=0;
+var _galleryActiveItems=[];
+function _renderGalleryActive(myGen){
+  if(myGen!==_galGen)return;
+  var sec=document.getElementById('galSec');
+  var wrap=document.getElementById('galWrap');
+  if(!sec||!wrap||!document.body.contains(wrap))return;
+  if(!_galleryActiveItems.length){sec.style.display='none';window._lbUrls=[];return;}
+
+  window._lbUrls=_galleryActiveItems.map(function(it){return it.url;});
+  wrap.innerHTML=_galleryActiveItems.map(function(it,i){
+    var loading=i<9?'eager':'lazy';
+    var priority=i<3?' fetchpriority="high"':'';
+    return '<div class="g'+(i>=9?' g-more':'')+'" data-gkey="'+it.key+'" onclick="openLb('+i+')">'
+      +'<img src="'+esc(it.url)+'" alt="갤러리" loading="'+loading+'" decoding="async"'+priority+'/></div>';
+  }).join('');
+
+  var oldBtn=sec.querySelector('.gal-more-btn');
+  if(oldBtn)oldBtn.parentNode.removeChild(oldBtn);
+  var moreN=_galleryActiveItems.length-9;
+  if(moreN>0){
+    var btn=document.createElement('button');
+    btn.type='button';btn.className='gal-more-btn';
+    var moreHtml="<span class='gm-deco'></span><span class='gm-1'>사진 더보기</span><span class='gm-2'>사진 <span class='gm-count'>"+moreN+"장</span> 더 보기</span>";
+    var lessHtml="<span class='gm-deco'></span><span class='gm-1'>사진 접기</span><span class='gm-2'>처음 화면으로 돌아갑니다</span>";
+    btn.setAttribute('data-more',moreHtml);
+    btn.setAttribute('data-less',lessHtml);
+    btn.setAttribute('onclick','galMore(this)');
+    btn.innerHTML=moreHtml;
+    sec.appendChild(btn);
+  }
+
+  wrap.querySelectorAll('img').forEach(function(img){
+    img.addEventListener('error',function(){
+      if(myGen!==_galGen)return;
+      var cell=img.closest('.g');
+      var key=cell&&cell.getAttribute('data-gkey');
+      var before=_galleryActiveItems.length;
+      _galleryActiveItems=_galleryActiveItems.filter(function(it){return it.key!==key;});
+      if(_galleryActiveItems.length!==before)_renderGalleryActive(myGen);
+    },{once:true});
+  });
+  sec.style.display='';
+}
+function hydrateGallery(){
+  var myGen=++_galGen;
+  var sec=document.getElementById('galSec');
+  var wrap=document.getElementById('galWrap');
+  if(!sec||!wrap)return;
+  var urls;
+  try{urls=JSON.parse(sec.getAttribute('data-gallery')||'[]');}catch(e){urls=[];}
+  if(!Array.isArray(urls)){urls=[];}
+  var seen={};
+  _galleryActiveItems=[];
+  urls.forEach(function(u,i){
+    if(typeof u!=='string'||!/^https?:\/\//i.test(u))return;
+    if(seen[u])return;
+    seen[u]=1;
+    _galleryActiveItems.push({key:'g'+myGen+'_'+i,url:u});
+  });
+  _renderGalleryActive(myGen);
+}
+function galMore(btn){
+  var w=btn.parentNode.querySelector('.iv-gal-wrap');if(!w)return;
+  var expanded=w.classList.toggle('gal-expanded');
+  if(expanded){ btn.innerHTML=btn.getAttribute('data-less'); }
+  else { btn.innerHTML=btn.getAttribute('data-more'); var sec=btn.closest('.iv-sec'); if(sec&&sec.scrollIntoView)sec.scrollIntoView({behavior:'smooth',block:'start'}); }
+}
+
+/* 메인 */
+async function main(){
+  if(!slug){
+    document.getElementById('loading').classList.add('hide');
+    document.getElementById('card').innerHTML=`<div class="not-found"><h2>청첩장을 찾을 수 없어요</h2><p>링크를 다시 확인해주세요</p></div>`;
+    return;
+  }
+  const{data:_rows,error}=await sb.rpc('get_card_by_slug',{p_slug:slug});
+  const data=Array.isArray(_rows)?_rows[0]:_rows;
+  document.getElementById('loading').classList.add('hide');
+  if(error||!data){
+    document.getElementById('card').innerHTML=`<div class="not-found"><h2>청첩장을 찾을 수 없어요</h2><p>링크를 다시 확인해주세요</p></div>`;
+    document.getElementById('opOverlay').classList.add('done');
+    return;
+  }
+  /* 메타태그 업데이트 (카톡/SNS 공유 썸네일) */
+  const g=data.groom_name||'신랑',b=data.bride_name||'신부';
+  const title=`${g} ♥ ${b}의 결혼식`;
+  const desc=`${data.wedding_date||''} · ${data.venue_name||''}`;
+  document.title=title;
+  const setMeta=(id,val)=>{const el=document.getElementById(id);if(el)el.setAttribute('content',val);};
+  setMeta('og-title',title);setMeta('og-desc',desc);
+  setMeta('tw-title',title);
+  /* 대표사진이 https Public URL이면 og:image / twitter:image 갱신
+     (없으면 HTML 기본값 og-default.jpg 유지)
+     ※ 카카오톡 SDK 공유는 og가 아닌 sendDefault imageUrl을 사용하므로 별도 처리됨
+       — 이 갱신은 트위터/브라우저 미리보기 및 일부 SNS용 */
+  const _ogImg=getSafeImageUrl(data);
+  if(_ogImg){
+    setMeta('og-image',_ogImg);
+    setMeta('og-image-secure',_ogImg);
+    setMeta('tw-image',_ogImg);
+  }
+  playOpening(data);
+  renderCard(data);
+  /* 방문 기록 */
+  try{sb.from('card_views').insert({slug,viewed_at:new Date().toISOString()}).then(()=>{});}catch(e){}
+  /* 워터마크: 로그인 사용자가 이 카드 주인이면 숨김 */
+  const{data:{session}}=await sb.auth.getSession();
+  if(session&&data.user_id===session.user.id){
+    const wm=document.getElementById('watermark');if(wm)wm.classList.add('hidden');
+  }
+  /* 전역에 카드 데이터 저장 (공유 등에 사용) */
+  window._cardData=data;
+}
+
+/* ===== 플로팅 메뉴 ===== */
+let _fabOpen=false;
+function toggleFab(){
+  _fabOpen=!_fabOpen;
+  document.getElementById('fabMenu').classList.toggle('open',_fabOpen);
+  document.getElementById('fabMain').textContent=_fabOpen?'✕':'⋯';
+}
+
+/* ===== 토스트 ===== */
+function showToast(msg){
+  const t=document.getElementById('toast');
+  if(!t)return;
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+/* ===== 링크 복사 ===== */
+/* 공유용 URL: Vercel SSR API 주소.
+   정적 card.html이 아니라 서버가 카드별 OG 태그를 먼저 응답한 뒤 실제 카드로 이동한다. */
+function getCardOptions(data){
+  const raw=data&&data.options;
+  if(raw&&typeof raw==='object')return raw;
+  if(typeof raw==='string'){try{return JSON.parse(raw)||{};}catch(_){return {};}}
+  return {};
+}
+function getShareVersion(data){
+  const opts=getCardOptions(data);
+  if(opts.share_image_version)return String(opts.share_image_version);
+  const raw=data?.updated_at||data?.created_at||'';
+  if(raw){
+    const t=Date.parse(raw);
+    if(Number.isFinite(t))return String(t);
+  }
+  /* 대표사진 파일명에 포함된 업로드 시각(main_171234...)을 캐시 버전으로 재사용 */
+  const photo=String(data?.main_photo_url||'');
+  const m=photo.match(/(?:main_|gal_)(\d{10,})/);
+  return m?m[1]:'';
+}
+function getShareUrl(){
+  if(!slug)return location.href;
+  const u=new URL('/api/wedding-share',SHARE_API_BASE);
+  u.searchParams.set('slug',slug);
+  const version=getShareVersion(window._cardData);
+  if(version)u.searchParams.set('v',version);
+  return u.href;
+}
+
+function copyCardLink(){
+  const shareUrl=getShareUrl();
+  navigator.clipboard.writeText(shareUrl)
+    .then(()=>showToast('링크가 복사됐어요 ✓'))
+    .catch(()=>{
+      /* clipboard API 실패 시 fallback */
+      const ta=document.createElement('textarea');
+      ta.value=shareUrl;document.body.appendChild(ta);ta.select();
+      document.execCommand('copy');document.body.removeChild(ta);
+      showToast('링크가 복사됐어요 ✓');
+    });
+  toggleFab();
+}
+
+/* ===== 카카오 공유 (SDK 방식) =====
+   원칙:
+   - og:image는 HTML 고정값 (JS로 변경 안 함)
+   - 카카오 공유 썸네일은 sendDefault의 imageUrl로만 결정
+   - imageUrl 우선순위: 대표사진 → 갤러리 → 기본 썸네일(og-default.jpg)
+*/
+/* 카카오 공유 이미지: 검증된 http URL만 사용, 아니면 기본 썸네일
+   - http/https 아니면 제외
+   - null/undefined/빈값 → 기본 썸네일
+   - blob/data/상대경로/DOM이미지/signed URL 사용 안 함 */
+function getSafeImageUrl(data){
+  const DEFAULT=new URL('/og-default.jpg',SHARE_API_BASE).href;
+  const opts=getCardOptions(data);
+  const firstGallery=Array.isArray(data?.gallery_urls)?data.gallery_urls.find(u=>typeof u==='string'&&/^https?:\/\//i.test(u)):'';
+  const url=opts.share_image_url||data?.main_photo_url||data?.cover_image||firstGallery||DEFAULT;
+  if(typeof url!=='string'||!/^https?:\/\//i.test(url))return DEFAULT;
+  return url;
+}
+
+function shareKakao(){
+  if(!window.Kakao){
+    console.error('Kakao SDK not loaded');
+    copyCardLink();
+    return;
+  }
+  if(!Kakao.isInitialized()){
+    Kakao.init('595f376e62ae3df09dea25e6825e94a4');
+  }
+
+  const d=window._cardData;
+  const cardUrl=getShareUrl();
+
+  const _gn=d?.groom_name||'신랑', _bn=d?.bride_name||'신부';
+  const _orderGb=d?.options?.order_gb!==false;
+  const _names=_orderGb?`${_gn} ♥ ${_bn}`:`${_bn} ♥ ${_gn}`;
+  const title=d?`${_names}의 결혼식에 초대합니다`:(document.title||'모바일 청첩장');
+  const desc=d?[d.wedding_date||'',fmtTime(d.wedding_time),d.venue_name||''].filter(Boolean).join(' · '):'소중한 날에 초대합니다.';
+
+  /* 대표사진 — 검증된 공개 URL만, 없으면 갤러리 첫 사진 또는 기본 썸네일 */
+  const imageUrl=getSafeImageUrl(d);
+
+  try{
+    Kakao.Share.sendDefault({
+      objectType:'feed',
+      content:{
+        title:title,
+        description:desc,
+        imageUrl:imageUrl,
+        link:{mobileWebUrl:cardUrl,webUrl:cardUrl}
+      },
+      buttons:[{title:'청첩장 보기',link:{mobileWebUrl:cardUrl,webUrl:cardUrl}}]
+    });
+    toggleFab();
+  }catch(e){
+    console.error('Kakao share failed:', e);
+    copyCardLink();
+    showToast('카카오톡 공유를 사용할 수 없어 링크를 복사했어요. 카카오톡에 붙여넣기 해주세요.');
+  }
+}
+
+/* ===== 달력 저장 (.ics) ===== */
+function addCalendar(){
+  const d=window._cardData;
+  if(!d||!d.wedding_date){showToast('예식 날짜 정보가 없어요');return;}
+  const dt=d.wedding_date.replace(/-/g,'');
+  const tm=d.wedding_time?d.wedding_time.replace(':','')+'00':'120000';
+  const title=`${d.groom_name||'신랑'} ♥ ${d.bride_name||'신부'} 결혼식`;
+  const loc=(d.venue_name||'')+(d.venue_address?' '+d.venue_address:'');
+  const ics=[
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//MemoryRetouch//Wedding//KO',
+    'BEGIN:VEVENT',
+    `DTSTART:${dt}T${tm}`,`DTEND:${dt}T${tm}`,
+    `SUMMARY:${title}`,`LOCATION:${loc}`,
+    `DESCRIPTION:${getShareUrl()}`,
+    'END:VEVENT','END:VCALENDAR'
+  ].join('\r\n');
+  const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='wedding.ics';document.body.appendChild(a);a.click();
+  document.body.removeChild(a);URL.revokeObjectURL(a.href);
+  showToast('달력 파일이 다운로드됐어요 📅');
+  toggleFab();
+}
+
+/* ===== QR 코드 생성 (안정화) ===== */
+/* qrcodejs는 내부적으로 canvas 또는 img를 동적 생성함
+   → canvas 고정 ID 대신 div 컨테이너를 사용해 안정적으로 처리 */
+function showQR(){
+  const url=getShareUrl();
+  const urlEl=document.getElementById('qrUrl');
+  if(urlEl)urlEl.textContent=url;
+  const container=document.getElementById('qrContainer');
+  if(!container)return;
+  /* 이전 QR 초기화 */
+  container.innerHTML='';
+  if(!window.QRCode){
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+    s.onload=()=>_drawQR(url,container);
+    s.onerror=()=>showToast('QR 라이브러리 로드 실패');
+    document.head.appendChild(s);
+  }else{
+    _drawQR(url,container);
+  }
+  const ov=document.getElementById('qrOv');
+  if(ov)ov.classList.add('show');
+  toggleFab();
+}
+
+function _drawQR(url,container){
+  try{
+    new QRCode(container,{
+      text:url,width:200,height:200,
+      colorDark:'#3a2f26',colorLight:'#fcf9f4',
+      correctLevel:QRCode.CorrectLevel.M
+    });
+  }catch(e){
+    container.textContent='QR 생성 실패';
+    console.error('QR 생성 오류:',e);
+  }
+}
+
+function closeQR(){
+  const ov=document.getElementById('qrOv');if(ov)ov.classList.remove('show');
+}
+
+/* ===== 수정번호 입력 / 검증 ===== */
+function openEditModal(){
+  const menu=document.getElementById('fabMenu');if(menu)menu.classList.remove('open');
+  const err=document.getElementById('editErr');if(err)err.textContent='';
+  const inp=document.getElementById('editCodeInput');if(inp)inp.value='';
+  const ov=document.getElementById('editOv');if(ov)ov.classList.add('show');
+  if(inp)setTimeout(()=>inp.focus(),100);
+}
+function closeEditModal(){
+  const ov=document.getElementById('editOv');if(ov)ov.classList.remove('show');
+}
+async function submitEditCode(){
+  const inp=document.getElementById('editCodeInput');
+  const err=document.getElementById('editErr');
+  const btn=document.getElementById('editGoBtn');
+  const code=(inp?.value||'').replace(/\D/g,'').trim();
+  if(err)err.textContent='';
+  if(code.length!==6){if(err)err.textContent='6자리 숫자를 입력해주세요.';return;}
+  if(!slug){if(err)err.textContent='청첩장 정보를 찾을 수 없어요.';return;}
+
+  if(btn){btn.disabled=true;btn.textContent='확인 중...';}
+  try{
+    const{data,error}=await sb.rpc('verify_edit_code',{p_slug:slug,p_edit_code:code});
+    if(error){if(err)err.textContent='확인 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.';}
+    else if(data&&data.ok){
+      /* 검증 성공 → editor 진입 (editCode 전달) */
+      location.href='editor.html?slug='+encodeURIComponent(slug)+'&editCode='+encodeURIComponent(code);
+      return;
+    }else{
+      if(err)err.textContent=(data&&data.error)||'수정번호가 일치하지 않습니다.';
+    }
+  }catch(e){
+    if(err)err.textContent='확인 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.';
+  }
+  if(btn){btn.disabled=false;btn.textContent='수정하기';}
+}
+
+function downloadQR(){
+  const container=document.getElementById('qrContainer');
+  if(!container){showToast('QR 컨테이너를 찾을 수 없어요');return;}
+  /* qrcodejs는 canvas 또는 img를 생성함 */
+  const canvas=container.querySelector('canvas');
+  const img=container.querySelector('img');
+  const a=document.createElement('a');
+  a.download='청첩장_QR.png';
+  if(canvas){
+    try{
+      a.href=canvas.toDataURL('image/png');
+      document.body.appendChild(a);a.click();document.body.removeChild(a);
+      showToast('QR 코드가 저장됐어요 ✓');
+    }catch(e){showToast('QR 저장 실패 — 길게 눌러서 저장해주세요');}
+  }else if(img&&img.src){
+    a.href=img.src;
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    showToast('QR 코드가 저장됐어요 ✓');
+  }else{
+    showToast('QR 코드를 먼저 생성해주세요');
+  }
+}
+
+main();
+
+/* ===== 배경 연출 엔진 (첫 화면 한정, 공통) ===== */
+var AMB_GOLD_THEMES={black:1,'gold-serif':1};
+/* 밝은 배경 템플릿 (pearl_bokeh/film_dust 가시성 보정 대상) */
+var AMB_LIGHT_THEMES={'classic-ivory':1,minimal:1,flower:1,hanok:1};
+/* 허용 효과 값 (8종 + none) */
+var AMB_EFFECTS={none:1,winter_snow:1,gold_dust:1,film_dust:1,pearl_bokeh:1};
+/* 템플릿별 자동 추천 매핑 */
+var AMB_AUTO_MAP={signature:'film_dust','classic-ivory':'pearl_bokeh',hanok:'pearl_bokeh',black:'gold_dust',fullscreen:'film_dust',minimal:'pearl_bokeh',flower:'pearl_bokeh','gold-serif':'gold_dust'};
+/* effect → ambient CSS 클래스 매핑 */
+var AMB_CLASS_MAP={winter_snow:'ambient-winter-snow',gold_dust:'ambient-gold-dust',film_dust:'ambient-film-dust',pearl_bokeh:'ambient-pearl-bokeh'};
+/* 템플릿별 첫 화면 스테이지 셀렉터 (gold-serif는 findAmbientStage에서 .lt-frame 우선) */
+var AMB_STAGE_SEL={signature:'.sig-hero','classic-ivory':'.civ-stage',black:'.bk-stage',flower:'.fl-hero',hanok:'.hk-stage',minimal:'.stl-stage',fullscreen:'.cn-stage','gold-serif':'.lt-stage'};
+/* 스테이지 내 그라데이션(이 앞에 ambient 삽입) */
+var AMB_FADE_SEL=['.sig-scrim','.civ-photo-fade','.bk-photo-fade','.fl-photo-fade','.hk-photo-fade'];
+function resolveAmbientEffect(theme, sel){
+  var v=sel||'auto';
+  if(v!=='auto'&&!AMB_EFFECTS[v])v='auto';
+  if(v==='auto'){ return AMB_AUTO_MAP[theme]||'none'; }
+  return v;
+}
+function ambParticleCount(effect,theme,stageW){
+  var w=stageW||390, small=w<=390;
+  if(effect==='winter_snow') return small?9:12;
+  if(effect==='gold_dust'){
+    if(theme==='gold-serif') return small?14:16;
+    return small?17:19;
+  }
+  if(effect==='film_dust') return AMB_LIGHT_THEMES[theme]?(small?27:36):(small?23:31);
+  if(effect==='pearl_bokeh') return AMB_LIGHT_THEMES[theme]?(small?8:11):(small?7:10);
+  return 0;
+}
+function findAmbientStage(theme, coverEl){
+  /* gold-serif: 프레임 뒤에 가려지지 않도록 카드 프레임 내부를 무대로 사용 (editor/card 통일) */
+  if(theme==='gold-serif'){ var fr=coverEl.querySelector('.lt-frame'); if(fr) return fr; }
+  var sel=AMB_STAGE_SEL[theme];
+  if(sel){ var st=coverEl.querySelector(sel); if(st) return st; }
+  return coverEl;
+}
+function removeAmbientLayer(root){
+  if(!root)return;
+  var L=root.querySelectorAll('.ambient-layer');
+  for(var i=0;i<L.length;i++){ if(L[i].parentNode) L[i].parentNode.removeChild(L[i]); }
+}
+function createAmbientLayer(effect, theme, coverEl){
+  if(!coverEl)return null;
+  var stage=findAmbientStage(theme, coverEl);
+  removeAmbientLayer(coverEl);
+  if(effect==='none'||!AMB_EFFECTS[effect])return null;
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return null;
+  /* 입자 밀도는 stage 실제 폭 기준 (editor/card 강도 일치) */
+  var stageW=(stage&&stage.clientWidth)?stage.clientWidth:(coverEl.clientWidth||390);
+  var layer=document.createElement('div');
+  var _ambCls=AMB_CLASS_MAP[effect];
+  if(!_ambCls)return null;
+  layer.className='ambient-layer '+_ambCls;
+  var n=ambParticleCount(effect,theme,stageW);
+  var isGS=(theme==='gold-serif');
+  var isLight=!!AMB_LIGHT_THEMES[theme];   /* 밝은 배경 가시성 보정 */
+  for(var i=0;i<n;i++){
+    var p=document.createElement('div');p.className='ambient-particle';
+    var size,dur,left,op,style;
+    if(effect==='winter_snow'){
+      /* === 겨울눈: 변경 금지 (기존 값 그대로) === */
+      left=((i+Math.random())/n*100).toFixed(1);
+      size=2+Math.random()*3; dur=10+Math.random()*8;
+      op=(.35+Math.random()*.35).toFixed(3);
+      var sway=(4+Math.random()*6).toFixed(1);
+      var swayDur=(2.5+Math.random()*2.5).toFixed(2);
+      style='left:'+left+'%;width:'+size+'px;height:'+size+'px;'
+           +'--amb-op:'+op+';--amb-sway:'+sway+'px;'
+           +'animation-duration:'+dur.toFixed(2)+'s,'+swayDur+'s;'
+           +'animation-delay:'+(-Math.random()*dur).toFixed(2)+'s,'+(-Math.random()*swayDur).toFixed(2)+'s;';
+    }else if(effect==='gold_dust'){
+      /* === 골드 더스트 (재설계) === */
+      var isPoint=(i % 5 === 0);                          /* 약 20%만 포인트 입자 */
+      if(isGS){
+        /* gold-serif: 중앙(38~62%) 최소화, 약 62% 좌우 / 38% 중앙외곽 */
+        if(i % 10 < 6){ var side=(i%2===0); left=(side?(Math.random()*34):(66+Math.random()*34)).toFixed(1); }
+        else { var seg=Math.random(); left=(seg<.5?(34+seg*8):(58+(seg-.5)*8)).toFixed(1); }
+        size=(isPoint?(3+Math.random()*.5):(1.5+Math.random()*1.5)).toFixed(2);  /* 1.5~3 / 포인트 ~3.5 */
+        dur=11+Math.random()*7;                            /* 11~18초 */
+        var maxOpG=isPoint?(.44+Math.random()*.04):(.36+Math.random()*.10);     /* 포인트 0.44~0.48 / 일반 0.36~0.46 */
+        op=Math.min(.48,maxOpG).toFixed(3);
+        var glowG=(isPoint?(4+Math.random()*1):(2+Math.random()*2)).toFixed(1); /* 2~5px (유지) */
+        var driftG=(4+Math.random()*6).toFixed(1);
+        style='left:'+left+'%;width:'+size+'px;height:'+size+'px;'
+             +'--amb-op:'+op+';--amb-drift:'+driftG+'px;'
+             +'--amb-core:rgba(170,116,34,'+(.92+Math.random()*.06).toFixed(2)+');'
+             +'--amb-edge:rgba(201,151,67,'+(.25+Math.random()*.10).toFixed(2)+');'
+             +'--amb-glow:'+glowG+'px;--amb-glowc:rgba(150,108,40,.45);'
+             +'animation-duration:'+dur.toFixed(2)+'s;'
+             +'animation-delay:'+(-Math.random()*dur).toFixed(2)+'s;';
+      }else{
+        /* black: 구간 분할 분산, 명확히 보이는 따뜻한 골드 */
+        left=((i+Math.random())/n*100).toFixed(1);
+        size=(isPoint?(4+Math.random()):(2+Math.random()*2)).toFixed(2);         /* 2~4 / 포인트 4~5 */
+        dur=9+Math.random()*6;                             /* 9~15초 */
+        var maxOpB=isPoint?(.78+Math.random()*.07):(.58+Math.random()*.12);      /* 포인트 0.78~0.85 / 일반 0.58~0.70 */
+        op=Math.min(.85,maxOpB).toFixed(3);
+        var glowB=(isPoint?(7+Math.random()*3):(4+Math.random()*2)).toFixed(1);  /* 포인트 7~10px / 일반 4~6px */
+        var driftB=(4+Math.random()*8).toFixed(1);                               /* 4~12px */
+        style='left:'+left+'%;width:'+size+'px;height:'+size+'px;'
+             +'--amb-op:'+op+';--amb-drift:'+driftB+'px;'
+             +'--amb-core:rgba(255,225,145,'+(.92+Math.random()*.06).toFixed(2)+');'
+             +'--amb-edge:rgba(196,136,44,'+(.30+Math.random()*.10).toFixed(2)+');'
+             +'--amb-glow:'+glowB+'px;--amb-glowc:rgba(220,175,95,.55);'
+             +'animation-duration:'+dur.toFixed(2)+'s;'
+             +'animation-delay:'+(-Math.random()*dur).toFixed(2)+'s;';
+      }
+    }else if(effect==='pearl_bokeh'){
+      left=((i+Math.random())/n*100).toFixed(1);
+      var pbSz=isLight?(12+Math.random()*14):(10+Math.random()*12);  /* 밝은배경 12~26px / 기본 10~22px */
+      size=pbSz.toFixed(2);
+      dur=14+Math.random()*8;
+      var pbOp=isLight?(.34+Math.random()*.16):(.27+Math.random()*.16); /* 밝은배경 opacity↑ */
+      op=pbOp.toFixed(3);
+      var driftPB=(6+Math.random()*5).toFixed(1); var pulseDur=(4+Math.random()*3).toFixed(2);
+      var dlyPB=(i%5<2)?(-(.2+Math.random()*.6)*dur):(-Math.random()*dur);
+      style='left:'+left+'%;width:'+size+'px;height:'+size+'px;--amb-op:'+op+';--amb-drift:'+driftPB+'px;'
+           +(isLight?'--amb-ring:inset 0 0 0 1px rgba(206,184,150,.28);':'')  /* 연한 베이지/샴페인 테두리 */
+           +'animation-duration:'+dur.toFixed(2)+'s,'+pulseDur+'s;'
+           +'animation-delay:'+dlyPB.toFixed(2)+'s,'+(-Math.random()*pulseDur).toFixed(2)+'s;';
+    }else if(effect==='film_dust'){
+      left=((i+Math.random())/n*100).toFixed(1);
+      size=(1+Math.random()).toFixed(2);                   /* 1~2px (유지) */
+      dur=14+Math.random()*10;
+      var fdOp=isLight?(.22+Math.random()*.12):(.18+Math.random()*.12); /* 밝은배경 opacity↑ */
+      op=fdOp.toFixed(3);
+      var flickDur=(.6+Math.random()*.6).toFixed(2);
+      var dlyF=(i%4<2)?(-(.2+Math.random()*.6)*dur):(-Math.random()*dur);
+      /* 밝은배경: 흰점 대신 옅은 브라운/세피아 */
+      var fdCore=isLight?('rgba('+(122+Math.floor(Math.random()*24))+','+(92+Math.floor(Math.random()*20))+','+(64+Math.floor(Math.random()*18))+',.55)'):'';
+      style='left:'+left+'%;width:'+size+'px;height:'+size+'px;--amb-op:'+op+';'
+           +(fdCore?('--amb-core:'+fdCore+';'):'')
+           +'animation-duration:'+dur.toFixed(2)+'s,'+flickDur+'s;'
+           +'animation-delay:'+dlyF.toFixed(2)+'s,'+(-Math.random()*parseFloat(flickDur)).toFixed(2)+'s;';
+    }
+    p.style.cssText=style;
+    layer.appendChild(p);
+  }
+  /* 레이어 순서: 사진/배경 → ambient → 그라데이션 → 텍스트. 그라데이션 앞에 삽입 */
+  var fade=null;
+  for(var ff=0; ff<AMB_FADE_SEL.length; ff++){ var fe=stage.querySelector(AMB_FADE_SEL[ff]); if(fe&&fe.parentNode===stage){ fade=fe; break; } }
+  if(fade){ stage.insertBefore(layer, fade); }
+  else if(stage.firstChild){ stage.insertBefore(layer, stage.firstChild.nextSibling); }
+  else { stage.appendChild(layer); }
+  return layer;
+}
+var _ambObserver=null, _ambVisHandler=null;
+function setupAmbientVisibility(coverEl){
+  if(_ambObserver){_ambObserver.disconnect();_ambObserver=null;}
+  if(!coverEl)return;
+  var layer=coverEl.querySelector('.ambient-layer');
+  if(!layer)return;
+  if('IntersectionObserver' in window){
+    _ambObserver=new IntersectionObserver(function(ents){
+      ents.forEach(function(e){
+        if(e.isIntersecting&&e.intersectionRatio>=0.35){ layer.classList.remove('amb-hidden'); }
+        else if(e.intersectionRatio<0.15){ layer.classList.add('amb-hidden'); }
+      });
+    },{threshold:[0,0.15,0.35,1]});
+    _ambObserver.observe(coverEl);
+  }
+  if(_ambVisHandler)document.removeEventListener('visibilitychange',_ambVisHandler);
+  _ambVisHandler=function(){
+    if(document.hidden){ layer.classList.add('amb-hidden'); return; }
+    /* 재활성화: 첫 화면이 viewport 안에 충분히 보일 때만 재개 */
+    var r=coverEl.getBoundingClientRect();
+    var vh=window.innerHeight||document.documentElement.clientHeight;
+    var visible=Math.min(r.bottom,vh)-Math.max(r.top,0);
+    var ratio=r.height>0?visible/r.height:0;
+    if(ratio>=0.35){ layer.classList.remove('amb-hidden'); }
+    else { layer.classList.add('amb-hidden'); }
+  };
+  document.addEventListener('visibilitychange',_ambVisHandler);
+}
+function applyAmbient(theme, selected, coverEl){
+  if(!coverEl)return;
+  var effect=resolveAmbientEffect(theme, selected);
+  createAmbientLayer(effect, theme, coverEl);
+  setupAmbientVisibility(coverEl);
+}
+
+</script>
 </body>
 </html>
