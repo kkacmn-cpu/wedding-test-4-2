@@ -2011,7 +2011,10 @@ let _purchaseId=null;  /* 인증 완료된 purchase UUID */
 /* FIX9: 구매자별 관리 링크는 현재 기기의 브라우저에만 보조 저장한다.
    기존 발행/수정 권한 구조는 변경하지 않고, 구매 확인 후 수정 진입을 쉽게 찾도록 한다. */
 const BUYER_MANAGE_STORE='wedding:buyerManageRecords:v1';
+const BUYER_MANAGE_SESSION_STORE='wedding:buyerManageSession:v1';
 let _verifiedBuyerKey=null;
+let _buyerManageToken=null;
+let _buyerManageMode=false;
 
 /* ===== 상태 ===== */
 const ST={
@@ -2048,6 +2051,20 @@ const ST={
 const _queryParams=new URLSearchParams(location.search);
 let editSlug=_queryParams.get('edit')||_queryParams.get('slug');
 let editCode=_queryParams.get('editCode')||null;
+_buyerManageMode=_queryParams.get('buyerManage')==='1';
+if(_buyerManageMode){
+  try{_buyerManageToken=sessionStorage.getItem(BUYER_MANAGE_SESSION_STORE)||null;}catch(e){}
+  if(!_buyerManageToken){
+    try{
+      const hp=new URLSearchParams(String(location.hash||'').replace(/^#/,''));
+      _buyerManageToken=hp.get('manageToken')||null;
+      if(_buyerManageToken){
+        try{sessionStorage.setItem(BUYER_MANAGE_SESSION_STORE,_buyerManageToken);}catch(e){}
+        const clean=new URL(location.href);clean.hash='';history.replaceState({},'',clean.href);
+      }
+    }catch(e){}
+  }
+}
 /* URL ?theme= 파라미터로 초기 테마 적용 */
 const _themeParam=_queryParams.get('theme');
 if(_themeParam)ST.theme=_themeParam;
@@ -3897,10 +3914,12 @@ function updateCloneUi(){
   const banner=V('cloneBanner'),title=V('cloneBannerTitle'),desc=V('cloneBannerDesc'),btn=V('cloneBannerBtn'),mgr=V('rsvpManageBtn');
   if(!banner)return;
   const show=!!editId||cloneMode;
+  const isBuyerManaged=!!(_buyerManageMode&&_buyerManageToken&&!cloneMode);
   banner.classList.toggle('show',show);banner.classList.toggle('is-clone',cloneMode);
-  if(mgr)mgr.style.display=(!!editId&&!cloneMode)?'inline-flex':'none';
+  if(mgr)mgr.style.display=(!!editId&&!cloneMode&&!isBuyerManaged&&!!editCode)?'inline-flex':'none';
   if(!show)return;
   if(cloneMode){
+    btn.style.display='inline-flex';
     const label=_cloneAudienceLabel(cloneAudience);
     title.textContent=`${label} 복제본을 편집하고 있습니다`;
     desc.textContent='원본은 그대로 보존됩니다. 이 화면에서 바꾼 내용은 새 주소로만 발행됩니다.';
@@ -3908,7 +3927,14 @@ function updateCloneUi(){
     V('publishBtn').textContent='복제본 발행';
     document.querySelectorAll('.mab-publish').forEach(el=>el.textContent='복제본 발행 →');
     V('saveState').textContent=`📄 ${label} 복제본`;
+  }else if(isBuyerManaged){
+    title.textContent='구매자 인증으로 청첩장을 수정하고 있습니다';
+    desc.textContent='이 화면에서 저장한 내용은 기존 청첩장 주소에 그대로 반영됩니다.';
+    btn.style.display='none';
+    V('publishBtn').textContent='수정 완료';
+    document.querySelectorAll('.mab-publish').forEach(el=>el.textContent='수정 완료 →');
   }else{
+    btn.style.display='inline-flex';
     title.textContent='원본 청첩장을 수정하고 있습니다';
     desc.textContent='같은 내용을 새 주소로 만들려면 원본을 건드리지 않고 복제할 수 있습니다.';
     btn.textContent='복제본 만들기';btn.onclick=openCloneModal;
@@ -3916,6 +3942,7 @@ function updateCloneUi(){
     document.querySelectorAll('.mab-publish').forEach(el=>el.textContent='수정 완료 →');
   }
 }
+
 function openCloneModal(){
   if(!editId||cloneMode)return;
   cloneAudience='family';
@@ -4443,14 +4470,27 @@ async function _proceedPublish(){
   let slug=editSlug, err;
 
   if(editId&&!cloneMode){
-    /* ── 원본 수정 모드: cards 직접 update 불가 (RLS 차단)
-         → update_card_by_slug RPC 경유 (구매확인/verify-order 불필요) ── */
+    /* ── 원본 수정 모드
+         - 기존 수정번호 진입: update_card_by_slug
+         - 구매자 인증 진입: update_card_by_buyer_manage
+         두 방식은 서로의 권한 구조를 변경하지 않는다. ── */
     d.slug=editSlug;
-    const{data:upResult,error:upErr}=await sb.rpc('update_card_by_slug',{
-      p_slug:editSlug,
-      p_card_data:d,
-      p_edit_code:editCode
-    });
+    let upResult=null,upErr=null;
+    if(_buyerManageMode&&_buyerManageToken){
+      const up=await sb.rpc('update_card_by_buyer_manage',{
+        p_slug:editSlug,
+        p_card_data:d,
+        p_manage_token:_buyerManageToken
+      });
+      upResult=up.data;upErr=up.error;
+    }else{
+      const up=await sb.rpc('update_card_by_slug',{
+        p_slug:editSlug,
+        p_card_data:d,
+        p_edit_code:editCode
+      });
+      upResult=up.data;upErr=up.error;
+    }
     btn.disabled=false;btn.textContent='수정 완료';
     if(upErr){alert('수정 실패: '+upErr.message);return;}
     if(upResult&&upResult.success===false){alert('수정 실패: '+upResult.error);return;}
@@ -4660,12 +4700,12 @@ function _renderBuyerManageRecords(records,buyerName){
   const list=V('buyerManageList'),summary=V('buyerManageSummary');if(!list||!summary)return;
   summary.textContent=`${buyerName||'구매자'}님의 청첩장 ${records.length}개를 찾았습니다.`;
   if(!records.length){
-    list.innerHTML='<div class="buyer-manage-empty">이 기기에 저장된 청첩장을 찾지 못했습니다.<br>발행 완료 화면에서 받은 관리 링크 또는 수정번호가 있다면 고객센터에 전달해 주세요.</div>';
+    list.innerHTML='<div class="buyer-manage-empty">발행된 청첩장을 찾지 못했습니다.<br>입력한 구매자 정보가 주문 당시 정보와 같은지 확인해 주세요.</div>';
   }else{
     list.innerHTML=records.map((r,i)=>{
       const names=[r.groom,r.bride].filter(Boolean).join(' ♥ ')||'모바일 청첩장';
       const date=_formatManageDate(r.weddingDate);
-      const meta=[date,r.slug?`주소 ${r.slug}`:''].filter(Boolean).join(' · ');
+      const meta=[date,r.venue||'',r.slug?`주소 ${r.slug}`:''].filter(Boolean).join(' · ');
       return `<div class="buyer-manage-card"><div><div class="buyer-manage-card-title">${esc(names)}</div><div class="buyer-manage-card-meta">${esc(meta||'발행된 청첩장')}</div></div><button type="button" class="btn btn-gold" onclick="openBuyerManageRecord(${i})">수정하기</button></div>`;
     }).join('');
   }
@@ -4675,8 +4715,39 @@ function _renderBuyerManageRecords(records,buyerName){
 }
 function openBuyerManageRecord(index){
   const r=(window._buyerManageVisibleRecords||[])[Number(index)];
-  if(!r||!r.manageUrl){alert('수정 링크를 확인할 수 없습니다.');return;}
-  location.href=r.manageUrl;
+  if(!r){alert('수정할 청첩장을 확인할 수 없습니다.');return;}
+  if(r.access==='buyer-session'&&r.slug&&_buyerManageToken){
+    const stored=_storeBuyerManageToken(_buyerManageToken);
+    const u=new URL('editor.html',location.href);
+    u.searchParams.set('slug',r.slug);
+    u.searchParams.set('buyerManage','1');
+    if(!stored)u.hash='manageToken='+encodeURIComponent(_buyerManageToken);
+    location.href=u.href;
+    return;
+  }
+  if(r.manageUrl){location.href=r.manageUrl;return;}
+  alert('수정 링크를 확인할 수 없습니다.');
+}
+
+function _storeBuyerManageToken(token){
+  _buyerManageToken=String(token||'').trim()||null;
+  if(!_buyerManageToken)return false;
+  try{sessionStorage.setItem(BUYER_MANAGE_SESSION_STORE,_buyerManageToken);return true;}catch(e){return false;}
+}
+function _clearBuyerManageToken(){
+  _buyerManageToken=null;_buyerManageMode=false;
+  try{sessionStorage.removeItem(BUYER_MANAGE_SESSION_STORE);}catch(e){}
+}
+function _recordsFromBuyerSession(cards){
+  return (Array.isArray(cards)?cards:[]).map(v=>({
+    slug:String(v?.slug||''),
+    groom:String(v?.groom_name||v?.groom||''),
+    bride:String(v?.bride_name||v?.bride||''),
+    weddingDate:String(v?.wedding_date||v?.weddingDate||''),
+    venue:String(v?.venue_name||v?.venue||''),
+    updatedAt:String(v?.updated_at||''),
+    access:'buyer-session'
+  })).filter(v=>v.slug);
 }
 function _recordsFromVerifyResponse(json){
   const src=Array.isArray(json?.cards)?json.cards:(json?.card?[json.card]:[]);
@@ -4698,22 +4769,46 @@ async function verifyBuyerForManage(){
   btn.disabled=true;btn.textContent='구매 내역 확인 중...';
   const key=await _buyerIdentityKey(buyerName,buyerPhone);
   let localRecords=_readBuyerManageRecords(key);
+  let backendMessage='';
   try{
     const res=await fetch('https://weddingapi.duckdns.org/verify-order',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({buyerName,buyerPhone,purpose:'manage'})
     });
     const json=await res.json();
+
+    /* 기존 인증 API가 구매 UUID를 확인한 뒤에만 Supabase 관리 세션을 발급한다.
+       휴대폰번호 원문은 Supabase RPC로 전달하지 않는다. */
+    if(json.valid&&json.purchaseId){
+      const issued=await sb.rpc('issue_buyer_manage_session',{
+        p_purchase_id:json.purchaseId,
+        p_buyer_name:buyerName
+      });
+      if(issued.error){
+        backendMessage='구매 확인은 완료됐지만 관리 기능 연결에 실패했습니다. 잠시 후 다시 시도해주세요.';
+      }else if(issued.data&&issued.data.success){
+        _storeBuyerManageToken(issued.data.manage_token);
+        _buyerManageMode=true;
+        const serverRecords=_recordsFromBuyerSession(issued.data.cards);
+        if(serverRecords.length){
+          _renderBuyerManageRecords(serverRecords,buyerName);
+          return;
+        }
+        backendMessage='발행된 청첩장을 찾지 못했습니다.';
+      }else{
+        backendMessage=issued.data?.error||'구매자 관리 인증을 완료하지 못했습니다.';
+      }
+    }
+
+    /* 이전 브라우저 저장 방식은 비상용 호환 경로로만 유지한다. */
     const remoteRecords=_recordsFromVerifyResponse(json);
     if(remoteRecords.length){
       remoteRecords.forEach(r=>_rememberBuyerManageRecord(key,r));
       localRecords=_readBuyerManageRecords(key);
     }
-    if(json.valid||json.purchaseId||localRecords.length){
-      _renderBuyerManageRecords(localRecords,buyerName);
-      return;
-    }
-    if(err)err.textContent=json.reason||'구매 내역을 확인하지 못했습니다. 입력 정보를 다시 확인해주세요.';
+    if(localRecords.length){_renderBuyerManageRecords(localRecords,buyerName);return;}
+
+    if(err)err.textContent=backendMessage||json.reason||'구매 내역을 확인하지 못했습니다. 입력 정보를 다시 확인해주세요.';
   }catch(e){
     if(localRecords.length){_renderBuyerManageRecords(localRecords,buyerName);return;}
     if(err)err.textContent='서버 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.';
@@ -4848,18 +4943,31 @@ function clearDraft(){try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
 async function loadForEdit(){
   if(!editSlug)return;
   if(!_requireServer()){ editSlug=null;editId=null; return; } /* 서버 없으면 수정모드 진입 차단 */
-  /* 수정번호 필수 — 없으면 수정 불가 (card.html 수정하기 버튼으로 진입해야 함) */
-  if(!editCode){
-    alert('수정 권한이 없습니다.\n발행 완료 화면에서 받은 수정번호로 다시 들어와 주세요.');
+  const manageRequested=!!(_buyerManageMode&&_buyerManageToken);
+  /* 기존 수정번호 또는 구매자 관리 세션 중 하나가 반드시 필요하다. */
+  if(!editCode&&!manageRequested){
+    alert('수정 권한이 없습니다.\n내 청첩장 수정에서 구매자 인증을 다시 진행해 주세요.');
     editSlug=null;editId=null;
     return;
   }
-  /* 수정번호 검증 후 데이터 반환 (get_card_for_edit RPC) */
-  const{data:rows,error}=await sb.rpc('get_card_for_edit',{p_slug:editSlug,p_edit_code:editCode});
+  let rows=null,error=null;
+  if(manageRequested){
+    const loaded=await sb.rpc('get_card_for_buyer_manage',{p_slug:editSlug,p_manage_token:_buyerManageToken});
+    rows=loaded.data;error=loaded.error;
+  }else{
+    const loaded=await sb.rpc('get_card_for_edit',{p_slug:editSlug,p_edit_code:editCode});
+    rows=loaded.data;error=loaded.error;
+  }
   const data=Array.isArray(rows)?rows[0]:rows;
   if(error||!data){
-    alert('수정번호가 올바르지 않거나 청첩장을 찾을 수 없어요.');
-    editSlug=null;editId=null;editCode=null;
+    if(manageRequested){
+      _clearBuyerManageToken();
+      alert('구매자 관리 인증이 만료됐거나 청첩장을 찾을 수 없어요.\n내 청첩장 수정에서 다시 인증해 주세요.');
+    }else{
+      alert('수정번호가 올바르지 않거나 청첩장을 찾을 수 없어요.');
+      editCode=null;
+    }
+    editSlug=null;editId=null;
     return;
   }
   editId=data.id;
@@ -4913,7 +5021,7 @@ async function loadForEdit(){
   if(data.main_photo_url)V('mainPreview').innerHTML=`<div class="mp-wrap"><div class="mp-box"><img src="${data.main_photo_url}"/><div class="rm" onclick="rmMain()">×</div></div></div>`;
   renderGal();
   V('publishBtn').textContent='수정 완료';
-  V('saveState').textContent='✏️ 수정 중';
+  V('saveState').textContent=manageRequested?'🔐 구매자 인증 수정 중':'✏️ 수정 중';
   updateCloneUi();
 }
 
