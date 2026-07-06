@@ -226,7 +226,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 
 /* 계좌 */
 .acc-box{margin-top:6px;text-align:left;}
-.acc-toggle{cursor:pointer;list-style:none;text-align:center;font-size:12px;letter-spacing:1px;padding:13px 0;border:1px solid currentColor;border-radius:999px;opacity:.45;transition:opacity .25s;width:100%;}
+.acc-toggle{cursor:pointer;list-style:none;text-align:center;font-size:12px;letter-spacing:1px;padding:13px 0;border:1px solid currentColor;border-radius:999px;opacity:.45;transition:opacity .25s;width:100%;font-family:inherit;color:inherit;background:transparent;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .acc-toggle:hover{opacity:.7;}
 .acc-toggle::-webkit-details-marker{display:none;}
 .acc-list{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
@@ -235,7 +235,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 .acc-side{font-size:10px;letter-spacing:1px;opacity:.5;text-transform:uppercase;}
 .acc-bank{font-size:13px;font-weight:500;}
 .acc-num{font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:400;opacity:.85;letter-spacing:.5px;}
-.acc-copy{flex-shrink:0;font-size:11px;padding:9px 15px;border-radius:999px;background:rgba(0,0,0,.06);color:inherit;cursor:pointer;border:none;transition:all .25s;opacity:.7;}
+.acc-copy{flex-shrink:0;font-size:11px;padding:9px 15px;border-radius:999px;background:rgba(0,0,0,.06);color:inherit;cursor:pointer;border:none;transition:all .25s;opacity:.7;font-family:inherit;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .acc-copy:hover{opacity:1;background:rgba(0,0,0,.1);}
 .acc-copy.done{background:var(--ok);color:#fff;opacity:1;}
 
@@ -1809,15 +1809,15 @@ function renderCard(card){
     html+=`<div class="iv-sec acc-sec">
       <div class="iv-sec-t">마음 전하실 곳</div>
       <div class="hk-sec-desc" style="font-size:13px;opacity:${tpl==='hanok'?'.9':'.55'};margin-top:6px;margin-bottom:12px;">${tpl==='hanok'?'마음을 전하실 분들을 위해 준비했습니다':'참석이 어려우신 분들을 위한 안내입니다'}</div>
-      <details class="acc-box">
-        <summary class="acc-toggle">계좌번호 확인하기</summary>
-        <div class="acc-list">
-          ${groomAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${groomBank} ${groomHolder}</span><span class="acc-num">${groomAcc}</span></div><button class="acc-copy" data-acc="${groomAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
-          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button class="acc-copy" data-acc="${gpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
-          ${brideAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${brideBank} ${brideHolder}</span><span class="acc-num">${brideAcc}</span></div><button class="acc-copy" data-acc="${brideAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
-          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button class="acc-copy" data-acc="${bpAcc}" onclick="copyAcc(this)">복사</button></div>`:''}
+      <div class="acc-box">
+        <button type="button" class="acc-toggle" aria-expanded="false" onclick="toggleAccount(this)">계좌번호 확인하기</button>
+        <div class="acc-list" style="display:none;">
+          ${groomAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${groomBank} ${groomHolder}</span><span class="acc-num">${groomAcc}</span></div><button type="button" class="acc-copy" data-acc="${groomAcc}" onclick="copyAcc(this,event)">복사</button></div>`:''}
+          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-acc="${gpAcc}" onclick="copyAcc(this,event)">복사</button></div>`:''}
+          ${brideAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${brideBank} ${brideHolder}</span><span class="acc-num">${brideAcc}</span></div><button type="button" class="acc-copy" data-acc="${brideAcc}" onclick="copyAcc(this,event)">복사</button></div>`:''}
+          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-acc="${bpAcc}" onclick="copyAcc(this,event)">복사</button></div>`:''}
         </div>
-      </details>
+      </div>
     </div>`;
   }
 
@@ -1895,6 +1895,16 @@ async function submitGuest(cardId){
   loadGuests(cardId);
 }
 
+/* 계좌 열기 — 모바일 인앱 브라우저에서도 확실히 작동하도록 native details 대신 명시 제어 */
+function toggleAccount(btn){
+  if(!btn)return;
+  var list=btn.nextElementSibling;
+  if(!list)return;
+  var willOpen=list.style.display==='none'||getComputedStyle(list).display==='none';
+  list.style.display=willOpen?'flex':'none';
+  btn.setAttribute('aria-expanded',willOpen?'true':'false');
+}
+
 /* 계좌 복사 — 공통 안내 toast (재사용, 누적 방지, aria-live) */
 var _copyToastTimer=null;
 function _showCopyToast(msg,ok){
@@ -1931,14 +1941,15 @@ function _fallbackCopy(txt){
   try{
     ta=document.createElement('textarea');
     ta.value=txt;ta.setAttribute('readonly','');
-    ta.style.cssText='position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
-    document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,txt.length);
+    ta.style.cssText='position:fixed;top:0;left:-9999px;width:1px;height:1px;font-size:16px;opacity:.01;';
+    document.body.appendChild(ta);ta.focus({preventScroll:true});ta.select();ta.setSelectionRange(0,txt.length);
     ok=(document.execCommand('copy')===true); /* 반환값 반드시 확인 */
   }catch(e){ ok=false; }
   if(ta&&ta.parentNode)ta.parentNode.removeChild(ta); /* 성공·실패 무관 제거 */
   return ok;
 }
-function copyAcc(btn){
+function copyAcc(btn,ev){
+  if(ev){ev.preventDefault();ev.stopPropagation();}
   /* 클릭한 행의 data-acc만 사용 (다른 계좌 혼입 방지), 하이픈·공백 원본 그대로 */
   var txt=btn.dataset.acc||'';
   if(!txt){ _showCopyToast('복사하지 못했습니다. 계좌번호를 직접 선택해 주세요.',false); return; }

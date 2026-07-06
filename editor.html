@@ -1001,7 +1001,7 @@ input,select,textarea{font-family:inherit;}
 .iv-music{position:absolute;top:11px;right:13px;font-size:13px;opacity:.5;}
 /* 계좌 */
 .acc-box{margin-top:8px;}
-.acc-toggle{width:100%;list-style:none;text-align:center;font-size:12px;letter-spacing:.5px;padding:9px 0;border:1px solid currentColor;border-radius:999px;opacity:.7;cursor:pointer;}
+.acc-toggle{width:100%;list-style:none;text-align:center;font-size:12px;letter-spacing:.5px;padding:9px 0;border:1px solid currentColor;border-radius:999px;opacity:.7;cursor:pointer;font-family:inherit;color:inherit;background:transparent;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .acc-toggle::-webkit-details-marker{display:none;}
 .acc-list{display:flex;flex-direction:column;gap:7px;margin-top:10px;}
 .acc-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 13px;border-radius:10px;background:rgba(0,0,0,.04);}
@@ -1009,7 +1009,7 @@ input,select,textarea{font-family:inherit;}
 .acc-side{font-size:10px;letter-spacing:.5px;opacity:.6;}
 .acc-bank{font-size:12px;font-weight:500;}
 .acc-num{font-family:'Noto Sans KR',sans-serif;font-size:13.5px;font-weight:400;letter-spacing:.5px;}
-.acc-copy{font-size:11px;padding:7px 13px;border-radius:999px;background:rgba(0,0,0,.7);color:#fff;cursor:pointer;border:none;transition:all .2s;}
+.acc-copy{font-size:11px;padding:7px 13px;border-radius:999px;background:rgba(0,0,0,.7);color:#fff;cursor:pointer;border:none;transition:all .2s;font-family:inherit;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 
 /* ===== 모달 ===== */
 .ov{position:fixed;inset:0;background:rgba(20,16,12,.62);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .35s;}
@@ -1746,6 +1746,7 @@ input,select,textarea{font-family:inherit;}
     <div class="pub-url" id="pubUrl"></div>
     <div class="modal-btns">
       <button class="btn btn-ghost" id="pubCopyBtn" onclick="copyUrl()">🔗 링크 복사</button>
+      <button class="btn btn-ghost" id="pubQrBtn" onclick="downloadPublishedQR()">🔳 QR코드 저장</button>
       <a class="btn btn-gold" id="pubLink" href="#" target="_blank">청첩장 보기 →</a>
     </div>
 
@@ -1756,7 +1757,8 @@ input,select,textarea{font-family:inherit;}
       </p>
       <div class="pub-url" id="pubEditCode" style="font-size:26px;font-weight:700;letter-spacing:6px;text-align:center;"></div>
       <div class="modal-btns" style="margin-top:10px;">
-        <button class="btn btn-ghost" id="pubEditCopyBtn" onclick="copyEditCode()" style="width:100%;">🔑 수정번호 복사</button>
+        <button class="btn btn-ghost" id="pubEditCopyBtn" onclick="copyEditCode()">🔑 수정번호 복사</button>
+        <button class="btn btn-gold" id="pubEditGoBtn" onclick="openPublishedEditor()">✏️ 수정 화면 열기</button>
       </div>
     </div>
   </div>
@@ -3265,6 +3267,42 @@ function syncAmbCards(){
     c.classList.toggle('on', c.getAttribute('data-v')===v);
   });
 }
+/* 편집기 미리보기 계좌 열기·복사 — 실제 card와 동일한 모바일 동작 */
+function togglePreviewAccount(btn){
+  if(!btn)return;
+  var list=btn.nextElementSibling;
+  if(!list)return;
+  var willOpen=list.style.display==='none'||getComputedStyle(list).display==='none';
+  list.style.display=willOpen?'flex':'none';
+  btn.setAttribute('aria-expanded',willOpen?'true':'false');
+}
+function _previewFallbackCopy(txt){
+  var ta=null,ok=false;
+  try{
+    ta=document.createElement('textarea');
+    ta.value=txt;ta.setAttribute('readonly','');
+    ta.style.cssText='position:fixed;top:0;left:-9999px;width:1px;height:1px;font-size:16px;opacity:.01;';
+    document.body.appendChild(ta);ta.focus({preventScroll:true});ta.select();ta.setSelectionRange(0,txt.length);
+    ok=document.execCommand('copy')===true;
+  }catch(err){ok=false;}
+  if(ta&&ta.parentNode)ta.parentNode.removeChild(ta);
+  return ok;
+}
+function copyPreviewAccount(btn,ev){
+  if(ev){ev.preventDefault();ev.stopPropagation();}
+  var txt=(btn&&btn.dataset&&btn.dataset.acc)||'';
+  if(!txt)return;
+  var done=function(ok){
+    if(!ok)return;
+    var orig=btn.dataset.label||'복사';btn.dataset.label=orig;
+    btn.textContent='복사됨 ✓';btn.classList.add('done');
+    setTimeout(function(){btn.textContent=orig;btn.classList.remove('done');},1400);
+  };
+  if(window.isSecureContext&&navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){done(true);}).catch(function(){done(_previewFallbackCopy(txt));});
+  }else done(_previewFallbackCopy(txt));
+}
+
 /* ===== 계좌 입력 미리보기 최적화 =====
    계좌 12개 입력칸은 전체 미리보기를 즉시 다시 그리지 않고,
    입력이 잠시 멈춘 뒤 240ms에 한 번만 갱신한다.
@@ -3660,14 +3698,14 @@ function renderIV(playOp){
   if(chk('o_account')&&(gAcc||bAcc||gpAcc||bpAcc)){
     html+=`<div class="iv-sec acc-sec"><div class="iv-sec-t">마음 전하실 곳</div>
       ${tpl==='hanok'?`<div class="hk-sec-desc" style="font-size:13px;opacity:.9;margin-top:6px;margin-bottom:12px;">마음을 전하실 분들을 위해 준비했습니다</div>`:''}
-      <details class="acc-box"><summary class="acc-toggle">계좌번호 확인하기</summary>
-        <div class="acc-list">
-          ${gAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${gBank} ${gHolder}</span><span class="acc-num">${gAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
-          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
-          ${bAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${bBank} ${bHolder}</span><span class="acc-num">${bAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
-          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button class="acc-copy">복사</button></div>`:''}
+      <div class="acc-box"><button type="button" class="acc-toggle" aria-expanded="false" onclick="togglePreviewAccount(this)">계좌번호 확인하기</button>
+        <div class="acc-list" style="display:none;">
+          ${gAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${gBank} ${gHolder}</span><span class="acc-num">${gAcc}</span></div><button type="button" class="acc-copy" data-acc="${gAcc}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
+          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-acc="${gpAcc}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
+          ${bAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${bBank} ${bHolder}</span><span class="acc-num">${bAcc}</span></div><button type="button" class="acc-copy" data-acc="${bAcc}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
+          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-acc="${bpAcc}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
         </div>
-      </details>
+      </div>
     </div>`;
   }
 
@@ -3838,7 +3876,7 @@ function _normalizeRsvpRow(r){
 function _rsvpPartySize(r){return r.attendance==='참석'?1+r.plus_count:0;}
 function openRsvpManager(){
   if(!editId||cloneMode){alert('발행된 원본 청첩장의 수정 화면에서만 참석자를 확인할 수 있습니다.');return;}
-  if(!editSlug||!editCode){alert('수정 권한 정보를 확인할 수 없습니다. 청첩장의 수정하기 버튼으로 다시 들어와 주세요.');return;}
+  if(!editSlug||!editCode){alert('수정 권한 정보를 확인할 수 없습니다. 발행 완료 화면에서 받은 수정번호로 다시 들어와 주세요.');return;}
   if(!_requireServer())return;
   rsvpAttendanceFilter='all';
   document.querySelectorAll('#rsvpFilterTabs .rsvp-filter-btn').forEach(el=>el.classList.toggle('on',el.dataset.filter==='all'));
@@ -4360,12 +4398,17 @@ async function _proceedPublish(){
   const _publishedAsClone=cloneMode;
   V('pubUrl').textContent=shareUrl;   /* 복사/공유용 = Vercel SSR */
   V('pubLink').href=viewUrl;          /* 청첩장 보기 = 실제 카드 */
+  if(V('pubQrBtn'))V('pubQrBtn').dataset.url=shareUrl;
   V('pubTitle').textContent=_publishedAsClone?'복제본 청첩장이 발행됐어요!':(editId?'청첩장이 수정됐어요!':'청첩장이 발행됐어요!');
 
   /* 신규·복제 발행 시에만 수정번호 표시 */
   if((!editId||_publishedAsClone)&&_newEditCode){
     if(V('pubEditCode')){
       V('pubEditCode').textContent=_newEditCode;
+      if(V('pubEditGoBtn')){
+        V('pubEditGoBtn').dataset.slug=slug;
+        V('pubEditGoBtn').dataset.code=_newEditCode;
+      }
       if(V('pubEditWrap'))V('pubEditWrap').style.display='block';
     }
   }else{
@@ -4378,6 +4421,59 @@ async function _proceedPublish(){
 }
 function copyUrl(){navigator.clipboard.writeText(V('pubUrl').textContent).then(()=>{const b=V('pubCopyBtn');b.textContent='복사됨 ✓';setTimeout(()=>b.textContent='🔗 링크 복사',1500);});}
 function copyEditCode(){navigator.clipboard.writeText(V('pubEditCode').textContent).then(()=>{const b=V('pubEditCopyBtn');b.textContent='복사됨 ✓';setTimeout(()=>b.textContent='🔑 수정번호 복사',1500);});}
+
+/* 구매자 발행 완료 화면 전용: 공개 card 메뉴에는 QR/수정 진입을 노출하지 않는다. */
+function openPublishedEditor(){
+  const btn=V('pubEditGoBtn');
+  const targetSlug=(btn?.dataset.slug||'').trim();
+  const targetCode=(btn?.dataset.code||'').trim();
+  if(!targetSlug||!targetCode){alert('수정 정보를 확인할 수 없습니다. 수정번호를 복사해 안전하게 보관해 주세요.');return;}
+  const url=new URL('editor.html',location.href);
+  url.searchParams.set('slug',targetSlug);
+  url.searchParams.set('editCode',targetCode);
+  window.open(url.href,'_blank','noopener');
+}
+
+let _pubQrLoading=false;
+function downloadPublishedQR(){
+  const btn=V('pubQrBtn');
+  const url=(btn?.dataset.url||V('pubUrl')?.textContent||'').trim();
+  if(!url){alert('청첩장 링크를 확인할 수 없습니다.');return;}
+  if(_pubQrLoading)return;
+  _pubQrLoading=true;
+  const original=btn?.textContent||'🔳 QR코드 저장';
+  if(btn){btn.disabled=true;btn.textContent='QR 생성 중...';}
+  const finish=()=>{_pubQrLoading=false;if(btn){btn.disabled=false;btn.textContent=original;}};
+  const make=()=>{
+    const holder=document.createElement('div');
+    holder.style.cssText='position:fixed;left:-9999px;top:-9999px;width:320px;height:320px;background:#fff;padding:20px;';
+    document.body.appendChild(holder);
+    try{
+      new QRCode(holder,{text:url,width:280,height:280,colorDark:'#3a2f26',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+      setTimeout(()=>{
+        try{
+          const canvas=holder.querySelector('canvas');
+          const img=holder.querySelector('img');
+          const a=document.createElement('a');
+          a.download='모바일청첩장_QR.png';
+          a.href=canvas?canvas.toDataURL('image/png'):(img?.src||'');
+          if(!a.href)throw new Error('QR image missing');
+          document.body.appendChild(a);a.click();a.remove();
+        }catch(e){alert('QR코드 저장에 실패했습니다. 다시 시도해 주세요.');}
+        holder.remove();finish();
+      },120);
+    }catch(e){holder.remove();finish();alert('QR코드 생성에 실패했습니다. 다시 시도해 주세요.');}
+  };
+  if(window.QRCode){make();return;}
+  const existing=document.querySelector('script[data-publish-qr-lib]');
+  if(existing){existing.addEventListener('load',make,{once:true});existing.addEventListener('error',()=>{finish();alert('QR코드 기능을 불러오지 못했습니다.');},{once:true});return;}
+  const script=document.createElement('script');
+  script.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+  script.dataset.publishQrLib='1';
+  script.onload=make;
+  script.onerror=()=>{finish();alert('QR코드 기능을 불러오지 못했습니다.');};
+  document.head.appendChild(script);
+}
 
 /* ===== 주문 인증 ===== */
 function closeOrderModal(){
@@ -4506,7 +4602,7 @@ async function loadForEdit(){
   if(!_requireServer()){ editSlug=null;editId=null; return; } /* 서버 없으면 수정모드 진입 차단 */
   /* 수정번호 필수 — 없으면 수정 불가 (card.html 수정하기 버튼으로 진입해야 함) */
   if(!editCode){
-    alert('수정 권한이 없습니다.\n청첩장 화면의 "수정하기" 버튼을 눌러 수정번호를 입력해주세요.');
+    alert('수정 권한이 없습니다.\n발행 완료 화면에서 받은 수정번호로 다시 들어와 주세요.');
     editSlug=null;editId=null;
     return;
   }
