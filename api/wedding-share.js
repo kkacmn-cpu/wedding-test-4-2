@@ -145,7 +145,6 @@ function renderHtml({meta,cardUrl,status=200,message=''}){
 <meta property="og:image:secure_url" content="${image}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
-<meta property="og:url" content="${target}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${title}">
 <meta name="twitter:description" content="${description}">
