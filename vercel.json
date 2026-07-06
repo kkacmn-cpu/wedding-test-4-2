@@ -1,13 +1,1 @@
-<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>모바일 청첩장 편집기</title>
-  <meta http-equiv="refresh" content="0; url=./editor.html">
-  <script>location.replace('./editor.html' + location.search + location.hash);</script>
-</head>
-<body>
-  <p>편집기로 이동 중입니다. <a href="./editor.html">여기를 눌러주세요.</a></p>
-</body>
-</html>
+{"functions":{"api/wedding-share.js":{"maxDuration":10}}}
