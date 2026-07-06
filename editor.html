@@ -4759,6 +4759,22 @@ function _recordsFromVerifyResponse(json){
     return {slug:v.slug||'',manageUrl:v.manageUrl||manageUrl,groom:v.groom||v.groom_name||'',bride:v.bride||v.bride_name||'',weddingDate:v.weddingDate||v.wedding_date||'',savedAt:Date.now()};
   }).filter(v=>v.manageUrl);
 }
+async function _fetchBuyerVerification(payload,timeoutMs=12000){
+  const controller=typeof AbortController!=='undefined'?new AbortController():null;
+  const timer=controller?setTimeout(()=>controller.abort(),timeoutMs):null;
+  try{
+    const res=await fetch('https://weddingapi.duckdns.org/verify-order',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload),
+      signal:controller?controller.signal:undefined
+    });
+    if(!res.ok)throw new Error('VERIFY_HTTP_'+res.status);
+    return await res.json();
+  }finally{
+    if(timer)clearTimeout(timer);
+  }
+}
 async function verifyBuyerForManage(){
   if(!_requireServer())return;
   const buyerName=V('mv_buyer_name')?.value.trim();
@@ -4766,16 +4782,15 @@ async function verifyBuyerForManage(){
   const err=V('buyerManageErr'),btn=V('buyerManageVerifyBtn');
   if(err)err.textContent='';
   if(!buyerName||buyerPhone.length<10||buyerPhone.length>11){if(err)err.textContent='구매자 이름과 휴대폰번호를 정확히 입력해주세요.';return;}
-  btn.disabled=true;btn.textContent='구매 내역 확인 중...';
+  if(!btn||btn.disabled)return;
+  btn.disabled=true;btn.setAttribute('aria-busy','true');btn.textContent='구매 내역 확인 중...';
+  if(err)err.textContent='구매 정보를 확인하고 있습니다. 잠시만 기다려주세요.';
   const key=await _buyerIdentityKey(buyerName,buyerPhone);
   let localRecords=_readBuyerManageRecords(key);
   let backendMessage='';
   try{
-    const res=await fetch('https://weddingapi.duckdns.org/verify-order',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({buyerName,buyerPhone,purpose:'manage'})
-    });
-    const json=await res.json();
+    const json=await _fetchBuyerVerification({buyerName,buyerPhone,purpose:'manage'});
+    if(err)err.textContent='';
 
     /* 기존 인증 API가 구매 UUID를 확인한 뒤에만 Supabase 관리 세션을 발급한다.
        휴대폰번호 원문은 Supabase RPC로 전달하지 않는다. */
@@ -4811,9 +4826,13 @@ async function verifyBuyerForManage(){
     if(err)err.textContent=backendMessage||json.reason||'구매 내역을 확인하지 못했습니다. 입력 정보를 다시 확인해주세요.';
   }catch(e){
     if(localRecords.length){_renderBuyerManageRecords(localRecords,buyerName);return;}
-    if(err)err.textContent='서버 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.';
+    if(err){
+      err.textContent=(e&&e.name==='AbortError')
+        ?'구매 확인 서버 응답이 늦어 중단했습니다. 잠시 후 다시 눌러주세요.'
+        :'서버 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.';
+    }
   }finally{
-    btn.disabled=false;btn.textContent='구매 확인 후 청첩장 찾기';
+    btn.disabled=false;btn.removeAttribute('aria-busy');btn.textContent='구매 확인 후 청첩장 찾기';
   }
 }
 
