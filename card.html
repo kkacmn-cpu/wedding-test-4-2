@@ -1141,13 +1141,12 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
   <div class="fab-menu" id="fabMenu">
     <div class="fab-item" onclick="shareKakao()"><span class="fi">💛</span>카카오톡 공유하기</div>
     <div class="fab-item" onclick="copyCardLink()"><span class="fi">🔗</span>링크 복사</div>
-    <div class="fab-item" onclick="showQR()"><span class="fi">🔳</span>QR 코드</div>
     <div class="fab-item" onclick="addCalendar()"><span class="fi">📅</span>달력에 저장</div>
-    <div class="fab-item" onclick="openEditModal()"><span class="fi">✏️</span>수정하기</div>
   </div>
   <button class="fab-main" id="fabMain" onclick="toggleFab()">⋯</button>
 </div>
 
+<!-- QR/수정 기능 로직은 구매자 발행 완료 화면용으로 보존하며, 공개 메뉴에서는 노출하지 않음 -->
 <!-- QR 모달 -->
 <div class="qr-ov" id="qrOv">
   <div class="qr-modal">
