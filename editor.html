@@ -1415,6 +1415,33 @@ input,select,textarea{font-family:inherit;}
 @keyframes ambGrainFlick{0%{transform:translateX(0);}33%{transform:translateX(1.5px);}66%{transform:translateX(-1.5px);}100%{transform:translateX(0);}}
 @media (prefers-reduced-motion:reduce){.ambient-layer{display:none!important;}}
 
+
+/* ===== FIX8: 발행 완료 구매자 관리 흐름·정렬 보정 ===== */
+#pubOv{overflow-y:auto;overscroll-behavior:contain;}
+.publish-modal{max-width:520px;margin:auto;max-height:calc(100dvh - 32px);overflow-y:auto;text-align:center;padding:34px 30px;}
+.publish-icon{font-size:42px;line-height:1;margin-bottom:12px;}
+.publish-modal h3,.publish-modal>p{text-align:center;}
+.publish-modal .pub-url{width:100%;box-sizing:border-box;}
+.publish-share-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.publish-share-actions .btn{width:100%;min-width:0;justify-content:center;white-space:nowrap;}
+.publish-share-actions #pubLink{grid-column:1/-1;}
+.publish-manage{margin-top:22px;padding-top:20px;border-top:1px solid var(--line,rgba(184,148,95,.25));text-align:center;}
+.publish-manage-title{margin:0 0 6px!important;font-size:15px!important;font-weight:700;color:var(--brown,#3a2f26)!important;text-align:center!important;}
+.publish-manage-desc{margin:0 auto 14px!important;font-size:13px!important;line-height:1.65!important;color:var(--brown-soft,#8a7a68)!important;word-break:keep-all;text-align:center!important;}
+.publish-manage-copy{width:100%;justify-content:center;margin:0 0 16px;}
+.publish-code-label{font-size:11.5px;color:var(--brown-mute,#9a8b7c);letter-spacing:.04em;margin-bottom:7px;text-align:center;}
+.publish-edit-code{max-width:260px;margin:0 auto 10px!important;padding:13px 12px!important;font-size:25px!important;font-weight:700;letter-spacing:6px;text-align:center!important;}
+.publish-edit-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:0;}
+.publish-edit-actions .btn{width:100%;min-width:0;justify-content:center;white-space:nowrap;}
+@media(max-width:480px){
+  .publish-modal{max-width:calc(100vw - 28px);padding:28px 20px;max-height:calc(100dvh - 24px);}
+  .publish-share-actions,.publish-edit-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
+  .publish-share-actions #pubLink{grid-column:1/-1;}
+}
+@media(max-width:360px){
+  .publish-share-actions,.publish-edit-actions{grid-template-columns:1fr;}
+  .publish-share-actions #pubLink{grid-column:auto;}
+}
 </style>
 </head>
 <body>
@@ -1738,27 +1765,27 @@ input,select,textarea{font-family:inherit;}
 
 <!-- 발행 완료 모달 -->
 <div class="ov" id="pubOv">
-  <div class="modal">
+  <div class="modal publish-modal">
     <span class="modal-x" onclick="V('pubOv').classList.remove('show')">×</span>
-    <div style="font-size:44px;margin-bottom:12px;">🎉</div>
+    <div class="publish-icon">🎉</div>
     <h3 id="pubTitle">청첩장이 발행됐어요!</h3>
     <p>아래 링크로 하객들에게 공유하세요.</p>
     <div class="pub-url" id="pubUrl"></div>
-    <div class="modal-btns">
+    <div class="modal-btns publish-share-actions">
       <button class="btn btn-ghost" id="pubCopyBtn" onclick="copyUrl()">🔗 링크 복사</button>
-      <button class="btn btn-ghost" id="pubQrBtn" onclick="downloadPublishedQR()">🔳 QR코드 저장</button>
+      <button class="btn btn-ghost" id="pubQrBtn" onclick="downloadPublishedQR()">▣ QR코드 저장</button>
       <a class="btn btn-gold" id="pubLink" href="#" target="_blank">청첩장 보기 →</a>
     </div>
 
-    <div id="pubEditWrap" style="display:none;margin-top:22px;padding-top:20px;border-top:1px solid var(--line,rgba(184,148,95,.25));">
-      <p style="font-size:13.5px;color:var(--brown-soft,#8a7a68);line-height:1.7;word-break:keep-all;margin-bottom:12px;">
-        ✏️ <b>수정번호</b>입니다. 수정이 필요할 때 사용하는 번호입니다.<br>
-        <b style="color:#c0392b;">꼭 저장해 주세요.</b>
-      </p>
-      <div class="pub-url" id="pubEditCode" style="font-size:26px;font-weight:700;letter-spacing:6px;text-align:center;"></div>
-      <div class="modal-btns" style="margin-top:10px;">
+    <div id="pubEditWrap" class="publish-manage" style="display:none;">
+      <p class="publish-manage-title">구매자 전용 관리</p>
+      <p class="publish-manage-desc">나중에 수정하려면 아래 <b>관리 링크</b>를 보관하세요.<br>카카오톡 ‘나에게 보내기’ 또는 메모장에 저장하면 됩니다.</p>
+      <button class="btn btn-gold publish-manage-copy" id="pubManageCopyBtn" onclick="copyPublishedManageUrl()">🔐 관리 링크 복사</button>
+      <div class="publish-code-label">비상용 수정번호</div>
+      <div class="pub-url publish-edit-code" id="pubEditCode"></div>
+      <div class="modal-btns publish-edit-actions">
         <button class="btn btn-ghost" id="pubEditCopyBtn" onclick="copyEditCode()">🔑 수정번호 복사</button>
-        <button class="btn btn-gold" id="pubEditGoBtn" onclick="openPublishedEditor()">✏️ 수정 화면 열기</button>
+        <button class="btn btn-ghost" id="pubEditGoBtn" onclick="openPublishedEditor()">✏️ 지금 수정하기</button>
       </div>
     </div>
   </div>
@@ -4409,6 +4436,11 @@ async function _proceedPublish(){
         V('pubEditGoBtn').dataset.slug=slug;
         V('pubEditGoBtn').dataset.code=_newEditCode;
       }
+      const manageUrl=new URL('editor.html',location.href);
+      manageUrl.searchParams.set('slug',slug);
+      manageUrl.searchParams.set('editCode',_newEditCode);
+      if(V('pubManageCopyBtn'))V('pubManageCopyBtn').dataset.url=manageUrl.href;
+      try{localStorage.setItem('wedding:lastManageUrl',manageUrl.href);}catch(e){}
       if(V('pubEditWrap'))V('pubEditWrap').style.display='block';
     }
   }else{
@@ -4419,8 +4451,24 @@ async function _proceedPublish(){
   if(_publishedAsClone)finishCloneMode(slug,_newEditCode);
   else clearDraft();
 }
-function copyUrl(){navigator.clipboard.writeText(V('pubUrl').textContent).then(()=>{const b=V('pubCopyBtn');b.textContent='복사됨 ✓';setTimeout(()=>b.textContent='🔗 링크 복사',1500);});}
-function copyEditCode(){navigator.clipboard.writeText(V('pubEditCode').textContent).then(()=>{const b=V('pubEditCopyBtn');b.textContent='복사됨 ✓';setTimeout(()=>b.textContent='🔑 수정번호 복사',1500);});}
+function _copyPublishValue(text,btn,doneLabel,resetLabel){
+  const value=String(text||'').trim();
+  if(!value){alert('복사할 정보를 확인할 수 없습니다.');return;}
+  const done=function(ok){
+    if(!ok){alert('복사하지 못했습니다. 내용을 길게 눌러 직접 복사해 주세요.');return;}
+    if(!btn)return;btn.textContent=doneLabel;
+    setTimeout(()=>btn.textContent=resetLabel,1500);
+  };
+  if(window.isSecureContext&&navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(value).then(()=>done(true)).catch(()=>done(_previewFallbackCopy(value)));
+  }else done(_previewFallbackCopy(value));
+}
+function copyUrl(){_copyPublishValue(V('pubUrl')?.textContent,V('pubCopyBtn'),'복사됨 ✓','🔗 링크 복사');}
+function copyEditCode(){_copyPublishValue(V('pubEditCode')?.textContent,V('pubEditCopyBtn'),'복사됨 ✓','🔑 수정번호 복사');}
+function copyPublishedManageUrl(){
+  const btn=V('pubManageCopyBtn');
+  _copyPublishValue(btn?.dataset.url,btn,'관리 링크 복사됨 ✓','🔐 관리 링크 복사');
+}
 
 /* 구매자 발행 완료 화면 전용: 공개 card 메뉴에는 QR/수정 진입을 노출하지 않는다. */
 function openPublishedEditor(){
