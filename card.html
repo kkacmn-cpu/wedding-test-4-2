@@ -27,6 +27,8 @@
   --gold-wash:#f5eedf;--line:#e8ddcc;--white:#ffffff;--ok:#6f8f6a;--sand:#d9c8af;
   --sh-sm:0 4px 18px -8px rgba(58,47,38,.18);
   --serif:'Noto Serif KR',serif;--sans:'Noto Sans KR',sans-serif;
+  --invitation-card-width:480px;
+  --invitation-cover-height:100vh;
 }
 html{scroll-behavior:smooth;}
 body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-height:100vh;font-weight:300;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word;}
@@ -46,8 +48,22 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 @keyframes cardFadeIn{0%{opacity:0;}100%{opacity:1;}}
 
 /* 오프닝 */
-.op-overlay{position:fixed;inset:0;z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;}
-.op-overlay.done{display:none;}
+/* FEATURE30 — 오프닝은 실제 청첩장 프레임과 같은 폭·높이에서 재생한다.
+   데스크톱에서 사진만 모니터 전체로 커졌다가 480px 카드로 줄어드는 점프를 차단한다. */
+.op-overlay{
+  --op-outer-bg:var(--ivory);
+  position:fixed;top:0;left:50%;right:auto;bottom:auto;
+  width:min(100vw,var(--invitation-card-width,480px));
+  max-width:var(--invitation-card-width,480px);
+  height:var(--invitation-cover-height);min-height:0;
+  transform:translateX(-50%);
+  z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:40px;overflow:hidden;
+  box-shadow:0 0 0 100vmax var(--op-outer-bg);
+  overscroll-behavior:contain;
+}
+.op-overlay.done{display:none;pointer-events:none;}
+.op-overlay.release-touch{pointer-events:none;}
 .op-names{font-family:var(--serif);font-size:28px;letter-spacing:3px;color:inherit;margin-bottom:12px;}
 .op-sub{font-size:13px;letter-spacing:2px;opacity:.7;}
 
@@ -69,7 +85,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 @keyframes opCutIn{0%{opacity:0;}18%{opacity:0;}19%{opacity:1;}100%{opacity:1;}}
 
 /* 1. signature → 웨딩 화보 인화: 과노출에서 실제 사진과 타이포가 정착 */
-.op-overlay.theme-signature{padding:0;color:#fff;background:#f1eadf;overflow:hidden;animation:opThemeOut .55s 1.72s ease forwards;}
+.op-overlay.theme-signature{--op-outer-bg:#f1eadf;padding:0;color:#fff;background:#f1eadf;overflow:hidden;animation:opThemeOut .55s 1.72s ease forwards;}
 .op-overlay.theme-signature .op-sig-stage{position:absolute;inset:0;overflow:hidden;background:#ece4d8;}
 .op-overlay.theme-signature .op-sig-photo{position:absolute;inset:-1%;background-size:cover;background-position:center 52%;filter:brightness(1.72) saturate(.58) contrast(.78) blur(3px);transform:scale(1.055);animation:opSigDevelop 1.58s .04s cubic-bezier(.2,.7,.2,1) forwards;}
 .op-overlay.theme-signature .op-sig-paper{position:absolute;inset:0;background:linear-gradient(145deg,rgba(255,252,245,.96),rgba(245,236,222,.82));mix-blend-mode:screen;animation:opSigPaper .95s .08s ease forwards;}
@@ -89,7 +105,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 @keyframes opSigText{to{opacity:1;transform:translateY(0);}}
 
 /* 2. classic-ivory → 밝은 스튜디오: '지금 결혼합니다' 발표 후 아이보리 종이가 걷히며 사진 공개 */
-.op-overlay.theme-classic-ivory{background:#f8f2e7;color:#241c14;padding:0;overflow:hidden;animation:opThemeOut .48s 1.92s ease forwards;}
+.op-overlay.theme-classic-ivory{--op-outer-bg:#f8f2e7;background:#f8f2e7;color:#241c14;padding:0;overflow:hidden;animation:opThemeOut .48s 1.92s ease forwards;}
 .op-overlay.theme-classic-ivory .op-civ-stage{position:absolute;inset:0;display:flex;flex-direction:column;background:#f6efe0;overflow:hidden;}
 .op-overlay.theme-classic-ivory .op-civ-photo-area{position:relative;flex:0 0 75%;overflow:hidden;background:#e8dcc6;}
 .op-overlay.theme-classic-ivory .op-civ-photo{position:absolute;inset:0;background-size:cover;background-position:center 32%;filter:brightness(1.05) contrast(.97) saturate(.98);transform:scale(1.025);animation:opCivPhotoSettle 1.55s .72s cubic-bezier(.2,.7,.2,1) forwards;}
@@ -121,7 +137,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 @media(max-height:680px){.op-overlay.theme-classic-ivory .op-civ-marry{font-size:27px}.op-overlay.theme-classic-ivory .op-civ-now{margin-bottom:9px}.op-overlay.theme-classic-ivory .op-civ-info{gap:9px}.op-overlay.theme-classic-ivory .op-names{font-size:22px}.op-overlay.theme-classic-ivory .op-civ-time{font-size:11px}}
 
 /* 3. hanok → 현대적인 한국형 에디토리얼. 한 장의 한지가 위로 걷히며 사진 공개 */
-.op-overlay.theme-hanok{background:#efe7d8;color:#1f1710;overflow:hidden;padding:0;animation:opThemeOut .5s 1.62s cubic-bezier(.4,0,.2,1) forwards;}
+.op-overlay.theme-hanok{--op-outer-bg:#efe7d8;background:#efe7d8;color:#1f1710;overflow:hidden;padding:0;animation:opThemeOut .5s 1.62s cubic-bezier(.4,0,.2,1) forwards;}
 .op-overlay.theme-hanok .op-hk-stage{position:absolute;inset:0;display:flex;flex-direction:column;background:#efe7d8;overflow:hidden;}
 .op-overlay.theme-hanok .op-hk-photo-area{position:relative;flex:0 0 70%;overflow:hidden;background:#d9ccb6;}
 .op-overlay.theme-hanok .op-hk-photo{position:absolute;inset:-1%;background-size:cover;background-position:center 32%;filter:sepia(.08) saturate(.96) contrast(1.01) brightness(1.015);transform:scale(1.025);animation:opHkPhotoSet 1.55s .3s cubic-bezier(.22,.68,.2,1) forwards;}
@@ -147,7 +163,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 @media(max-height:680px){.op-overlay.theme-hanok .op-hk-phrase{font-size:21px;line-height:1.52}.op-overlay.theme-hanok .op-hk-kicker{font-size:9px}.op-overlay.theme-hanok .op-hk-rule{margin:11px 0 13px}.op-overlay.theme-hanok .op-names{font-size:25px;letter-spacing:3px}.op-overlay.theme-hanok .op-hk-info{gap:8px}.op-overlay.theme-hanok .op-sub{font-size:12px}}
 
 /* 4. black → 호텔·야간형: 완성된 포스터 구도 위 어두운 베일만 걷히는 정적 럭셔리 */
-.op-overlay.theme-black{background:#0a0807;color:#f4ecdb;overflow:hidden;padding:0;animation:opThemeOut .55s 1.52s cubic-bezier(.4,0,.2,1) forwards;}
+.op-overlay.theme-black{--op-outer-bg:#0a0807;background:#0a0807;color:#f4ecdb;overflow:hidden;padding:0;animation:opThemeOut .55s 1.52s cubic-bezier(.4,0,.2,1) forwards;}
 .op-overlay.theme-black .op-black-stage{position:absolute;inset:0;display:flex;flex-direction:column;background:#100d0a;overflow:hidden;}
 .op-overlay.theme-black .op-black-photo-area{position:relative;flex:0 0 76%;overflow:hidden;background:#0a0807;}
 .op-overlay.theme-black .op-black-photo{position:absolute;inset:-1.5%;background-size:cover;background-position:center 32%;filter:contrast(1.06) saturate(1.03);transform:scale(1.045);animation:opBlackPhotoSettle 1.75s cubic-bezier(.2,.65,.2,1) forwards;}
@@ -165,7 +181,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 @keyframes opBlackTextSet{0%{opacity:0;transform:translateY(7px);}100%{opacity:1;transform:translateY(0);}}
 
 /* 5. fullscreen → 시네마 타이포형 2차: 오프닝 최종 프레임이 메인 커버와 이어지는 구조 */
-.op-overlay.theme-fullscreen{background:radial-gradient(ellipse 86% 64% at 50% 43%,#2a211a,#100d0a 68%,#050403 100%);color:#fdf8f0;overflow:hidden;animation:opThemeOut .52s 1.63s cubic-bezier(.4,0,.2,1) forwards;}
+.op-overlay.theme-fullscreen{--op-outer-bg:#050403;background:radial-gradient(ellipse 86% 64% at 50% 43%,#2a211a,#100d0a 68%,#050403 100%);color:#fdf8f0;overflow:hidden;animation:opThemeOut .52s 1.63s cubic-bezier(.4,0,.2,1) forwards;}
 .op-overlay.theme-fullscreen::before,.op-overlay.theme-fullscreen::after{content:'';position:absolute;left:0;right:0;height:10.5vh;min-height:44px;background:rgba(4,3,3,.96);z-index:3;pointer-events:none;}
 .op-overlay.theme-fullscreen::before{top:0;border-bottom:1px solid rgba(214,186,132,.08);}
 .op-overlay.theme-fullscreen::after{bottom:0;border-top:1px solid rgba(214,186,132,.08);}
@@ -193,7 +209,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 @media (prefers-reduced-motion:reduce){.op-overlay.theme-fullscreen *{animation-duration:.01ms!important;animation-delay:0s!important;}.op-overlay.theme-fullscreen{animation-delay:1.1s!important;}}
 
 /* 6. minimal(Fine Art Editorial) → 인쇄 화보 페이지: 한 번의 페이퍼 리빌 후 같은 구도의 커버로 연결 */
-.op-overlay.theme-minimal{background:#f4f1eb;color:#211d18;padding:0;justify-content:center;animation:opThemeOut .48s 1.58s ease forwards;overflow:hidden;}
+.op-overlay.theme-minimal{--op-outer-bg:#f4f1eb;background:#f4f1eb;color:#211d18;padding:0;justify-content:center;animation:opThemeOut .48s 1.58s ease forwards;overflow:hidden;}
 .op-overlay.theme-minimal .op-min-stage{position:relative;width:min(100%,480px);height:100%;display:grid;grid-template-rows:42px minmax(0,1fr) 164px;padding:18px 18px 0;background:#f7f4ee;overflow:hidden;}
 .op-overlay.theme-minimal .op-min-head{display:flex;align-items:center;justify-content:space-between;font-family:'Cormorant Garamond',serif;font-size:9px;letter-spacing:3.2px;color:#6f6457;text-transform:uppercase;opacity:0;animation:opMinHead .55s .08s ease forwards;}
 .op-overlay.theme-minimal .op-min-index{font-size:10px;letter-spacing:1.5px;color:#9b8e7d;}
@@ -216,7 +232,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 @media (prefers-reduced-motion:reduce){.op-overlay.theme-minimal *{animation-duration:.01ms!important;animation-delay:0s!important;}.op-overlay.theme-minimal{animation-delay:1s!important;}}
 
 /* 7. flower(Modern Gallery) → 좁은 세로 작품창이 열리고 실제 첫 화면으로 정착 */
-.op-overlay.theme-flower{background:#f5f2e9;color:#2f2e29;align-items:center;justify-content:center;padding:0;overflow:hidden;animation:opThemeOut .5s 1.82s ease forwards;}
+.op-overlay.theme-flower{--op-outer-bg:#f5f2e9;background:#f5f2e9;color:#2f2e29;align-items:center;justify-content:center;padding:0;overflow:hidden;animation:opThemeOut .5s 1.82s ease forwards;}
 .op-overlay.theme-flower .op-fl-stage{position:relative;width:min(100%,480px);height:100%;padding:24px 24px 0;background:#f5f2e9;overflow:hidden;}
 .op-overlay.theme-flower .op-fl-hero{position:relative;width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:#f5f2e9;}
 .op-overlay.theme-flower .op-fl-photo-area{position:relative;flex:0 0 76%;overflow:hidden;background:#d8d5ca;}
@@ -242,8 +258,8 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 @keyframes opFlInfoIn{0%{opacity:0;transform:translateY(8px);}100%{opacity:1;transform:translateY(0);}}
 
 /* 8. gold-serif(레터) → 얇은 벨럼 밴드가 조용히 걷히며 실제 초대장으로 정착 */
-.op-overlay.theme-gold-serif{background:linear-gradient(168deg,#f0e8d8,#e4d8c2);color:#241c12;overflow:hidden;padding:0;animation:opThemeOut .52s 1.62s cubic-bezier(.4,0,.2,1) forwards;}
-.op-overlay.theme-gold-serif .op-lt-stage{position:absolute;top:0;left:0;right:0;height:540px;display:flex;align-items:center;justify-content:center;padding:0 22px;background:linear-gradient(168deg,#f0e8d8,#e4d8c2);overflow:hidden;}
+.op-overlay.theme-gold-serif{--op-outer-bg:#e9deca;background:linear-gradient(168deg,#f0e8d8,#e4d8c2);color:#241c12;overflow:hidden;padding:0;animation:opThemeOut .52s 1.62s cubic-bezier(.4,0,.2,1) forwards;}
+.op-overlay.theme-gold-serif .op-lt-stage{position:absolute;inset:0;height:100%;display:flex;align-items:center;justify-content:center;padding:0 22px;background:linear-gradient(168deg,#f0e8d8,#e4d8c2);overflow:hidden;}
 .op-overlay.theme-gold-serif .op-lt-stage::before{content:'';position:absolute;inset:0;opacity:.4;background:repeating-linear-gradient(0deg,rgba(180,160,120,.03) 0,rgba(180,160,120,.03) 1px,transparent 1px,transparent 3px),radial-gradient(ellipse 66% 48% at 50% 30%,rgba(255,252,244,.68),transparent 62%);pointer-events:none;}
 .op-overlay.theme-gold-serif .op-lt-frame{position:relative;width:90%;background:linear-gradient(172deg,#fffdf8,#f7f0e2);box-shadow:0 12px 42px rgba(120,96,58,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:42px 24px;text-align:center;transform:translateY(6px) scale(.99);animation:opLtCardSet 1.04s .08s cubic-bezier(.22,.7,.2,1) forwards;overflow:hidden;}
 .op-overlay.theme-gold-serif .op-lt-frame::before{content:'';position:absolute;inset:8px;border:1.5px solid rgba(176,140,75,.36);pointer-events:none;}
@@ -381,7 +397,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 .acc-info{display:flex;flex-direction:column;gap:3px;}
 .acc-side{font-size:10px;letter-spacing:1px;opacity:.5;text-transform:uppercase;}
 .acc-bank{font-size:13px;font-weight:500;}
-.acc-num{font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:400;opacity:.85;letter-spacing:.5px;}
+.acc-num{font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:400;opacity:.85;letter-spacing:.5px;-webkit-user-select:text;user-select:text;transition:background .2s;}.acc-num.copy-selected{background:rgba(193,158,96,.22);border-radius:4px;}
 .acc-copy{flex-shrink:0;font-size:11px;padding:9px 15px;border-radius:999px;background:rgba(0,0,0,.06);color:inherit;cursor:pointer;border:none;transition:all .25s;opacity:.7;font-family:inherit;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .acc-copy:hover{opacity:1;background:rgba(0,0,0,.1);}
 .acc-copy.done{background:var(--ok);color:#fff;opacity:1;}
@@ -1471,7 +1487,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 /* ===== 프리미엄 모션 커버: Signature · Fullscreen · Black (선택형, 기존 오프닝과 독립) ===== */
 .motion-cover-replay{position:absolute;right:14px;top:calc(14px + env(safe-area-inset-top,0px));z-index:6;width:34px;height:34px;border:1px solid rgba(255,255,255,.42);border-radius:50%;background:rgba(8,6,4,.24);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.16);}
 .motion-cover-replay:active{transform:scale(.96);}
-.op-overlay.motion-signature{padding:0;background:#0c0a08;color:#fff;overflow:hidden;animation:none!important;display:block;}
+.op-overlay.motion-signature{--op-outer-bg:#0c0a08;padding:0;background:#0c0a08;color:#fff;overflow:hidden;animation:none!important;display:block;}
 .op-overlay.motion-signature.done{display:none;}
 .op-overlay.motion-signature .mc-loading,.op-overlay.motion-signature .mc-scene{position:absolute;inset:0;background-size:cover;background-repeat:no-repeat;background-color:#0c0a08;will-change:opacity,transform;}
 .op-overlay.motion-signature .mc-loading{opacity:.62;transform:scale(1.025);}
@@ -1493,11 +1509,12 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 @keyframes mcScene2{0%{opacity:0;transform:scale(1.055) translateX(1.2%)}16%{opacity:1}76%{opacity:1}100%{opacity:0;transform:scale(1.015) translateX(-1.2%)}}
 @keyframes mcScene3{0%{opacity:0;transform:scale(1.035)}18%{opacity:1}100%{opacity:1;transform:scale(1)}}
 @keyframes mcFinalIn{to{opacity:1;transform:translateY(0)}}
-html.motion-cover-lock,html.motion-cover-lock body{overflow:hidden!important;overscroll-behavior:none;}
+html.motion-cover-lock{overflow:hidden!important;overscroll-behavior:none;}
+html.motion-cover-lock body{overflow:hidden!important;overscroll-behavior:none;touch-action:none;}
 @media(max-height:680px){.op-overlay.motion-signature .mc-final{padding-bottom:calc(58px + env(safe-area-inset-bottom,0px));}.op-overlay.motion-signature .mc-names{font-size:25px}.op-overlay.motion-signature .mc-date{font-size:11.5px}.op-overlay.motion-signature .mc-time{font-size:10.5px}}
 
 /* Fullscreen 고객사진 모션 — 영화 컷에서 실제 타이틀 커버로 연결 */
-.op-overlay.motion-fullscreen{padding:0;background:radial-gradient(ellipse 86% 64% at 50% 43%,#2a211a,#100d0a 68%,#050403 100%);color:#fdf8f0;overflow:hidden;animation:none!important;display:block;}
+.op-overlay.motion-fullscreen{--op-outer-bg:#050403;padding:0;background:radial-gradient(ellipse 86% 64% at 50% 43%,#2a211a,#100d0a 68%,#050403 100%);color:#fdf8f0;overflow:hidden;animation:none!important;display:block;}
 .op-overlay.motion-fullscreen.done{display:none;}
 .op-overlay.motion-fullscreen::before,.op-overlay.motion-fullscreen::after{content:'';position:absolute;left:0;right:0;height:10.5vh;min-height:44px;background:rgba(4,3,3,.97);z-index:5;pointer-events:none;}
 .op-overlay.motion-fullscreen::before{top:0;border-bottom:1px solid rgba(214,186,132,.1)}
@@ -1528,7 +1545,7 @@ html.motion-cover-lock,html.motion-cover-lock body{overflow:hidden!important;ove
 @keyframes mcCineFinal{to{opacity:1}}
 
 /* Black 고객사진 모션 — 깊은 디졸브 후 실제 84% 사진 포스터로 정착 */
-.op-overlay.motion-black{padding:0;background:#100d0a;color:#f4ecdb;overflow:hidden;animation:none!important;display:block;}
+.op-overlay.motion-black{--op-outer-bg:#100d0a;padding:0;background:#100d0a;color:#f4ecdb;overflow:hidden;animation:none!important;display:block;}
 .op-overlay.motion-black.done{display:none;}
 .op-overlay.motion-black .mc-loading,.op-overlay.motion-black .mc-scene{position:absolute;inset:0;background-size:cover;background-repeat:no-repeat;background-color:#080706;will-change:opacity,transform;}
 .op-overlay.motion-black .mc-loading{opacity:.58;transform:scale(1.035);}
@@ -1582,10 +1599,18 @@ html.motion-cover-lock,html.motion-cover-lock body{overflow:hidden!important;ove
 .guest-photo-preview img{display:block;width:100%;height:100%;object-fit:cover;}
 .guest-photo-consent{display:flex;align-items:flex-start;gap:8px;margin:11px 0 0;font-size:11px;line-height:1.55;opacity:.78;}
 .guest-photo-consent input{margin-top:3px;}
-.guest-photo-submit{width:100%;margin-top:12px;border:0;border-radius:10px;background:var(--gp-accent);color:#fff;padding:11px 12px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;}
-.guest-photo-submit:disabled{opacity:.5;cursor:wait;}
-.guest-photo-status{min-height:18px;margin-top:9px;text-align:center;font-size:11.5px;line-height:1.5;opacity:.78;}
+.guest-photo-submit{position:relative;width:100%;margin-top:12px;border:0;border-radius:10px;background:var(--gp-accent);color:#fff;padding:12px 12px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:opacity .18s ease,transform .18s ease;}
+.guest-photo-submit:active{transform:scale(.992);}
+.guest-photo-submit:disabled{opacity:.72;cursor:wait;}
+.guest-photo-submit.is-busy::before{content:'';display:inline-block;width:12px;height:12px;margin-right:7px;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;vertical-align:-2px;animation:guestPhotoSpin .72s linear infinite;}
+.guest-photo-progress{display:none;height:3px;margin-top:9px;overflow:hidden;border-radius:999px;background:var(--gp-line);}
+.guest-photo-progress.show{display:block;}
+.guest-photo-progress>span{display:block;width:var(--gp-progress,0%);height:100%;border-radius:inherit;background:var(--gp-accent);transition:width .22s ease;}
+.guest-photo-status{min-height:20px;margin-top:8px;text-align:center;font-size:11.5px;line-height:1.55;opacity:.82;word-break:keep-all;}
+.guest-photo-status.is-error{color:#a43f36;opacity:1;font-weight:600;}
+.guest-photo-status.is-success{color:#5d704f;opacity:1;font-weight:600;}
 .guest-photo-note{margin-top:9px;font-size:10.5px;line-height:1.55;opacity:.58;text-align:center;word-break:keep-all;}
+@keyframes guestPhotoSpin{to{transform:rotate(360deg)}}
 .guest-photo-lightbox{position:fixed;inset:0;z-index:10020;display:none;align-items:center;justify-content:center;background:rgba(10,9,8,.92);padding:20px;}
 .guest-photo-lightbox.show{display:flex;}
 .guest-photo-lightbox img{max-width:100%;max-height:88vh;object-fit:contain;}
@@ -1607,7 +1632,76 @@ html.motion-cover-lock,html.motion-cover-lock body{overflow:hidden!important;ove
 @media(max-width:420px){.guest-photo-grid{gap:5px}.guest-photo-form{padding:14px}.guest-photo-lead{font-size:12.5px}.guest-photo-previews{gap:5px}}
 @media(prefers-reduced-motion:reduce){.guest-photo-tile img{transition:none}.guest-photo-tile:hover img{transform:none}}
 
+
+
+/* FEATURE29 — 첫 화면 공통 높이 엔진
+   - 8개 판매 템플릿의 첫 화면을 동일한 안정 viewport 기준으로 통일
+   - 모바일 주소창 변화에 즉시 반응하는 dvh는 사용하지 않음
+   - 작은 화면에서 min-height 강제 초과, 긴 화면에서 고정 px 공백을 제거 */
+/* FEATURE30: 카드와 오프닝이 동일한 안정 viewport 높이를 공유한다.
+   JS가 최초 진입 높이를 px로 고정하며, JS 미지원 시 svh를 fallback으로 사용한다. */
+:root{--invitation-cover-height:100vh;}
+@supports (height:100svh){
+  :root{--invitation-cover-height:100svh;}
+}
+#card>.iv-cover{overflow-anchor:none;}
+#card .sig-hero,
+#card .civ-stage,
+#card .bk-stage,
+#card .fl-hero,
+#card .hk-stage,
+#card .stl-stage,
+#card .cn-stage,
+#card .lt-stage{
+  box-sizing:border-box;
+  height:var(--invitation-cover-height) !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+/* 커버 바깥 여백이 viewport 높이에 더해지지 않게 한다.
+   Gold Serif의 장식/여백은 다음 정밀 보정에서도 모두 stage 내부에 유지한다. */
+#card.t-gold-serif>.iv-cover{
+  padding:0;
+  border-bottom:0;
+}
+#card.t-gold-serif>.iv-cover::before{display:none;}
+/* 낮은 스마트폰에서 정보 블록이 사진에 눌리지 않도록 이미 확정된 안전 비율을 유지 */
+@media (max-height:680px){
+  #card.t-flower .fl-photo-area{flex-basis:82%;}
+  #card.t-hanok .hk-photo-area{flex-basis:80%;}
+  #card.t-black .bk-photo-area{flex-basis:82%;}
+}
+
 </style>
+<script>
+/* FEATURE30 — 모바일 주소창이 접힐 때 첫 화면 사진 크롭이 다시 계산되지 않도록
+   최초의 실제 가시 높이를 고정한다. 모바일 resize에는 반응하지 않고 방향 전환만 갱신한다. */
+(function(){
+  const root=document.documentElement;
+  let desktopResizeTimer=0;
+  function measureStableCoverHeight(){
+    const vv=window.visualViewport;
+    const raw=(vv&&vv.height)||window.innerHeight||root.clientHeight;
+    const h=Math.round(Number(raw)||0);
+    if(h>=320)root.style.setProperty('--invitation-cover-height',h+'px');
+  }
+  function refreshAfterOrientation(){
+    setTimeout(measureStableCoverHeight,180);
+    setTimeout(measureStableCoverHeight,420);
+  }
+  measureStableCoverHeight();
+  document.addEventListener('DOMContentLoaded',measureStableCoverHeight,{once:true});
+  window.addEventListener('pageshow',measureStableCoverHeight,{passive:true});
+  window.addEventListener('orientationchange',refreshAfterOrientation,{passive:true});
+  const coarse=window.matchMedia&&window.matchMedia('(pointer:coarse)').matches;
+  if(!coarse){
+    window.addEventListener('resize',function(){
+      clearTimeout(desktopResizeTimer);desktopResizeTimer=setTimeout(measureStableCoverHeight,80);
+    },{passive:true});
+  }
+  window.__refreshInvitationCoverHeight=measureStableCoverHeight;
+})();
+</script>
 </head>
 <body>
 
@@ -1811,8 +1905,11 @@ function stopMotionCover(disableReplay){
   _motionCoverLoadSeq++;
   if(_motionCoverEndTimer)clearTimeout(_motionCoverEndTimer);if(_motionCoverSkipTimer)clearTimeout(_motionCoverSkipTimer);
   _motionCoverEndTimer=null;_motionCoverSkipTimer=null;
-  document.documentElement.classList.remove('motion-cover-lock');
-  const ov=document.getElementById('opOverlay');if(ov){ov.classList.add('done');ov.classList.remove('show-skip','is-ready');}
+  const ov=document.getElementById('opOverlay');
+  if(ov){ov.classList.add('done');ov.classList.remove('show-skip','is-ready','release-touch');}
+  /* 오버레이를 먼저 제거하고 다음 프레임에 스크롤 잠금을 해제해
+     첫 스와이프가 레이아웃 재계산에 소모되는 현상을 줄인다. */
+  requestAnimationFrame(function(){document.documentElement.classList.remove('motion-cover-lock');});
   if(disableReplay){const replay=document.querySelector('.motion-cover-replay');if(replay)replay.style.display='none';}
 }
 function skipMotionCover(){stopMotionCover();}
@@ -1932,8 +2029,11 @@ function playOpening(card){
     const _opNm=ov.querySelector('.op-names,.op-vnames');
     if(_opNm)requestAnimationFrame(()=>fitName(_opNm));
   }
-  /* 자동으로 사라짐 (애니메이션 종료 시점 ~1.55s) */
-  setTimeout(()=>ov.classList.add('done'),theme==='fullscreen'?2200:(theme==='black'?2100:(theme==='signature'?2250:(theme==='minimal'?2080:(theme==='flower'?2150:(theme==='classic-ivory'?2420:(theme==='hanok'?2380:(theme==='gold-serif'?2150:1600))))))));
+  /* 자동으로 사라짐. 종료 직전 터치 통과를 먼저 허용해 첫 스와이프가
+     투명해진 오버레이에 가로막히지 않게 한다. */
+  const _opEndMs=theme==='fullscreen'?2200:(theme==='black'?2100:(theme==='signature'?2250:(theme==='minimal'?2080:(theme==='flower'?2150:(theme==='classic-ivory'?2420:(theme==='hanok'?2380:(theme==='gold-serif'?2150:1600)))))));
+  setTimeout(()=>ov.classList.add('release-touch'),Math.max(0,_opEndMs-180));
+  setTimeout(()=>{ov.classList.add('done');ov.classList.remove('release-touch');},_opEndMs);
 }
 
 /* ================================================================
@@ -2587,13 +2687,14 @@ function renderCard(card){
       <button type="button" class="guest-photo-open-btn" id="guestPhotoOpenBtn" onclick="toggleGuestPhotoForm()" disabled aria-busy="true">사진 공유 확인 중...</button>
       <div class="guest-photo-form" id="guestPhotoForm">
         <input type="text" id="guestPhotoName" maxlength="20" placeholder="성함 (선택)" autocomplete="name"/>
-        <label class="guest-photo-file-btn" for="guestPhotoFiles">휴대폰 사진 선택<br><small>JPG · PNG · WEBP / 한 번에 최대 3장</small></label>
-        <input type="file" id="guestPhotoFiles" accept="image/jpeg,image/png,image/webp" multiple hidden onchange="selectGuestPhotos(this)"/>
+        <label class="guest-photo-file-btn" for="guestPhotoFiles">휴대폰 사진 선택<br><small>사진 최대 3장 · iPhone HEIC도 변환 시도</small></label>
+        <input type="file" id="guestPhotoFiles" accept="image/*,.heic,.heif" multiple hidden onchange="selectGuestPhotos(this)"/>
         <input type="text" id="guestPhotoWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;"/>
         <div class="guest-photo-previews" id="guestPhotoPreviews"></div>
         <label class="guest-photo-consent"><input type="checkbox" id="guestPhotoConsent"/>직접 촬영했거나 공유 권한이 있는 사진이며, 신랑·신부가 청첩장에 공개하는 것에 동의합니다.</label>
         <button type="button" class="guest-photo-submit" id="guestPhotoSubmit" onclick="submitGuestPhotos()">선택한 사진 보내기</button>
-        <div class="guest-photo-status" id="guestPhotoStatus" aria-live="polite"></div>
+        <div class="guest-photo-progress" id="guestPhotoProgress" aria-hidden="true"><span></span></div>
+        <div class="guest-photo-status" id="guestPhotoStatus" role="status" aria-live="polite" aria-atomic="true"></div>
         <div class="guest-photo-note">원본은 모바일용으로 압축되며, 승인 전에는 다른 하객에게 보이지 않습니다.</div>
       </div>
     </div>`;
@@ -2693,13 +2794,26 @@ async function submitGuest(cardId){
 
 
 /* FEATURE27: 하객 사진 공유 */
-let _guestPhotoFiles=[],_guestPhotoStartedAt=0,_guestPhotoObjectUrls=[];
-const GUEST_PHOTO_API_TIMEOUT=15000,GUEST_PHOTO_UPLOAD_TIMEOUT=60000;
+let _guestPhotoFiles=[],_guestPhotoStartedAt=0,_guestPhotoObjectUrls=[],_guestPhotoSubmitting=false;
+const GUEST_PHOTO_API_TIMEOUT=15000,GUEST_PHOTO_UPLOAD_TIMEOUT=60000,GUEST_PHOTO_INPUT_MAX_BYTES=20*1024*1024;
 function _guestPhotoSessionId(){
   const key='wedding:guestPhotoSession:v1';
   try{let v=localStorage.getItem(key);if(!v){v='gps_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,16);localStorage.setItem(key,v);}return v;}catch(e){return 'gps_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,16);}
 }
 function _guestPhotoDelay(ms){return new Promise(r=>setTimeout(r,ms));}
+function _guestPhotoPaint(){return new Promise(resolve=>{const done=()=>requestAnimationFrame(()=>resolve());if(typeof requestAnimationFrame==='function')requestAnimationFrame(done);else setTimeout(resolve,34);});}
+function _guestPhotoSetStatus(message,type){
+  const status=document.getElementById('guestPhotoStatus');if(!status)return;
+  status.textContent=message||'';status.classList.toggle('is-error',type==='error');status.classList.toggle('is-success',type==='success');
+}
+function _guestPhotoSetBusy(on,label){
+  const btn=document.getElementById('guestPhotoSubmit');_guestPhotoSubmitting=!!on;if(!btn)return;
+  btn.disabled=!!on;btn.classList.toggle('is-busy',!!on);btn.setAttribute('aria-busy',on?'true':'false');btn.textContent=label||(on?'처리 중...':'선택한 사진 보내기');
+}
+function _guestPhotoSetProgress(percent,visible=true){
+  const bar=document.getElementById('guestPhotoProgress');if(!bar)return;
+  const value=Math.max(0,Math.min(100,Number(percent)||0));bar.classList.toggle('show',!!visible);bar.style.setProperty('--gp-progress',value+'%');bar.setAttribute('aria-hidden',visible?'false':'true');
+}
 async function _guestPhotoFetch(url,options,timeoutMs=GUEST_PHOTO_API_TIMEOUT){
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
   try{return await fetch(url,{...(options||{}),signal:controller.signal});}
@@ -2712,31 +2826,58 @@ function _guestPhotoWithTimeout(promise,timeoutMs,message){
 function toggleGuestPhotoForm(){
   const form=document.getElementById('guestPhotoForm'),btn=document.getElementById('guestPhotoOpenBtn');if(!form||!btn||btn.disabled)return;
   const on=!form.classList.contains('show');form.classList.toggle('show',on);btn.textContent=on?'닫기':'사진 남기기';
-  if(on&&!_guestPhotoStartedAt)_guestPhotoStartedAt=Date.now();
+  if(on){_guestPhotoStartedAt=Date.now();setTimeout(()=>{try{form.scrollIntoView({block:'nearest',behavior:'smooth'});}catch(e){}},60);}
 }
 function _clearGuestPhotoPreviews(){_guestPhotoObjectUrls.forEach(u=>URL.revokeObjectURL(u));_guestPhotoObjectUrls=[];}
+function _guestPhotoFileKind(file){
+  const type=String(file&&file.type||'').toLowerCase(),name=String(file&&file.name||'').toLowerCase();
+  if(type==='image/jpeg'||/\.(jpe?g)$/i.test(name))return 'jpeg';
+  if(type==='image/png'||/\.png$/i.test(name))return 'png';
+  if(type==='image/webp'||/\.webp$/i.test(name))return 'webp';
+  if(type==='image/heic'||type==='image/heif'||/\.(heic|heif)$/i.test(name))return 'heic';
+  return '';
+}
 function selectGuestPhotos(input){
-  const status=document.getElementById('guestPhotoStatus'),files=Array.from(input&&input.files||[]);
-  _clearGuestPhotoPreviews();_guestPhotoFiles=[];
-  const valid=files.filter(f=>['image/jpeg','image/png','image/webp'].includes(f.type)&&f.size<=12*1024*1024).slice(0,3);
-  if(!valid.length){if(status)status.textContent='JPG, PNG, WEBP 사진을 최대 3장 선택해 주세요.';renderGuestPhotoPreviews();return;}
-  _guestPhotoFiles=valid;if(status)status.textContent=files.length>3?'한 번에 최대 3장까지만 선택됩니다.':'';renderGuestPhotoPreviews();
+  const files=Array.from(input&&input.files||[]);_clearGuestPhotoPreviews();_guestPhotoFiles=[];
+  if(!files.length){_guestPhotoSetStatus('선택된 사진이 없습니다.','error');renderGuestPhotoPreviews();return;}
+  const accepted=[],rejected=[];
+  files.slice(0,3).forEach(file=>{const kind=_guestPhotoFileKind(file);if(!kind)rejected.push('지원하지 않는 형식');else if(Number(file.size||0)>GUEST_PHOTO_INPUT_MAX_BYTES)rejected.push('20MB 초과');else accepted.push(file);});
+  _guestPhotoFiles=accepted;renderGuestPhotoPreviews();
+  if(!accepted.length){_guestPhotoSetStatus('이 사진 형식은 바로 처리할 수 없습니다. JPG·PNG·WEBP 또는 HEIC 사진을 선택해 주세요.','error');return;}
+  const extra=files.length>3?' · 처음 3장만 선택됨':'';
+  const warn=rejected.length?' · 처리할 수 없는 사진 '+rejected.length+'장 제외':'';
+  _guestPhotoSetStatus(`${accepted.length}장 선택됨${extra}${warn}`,(rejected.length||files.length>3)?'error':'');
+  if(!_guestPhotoStartedAt)_guestPhotoStartedAt=Date.now();
 }
 function renderGuestPhotoPreviews(){
   const box=document.getElementById('guestPhotoPreviews');if(!box)return;
   _clearGuestPhotoPreviews();box.replaceChildren();
   _guestPhotoFiles.forEach(function(f){const u=URL.createObjectURL(f);_guestPhotoObjectUrls.push(u);const tile=document.createElement('div'),img=document.createElement('img');tile.className='guest-photo-preview';img.src=u;img.alt='선택한 사진 미리보기';tile.appendChild(img);box.appendChild(tile);});
 }
-function _loadImageForGuestPhoto(file){
-  return new Promise(function(resolve,reject){const u=URL.createObjectURL(file),img=new Image();img.onload=()=>{URL.revokeObjectURL(u);resolve(img);};img.onerror=()=>{URL.revokeObjectURL(u);reject(new Error('IMAGE_LOAD_FAILED'));};img.src=u;});
+async function _loadImageForGuestPhoto(file){
+  if(typeof createImageBitmap==='function'){
+    try{const bitmap=await _guestPhotoWithTimeout(createImageBitmap(file,{imageOrientation:'from-image'}),20000,'사진을 여는 데 시간이 오래 걸립니다. 다른 사진을 선택해 주세요.');return {source:bitmap,width:bitmap.width,height:bitmap.height,close:()=>{try{bitmap.close();}catch(e){}}};}catch(e){}
+  }
+  return await new Promise(function(resolve,reject){
+    const u=URL.createObjectURL(file),img=new Image(),timer=setTimeout(()=>{URL.revokeObjectURL(u);reject(new Error('사진을 열지 못했습니다.'));},20000);
+    img.onload=()=>{clearTimeout(timer);URL.revokeObjectURL(u);resolve({source:img,width:img.naturalWidth||img.width,height:img.naturalHeight||img.height,close:()=>{}});};
+    img.onerror=()=>{clearTimeout(timer);URL.revokeObjectURL(u);reject(new Error(_guestPhotoFileKind(file)==='heic'?'이 휴대폰 브라우저에서는 HEIC 사진 변환이 지원되지 않습니다. 사진을 JPG로 저장하거나 화면 캡처 후 다시 선택해 주세요.':'사진을 읽지 못했습니다. 다른 사진을 선택해 주세요.'));};img.src=u;
+  });
+}
+function _guestPhotoCanvasBlob(canvas,type,quality){
+  return _guestPhotoWithTimeout(new Promise((resolve,reject)=>{try{canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('사진 변환에 실패했습니다.')),type,quality);}catch(e){reject(e);}}),20000,'사진 변환 시간이 초과되었습니다. 다른 사진을 선택해 주세요.');
 }
 async function compressGuestPhoto(file){
-  const img=await _loadImageForGuestPhoto(file),max=1800,scale=Math.min(1,max/Math.max(img.naturalWidth||img.width,img.naturalHeight||img.height));
-  const w=Math.max(1,Math.round((img.naturalWidth||img.width)*scale)),h=Math.max(1,Math.round((img.naturalHeight||img.height)*scale));
-  const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d',{alpha:false});ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(img,0,0,w,h);
-  let quality=.84,blob=null;
-  for(let i=0;i<4;i++){blob=await new Promise(r=>canvas.toBlob(r,'image/jpeg',quality));if(blob&&blob.size<=4.5*1024*1024)break;quality-=.1;}
-  if(!blob||blob.size>5*1024*1024)throw new Error('사진 용량을 줄이지 못했습니다. 다른 사진을 선택해 주세요.');return blob;
+  const loaded=await _loadImageForGuestPhoto(file);try{
+    const max=1800,scale=Math.min(1,max/Math.max(loaded.width,loaded.height));
+    const w=Math.max(1,Math.round(loaded.width*scale)),h=Math.max(1,Math.round(loaded.height*scale));
+    const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d',{alpha:false});if(!ctx)throw new Error('사진 처리 기능을 사용할 수 없습니다.');
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(loaded.source,0,0,w,h);await _guestPhotoPaint();
+    let quality=.84,blob=null;
+    for(let i=0;i<4;i++){blob=await _guestPhotoCanvasBlob(canvas,'image/jpeg',quality);if(blob&&blob.size<=4.5*1024*1024)break;quality-=.1;await _guestPhotoPaint();}
+    canvas.width=1;canvas.height=1;
+    if(!blob||blob.size>5*1024*1024)throw new Error('사진 용량을 줄이지 못했습니다. 다른 사진을 선택해 주세요.');return blob;
+  }finally{loaded.close();}
 }
 async function _completeGuestPhoto(item){
   let lastError=null;
@@ -2753,33 +2894,53 @@ async function _completeGuestPhoto(item){
 async function _cancelGuestPhotoItems(items){
   await Promise.allSettled((items||[]).map(item=>_guestPhotoFetch('/api/guest-photo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'cancel',id:item.id,secret:item.secret})},8000)));
 }
+async function _uploadGuestPhotoSigned(bucket,item,blob){
+  if(typeof sb==='undefined'||!sb.storage||typeof sb.storage.from!=='function')throw new Error('사진 전송 모듈을 불러오지 못했습니다. 화면을 새로고침한 뒤 다시 시도해 주세요.');
+  const storage=sb.storage.from(bucket);if(!storage||typeof storage.uploadToSignedUrl!=='function')throw new Error('사진 전송 기능을 시작하지 못했습니다.');
+  const result=await _guestPhotoWithTimeout(storage.uploadToSignedUrl(item.path,item.token,blob,{contentType:'image/jpeg',cacheControl:'3600',upsert:false}),GUEST_PHOTO_UPLOAD_TIMEOUT,'사진 전송 시간이 초과되었습니다. 네트워크를 확인해 주세요.');
+  if(!result||result.error){const detail=result&&result.error&&(result.error.message||result.error.error)||'';throw new Error(detail?`사진 전송 실패: ${String(detail).slice(0,100)}`:'사진 전송에 실패했습니다. 네트워크를 확인해 주세요.');}
+  return result;
+}
 async function submitGuestPhotos(){
-  const status=document.getElementById('guestPhotoStatus'),btn=document.getElementById('guestPhotoSubmit'),consent=document.getElementById('guestPhotoConsent');
-  if(!_guestPhotoFiles.length){if(status)status.textContent='먼저 사진을 선택해 주세요.';return;}
-  if(!consent||!consent.checked){if(status)status.textContent='사진 공유 동의 내용을 확인해 주세요.';return;}
-  if(typeof sb==='undefined'||!sb.storage){if(status)status.textContent='사진 서버에 연결하지 못했습니다.';return;}
+  if(_guestPhotoSubmitting)return;
+  const consent=document.getElementById('guestPhotoConsent');
+  if(!_guestPhotoFiles.length){_guestPhotoSetStatus('먼저 휴대폰 사진을 선택해 주세요.','error');return;}
+  if(!consent||!consent.checked){_guestPhotoSetStatus('사진 공유 동의 내용을 확인해 주세요.','error');return;}
+  if(typeof navigator!=='undefined'&&navigator.onLine===false){_guestPhotoSetStatus('인터넷 연결을 확인한 뒤 다시 보내 주세요.','error');return;}
   const sec=document.getElementById('guestPhotoSec'),photoSlug=sec&&sec.dataset.slug||slug||'';
-  if(btn){btn.disabled=true;btn.textContent='사진 준비 중...';}if(status)status.textContent='사진을 모바일용으로 안전하게 압축하고 있습니다.';
+  if(!photoSlug){_guestPhotoSetStatus('청첩장 주소를 확인할 수 없습니다. 새로고침 후 다시 시도해 주세요.','error');return;}
+  _guestPhotoSetBusy(true,'사진 준비 중...');_guestPhotoSetProgress(4,true);_guestPhotoSetStatus('전송 준비를 시작했습니다. 잠시만 기다려 주세요.','');
   let preparedItems=[],completed=0;
   try{
-    const blobs=[];for(let i=0;i<_guestPhotoFiles.length;i++){if(status)status.textContent=`사진 최적화 중 ${i+1} / ${_guestPhotoFiles.length}`;blobs.push(await compressGuestPhoto(_guestPhotoFiles[i]));}
+    await _guestPhotoPaint();
+    const elapsed=Date.now()-(_guestPhotoStartedAt||Date.now());if(elapsed<1300){_guestPhotoSetStatus('안전한 전송을 준비하고 있습니다.','');await _guestPhotoDelay(1300-elapsed);}
+    const blobs=[];
+    for(let i=0;i<_guestPhotoFiles.length;i++){
+      _guestPhotoSetBusy(true,`사진 최적화 ${i+1}/${_guestPhotoFiles.length}`);_guestPhotoSetStatus(`사진 최적화 중 ${i+1} / ${_guestPhotoFiles.length}`,'');_guestPhotoSetProgress(8+Math.round(((i+.5)/_guestPhotoFiles.length)*32),true);await _guestPhotoPaint();
+      blobs.push(await compressGuestPhoto(_guestPhotoFiles[i]));
+    }
+    _guestPhotoSetBusy(true,'전송 준비 중...');_guestPhotoSetStatus('사진 전송 공간을 준비하고 있습니다.','');_guestPhotoSetProgress(44,true);await _guestPhotoPaint();
     const prepareRes=await _guestPhotoFetch('/api/guest-photo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'prepare',slug:photoSlug,guestName:(document.getElementById('guestPhotoName')?.value||'').trim(),sessionId:_guestPhotoSessionId(),startedAt:_guestPhotoStartedAt||Date.now()-2000,website:document.getElementById('guestPhotoWebsite')?.value||'',files:blobs.map(b=>({mime:'image/jpeg',size:b.size}))})});
     const prepared=await prepareRes.json().catch(()=>({}));if(!prepareRes.ok||!prepared.ok)throw new Error(prepared.error||'사진 업로드를 준비하지 못했습니다.');
     preparedItems=Array.isArray(prepared.items)?prepared.items:[];
     if(preparedItems.length!==blobs.length)throw new Error('사진 업로드 준비 결과를 확인하지 못했습니다.');
     for(let i=0;i<preparedItems.length;i++){
-      const item=preparedItems[i],blob=blobs[i];if(status)status.textContent=`사진 보내는 중 ${i+1} / ${preparedItems.length}`;
-      const up=await _guestPhotoWithTimeout(sb.storage.from(prepared.bucket).uploadToSignedUrl(item.path,item.token,blob,{contentType:'image/jpeg',cacheControl:'3600',upsert:false}),GUEST_PHOTO_UPLOAD_TIMEOUT,'사진 전송 시간이 초과되었습니다. 네트워크를 확인해 주세요.');
-      if(!up||up.error)throw new Error('사진 전송에 실패했습니다.');
-      await _completeGuestPhoto(item);completed=i+1;
+      const item=preparedItems[i],blob=blobs[i],base=48+Math.round((i/preparedItems.length)*45);
+      _guestPhotoSetBusy(true,`사진 보내는 중 ${i+1}/${preparedItems.length}`);_guestPhotoSetStatus(`사진 보내는 중 ${i+1} / ${preparedItems.length} · 화면을 닫지 마세요.`,'');_guestPhotoSetProgress(base,true);await _guestPhotoPaint();
+      await _uploadGuestPhotoSigned(prepared.bucket,item,blob);_guestPhotoSetProgress(base+Math.round(30/preparedItems.length),true);
+      _guestPhotoSetStatus(`사진 접수 확인 중 ${i+1} / ${preparedItems.length}`,'');await _completeGuestPhoto(item);completed=i+1;_guestPhotoSetProgress(48+Math.round((completed/preparedItems.length)*50),true);
     }
-    if(status)status.textContent='사진이 전달되었습니다. 신랑·신부 승인 후 청첩장에 공개됩니다.';
+    _guestPhotoSetProgress(100,true);_guestPhotoSetStatus('사진이 전달되었습니다. 신랑·신부 승인 후 청첩장에 공개됩니다.','success');
     _guestPhotoFiles=[];renderGuestPhotoPreviews();const input=document.getElementById('guestPhotoFiles');if(input)input.value='';if(consent)consent.checked=false;
   }catch(e){
     const unfinished=preparedItems.slice(completed);if(unfinished.length)await _cancelGuestPhotoItems(unfinished);
-    if(completed>0){_guestPhotoFiles=_guestPhotoFiles.slice(completed);renderGuestPhotoPreviews();if(status)status.textContent=`${completed}장은 전달되었습니다. 남은 사진은 네트워크 확인 후 다시 보내 주세요.`;}
-    else if(status)status.textContent=e&&e.message?e.message:'사진을 보내지 못했습니다. 잠시 후 다시 시도해 주세요.';
-  }finally{if(btn){btn.disabled=false;btn.textContent='선택한 사진 보내기';}}
+    if(completed>0){_guestPhotoFiles=_guestPhotoFiles.slice(completed);renderGuestPhotoPreviews();_guestPhotoSetStatus(`${completed}장은 전달되었습니다. 남은 사진은 네트워크 확인 후 다시 보내 주세요.`,'error');}
+    else _guestPhotoSetStatus(e&&e.message?e.message:'사진을 보내지 못했습니다. 잠시 후 다시 시도해 주세요.','error');
+    _guestPhotoSetProgress(0,false);
+  }finally{
+    _guestPhotoSetBusy(false,'선택한 사진 보내기');
+    if(completed&&completed===preparedItems.length)setTimeout(()=>_guestPhotoSetProgress(0,false),1300);
+  }
 }
 async function loadApprovedGuestPhotos(photoSlug){
   const sec=document.getElementById('guestPhotoSec'),wrap=document.getElementById('guestPhotoApproved'),grid=document.getElementById('guestPhotoGrid'),btn=document.getElementById('guestPhotoOpenBtn');if(!sec||!wrap||!grid||!btn)return;
@@ -2829,45 +2990,73 @@ function _showCopyToast(msg,ok){
   el.style.opacity='1';
   _copyToastTimer=setTimeout(function(){el.style.opacity='0';},2200);
 }
-/* 실제 복사 성공 여부를 boolean으로 판정 (clipboard API → textarea+execCommand fallback) */
+/* 실제 복사 성공 여부를 boolean으로 판정.
+   모바일 인앱 브라우저는 비동기 Clipboard API 실패 뒤에는 사용자 터치 권한이 사라질 수 있으므로,
+   클릭 이벤트 안에서 동기식 execCommand 복사를 먼저 시도하고 실패할 때만 Clipboard API를 호출한다. */
 function _doCopy(txt){
   return new Promise(function(resolve){
-    if(window.isSecureContext&&navigator.clipboard&&navigator.clipboard.writeText){
-      navigator.clipboard.writeText(txt).then(function(){resolve(true);}).catch(function(){resolve(_fallbackCopy(txt));});
-    }else{
-      resolve(_fallbackCopy(txt));
-    }
+    if(_fallbackCopy(txt)){resolve(true);return;}
+    if(window.isSecureContext&&navigator.clipboard&&typeof navigator.clipboard.writeText==='function'){
+      try{
+        var req=navigator.clipboard.writeText(txt);
+        if(req&&typeof req.then==='function')req.then(function(){resolve(true);}).catch(function(){resolve(false);});
+        else resolve(true);
+      }catch(e){resolve(false);}
+    }else resolve(false);
   });
 }
 function _fallbackCopy(txt){
-  var ok=false, ta=null;
+  var ok=false,ta=null,active=document.activeElement;
+  var sx=window.pageXOffset||0,sy=window.pageYOffset||0;
   try{
     ta=document.createElement('textarea');
-    ta.value=txt;ta.setAttribute('readonly','');
-    ta.style.cssText='position:fixed;top:0;left:-9999px;width:1px;height:1px;font-size:16px;opacity:.01;';
-    document.body.appendChild(ta);ta.focus({preventScroll:true});ta.select();ta.setSelectionRange(0,txt.length);
-    ok=(document.execCommand('copy')===true); /* 반환값 반드시 확인 */
-  }catch(e){ ok=false; }
-  if(ta&&ta.parentNode)ta.parentNode.removeChild(ta); /* 성공·실패 무관 제거 */
+    ta.value=txt;
+    ta.setAttribute('readonly','');
+    ta.setAttribute('aria-hidden','true');
+    /* iOS/Kakao WebView는 화면 밖(-9999px) 요소 선택을 무시하는 경우가 있어 뷰포트 안에 투명하게 둔다. */
+    ta.style.cssText='position:fixed;top:0;left:0;width:2px;height:2px;padding:0;border:0;outline:0;font-size:16px;line-height:1;opacity:.001;pointer-events:none;z-index:-1;';
+    document.body.appendChild(ta);
+    try{ta.focus({preventScroll:true});}catch(e){ta.focus();}
+    ta.select();
+    if(typeof ta.setSelectionRange==='function')ta.setSelectionRange(0,ta.value.length);
+    ok=!!(document.execCommand&&document.execCommand('copy')===true);
+  }catch(e){ok=false;}
+  if(ta&&ta.parentNode)ta.parentNode.removeChild(ta);
+  try{if(active&&typeof active.focus==='function')active.focus({preventScroll:true});}catch(e){}
+  if(window.pageXOffset!==sx||window.pageYOffset!==sy)window.scrollTo(sx,sy);
   return ok;
+}
+function _selectVisibleAccount(btn){
+  try{
+    var row=btn&&btn.closest?btn.closest('.acc-row'):null;
+    var num=row?row.querySelector('.acc-num'):null;
+    if(!num||!window.getSelection||!document.createRange)return false;
+    var sel=window.getSelection(),range=document.createRange();
+    range.selectNodeContents(num);sel.removeAllRanges();sel.addRange(range);
+    num.classList.add('copy-selected');
+    setTimeout(function(){num.classList.remove('copy-selected');},2600);
+    return true;
+  }catch(e){return false;}
+}
+function _showAccountCopySuccess(btn){
+  var orig=btn.dataset.label||'복사';
+  btn.dataset.label=orig;
+  btn.textContent='복사됨 ✓';btn.classList.add('done');
+  setTimeout(function(){btn.textContent=orig;btn.classList.remove('done');},1400);
+  _showCopyToast('계좌번호가 클립보드에 복사되었습니다.',true);
 }
 function copyAcc(btn,ev){
   if(ev){ev.preventDefault();ev.stopPropagation();}
   /* 클릭한 행의 data-acc만 사용 (다른 계좌 혼입 방지), 하이픈·공백 원본 그대로 */
-  var txt=btn.dataset.acc||'';
-  if(!txt){ _showCopyToast('복사하지 못했습니다. 계좌번호를 직접 선택해 주세요.',false); return; }
+  var txt=btn&&btn.dataset?btn.dataset.acc||'':'';
+  if(!txt){_showCopyToast('복사하지 못했습니다. 계좌번호를 직접 선택해 주세요.',false);return;}
+  btn.disabled=true;
   _doCopy(txt).then(function(ok){
-    if(ok){
-      /* 실제 복사 성공한 경우에만 표시 */
-      var orig=btn.dataset.label||'복사';
-      btn.dataset.label=orig;
-      btn.textContent='복사됨 ✓';btn.classList.add('done');
-      setTimeout(function(){btn.textContent=orig;btn.classList.remove('done');},1400);
-      _showCopyToast('계좌번호가 클립보드에 복사되었습니다.',true);
-    }else{
-      /* 실패 — 버튼은 원래 상태 유지, 거짓 성공 표시 안 함 */
-      _showCopyToast('복사하지 못했습니다. 계좌번호를 직접 선택해 주세요.',false);
-    }
+    btn.disabled=false;
+    if(ok){_showAccountCopySuccess(btn);return;}
+    /* 자동 복사가 막힌 환경에서도 해당 행의 계좌번호를 바로 선택해 수동 복사가 가능하게 한다. */
+    var selected=_selectVisibleAccount(btn);
+    _showCopyToast(selected?'자동 복사가 차단되었습니다. 선택된 계좌번호를 길게 눌러 복사해 주세요.':'복사하지 못했습니다. 계좌번호를 직접 선택해 주세요.',false);
   });
 }
 

@@ -1984,19 +1984,17 @@ input,select,textarea{font-family:inherit;}
 @media(prefers-reduced-motion:reduce){.ed-motion{display:none!important;}}
 
 
-/* FEATURE27: 하객 사진 공유 — 기본 OFF, 승인형 안전 구조 */
-.guest-photo-config-box{display:none;margin:-1px 0 12px;padding:16px;border:1px solid rgba(176,140,75,.22);border-radius:0 0 14px 14px;background:linear-gradient(180deg,#fffdf9,#fbf7ef);}
+/* FEATURE33: 하객 사진 공유 편집 UI — 기본 OFF, 켰을 때만 짧고 명확하게 */
+.guest-photo-config-box{display:none;margin:-1px 4px 10px;padding:2px 0 13px;border-bottom:1px solid var(--line-soft);background:transparent;}
 .guest-photo-config-box.show{display:block;}
-.guest-photo-config-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;}
-.guest-photo-config-title{font-family:'Noto Serif KR',serif;font-size:14px;font-weight:600;color:var(--brown);}
-.guest-photo-config-badge{flex:0 0 auto;padding:4px 8px;border:1px solid rgba(176,140,75,.26);border-radius:999px;font-size:10px;letter-spacing:.04em;color:#8b6c36;background:#fff;}
-.guest-photo-config-desc{margin:8px 0 12px;font-size:12.5px;line-height:1.7;color:var(--brown-soft);word-break:keep-all;}
-.guest-photo-rule-list{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 12px;}
-.guest-photo-rule{padding:9px 8px;border:1px solid rgba(176,140,75,.16);border-radius:10px;background:rgba(255,255,255,.72);text-align:center;font-size:11px;line-height:1.45;color:var(--brown-soft);}
-.guest-photo-rule b{display:block;margin-bottom:2px;font-size:12px;color:#755c35;}
-.guest-photo-manage-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:11px;border-top:1px solid rgba(176,140,75,.16);}
-.guest-photo-manage-note{font-size:11.5px;line-height:1.55;color:var(--brown-mute);}
-.guest-photo-manage-btn{flex:0 0 auto;border:1px solid rgba(139,108,54,.32);border-radius:10px;background:#fff;padding:9px 12px;font:inherit;font-size:12px;font-weight:600;color:#755c35;cursor:pointer;}
+.guest-photo-config-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:0 0 6px;font-size:10.5px;font-weight:600;letter-spacing:.01em;color:#84683d;}
+.guest-photo-config-meta span{display:inline-flex;align-items:center;min-height:22px;padding:3px 8px;border:1px solid rgba(176,140,75,.18);border-radius:999px;background:rgba(176,140,75,.055);}
+.guest-photo-config-desc{margin:0;font-size:11.5px;line-height:1.55;color:var(--brown-mute);word-break:keep-all;}
+.guest-photo-manage-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px;padding-top:9px;border-top:1px solid rgba(176,140,75,.13);}
+.guest-photo-manage-row[hidden]{display:none!important;}
+.guest-photo-manage-note{min-width:0;font-size:11px;line-height:1.45;color:var(--brown-mute);}
+.guest-photo-manage-btn{flex:0 0 auto;border:1px solid rgba(139,108,54,.28);border-radius:999px;background:#fff;padding:7px 11px;font:inherit;font-size:11px;font-weight:600;color:#755c35;cursor:pointer;box-shadow:0 5px 14px -12px rgba(74,55,29,.65);}
+.guest-photo-manage-btn:hover{border-color:rgba(139,108,54,.5);background:#fffdf8;}
 .guest-photo-manage-btn:disabled{opacity:.45;cursor:not-allowed;}
 .guest-photo-manager-modal{width:min(760px,calc(100vw - 28px));max-height:min(820px,88vh);overflow:auto;text-align:left;}
 .guest-photo-manager-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 12px;padding:12px 14px;border:1px solid rgba(176,140,75,.18);border-radius:12px;background:#fcfaf6;}
@@ -2022,7 +2020,48 @@ input,select,textarea{font-family:inherit;}
 .guest-photo-preview-grid span:first-child{grid-row:1/3;}
 .guest-photo-preview-copy{font-size:11.5px;line-height:1.6;opacity:.72;word-break:keep-all;}
 .guest-photo-preview-btn{display:inline-flex;margin-top:11px;padding:8px 14px;border:1px solid var(--gps-line);border-radius:999px;font-size:11.5px;}
-@media(max-width:520px){.guest-photo-rule-list{grid-template-columns:1fr}.guest-photo-manager-list{grid-template-columns:1fr}.guest-photo-manage-row{align-items:flex-start;flex-direction:column}.guest-photo-manage-btn{width:100%}}
+@media(max-width:520px){.guest-photo-manager-list{grid-template-columns:1fr}.guest-photo-config-meta{gap:5px}.guest-photo-config-meta span{padding:3px 7px}.guest-photo-manage-note{font-size:10.5px}.guest-photo-manage-btn{padding:7px 10px}}
+
+
+
+/* FEATURE29 — LIVE PREVIEW 첫 화면 공통 높이 엔진
+   실제 휴대폰 프리뷰 창의 높이를 8개 템플릿 모두 같은 기준으로 사용한다. */
+#ivRoot{--invitation-cover-height:var(--preview-screen-height,540px);}
+#ivRoot .sig-hero,
+#ivRoot .civ-stage,
+#ivRoot .bk-stage,
+#ivRoot .fl-hero,
+#ivRoot .hk-stage,
+#ivRoot .stl-stage,
+#ivRoot .cn-stage,
+#ivRoot .lt-stage{
+  box-sizing:border-box;
+  height:var(--invitation-cover-height) !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+/* 8개 판매 템플릿 커버는 preview screen의 시작점에서 바로 렌더한다.
+   기존 공통 .iv-cover 상하 패딩이 stage 높이에 다시 더해지는 일을 막는다. */
+#ivRoot>.iv-cover.t-signature,
+#ivRoot>.iv-cover.t-classic-ivory,
+#ivRoot>.iv-cover.t-hanok,
+#ivRoot>.iv-cover.t-black,
+#ivRoot>.iv-cover.t-fullscreen,
+#ivRoot>.iv-cover.t-minimal,
+#ivRoot>.iv-cover.t-flower,
+#ivRoot>.iv-cover.t-gold-serif{
+  padding:0;
+  border-bottom:0;
+}
+#ivRoot>.iv-cover.t-gold-serif::before{display:none;}
+/* Flower 정보 블록은 97px 안전영역을 우선 확보한다.
+   preview가 짧아져도 날짜·시간이 잘리지 않고, 긴 화면에서는 사진 비중이 자동으로 커진다. */
+#ivRoot .t-flower .fl-photo-area{flex-basis:calc(100% - 98px);}
+/* 프리뷰 화면이 낮을 때도 이름·날짜·시간을 화면 안에 보존 */
+@media (max-height:680px){
+  #ivRoot .t-hanok .hk-photo-area{flex-basis:80%;}
+  #ivRoot .t-black .bk-photo-area{flex-basis:82%;}
+}
 
 </style>
 </head>
@@ -3039,11 +3078,10 @@ function renderToggles(){
     <div class="tgl">
       <div class="tgl-info"><div class="tl">${t.label}</div><div class="td">${t.desc}</div></div>
       <div class="sw"><input type="checkbox" id="${t.id}" ${t.def?'checked':''} onchange="${t.id==='o_music'?'toggleMusicBox();':(t.id==='o_video'?'toggleVideoBox();':(t.id==='o_guest_photo'?'toggleGuestPhotoBox();':''))} renderIV()"/><label for="${t.id}"></label></div>
-    </div>${t.id==='o_guest_photo'?`<div class="guest-photo-config-box" id="guestPhotoConfigBox">
-      <div class="guest-photo-config-head"><div class="guest-photo-config-title">승인형 하객 사진 앨범</div><span class="guest-photo-config-badge">PREMIUM</span></div>
-      <p class="guest-photo-config-desc">하객은 휴대폰 사진을 최대 3장씩 올릴 수 있고, 신랑·신부가 승인한 사진만 청첩장에 공개됩니다.</p>
-      <div class="guest-photo-rule-list"><div class="guest-photo-rule"><b>최대 10장</b>저장공간 보호</div><div class="guest-photo-rule"><b>사진만</b>동영상 제외</div><div class="guest-photo-rule"><b>승인 후 공개</b>자동 노출 금지</div></div>
-      <div class="guest-photo-manage-row"><div class="guest-photo-manage-note" id="guestPhotoManageNote">발행 후 수정 화면에서 하객 사진을 승인·삭제할 수 있습니다.</div><button type="button" class="guest-photo-manage-btn" id="guestPhotoManageBtn" onclick="openGuestPhotoManager()">사진 관리</button></div>
+    </div>${t.id==='o_guest_photo'?`<div class="guest-photo-config-box" id="guestPhotoConfigBox" aria-live="polite">
+      <div class="guest-photo-config-meta" aria-label="하객 사진 공유 조건"><span>사진만</span><span>최대 10장</span><span>승인 후 공개</span></div>
+      <p class="guest-photo-config-desc">하객은 한 번에 최대 3장을 올릴 수 있으며, 승인한 사진만 청첩장에 공개됩니다.</p>
+      <div class="guest-photo-manage-row" id="guestPhotoManageRow" hidden><div class="guest-photo-manage-note" id="guestPhotoManageNote">승인 대기 사진을 확인하고 관리할 수 있습니다.</div><button type="button" class="guest-photo-manage-btn" id="guestPhotoManageBtn" onclick="openGuestPhotoManager()">사진 관리</button></div>
     </div>`:t.id==='o_video'?`<div class="video-url-box" id="videoUrlBox">
       <div class="video-config-card">
         <div class="video-config-grid">
@@ -3137,12 +3175,14 @@ function toggleVideoBox(){
 }
 
 function toggleGuestPhotoBox(){
-  const box=V('guestPhotoConfigBox'),on=chk('o_guest_photo');
+  const box=V('guestPhotoConfigBox'),on=chk('o_guest_photo'),toggle=V('o_guest_photo');
   if(box)box.classList.toggle('show',on);
-  const btn=V('guestPhotoManageBtn'),note=V('guestPhotoManageNote');
+  if(toggle)toggle.setAttribute('aria-expanded',on?'true':'false');
+  const row=V('guestPhotoManageRow'),btn=V('guestPhotoManageBtn'),note=V('guestPhotoManageNote');
   const canManage=!!(editSlug&&(editCode||_buyerManageToken));
+  if(row)row.hidden=!canManage;
   if(btn)btn.disabled=!canManage;
-  if(note)note.textContent=canManage?'대기 사진을 확인하고 승인·삭제할 수 있습니다.':'발행 후 수정 화면에서 하객 사진을 승인·삭제할 수 있습니다.';
+  if(note)note.textContent='승인 대기 사진을 확인하고 관리할 수 있습니다.';
 }
 let _guestPhotoManagerItems=[],_guestPhotoManagerBusy=false;
 async function _guestPhotoManagerFetch(body,timeoutMs=15000){
