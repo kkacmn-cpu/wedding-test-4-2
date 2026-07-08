@@ -1320,6 +1320,39 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 @media(max-width:420px){.video-shell{max-width:100%;margin-top:15px}.video-play-icon{width:52px;height:52px;font-size:18px}.video-caption{font-size:12.5px;margin-top:12px}}
 @media(prefers-reduced-motion:reduce){.video-play-card>img{transition:none}.video-play-card:hover>img{transform:none}}
 
+
+/* FEATURE20 — 대표사진 존재감 통합 보완: Garden Snap / Hanok / Black */
+/* 실제 카드 */
+#card.t-flower .iv-cover{padding:0;background:#f5f2e9;}
+#card.t-flower .fl-hero{height:100vh;height:100svh;height:100dvh;min-height:600px;max-height:1000px;background:#f5f2e9;}
+#card.t-flower .fl-photo-area{flex-basis:84%;}
+#card.t-flower .fl-photo-main{object-fit:cover;object-position:center 34%;padding:0;}
+#card.t-flower .fl-photo-bg{opacity:.22;}
+#card.t-flower .fl-info{justify-content:center;padding:10px 24px calc(12px + env(safe-area-inset-bottom,0px));}
+#card.t-flower .fl-caption{padding-bottom:4px;margin-bottom:5px;}
+#card.t-flower .fl-when{margin-top:4px;gap:2px;}
+#card.t-hanok .hk-photo-area{flex-basis:82%;}
+#card.t-hanok .hk-info{gap:7px;padding:0 24px calc(6px + env(safe-area-inset-bottom,0px));}
+#card.t-black .bk-photo-area{flex-basis:84%;}
+#card.t-black .bk-info{gap:7px;padding:0 24px calc(10px + env(safe-area-inset-bottom,0px));}
+#card.t-black .bk-when{gap:3px;margin-bottom:0;}
+/* OPENING FINAL FRAME — 실제 첫 화면과 비율 일치 */
+.op-overlay.theme-flower .op-fl-stage{width:min(100%,480px);padding:0;}
+.op-overlay.theme-flower .op-fl-photo-area{flex-basis:84%;}
+.op-overlay.theme-flower .op-fl-photo-main{inset:0;background-size:cover;background-position:center 34%;box-shadow:none;}
+.op-overlay.theme-flower .op-fl-info{padding:10px 24px 12px;}
+.op-overlay.theme-flower .op-fl-caption{padding-bottom:4px;margin-bottom:5px;}
+.op-overlay.theme-flower .op-fl-when{margin-top:4px;gap:2px;}
+.op-overlay.theme-hanok .op-hk-photo-area{flex-basis:82%;}
+.op-overlay.theme-hanok .op-hk-info{gap:7px;padding:0 24px 6px;}
+.op-overlay.theme-black .op-black-photo-area{flex-basis:84%;}
+.op-overlay.theme-black .op-black-info{gap:7px;padding:0 24px 10px;}
+@media (max-height:680px){
+  #card.t-flower .fl-photo-area,.op-overlay.theme-flower .op-fl-photo-area{flex-basis:82%;}
+  #card.t-hanok .hk-photo-area,.op-overlay.theme-hanok .op-hk-photo-area{flex-basis:80%;}
+  #card.t-black .bk-photo-area,.op-overlay.theme-black .op-black-photo-area{flex-basis:82%;}
+}
+
 </style>
 </head>
 <body>

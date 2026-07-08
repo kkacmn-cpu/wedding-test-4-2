@@ -1686,6 +1686,36 @@ input,select,textarea{font-family:inherit;}
 .t-gold-serif .guest-guide-sec{--gg-accent:#7a5a28;--gg-line:rgba(122,90,40,.22);--gg-bg:rgba(255,253,248,.5);}
 @media(max-width:640px){.guest-guide-grid{grid-template-columns:1fr}.guest-guide-field.full{grid-column:auto}.guest-guide-editor{padding:17px 15px}.guest-guide-item{grid-template-columns:58px minmax(0,1fr);gap:10px;padding:11px 12px}}
 
+
+/* FEATURE20 — 대표사진 존재감 통합 보완: Garden Snap / Hanok / Black */
+/* LIVE PREVIEW — 실제 카드와 동일한 사진 비율 */
+.t-flower .fl-photo-area{flex-basis:84%;}
+.t-flower .fl-photo-main{object-fit:cover;object-position:center 34%;padding:0;}
+.t-flower .fl-info{justify-content:center;padding:10px 22px 12px;}
+.t-flower .fl-caption{padding-bottom:4px;margin-bottom:5px;}
+.t-flower .fl-when{margin-top:4px;gap:2px;}
+.t-hanok .hk-photo-area{flex-basis:82%;}
+.t-hanok .hk-info{gap:7px;padding:0 20px;}
+.t-black .bk-photo-area{flex-basis:84%;}
+.t-black .bk-info{gap:7px;padding:0 20px 10px;}
+.t-black .bk-when{gap:3px;margin-bottom:0;}
+/* OPENING FINAL FRAME — 실제 첫 화면과 비율 일치 */
+.ed-op.theme-flower .eo-fl-stage{padding:0;}
+.ed-op.theme-flower .eo-fl-photo-area{flex-basis:84%;}
+.ed-op.theme-flower .eo-fl-photo-main{inset:0;background-size:cover;background-position:center 34%;box-shadow:none;}
+.ed-op.theme-flower .eo-fl-info{padding:9px 20px 11px;}
+.ed-op.theme-flower .eo-fl-caption{padding-bottom:4px;margin-bottom:5px;}
+.ed-op.theme-flower .eo-fl-when{margin-top:4px;gap:2px;}
+.ed-op.theme-hanok .eo-hk-photo-area{flex-basis:82%;}
+.ed-op.theme-hanok .eo-hk-info{gap:6px;padding:0 20px;}
+.ed-op.theme-black .eo-black-photo-area{flex-basis:84%;}
+.ed-op.theme-black .eo-black-info{gap:6px;padding:0 20px 9px;}
+@media (max-height:680px){
+  .t-flower .fl-photo-area,.ed-op.theme-flower .eo-fl-photo-area{flex-basis:82%;}
+  .t-hanok .hk-photo-area,.ed-op.theme-hanok .eo-hk-photo-area{flex-basis:80%;}
+  .t-black .bk-photo-area,.ed-op.theme-black .eo-black-photo-area{flex-basis:82%;}
+}
+
 </style>
 </head>
 <body>
