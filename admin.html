@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>모바일청첩장 운영센터</title>
+<style>
+:root{--bg:#f4f1ec;--paper:#fff;--ink:#211f1c;--muted:#76716a;--line:#e3ddd5;--accent:#7b6548;--danger:#9a403c;--ok:#3f7252;--shadow:0 14px 45px rgba(45,37,28,.08)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input{font:inherit}button{cursor:pointer}.wrap{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:34px 0 64px}.top{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:24px}.eyebrow{font-size:11px;letter-spacing:.18em;color:var(--accent);font-weight:700}.title{margin:7px 0 0;font-family:Georgia,"Times New Roman",serif;font-size:34px;font-weight:500;letter-spacing:-.03em}.sub{margin:8px 0 0;color:var(--muted);font-size:14px}.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;padding:10px 14px}.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}.btn:disabled{opacity:.55;cursor:wait}.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.login{width:min(440px,100%);margin:10vh auto 0;padding:28px}.login h1{font-family:Georgia,"Times New Roman",serif;font-size:28px;font-weight:500;margin:0 0 8px}.login p{color:var(--muted);font-size:14px;line-height:1.6}.field{display:grid;gap:7px;margin-top:16px}.field label{font-size:12px;font-weight:700;color:#514b44}.field input{width:100%;border:1px solid var(--line);border-radius:10px;padding:13px;background:#fff;outline:none}.field input:focus{border-color:#9c8464;box-shadow:0 0 0 3px rgba(123,101,72,.10)}.login .btn{width:100%;margin-top:20px;padding:13px}.msg{min-height:22px;margin:12px 0 0;color:var(--danger);font-size:13px}.hidden{display:none!important}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}.stat{padding:18px}.stat b{display:block;font-family:Georgia,"Times New Roman",serif;font-size:28px;font-weight:500}.stat span{color:var(--muted);font-size:12px}.tools{display:flex;gap:10px;align-items:center;padding:14px;margin-bottom:16px}.search{flex:1;border:1px solid var(--line);border-radius:10px;padding:11px 13px;outline:none}.search:focus{border-color:#9c8464}.table-panel{overflow:hidden}.table-head{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line)}.table-head h2{margin:0;font-size:15px}.badge{display:inline-flex;align-items:center;border-radius:999px;padding:5px 8px;font-size:11px;background:#f1ede7;color:#655c51}.badge.ok{background:#eaf3ed;color:var(--ok)}.badge.warn{background:#f8eee5;color:#985d2e}.table-scroll{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:920px}.table th,.table td{padding:13px 14px;border-bottom:1px solid #eee9e3;text-align:left;vertical-align:middle;font-size:13px}.table th{position:sticky;top:0;background:#fbfaf8;color:#6e675f;font-size:11px;letter-spacing:.04em;z-index:1}.names{font-weight:700}.meta{display:block;color:var(--muted);font-size:11px;margin-top:4px}.slug-link{color:var(--accent);text-decoration:none}.slug-link:hover{text-decoration:underline}.empty{padding:46px;text-align:center;color:var(--muted)}.notice{margin-top:14px;color:var(--muted);font-size:12px;line-height:1.6}.error-box{padding:18px;color:var(--danger)}@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.top{align-items:flex-start;flex-direction:column}.tools{align-items:stretch;flex-direction:column}.search{width:100%}}@media(max-width:700px){.table-scroll{overflow:visible}.table{min-width:0;display:block}.table thead{display:none}.table tbody{display:grid;gap:12px;padding:12px;background:#f7f4ef}.table tr{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:7px 12px}.table td{display:grid;grid-template-columns:92px minmax(0,1fr);gap:10px;border-bottom:1px solid #eee9e3;padding:10px 0;overflow-wrap:anywhere}.table td:last-child{border-bottom:0}.table td::before{content:attr(data-label);color:var(--muted);font-size:11px;font-weight:700}.table-head{padding:14px 16px}}@media(max-width:520px){.wrap{width:min(100% - 20px,1180px);padding-top:20px}.title{font-size:28px}.stats{grid-template-columns:1fr 1fr}.stat{padding:14px}.stat b{font-size:23px}.table td{grid-template-columns:82px minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<section id="loginView" class="login panel hidden" aria-labelledby="loginTitle">
+  <div class="eyebrow">PRIVATE OPERATIONS</div>
+  <h1 id="loginTitle">운영센터 로그인</h1>
+  <p>청첩장과 구매권의 연결 상태를 확인하는 관리자 전용 화면입니다. 현재 버전은 조회만 가능하며 데이터는 변경하지 않습니다.</p>
+  <form id="loginForm">
+    <div class="field"><label for="username">관리자 아이디</label><input id="username" autocomplete="username" required></div>
+    <div class="field"><label for="password">비밀번호</label><input id="password" type="password" autocomplete="current-password" required></div>
+    <button id="loginBtn" class="btn primary" type="submit">로그인</button>
+    <p id="loginMsg" class="msg" role="alert"></p>
+  </form>
+</section>
+
+<main id="appView" class="wrap hidden">
+  <header class="top">
+    <div><div class="eyebrow">WEDDING INVITATION · ADMIN</div><h1 class="title">운영센터</h1><p class="sub">청첩장·구매권 연결 상태를 안전하게 조회합니다.</p></div>
+    <button id="logoutBtn" class="btn">로그아웃</button>
+  </header>
+  <section id="stats" class="stats"></section>
+  <section class="tools panel">
+    <input id="searchInput" class="search" placeholder="신랑·신부 이름, 예식장, 슬러그, 상품주문번호, 구매자명 검색" aria-label="통합 검색">
+    <button id="refreshBtn" class="btn">새로고침</button>
+  </section>
+  <section class="panel table-panel">
+    <div class="table-head"><h2>발행된 청첩장</h2><span id="resultCount" class="badge">0건</span></div>
+    <div id="tableArea" class="table-scroll"><div class="empty">불러오는 중입니다.</div></div>
+  </section>
+  <section class="panel table-panel" style="margin-top:16px;">
+    <div class="table-head"><h2>미연결 구매권</h2><span id="unlinkedCount" class="badge warn">0건</span></div>
+    <div id="unlinkedArea" class="table-scroll"><div class="empty">불러오는 중입니다.</div></div>
+  </section>
+  <p class="notice">안전 원칙: 이 화면은 조회 전용입니다. 삭제·승인·구매권 수정 기능은 실제 운영 검증 후 별도 단계로 추가합니다.</p>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+let state={cards:[],unlinkedPurchases:[],summary:null};
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmtDate(v){if(!v)return '-';const d=new Date(v);return Number.isNaN(d.getTime())?esc(v):new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'}).format(d);}
+function statusBadge(card){
+  if(!card.purchase)return '<span class="badge warn">구매권 미연결</span>';
+  return `<span class="badge ok">${esc(card.purchase.status||'연결')}</span>`;
+}
+function show(which){$('loginView').classList.toggle('hidden',which!=='login');$('appView').classList.toggle('hidden',which!=='app');}
+async function api(url,options){const r=await fetch(url,{credentials:'same-origin',...options});let j={};try{j=await r.json();}catch(_){j={ok:false,error:'서버 응답을 읽지 못했습니다.'};}if(!r.ok){const e=new Error(j.error||'요청에 실패했습니다.');e.status=r.status;throw e;}return j;}
+function renderStats(s){
+  const items=[['청첩장',s.cards],['구매권',s.purchases],['정상 연결',s.publishedWithPurchase],['미연결 구매권',s.unlinkedPurchases],['예정 예식',s.upcomingWeddings]];
+  $('stats').innerHTML=items.map(([label,value])=>`<article class="stat panel"><b>${Number(value||0).toLocaleString()}</b><span>${esc(label)}</span></article>`).join('');
+}
+function haystack(c){const p=c.purchase||{};return [c.groomName,c.brideName,c.venueName,c.venueHall,c.slug,p.productOrderId,p.buyerName,c.theme].join(' ').toLowerCase();}
+function purchaseHaystack(p){return [p.productOrderId,p.buyerName,p.productType,p.status].join(' ').toLowerCase();}
+function renderTable(){
+  const q=$('searchInput').value.trim().toLowerCase();
+  const rows=state.cards.filter(c=>!q||haystack(c).includes(q));
+  $('resultCount').textContent=`${rows.length.toLocaleString()}건`;
+  if(!rows.length){$('tableArea').innerHTML='<div class="empty">검색 결과가 없습니다.</div>';return;}
+  $('tableArea').innerHTML=`<table class="table"><thead><tr><th>신랑·신부</th><th>예식일</th><th>예식장</th><th>템플릿</th><th>구매자 / 상품주문번호</th><th>연결 상태</th><th>마지막 수정</th></tr></thead><tbody>${rows.map(c=>{
+    const p=c.purchase||{};
+    const link=`card.html?slug=${encodeURIComponent(c.slug)}`;
+    return `<tr><td data-label="신랑·신부"><span><span class="names">${esc(c.groomName||'-')} · ${esc(c.brideName||'-')}</span><span class="meta"><a class="slug-link" href="${link}" target="_blank" rel="noopener">${esc(c.slug)}</a> · 사진 ${Number(c.galleryCount||0)}장</span></span></td><td data-label="예식일"><span>${fmtDate(c.weddingDate)}<span class="meta">${esc(c.weddingTime||'')}</span></span></td><td data-label="예식장"><span>${esc(c.venueName||'-')}<span class="meta">${esc(c.venueHall||'')}</span></span></td><td data-label="템플릿"><span>${esc(c.theme||'-')}</span></td><td data-label="구매자 / 주문"><span>${esc(p.buyerName||'-')}<span class="meta">${esc(p.productOrderId||'주문번호 없음')}</span></span></td><td data-label="연결 상태"><span>${statusBadge(c)}</span></td><td data-label="마지막 수정"><span>${fmtDate(c.updatedAt||c.createdAt)}</span></td></tr>`;
+  }).join('')}</tbody></table>`;
+}
+function renderUnlinked(){
+  const q=$('searchInput').value.trim().toLowerCase();
+  const rows=state.unlinkedPurchases.filter(p=>!q||purchaseHaystack(p).includes(q));
+  $('unlinkedCount').textContent=`${rows.length.toLocaleString()}건`;
+  if(!rows.length){$('unlinkedArea').innerHTML='<div class="empty">미연결 구매권이 없습니다.</div>';return;}
+  $('unlinkedArea').innerHTML=`<table class="table"><thead><tr><th>구매자</th><th>상품주문번호</th><th>상품 유형</th><th>상태</th><th>구매일</th><th>본인확인 정보</th></tr></thead><tbody>${rows.map(p=>`<tr><td data-label="구매자"><span class="names">${esc(p.buyerName||'-')}</span></td><td data-label="상품주문번호"><span>${esc(p.productOrderId||'주문번호 없음')}</span></td><td data-label="상품 유형"><span>${esc(p.productType||'-')}</span></td><td data-label="상태"><span class="badge warn">${esc(p.status||'미연결')}</span></td><td data-label="구매일"><span>${fmtDate(p.createdAt)}</span></td><td data-label="본인확인"><span>${p.hasPhoneHash?'등록됨':'없음'}</span></td></tr>`).join('')}</tbody></table>`;
+}
+function renderAll(){renderTable();renderUnlinked();}
+async function loadData(){
+  $('refreshBtn').disabled=true;
+  $('tableArea').innerHTML='<div class="empty">불러오는 중입니다.</div>';
+  $('unlinkedArea').innerHTML='<div class="empty">불러오는 중입니다.</div>';
+  try{
+    const data=await api('/api/admin-data');
+    state={cards:data.cards||[],unlinkedPurchases:data.unlinkedPurchases||[],summary:data.summary||{}};
+    renderStats(state.summary);renderAll();
+  }catch(e){
+    state={cards:[],unlinkedPurchases:[],summary:null};
+    $('resultCount').textContent='0건';$('unlinkedCount').textContent='0건';
+    if(e.status===401){
+      show('login');
+      $('loginMsg').textContent='관리자 로그인이 만료되었습니다. 다시 로그인해 주세요.';
+    }else{
+      const box=`<div class="error-box">${esc(e.message)}</div>`;
+      $('tableArea').innerHTML=box;$('unlinkedArea').innerHTML=box;
+    }
+  }finally{$('refreshBtn').disabled=false;}
+}
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();$('loginMsg').textContent='';$('loginBtn').disabled=true;try{await api('/api/admin-auth?action=login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:$('username').value,password:$('password').value})});$('password').value='';show('app');await loadData();}catch(err){$('loginMsg').textContent=err.message;}finally{$('loginBtn').disabled=false;}});
+$('logoutBtn').addEventListener('click',async()=>{try{await api('/api/admin-auth?action=logout',{method:'POST'});}catch(_){}state={cards:[],unlinkedPurchases:[],summary:null};show('login');});
+$('refreshBtn').addEventListener('click',loadData);
+$('searchInput').addEventListener('input',renderAll);
+(async()=>{try{const s=await api('/api/admin-auth?action=status');if(s.authenticated){show('app');await loadData();}else{show('login');if(!s.configured)$('loginMsg').textContent='배포 전 관리자 환경변수 설정이 필요합니다.';}}catch(_){show('login');$('loginMsg').textContent='관리자 서버 상태를 확인하지 못했습니다.';}})();
+</script>
+</body>
+</html>

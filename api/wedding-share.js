@@ -2,8 +2,9 @@
 
 const SUPABASE_URL=process.env.SUPABASE_URL||'https://jchohaqvaoytplinlylt.supabase.co';
 const SUPABASE_KEY=process.env.SUPABASE_PUBLISHABLE_KEY||process.env.SUPABASE_ANON_KEY||'sb_publishable_pinNIcaU11HhbSz3TR__mQ_Ln4cJ79a';
-const CARD_BASE_URL=process.env.CARD_BASE_URL||'https://wedding-test-4-2.vercel.app/card.html';
-const DEFAULT_OG_IMAGE=process.env.DEFAULT_OG_IMAGE||'https://wedding-test-4-2.vercel.app/og-default.jpg';
+const FALLBACK_BASE_URL='https://wedding-test-4-2.vercel.app';
+const CARD_BASE_URL=process.env.CARD_BASE_URL||'';
+const DEFAULT_OG_IMAGE=process.env.DEFAULT_OG_IMAGE||'';
 
 function esc(value){
   return String(value==null?'':value)
@@ -62,7 +63,7 @@ function appendVersion(value,version){
 /* Supabase public storage URL이면 1200×600 cover 변환 URL을 사용한다.
    변환 기능이 비활성인 환경에서는 원본 URL을 그대로 사용하도록 외부 URL은 변경하지 않는다. */
 function buildOgImage(value,version){
-  const original=safeHttpUrl(value,DEFAULT_OG_IMAGE);
+  const original=safeHttpUrl(value,DEFAULT_OG_IMAGE||new URL('/og-default.jpg',FALLBACK_BASE_URL).href);
   try{
     const u=new URL(original);
     if(u.hostname.endsWith('.supabase.co')&&u.pathname.includes('/storage/v1/object/public/')){
@@ -81,7 +82,9 @@ function buildOgImage(value,version){
 
 function getCardImage(card){
   const gallery=Array.isArray(card&&card.gallery_urls)?card.gallery_urls:[];
-  return safeHttpUrl(card&&card.main_photo_url,'')
+  const options=parseOptions(card&&card.options);
+  return safeHttpUrl(options.share_image_url,'')
+    ||safeHttpUrl(card&&card.main_photo_url,'')
     ||safeHttpUrl(card&&card.cover_image,'')
     ||gallery.map(v=>safeHttpUrl(v,'')).find(Boolean)
     ||DEFAULT_OG_IMAGE;
@@ -94,22 +97,31 @@ function getNames(card){
   return options.order_gb===false?`${bride} ♥ ${groom}`:`${groom} ♥ ${bride}`;
 }
 
-function buildMeta(card,version){
+function buildMeta(card,version,baseUrl){
   const names=getNames(card);
   const date=formatDate(card&&card.wedding_date);
   const time=formatTime(card&&card.wedding_time);
   const venue=[card&&card.venue_name,card&&card.venue_hall].filter(Boolean).join(' ');
   const detail=[date,time].filter(Boolean).join(' ');
   const description=[detail,venue].filter(Boolean).join(' · ')||'저희 결혼식에 초대합니다';
+  const options=parseOptions(card&&card.options);
+  const prepared=safeHttpUrl(options.share_image_url,'');
+  const imageVersion=options.share_image_version||version;
   return {
     title:`${names}의 결혼식에 초대합니다`,
     description,
-    image:buildOgImage(getCardImage(card),version)
+    image:prepared?appendVersion(prepared,imageVersion):buildOgImage(getCardImage(card)||(DEFAULT_OG_IMAGE||new URL('/og-default.jpg',baseUrl||FALLBACK_BASE_URL).href),imageVersion)
   };
 }
 
-function buildCardUrl(slug,version){
-  const u=new URL(CARD_BASE_URL);
+function getRequestBaseUrl(req){
+  const proto=(req&&req.headers&&(req.headers['x-forwarded-proto']||req.headers['x-vercel-forwarded-proto']))||'https';
+  const host=req&&req.headers&&req.headers.host;
+  return host?`${proto}://${host}`:FALLBACK_BASE_URL;
+}
+
+function buildCardUrl(slug,version,baseUrl){
+  const u=new URL(CARD_BASE_URL||'/card.html',baseUrl||FALLBACK_BASE_URL);
   u.searchParams.set('slug',slug);
   if(version)u.searchParams.set('share_v',String(version));
   return u.href;
@@ -133,7 +145,6 @@ function renderHtml({meta,cardUrl,status=200,message=''}){
 <meta property="og:image:secure_url" content="${image}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
-<meta property="og:url" content="${target}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${title}">
 <meta name="twitter:description" content="${description}">
@@ -197,8 +208,9 @@ async function handler(req,res){
       res.end(renderHtml({status:404,message:'청첩장을 찾을 수 없습니다.'}));
       return;
     }
-    const meta=buildMeta(card,version);
-    const cardUrl=buildCardUrl(slug,version);
+    const baseUrl=getRequestBaseUrl(req);
+    const meta=buildMeta(card,version,baseUrl);
+    const cardUrl=buildCardUrl(slug,version,baseUrl);
     res.statusCode=200;
     if(req.method==='HEAD'){res.end();return;}
     res.end(renderHtml({meta,cardUrl,status:200}));
@@ -211,4 +223,4 @@ async function handler(req,res){
 }
 
 module.exports=handler;
-module.exports._test={esc,safeHttpUrl,formatDate,formatTime,buildOgImage,getCardImage,getNames,buildMeta,buildCardUrl,renderHtml,fetchCard};
+module.exports._test={esc,safeHttpUrl,formatDate,formatTime,buildOgImage,getCardImage,getNames,buildMeta,buildCardUrl,renderHtml,fetchCard,getRequestBaseUrl};
