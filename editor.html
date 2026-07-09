@@ -93,6 +93,102 @@ input,select,textarea{font-family:inherit;}
 .fhint{font-size:12px;color:var(--brown-mute);margin-top:6px;line-height:1.6;}
 .fsub{font-family:var(--serif);font-size:15px;color:var(--gold-deep);margin:24px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--gold-pale);}
 
+/* ===== FEATURE23: 신랑·신부 한 줄 소개 편집 ===== */
+.couple-intro-editor{margin:18px 0 4px;padding:18px;border:1px solid rgba(184,148,95,.22);border-radius:14px;background:linear-gradient(180deg,rgba(255,253,248,.94),rgba(248,244,236,.78));}
+.couple-intro-editor-head{display:flex;align-items:center;justify-content:space-between;gap:14px;}
+.couple-intro-editor-title{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.couple-intro-editor-title strong{font-family:var(--display);font-size:15px;font-weight:600;color:var(--brown);}
+.couple-intro-editor-title span{font-size:11.5px;line-height:1.5;color:var(--brown-mute);word-break:keep-all;}
+.couple-intro-toggle{position:relative;width:44px;height:24px;flex:0 0 auto;}
+.couple-intro-toggle input{display:none;}
+.couple-intro-toggle label{position:absolute;inset:0;border-radius:999px;background:var(--sand);cursor:pointer;transition:.25s;}
+.couple-intro-toggle label::after{content:'';position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.18);transition:.25s;}
+.couple-intro-toggle input:checked+label{background:var(--gold);}
+.couple-intro-toggle input:checked+label::after{transform:translateX(20px);}
+.couple-intro-body{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--line-soft);}
+.couple-intro-body.show{display:block;}
+.couple-intro-field{display:flex;flex-direction:column;gap:7px;min-width:0;}
+.couple-intro-field>span{font-size:12px;font-weight:700;color:var(--brown);}
+.couple-intro-field textarea{box-sizing:border-box;min-height:86px;resize:vertical;line-height:1.6;font-family:inherit;}
+.couple-intro-help{margin:10px 0 0;font-size:11.5px;line-height:1.55;color:var(--brown-mute);word-break:keep-all;}
+@media(max-width:640px){.couple-intro-editor{padding:16px 14px}.couple-intro-body .frow{grid-template-columns:1fr}.couple-intro-field textarea{min-height:76px}}
+
+/* ===== FEATURE24: 커플 타임라인 편집 ===== */
+.story-editor{margin-top:24px;padding:20px;border:1px solid rgba(184,148,95,.23);border-radius:16px;background:linear-gradient(180deg,rgba(255,253,248,.96),rgba(247,242,233,.80));}
+.story-editor-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+.story-editor-title{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.story-editor-title strong{font-family:var(--display);font-size:16px;font-weight:600;color:var(--brown);}
+.story-editor-title span{font-size:11.5px;line-height:1.55;color:var(--brown-mute);word-break:keep-all;}
+.story-editor-toggle{position:relative;width:44px;height:24px;flex:0 0 auto;}
+.story-editor-toggle input{display:none;}
+.story-editor-toggle label{position:absolute;inset:0;border-radius:999px;background:var(--sand);cursor:pointer;transition:.25s;}
+.story-editor-toggle label::after{content:'';position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.18);transition:.25s;}
+.story-editor-toggle input:checked+label{background:var(--gold);}
+.story-editor-toggle input:checked+label::after{transform:translateX(20px);}
+.story-editor-body{display:none;margin-top:18px;padding-top:18px;border-top:1px solid var(--line-soft);}
+.story-editor-body.show{display:block;}
+.story-edit-list{display:grid;gap:12px;}
+.story-edit-card{padding:15px;border:1px solid rgba(126,102,72,.16);border-radius:13px;background:rgba(255,255,255,.68);transition:.2s;}
+.story-edit-card.off{opacity:.58;background:rgba(255,255,255,.35);}
+.story-edit-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;}
+.story-edit-card-title{display:flex;align-items:center;gap:10px;min-width:0;}
+.story-edit-no{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid rgba(151,116,68,.28);border-radius:50%;font-family:var(--display);font-size:10px;letter-spacing:.08em;color:var(--gold-deep);background:#fff;}
+.story-edit-card-title strong{font-size:13px;font-weight:650;color:var(--brown);}
+.story-item-check{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--brown-mute);cursor:pointer;user-select:none;}
+.story-item-check input{width:auto;margin:0;accent-color:var(--gold);}
+.story-edit-grid{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:10px;}
+.story-edit-field{display:flex;flex-direction:column;gap:6px;min-width:0;}
+.story-edit-field.full{grid-column:1/-1;}
+.story-edit-field>span{font-size:11.5px;font-weight:650;color:var(--brown-soft);}
+.story-edit-field .fi{padding:11px 12px;border-radius:10px;font-size:13px;}
+.story-edit-field textarea.fi{min-height:72px;resize:vertical;line-height:1.55;font-family:inherit;}
+.story-editor-help{margin:12px 0 0;font-size:11.5px;line-height:1.6;color:var(--brown-mute);word-break:keep-all;}
+@media(max-width:640px){.story-editor{padding:17px 14px}.story-edit-grid{grid-template-columns:1fr}.story-edit-field.full{grid-column:auto}.story-edit-card{padding:14px 12px}}
+
+/* ===== FEATURE24: 커플 타임라인 출력 ===== */
+.story-timeline-sec{--st-accent:#8a7355;--st-line:rgba(138,115,85,.22);--st-bg:rgba(255,255,255,.48);--st-ink:inherit;}
+.story-timeline-list{position:relative;max-width:350px;margin:18px auto 0;}
+.story-timeline-list::before{content:'';position:absolute;left:20px;top:17px;bottom:17px;width:1px;background:var(--st-line);}
+.story-timeline-item{position:relative;display:grid;grid-template-columns:42px minmax(0,1fr);gap:15px;align-items:start;padding-bottom:22px;text-align:left;}
+.story-timeline-item:last-child{padding-bottom:0;}
+.story-timeline-index{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--st-line);border-radius:50%;background:var(--st-bg);font-family:var(--display);font-size:10px;letter-spacing:.08em;color:var(--st-accent);}
+.story-timeline-content{min-width:0;padding-top:2px;}
+.story-timeline-date{min-height:14px;font-family:var(--sans);font-size:9.5px;font-weight:650;letter-spacing:.16em;text-transform:uppercase;color:var(--st-accent);}
+.story-timeline-title{margin-top:4px;font-family:'Noto Serif KR',serif;font-size:16px;font-weight:500;line-height:1.45;letter-spacing:.025em;color:var(--st-ink);}
+.story-timeline-text{margin-top:7px;font-size:12.5px;line-height:1.75;word-break:keep-all;overflow-wrap:anywhere;color:var(--st-ink);opacity:.78;}
+.t-signature .story-timeline-sec{--st-accent:#9a7546;--st-line:rgba(154,117,70,.24);--st-bg:#faf7f1;}
+.t-classic-ivory .story-timeline-sec{--st-accent:#806946;--st-line:rgba(128,105,70,.18);--st-bg:#f8f2e7;}
+.t-classic-ivory .story-timeline-list::before{display:none;}
+.t-classic-ivory .story-timeline-item{grid-template-columns:40px 1fr;gap:11px;padding-bottom:11px;}
+.t-classic-ivory .story-timeline-content{padding:13px 14px;border:1px solid var(--st-line);border-radius:15px;background:rgba(255,255,255,.56);}
+.t-hanok .story-timeline-sec{--st-accent:#8a4538;--st-line:rgba(138,69,56,.23);--st-bg:#f8f0e2;}
+.t-hanok .story-timeline-index{border-radius:3px;transform:rotate(45deg);}
+.t-hanok .story-timeline-index span{transform:rotate(-45deg);}
+.t-hanok .story-timeline-content{padding-bottom:15px;border-bottom:1px solid var(--st-line);}
+.t-black .story-timeline-sec{--st-accent:#d2b478;--st-line:rgba(210,180,120,.28);--st-bg:#171715;--st-ink:#f3ecdf;}
+.t-black .story-timeline-index{border-radius:2px;background:#171715;}
+.t-black .story-timeline-date{color:rgba(210,180,120,.92);}
+.t-fullscreen .story-timeline-sec{--st-accent:#d6ba84;--st-line:rgba(214,186,132,.24);--st-bg:transparent;--st-ink:#f3ecdf;}
+.t-fullscreen .story-timeline-list{max-width:none;border-top:1px solid var(--st-line);}
+.t-fullscreen .story-timeline-list::before{display:none;}
+.t-fullscreen .story-timeline-item{grid-template-columns:54px 1fr;gap:13px;padding:16px 0;border-bottom:1px solid var(--st-line);}
+.t-fullscreen .story-timeline-index{width:auto;height:auto;justify-content:flex-start;border:0;border-radius:0;background:transparent;font-size:12px;}
+.t-fullscreen .story-timeline-content{padding-top:0;}
+.t-minimal .story-timeline-sec{--st-accent:#322619;--st-line:rgba(50,38,25,.18);--st-bg:transparent;text-align:left;}
+.t-minimal .story-timeline-list{max-width:none;margin-left:0;margin-right:0;border-top:1px solid var(--st-line);}
+.t-minimal .story-timeline-list::before{display:none;}
+.t-minimal .story-timeline-item{grid-template-columns:62px 1fr;gap:16px;padding:17px 0;border-bottom:1px solid var(--st-line);}
+.t-minimal .story-timeline-index{width:auto;height:auto;justify-content:flex-start;border:0;border-radius:0;background:transparent;font-family:var(--display);font-size:22px;font-weight:300;}
+.t-minimal .story-timeline-content{padding-top:0;}
+.t-flower .story-timeline-sec{--st-accent:#6d7258;--st-line:rgba(109,114,88,.20);--st-bg:#f4f3e9;}
+.t-flower .story-timeline-list::before{left:21px;}
+.t-flower .story-timeline-content{padding:13px 15px;border:1px solid var(--st-line);border-radius:18px;background:rgba(255,255,255,.72);box-shadow:0 13px 28px -25px rgba(51,55,39,.52);}
+.t-flower .story-timeline-item:nth-child(even) .story-timeline-content{transform:translateX(5px);}
+.t-gold-serif .story-timeline-sec{--st-accent:#7a5a28;--st-line:rgba(122,90,40,.26);--st-bg:#fffaf0;}
+.t-gold-serif .story-timeline-index{border-radius:2px;outline:1px solid rgba(122,90,40,.10);outline-offset:3px;}
+.t-gold-serif .story-timeline-content{padding-bottom:14px;border-bottom:1px solid var(--st-line);}
+@media(max-width:420px){.story-timeline-list{max-width:100%}.story-timeline-item{grid-template-columns:38px 1fr;gap:12px}.story-timeline-index{width:36px;height:36px}.story-timeline-title{font-size:15px}.story-timeline-text{font-size:12px}.t-fullscreen .story-timeline-item{grid-template-columns:48px 1fr}.t-minimal .story-timeline-item{grid-template-columns:50px 1fr}.t-flower .story-timeline-item:nth-child(even) .story-timeline-content{transform:none}}
+
 /* 폰트 카드 선택 UI */
 .font-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .font-card{position:relative;border:1.5px solid var(--line);border-radius:14px;padding:16px 14px;background:var(--white);cursor:pointer;transition:all .22s;text-align:left;overflow:hidden;}
@@ -1107,6 +1203,10 @@ input,select,textarea{font-family:inherit;}
 .t-minimal .iv-gal-wrap .g img{width:100%;height:100%;object-fit:cover;display:block;}
 .t-minimal .iv-gal-wrap:not(.gal-expanded) .g:nth-child(9){grid-column:1 / -1;aspect-ratio:2/1;}
 .t-minimal .iv-gal-wrap.gal-expanded .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
+/* V42 — 실제 card와 동일한 2열 매거진 홀수 마감 규칙. Flower/grid/full은 기존 배열 유지. */
+#ivRoot:not(.t-flower) .gal-masonry.iv-gal-wrap:not(.gal-expanded) .g:nth-child(9){grid-column:1 / -1;aspect-ratio:2/1;}
+#ivRoot:not(.t-flower) .gal-masonry.iv-gal-wrap:not(.gal-expanded) .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
+#ivRoot:not(.t-flower) .gal-masonry.iv-gal-wrap.gal-expanded .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
 .t-minimal .gal-more-btn .gm-1{display:none;}
 .t-minimal .gal-more-btn .gm-2{opacity:1;font-size:13.5px;color:#62503e;margin-top:0;}
 .t-black .dday-lbl{color:rgba(240,232,216,.7);}
@@ -1657,6 +1757,43 @@ input,select,textarea{font-family:inherit;}
 @media(max-width:360px){.manage-entry-btn{font-size:0}.manage-entry-btn::after{content:'내 청첩장';font-size:11.5px;}}
 
 
+/* ===== FEATURE23: 신랑·신부 소개 카드 ===== */
+.couple-profile-sec{--cp-accent:#8a7355;--cp-line:rgba(138,115,85,.22);--cp-bg:rgba(255,255,255,.42);}
+.couple-profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:330px;margin:14px auto 0;}
+.couple-profile-grid.single{grid-template-columns:minmax(0,1fr);max-width:250px;}
+.couple-profile-item{min-width:0;padding:16px 14px;border:1px solid var(--cp-line);border-radius:10px;background:var(--cp-bg);text-align:center;}
+.couple-profile-kicker{color:var(--cp-accent);font-family:var(--sans);font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;}
+.couple-profile-name{margin-top:5px;font-family:'Noto Serif KR',serif;font-size:16px;font-weight:500;letter-spacing:.08em;color:inherit;}
+.couple-profile-text{margin-top:10px;font-size:12.5px;line-height:1.75;word-break:keep-all;overflow-wrap:anywhere;color:inherit;opacity:.82;}
+.t-signature .couple-profile-sec{--cp-accent:#9a7546;--cp-line:rgba(154,117,70,.22);--cp-bg:transparent;}
+.t-signature .couple-profile-grid{gap:0;border-top:1px solid var(--cp-line);border-bottom:1px solid var(--cp-line);}
+.t-signature .couple-profile-item{border:0;border-radius:0;padding:17px 14px;background:transparent;}
+.t-signature .couple-profile-item+ .couple-profile-item{border-left:1px solid var(--cp-line);}
+.t-classic-ivory .couple-profile-sec{--cp-accent:#826b47;--cp-line:rgba(130,107,71,.20);--cp-bg:rgba(255,255,255,.48);}
+.t-classic-ivory .couple-profile-item{border-radius:16px;}
+.t-hanok .couple-profile-sec{--cp-accent:#8a4538;--cp-line:rgba(138,69,56,.22);--cp-bg:transparent;}
+.t-hanok .couple-profile-grid{grid-template-columns:1fr;gap:0;border-top:1px solid var(--cp-line);}
+.t-hanok .couple-profile-item{display:grid;grid-template-columns:54px 58px 1fr;gap:8px;align-items:start;border:0;border-bottom:1px solid var(--cp-line);border-radius:0;background:transparent;padding:14px 4px;text-align:left;}
+.t-hanok .couple-profile-name,.t-hanok .couple-profile-text{margin-top:0;}
+.t-hanok .couple-profile-kicker{padding-top:3px;letter-spacing:.12em;}
+.t-black .couple-profile-sec{--cp-accent:#d2b478;--cp-line:rgba(210,180,120,.27);--cp-bg:rgba(255,255,255,.025);}
+.t-black .couple-profile-item{border-radius:2px;}
+.t-fullscreen .couple-profile-sec{--cp-accent:rgba(214,186,132,.95);--cp-line:rgba(214,186,132,.24);--cp-bg:transparent;}
+.t-fullscreen .couple-profile-grid{grid-template-columns:1fr;gap:0;max-width:none;border-top:1px solid var(--cp-line);}
+.t-fullscreen .couple-profile-item{display:grid;grid-template-columns:62px 74px 1fr;gap:12px;align-items:start;border:0;border-bottom:1px solid var(--cp-line);border-radius:0;background:transparent;padding:15px 0;text-align:left;}
+.t-fullscreen .couple-profile-name,.t-fullscreen .couple-profile-text{margin-top:0;}
+.t-fullscreen .couple-profile-kicker{padding-top:3px;}
+.t-minimal .couple-profile-sec{--cp-accent:#322619;--cp-line:rgba(50,38,25,.18);--cp-bg:transparent;text-align:left;}
+.t-minimal .couple-profile-grid{max-width:none;margin-left:0;margin-right:0;gap:24px;border-top:1px solid var(--cp-line);}
+.t-minimal .couple-profile-item{border:0;border-radius:0;background:transparent;padding:16px 0;text-align:left;}
+.t-minimal .couple-profile-name{font-size:15px;}
+.t-flower .couple-profile-sec{--cp-accent:#6d7258;--cp-line:rgba(109,114,88,.20);--cp-bg:rgba(255,255,255,.68);}
+.t-flower .couple-profile-item{border-radius:18px;box-shadow:0 12px 28px -24px rgba(51,55,39,.45);}
+.t-flower .couple-profile-item:nth-child(2){transform:translateY(10px);}
+.t-gold-serif .couple-profile-sec{--cp-accent:#7a5a28;--cp-line:rgba(122,90,40,.26);--cp-bg:rgba(255,253,248,.38);}
+.t-gold-serif .couple-profile-item{border-radius:3px;outline:1px solid rgba(122,90,40,.10);outline-offset:3px;}
+@media(max-width:420px){.couple-profile-grid{gap:9px;max-width:100%}.couple-profile-item{padding:14px 10px}.couple-profile-text{font-size:12px}.t-hanok .couple-profile-item,.t-fullscreen .couple-profile-item{grid-template-columns:48px 52px 1fr;gap:7px}.t-minimal .couple-profile-grid{gap:18px}.t-flower .couple-profile-item:nth-child(2){transform:translateY(7px)}}
+
 /* ===== 예식 당일 하객 안내 ===== */
 .guest-guide-editor{margin-top:22px;padding:20px;border:1px solid rgba(184,148,95,.22);border-radius:14px;background:linear-gradient(180deg,rgba(255,253,248,.92),rgba(248,244,236,.82));}
 .guest-guide-editor-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:6px;}
@@ -1716,7 +1853,329 @@ input,select,textarea{font-family:inherit;}
   .t-black .bk-photo-area,.ed-op.theme-black .eo-black-photo-area{flex-basis:82%;}
 }
 
+
+
+/* FEATURE21 — 첫 화면 상단 공백 제거 + Fine Art Editorial 비율 재설계 */
+/* 540px LIVE PREVIEW 안에서 커버가 정확히 시작·종료되도록 외부 cover padding 제거 */
+.t-flower .iv-cover,
+.t-hanok .iv-cover,
+.t-black .iv-cover,
+.t-minimal .iv-cover{padding:0;}
+
+/* Fine Art Editorial — 사진을 더 크게, 정보는 한 덩어리로 압축 */
+.t-minimal .stl-stage{grid-template-rows:28px minmax(0,1fr) 112px;padding:10px 12px 0;}
+.t-minimal .stl-pagehead{font-size:7px;letter-spacing:2.2px;}
+.t-minimal .stl-info{padding:12px 2px 9px;}
+.t-minimal .stl-meta{align-items:baseline;gap:9px;margin-top:9px;}
+.t-minimal .stl-names{font-size:18px;letter-spacing:.8px;line-height:1.22;max-width:calc(100% - 94px);}
+.t-minimal .stl-names .stl-amp{margin:0 4px;}
+.t-minimal .stl-folio{font-size:6.5px;letter-spacing:1.7px;padding-top:0;}
+.t-minimal .stl-when{gap:7px;margin-top:6px;}
+.t-minimal .stl-date{font-size:10px;letter-spacing:1.5px;}
+.t-minimal .stl-time{font-size:8.5px;letter-spacing:.15px;}
+
+/* Minimal opening 마지막 장면도 실제 첫 화면과 동일한 비율 */
+.ed-op.theme-minimal .eo-min-stage{grid-template-rows:28px minmax(0,1fr) 112px;padding:10px 12px 0;}
+.ed-op.theme-minimal .eo-min-head{font-size:7px;letter-spacing:2.2px;}
+.ed-op.theme-minimal .eo-min-info{padding:12px 2px 9px;}
+.ed-op.theme-minimal .eo-min-meta{align-items:baseline;gap:9px;margin-top:9px;}
+.ed-op.theme-minimal .eo-names{font-size:18px;letter-spacing:.8px;line-height:1.22;max-width:calc(100% - 94px);}
+.ed-op.theme-minimal .eo-names .nm-sep{margin:0 4px;}
+.ed-op.theme-minimal .eo-min-folio{font-size:6.5px;letter-spacing:1.7px;padding-top:0;}
+.ed-op.theme-minimal .eo-min-when{gap:7px;margin-top:6px;}
+.ed-op.theme-minimal .eo-sub{font-size:10px;letter-spacing:1.5px;}
+.ed-op.theme-minimal .eo-min-time{font-size:8.5px;letter-spacing:.15px;}
+
+
+/* ===== 프리미엄 모션 커버 (Signature · Fullscreen · Black, 기존 기능과 독립) ===== */
+.motion-cover-editor{margin-top:18px;border:1px solid rgba(154,117,70,.22);border-radius:16px;background:linear-gradient(180deg,#fffdf9,#faf6ef);padding:16px;box-shadow:0 10px 28px rgba(87,66,40,.05);}
+.motion-cover-head{display:flex;align-items:center;justify-content:space-between;gap:14px;}
+.motion-cover-title{font-size:14px;font-weight:700;color:#33291f;}
+.motion-cover-badge{font-size:10px;letter-spacing:.08em;color:#8a673a;border:1px solid rgba(154,117,70,.3);border-radius:999px;padding:5px 8px;background:rgba(154,117,70,.06);white-space:nowrap;}
+.motion-cover-desc{font-size:12px;line-height:1.7;color:#75695d;margin:8px 0 13px;}
+.motion-cover-switch{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid rgba(154,117,70,.12);padding-top:13px;}
+.motion-cover-switch label{font-size:13px;font-weight:600;color:#44372a;}
+.motion-cover-switch input{width:20px;height:20px;accent-color:#9a7546;}
+.motion-cover-body{display:none;margin-top:15px;padding-top:15px;border-top:1px solid rgba(154,117,70,.12);}
+.motion-cover-editor.on .motion-cover-body{display:block;}
+.motion-cover-note{font-size:11.5px;line-height:1.65;color:#7d7064;margin:0 0 12px;}
+.motion-slot{margin-top:14px;}
+.motion-slot:first-of-type{margin-top:0;}
+.motion-slot-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
+.motion-slot-title{font-size:12.5px;font-weight:700;color:#44372a;}
+.motion-slot-pos{height:34px;border:1px solid #ded3c4;border-radius:9px;background:#fff;color:#5a4b3e;padding:0 9px;font-size:12px;}
+.motion-thumb-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;}
+.motion-thumb{position:relative;aspect-ratio:3/4;border:1px solid #e4dbcf;border-radius:8px;overflow:hidden;background:#eee7dd;padding:0;cursor:pointer;}
+.motion-thumb img{width:100%;height:100%;display:block;object-fit:cover;}
+.motion-thumb::after{content:'';position:absolute;inset:0;border:2px solid transparent;border-radius:7px;pointer-events:none;}
+.motion-thumb.on::after{border-color:#9a7546;box-shadow:inset 0 0 0 1px rgba(255,255,255,.75);}
+.motion-thumb.on::before{content:'✓';position:absolute;right:5px;top:5px;z-index:2;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#9a7546;color:#fff;font-size:11px;font-weight:700;}
+.motion-empty{grid-column:1/-1;border:1px dashed #d8cbbb;border-radius:10px;padding:14px 10px;text-align:center;font-size:12px;line-height:1.6;color:#8a7b6c;background:rgba(255,255,255,.6);}
+.motion-actions{display:flex;gap:8px;margin-top:15px;}
+.motion-preview-btn,.motion-reset-btn{flex:1;min-height:42px;border-radius:10px;font-size:12.5px;font-weight:700;cursor:pointer;}
+.motion-preview-btn{border:1px solid #3a352e;background:#3a352e;color:#fff;}
+.motion-preview-btn:disabled{opacity:.4;cursor:not-allowed;}
+.motion-reset-btn{border:1px solid #d8cbbb;background:#fff;color:#665647;}
+.motion-status{margin:10px 0 0;font-size:11.5px;line-height:1.55;color:#8a6b43;}
+.motion-theme-lock{display:none;margin-top:10px;border-radius:10px;padding:10px 12px;background:#f3eee6;color:#7a6b5c;font-size:11.5px;line-height:1.55;}
+.motion-cover-editor.locked .motion-theme-lock{display:block;}
+.motion-cover-editor.locked .motion-cover-switch,.motion-cover-editor.locked .motion-cover-body{display:none;}
+@media(max-width:520px){.motion-thumb-strip{grid-template-columns:repeat(4,minmax(0,1fr));}}
+
+/* 편집기 휴대폰 안에서만 재생되는 템플릿별 모션 미리보기 */
+.ed-motion{position:absolute;inset:0;z-index:95;display:none;overflow:hidden;background:#0c0a08;color:#fff;pointer-events:none;}
+.ed-motion.show{display:block;pointer-events:auto;}
+.ed-motion .em-scene{position:absolute;inset:0;background-size:cover;background-repeat:no-repeat;opacity:0;will-change:opacity,transform;}
+.ed-motion .em-scene::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,6,4,.12),transparent 32%,transparent 54%,rgba(8,6,4,.34) 79%,rgba(8,6,4,.66));}
+.ed-motion .em-scene-1{animation:emScene1 2.6s 0s cubic-bezier(.22,.68,.22,1) both;}
+.ed-motion .em-scene-2{animation:emScene2 3.05s 1.95s cubic-bezier(.22,.68,.22,1) both;}
+.ed-motion .em-scene-3{animation:emScene3 3.15s 4.05s cubic-bezier(.22,.68,.22,1) both;}
+.ed-motion .em-final{position:absolute;left:0;right:0;bottom:0;z-index:5;padding:0 24px 62px;text-align:center;opacity:0;transform:translateY(9px);filter:blur(2px);animation:emFinalIn .82s 4.82s cubic-bezier(.2,.7,.2,1) forwards;}
+.ed-motion .em-signature-grain{position:absolute;inset:-18%;z-index:2;pointer-events:none;opacity:.1;mix-blend-mode:soft-light;background-image:radial-gradient(circle at 18% 30%,rgba(255,255,255,.34) 0 1px,transparent 1.4px),radial-gradient(circle at 72% 64%,rgba(255,255,255,.24) 0 1px,transparent 1.5px);background-size:7px 9px,11px 13px;animation:emSignatureGrain 7.45s steps(8,end) both;}
+.ed-motion .em-signature-flash{position:absolute;inset:0;z-index:4;pointer-events:none;background:#fff;opacity:0;animation:emSignatureFlash 7.45s linear both;}
+.ed-motion .em-names{display:flex;flex-direction:column;align-items:center;gap:5px;font-family:'Noto Serif KR',serif;font-size:24px;font-weight:500;line-height:1.12;text-shadow:0 1px 8px rgba(0,0,0,.28);}
+.ed-motion .em-date{font-family:'Noto Sans KR',sans-serif;font-size:10px;font-weight:500;letter-spacing:.13em;margin-top:9px;text-shadow:0 1px 6px rgba(0,0,0,.25);}
+.ed-motion .em-time{font-family:'Noto Sans KR',sans-serif;font-size:9px;letter-spacing:.07em;margin-top:6px;color:rgba(255,255,255,.88);}
+.ed-motion .em-skip{position:absolute;right:13px;top:14px;z-index:5;border:1px solid rgba(255,255,255,.38);border-radius:999px;background:rgba(10,8,6,.25);backdrop-filter:blur(5px);color:#fff;font-size:9px;letter-spacing:.04em;padding:7px 10px;opacity:0;animation:emSkipIn .35s 1s ease forwards;cursor:pointer;}
+@keyframes emScene1{0%{opacity:0;transform:scale(1.16) translateY(-1.2%);filter:brightness(1.14) saturate(.9)}16%{opacity:1;filter:brightness(1.02) saturate(1)}74%{opacity:1}100%{opacity:0;transform:scale(1.075) translateY(.4%);filter:brightness(.96)}}
+@keyframes emScene2{0%{opacity:0;transform:scale(1.09) translate(2.6%,1%);filter:brightness(.9)}17%{opacity:1;filter:brightness(1)}76%{opacity:1}100%{opacity:0;transform:scale(1.018) translate(-2.6%,-.5%);filter:brightness(.94)}}
+@keyframes emScene3{0%{opacity:0;transform:scale(1.055);filter:brightness(.76)}20%{opacity:1;filter:brightness(.94)}54%{filter:brightness(1)}100%{opacity:1;transform:scale(1);filter:brightness(1)}}
+@keyframes emSignatureFlash{0%,22%,26%,49%,53%,100%{opacity:0}24%{opacity:.11}51%{opacity:.08}}
+@keyframes emSignatureGrain{0%{transform:translate3d(0,0,0)}25%{transform:translate3d(-1.2%,.8%,0)}50%{transform:translate3d(.9%,-.7%,0)}75%{transform:translate3d(-.6%,-.9%,0)}100%{transform:translate3d(.5%,.6%,0)}}
+@keyframes emFinalIn{to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes emSkipIn{to{opacity:1}}
+@keyframes emSkipCycle745{0%,12%{opacity:0}17%,79%{opacity:1}86%,100%{opacity:0}}
+@keyframes emSkipCycle775{0%,12%{opacity:0}17%,80%{opacity:1}87%,100%{opacity:0}}
+.ed-motion.motion-signature .em-skip,.ed-motion.motion-black .em-skip{animation:emSkipCycle745 7.45s linear both;}
+.ed-motion.motion-fullscreen .em-skip{animation:emSkipCycle775 7.75s linear both;}
+
+/* Fullscreen — 고객 사진 컷 뒤 실제 시네마 타이틀 화면으로 연결 */
+.ed-motion.motion-fullscreen{background:radial-gradient(ellipse 86% 64% at 50% 43%,#2a211a,#100d0a 68%,#050403 100%);}
+.ed-motion.motion-fullscreen::before,.ed-motion.motion-fullscreen::after{content:'';position:absolute;left:0;right:0;height:10%;min-height:26px;background:rgba(3,3,3,.96);z-index:4;pointer-events:none;}
+.ed-motion.motion-fullscreen::before{top:0;border-bottom:1px solid rgba(214,186,132,.1)}
+.ed-motion.motion-fullscreen::after{bottom:0;border-top:1px solid rgba(214,186,132,.1)}
+.ed-motion.motion-fullscreen .em-scene::after{background:linear-gradient(90deg,rgba(4,3,3,.3),transparent 28%,transparent 72%,rgba(4,3,3,.3)),linear-gradient(to bottom,rgba(4,3,3,.24),transparent 35%,rgba(4,3,3,.46));}
+.ed-motion.motion-fullscreen .em-scene-1{animation:emCineScene1 2.7s 0s cubic-bezier(.18,.72,.22,1) both;}
+.ed-motion.motion-fullscreen .em-scene-2{animation:emCineScene2 3.05s 2.05s cubic-bezier(.18,.72,.22,1) both;}
+.ed-motion.motion-fullscreen .em-scene-3{animation:emCineScene3 2.7s 4.35s cubic-bezier(.18,.72,.22,1) both;}
+.ed-motion .em-cine-final{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 24px;color:#fdf8f0;opacity:0;animation:emCineFinal .88s 5.18s cubic-bezier(.2,.7,.2,1) forwards;}
+.ed-motion .em-cine-frame{position:absolute;inset:58px 18px;z-index:1;pointer-events:none;opacity:0;animation:emCineFrameIn .85s 5.05s ease forwards;}
+.ed-motion .em-cine-frame::before,.ed-motion .em-cine-frame::after{content:'';position:absolute;width:17px;height:17px}.ed-motion .em-cine-frame::before{left:0;top:0;border-left:1px solid rgba(214,186,132,.44);border-top:1px solid rgba(214,186,132,.44)}.ed-motion .em-cine-frame::after{right:0;bottom:0;border-right:1px solid rgba(214,186,132,.44);border-bottom:1px solid rgba(214,186,132,.44)}
+.ed-motion .em-cine-beat{position:absolute;inset:0;z-index:2;pointer-events:none;background:#050403;opacity:0;animation:emCineBeat 7.75s linear both;}
+.ed-motion .em-cine-word{position:absolute;left:50%;top:49%;transform:translate(-50%,-55%);font-family:'Cormorant Garamond',serif;font-size:54px;font-weight:300;letter-spacing:2px;color:transparent;-webkit-text-stroke:1px rgba(214,186,132,.15);white-space:nowrap;}
+.ed-motion .em-cine-label{font-family:'Cormorant Garamond',serif;font-size:8px;letter-spacing:5px;color:rgba(255,248,238,.7);margin-bottom:10px;text-indent:5px;}
+.ed-motion .em-cine-title{position:relative;z-index:2;width:100%;padding:10px 7px 11px;border-top:1px solid rgba(214,186,132,.16);border-bottom:1px solid rgba(214,186,132,.16);background:linear-gradient(90deg,rgba(214,186,132,.06),transparent 20%,transparent 80%,rgba(214,186,132,.06));text-align:center;clip-path:inset(0 50%);animation:emCineTitleReveal .82s 5.3s cubic-bezier(.2,.7,.2,1) forwards;}
+.ed-motion .em-cine-names{display:flex;align-items:center;justify-content:center;gap:7px;font-family:'Noto Sans KR',sans-serif;font-size:22px;font-weight:500;letter-spacing:.6px;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.4);}
+.ed-motion .em-cine-dot{color:#d6ba84;font-size:11px;}
+.ed-motion .em-cine-meta{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;margin-top:11px;color:rgba(255,248,238,.84);white-space:nowrap;}
+.ed-motion .em-cine-row{display:flex;align-items:center;justify-content:center;gap:6px;font-family:'Cormorant Garamond',serif;font-size:8px;letter-spacing:2.2px;}
+.ed-motion .em-cine-time{font-family:'Noto Sans KR',sans-serif;font-size:7px;font-weight:400;letter-spacing:.8px;color:rgba(212,184,130,.78);}
+.ed-motion .em-cine-meta-dot{width:2px;height:2px;border-radius:50%;background:#d6ba84;opacity:.8;}
+@keyframes emCineScene1{0%{opacity:0;transform:scale(1.15);clip-path:inset(13% 49%);filter:brightness(.82)}18%{opacity:1;clip-path:inset(11% 9%);filter:brightness(1)}74%{opacity:1}100%{opacity:0;transform:scale(1.045);clip-path:inset(9% 7%);filter:brightness(.92)}}
+@keyframes emCineScene2{0%{opacity:0;transform:scale(1.085) translateX(3.2%);filter:brightness(.86)}18%{opacity:1;filter:brightness(1)}76%{opacity:1}100%{opacity:0;transform:scale(1.018) translateX(-3.2%);filter:brightness(.9)}}
+@keyframes emCineScene3{0%{opacity:0;transform:scale(1.05);filter:brightness(.72)}20%{opacity:.86;filter:brightness(.92)}62%{opacity:.62;filter:brightness(.8)}100%{opacity:0;transform:scale(1);filter:brightness(.55)}}
+@keyframes emCineBeat{0%,61%,66%,100%{opacity:0}63.5%{opacity:.32}}
+@keyframes emCineFrameIn{to{opacity:1}}
+@keyframes emCineTitleReveal{to{clip-path:inset(0 0)}}
+@keyframes emCineFinal{to{opacity:1}}
+
+/* Black — 깊은 디졸브 뒤 실제 84% 사진 + 하단 정보 패널로 정착 */
+.ed-motion.motion-black{background:#100d0a;}
+.ed-motion.motion-black .em-scene::after{background:radial-gradient(circle at 50% 38%,transparent 24%,rgba(4,3,3,.18) 62%,rgba(4,3,3,.66) 100%),linear-gradient(to bottom,rgba(4,3,3,.12),transparent 48%,rgba(16,13,10,.72));}
+.ed-motion.motion-black .em-scene-1{animation:emBlackScene1 2.7s 0s cubic-bezier(.2,.7,.2,1) both;}
+.ed-motion.motion-black .em-scene-2{animation:emBlackScene2 3s 2.05s cubic-bezier(.2,.7,.2,1) both;}
+.ed-motion .em-black-final{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;background:#100d0a;opacity:0;animation:emBlackFinal .9s 4.88s cubic-bezier(.2,.7,.2,1) forwards;}
+.ed-motion .em-black-photo-area{position:relative;flex:0 0 84%;overflow:hidden;background:#080706;}
+.ed-motion .em-black-photo{position:absolute;inset:0;background-size:cover;background-repeat:no-repeat;background-position:center 32%;transform:scale(1.045);filter:brightness(.58) saturate(.88);animation:emBlackSettle 2.45s 4.88s cubic-bezier(.2,.7,.2,1) forwards;}
+.ed-motion .em-black-photo::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 36%,transparent 30%,rgba(0,0,0,.18) 72%,rgba(0,0,0,.42));}
+.ed-motion .em-black-fade{position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(to bottom,transparent,rgba(16,13,10,.4) 62%,#100d0a);}
+.ed-motion .em-black-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 38%,rgba(211,170,100,.12),transparent 34%);opacity:0;animation:emBlackGlow 2.4s 5.02s ease forwards;}
+.ed-motion .em-black-rule{transform:scaleX(0);opacity:0;animation:emBlackRuleIn .7s 5.38s ease forwards;}
+.ed-motion .em-black-names{opacity:0;transform:translateY(4px);animation:emBlackNamesIn .78s 5.55s cubic-bezier(.2,.7,.2,1) forwards;}
+.ed-motion .em-black-when{opacity:0;transform:translateY(3px);animation:emBlackWhenIn .68s 5.82s ease forwards;}
+.ed-motion .em-black-info{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:0 18px 7px;background:#100d0a;color:#f4ecdb;}
+.ed-motion .em-black-rule{width:34px;height:1px;background:linear-gradient(90deg,transparent,#c9a86a,transparent);}
+.ed-motion .em-black-names{display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Cormorant Garamond','Noto Serif KR',serif;font-size:22px;font-weight:400;letter-spacing:3.8px;line-height:1;white-space:nowrap;}
+.ed-motion .em-black-dot{color:#c9a86a;font-size:10px;}
+.ed-motion .em-black-when{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.ed-motion .em-black-date{font-family:'Cormorant Garamond',serif;font-size:8.5px;letter-spacing:3px;color:rgba(240,231,214,.94);white-space:nowrap;}
+.ed-motion .em-black-time{font-family:'Noto Serif KR',serif;font-size:7.5px;letter-spacing:.8px;color:rgba(220,190,135,.86);white-space:nowrap;}
+@keyframes emBlackScene1{0%{opacity:0;transform:scale(1.12);filter:brightness(.58) saturate(.86)}18%{opacity:1;filter:brightness(.94) saturate(.96)}74%{opacity:1}100%{opacity:0;transform:scale(1.065);filter:brightness(.72)}}
+@keyframes emBlackScene2{0%{opacity:0;transform:scale(1.09) translateX(2.4%);filter:brightness(.62) saturate(.86)}19%{opacity:1;filter:brightness(.96) saturate(.98)}74%{opacity:1}100%{opacity:0;transform:scale(1.015) translateX(-2.4%);filter:brightness(.52)}}
+@keyframes emBlackFinal{to{opacity:1}}
+@keyframes emBlackSettle{0%{transform:scale(1.045);filter:brightness(.58) saturate(.88)}52%{filter:brightness(.9) saturate(.96)}100%{transform:scale(1);filter:brightness(1) saturate(1)}}
+@keyframes emBlackGlow{to{opacity:.7}}
+@keyframes emBlackRuleIn{to{transform:scaleX(1);opacity:.82}}
+@keyframes emBlackNamesIn{to{opacity:1;transform:translateY(0)}}
+@keyframes emBlackWhenIn{to{opacity:1;transform:translateY(0)}}
+
+@media(prefers-reduced-motion:reduce){.ed-motion{display:none!important;}}
+
+
+/* FEATURE33: 하객 사진 공유 편집 UI — 기본 OFF, 켰을 때만 짧고 명확하게 */
+.guest-photo-config-box{display:none;margin:-1px 4px 10px;padding:2px 0 13px;border-bottom:1px solid var(--line-soft);background:transparent;}
+.guest-photo-config-box.show{display:block;}
+.guest-photo-config-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:0 0 6px;font-size:10.5px;font-weight:600;letter-spacing:.01em;color:#84683d;}
+.guest-photo-config-meta span{display:inline-flex;align-items:center;min-height:22px;padding:3px 8px;border:1px solid rgba(176,140,75,.18);border-radius:999px;background:rgba(176,140,75,.055);}
+.guest-photo-config-desc{margin:0;font-size:11.5px;line-height:1.55;color:var(--brown-mute);word-break:keep-all;}
+.guest-photo-manage-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px;padding-top:9px;border-top:1px solid rgba(176,140,75,.13);}
+.guest-photo-manage-row[hidden]{display:none!important;}
+.guest-photo-manage-note{min-width:0;font-size:11px;line-height:1.45;color:var(--brown-mute);}
+.guest-photo-manage-btn{flex:0 0 auto;border:1px solid rgba(139,108,54,.28);border-radius:999px;background:#fff;padding:7px 11px;font:inherit;font-size:11px;font-weight:600;color:#755c35;cursor:pointer;box-shadow:0 5px 14px -12px rgba(74,55,29,.65);}
+.guest-photo-manage-btn:hover{border-color:rgba(139,108,54,.5);background:#fffdf8;}
+.guest-photo-manage-btn:disabled{opacity:.45;cursor:not-allowed;}
+.guest-photo-manager-modal{width:min(760px,calc(100vw - 28px));max-height:min(820px,88vh);overflow:auto;text-align:left;}
+.guest-photo-manager-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 12px;padding:12px 14px;border:1px solid rgba(176,140,75,.18);border-radius:12px;background:#fcfaf6;}
+.guest-photo-manager-toolbar span{font-size:12px;color:var(--brown-soft);}
+.guest-photo-manager-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.guest-photo-manager-card{overflow:hidden;border:1px solid rgba(176,140,75,.2);border-radius:14px;background:#fff;box-shadow:0 12px 28px -26px rgba(58,45,28,.55);}
+.guest-photo-manager-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#eee;}
+.guest-photo-manager-meta{padding:11px 12px 12px;}
+.guest-photo-manager-name{font-size:12px;font-weight:600;color:var(--brown);}
+.guest-photo-manager-date{margin-top:3px;font-size:10.5px;color:var(--brown-mute);}
+.guest-photo-manager-status{display:inline-flex;margin-top:7px;padding:3px 7px;border-radius:999px;font-size:10px;background:#f4efe5;color:#7b6545;}
+.guest-photo-manager-status.approved{background:#edf5eb;color:#4f7549;}
+.guest-photo-manager-status.rejected{background:#f8ece9;color:#9a544b;}
+.guest-photo-manager-actions{display:flex;gap:6px;margin-top:10px;}
+.guest-photo-manager-actions button{flex:1;border:1px solid rgba(176,140,75,.24);border-radius:8px;background:#fff;padding:8px 6px;font:inherit;font-size:11px;cursor:pointer;}
+.guest-photo-manager-actions .approve{background:#6f7658;border-color:#6f7658;color:#fff;}
+.guest-photo-manager-actions .danger{color:#9a544b;}
+.guest-photo-manager-state{padding:28px 14px;text-align:center;font-size:13px;line-height:1.7;color:var(--brown-soft);}
+/* 편집기 미리보기용 정적 하객 사진 섹션 */
+.guest-photo-preview-sec{--gps-accent:#8c7048;--gps-line:rgba(140,112,72,.22);text-align:center;}
+.guest-photo-preview-grid{display:grid;grid-template-columns:1.15fr .85fr;grid-template-rows:68px 68px;gap:6px;margin:14px auto 12px;max-width:265px;}
+.guest-photo-preview-grid span{display:block;border:1px solid var(--gps-line);background:linear-gradient(135deg,rgba(176,140,75,.1),rgba(255,255,255,.65));}
+.guest-photo-preview-grid span:first-child{grid-row:1/3;}
+.guest-photo-preview-copy{font-size:11.5px;line-height:1.6;opacity:.72;word-break:keep-all;}
+.guest-photo-preview-btn{display:inline-flex;margin-top:11px;padding:8px 14px;border:1px solid var(--gps-line);border-radius:999px;font-size:11.5px;}
+@media(max-width:520px){.guest-photo-manager-list{grid-template-columns:1fr}.guest-photo-config-meta{gap:5px}.guest-photo-config-meta span{padding:3px 7px}.guest-photo-manage-note{font-size:10.5px}.guest-photo-manage-btn{padding:7px 10px}}
+
+
+
+/* FEATURE29 — LIVE PREVIEW 첫 화면 공통 높이 엔진
+   실제 휴대폰 프리뷰 창의 높이를 8개 템플릿 모두 같은 기준으로 사용한다. */
+#ivRoot{--invitation-cover-height:var(--preview-screen-height,540px);}
+#ivRoot .sig-hero,
+#ivRoot .civ-stage,
+#ivRoot .bk-stage,
+#ivRoot .fl-hero,
+#ivRoot .hk-stage,
+#ivRoot .stl-stage,
+#ivRoot .cn-stage,
+#ivRoot .lt-stage{
+  box-sizing:border-box;
+  height:var(--invitation-cover-height) !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+/* 8개 판매 템플릿 커버는 preview screen의 시작점에서 바로 렌더한다.
+   기존 공통 .iv-cover 상하 패딩이 stage 높이에 다시 더해지는 일을 막는다. */
+#ivRoot>.iv-cover.t-signature,
+#ivRoot>.iv-cover.t-classic-ivory,
+#ivRoot>.iv-cover.t-hanok,
+#ivRoot>.iv-cover.t-black,
+#ivRoot>.iv-cover.t-fullscreen,
+#ivRoot>.iv-cover.t-minimal,
+#ivRoot>.iv-cover.t-flower,
+#ivRoot>.iv-cover.t-gold-serif{
+  padding:0;
+  border-bottom:0;
+}
+#ivRoot>.iv-cover.t-gold-serif::before{display:none;}
+/* Flower 정보 블록은 97px 안전영역을 우선 확보한다.
+   preview가 짧아져도 날짜·시간이 잘리지 않고, 긴 화면에서는 사진 비중이 자동으로 커진다. */
+#ivRoot .t-flower .fl-photo-area{flex-basis:calc(100% - 98px);}
+/* 프리뷰 화면이 낮을 때도 이름·날짜·시간을 화면 안에 보존 */
+@media (max-height:680px){
+  #ivRoot .t-hanok .hk-photo-area{flex-basis:80%;}
+  #ivRoot .t-black .bk-photo-area{flex-basis:82%;}
+}
+
 </style>
+
+<style>
+/* FEATURE36 — 편집기 미리보기와 실제 카드 첫 화면 정밀 보정 동기화 */
+#ivRoot.t-signature .sig-scrim{background:linear-gradient(to bottom,rgba(8,6,4,.10) 0%,transparent 28%,transparent 55%,rgba(8,6,4,.26) 76%,rgba(8,6,4,.66) 100%);}
+#ivRoot.t-signature .sig-overlay{padding:0 24px clamp(54px,8.5vh,74px);}
+#ivRoot.t-signature .sig-textwrap::before{inset:-8px -20px;background:radial-gradient(ellipse 78% 105% at 50% 60%,rgba(6,4,3,.44),transparent 76%);}
+#ivRoot.t-signature .sig-names{font-size:clamp(23px,7vw,27px);max-width:80%;gap:5px;letter-spacing:.015em;}
+#ivRoot.t-signature .sig-date{margin-top:9px;font-size:11.5px;letter-spacing:.13em;}
+#ivRoot.t-signature .sig-time{margin-top:6px;font-size:10.5px;}
+
+#ivRoot.t-classic-ivory .civ-photo-area{flex-basis:78%;}
+#ivRoot.t-classic-ivory .civ-photo-fade{height:13%;}
+#ivRoot.t-classic-ivory .civ-info{gap:8px;padding:0 24px 5px;}
+#ivRoot.t-classic-ivory .civ-names{font-size:27px;letter-spacing:3.2px;}
+#ivRoot.t-classic-ivory .civ-date{font-size:11.5px;letter-spacing:.11em;}
+#ivRoot.t-classic-ivory .civ-time{font-size:10.5px;}
+
+#ivRoot.t-hanok .hk-photo-fade{height:13%;}
+#ivRoot.t-hanok .hk-info{gap:5px;padding:0 22px 7px;}
+#ivRoot.t-hanok .hk-names{font-size:27px;letter-spacing:4.2px;}
+#ivRoot.t-hanok .hk-names .hk-dot{margin:0 9px;}
+#ivRoot.t-hanok .hk-date{font-size:12px;letter-spacing:2.2px;}
+#ivRoot.t-hanok .hk-time{font-size:10.5px;}
+
+#ivRoot.t-black .bk-photo-fade{height:17%;}
+#ivRoot.t-black .bk-info{gap:5px;padding:0 22px 10px;}
+#ivRoot.t-black .bk-rule{width:36px;opacity:.82;}
+#ivRoot.t-black .bk-names{font-size:26px;letter-spacing:4.7px;}
+#ivRoot.t-black .bk-names .bk-dot{margin:0 8px;font-size:13px;}
+#ivRoot.t-black .bk-date{font-size:11px;letter-spacing:4.1px;}
+#ivRoot.t-black .bk-time{font-size:10.5px;}
+
+#ivRoot.t-fullscreen .cn-stage::before,#ivRoot.t-fullscreen .cn-stage::after{height:clamp(42px,9.5%,66px);}
+#ivRoot.t-fullscreen .cn-frame{inset:clamp(74px,15%,112px) 20px;}
+#ivRoot.t-fullscreen .cn-inner{transform:translateY(-1%);padding:0 24px;}
+#ivRoot.t-fullscreen .cn-filmlbl{font-size:8.5px;letter-spacing:6.2px;margin-bottom:11px;}
+#ivRoot.t-fullscreen .cn-titlebox{width:min(100%,300px);padding:10px 7px 11px;}
+#ivRoot.t-fullscreen .cn-names{font-size:clamp(24px,7.8vw,29px);}
+#ivRoot.t-fullscreen .cn-date{font-size:10.5px;letter-spacing:3.2px;}
+#ivRoot.t-fullscreen .cn-weekday{font-size:8px;letter-spacing:2.8px;}
+#ivRoot.t-fullscreen .cn-time{font-size:9px;}
+
+#ivRoot.t-minimal .stl-stage{grid-template-rows:28px minmax(0,1fr) 132px;padding:11px 13px 0;}
+#ivRoot.t-minimal .stl-pagehead{font-size:7.5px;letter-spacing:2.4px;}
+#ivRoot.t-minimal .stl-info{padding:12px 3px 10px;}
+#ivRoot.t-minimal .stl-meta{margin-top:9px;gap:10px;}
+#ivRoot.t-minimal .stl-names{font-size:19px;letter-spacing:.8px;max-width:calc(100% - 98px);}
+#ivRoot.t-minimal .stl-folio{font-size:6.5px;letter-spacing:1.7px;}
+#ivRoot.t-minimal .stl-when{margin-top:6px;gap:7px;}
+#ivRoot.t-minimal .stl-date{font-size:10.5px;letter-spacing:1.5px;}
+#ivRoot.t-minimal .stl-time{font-size:8.5px;}
+
+#ivRoot.t-flower .fl-info{padding:8px 21px 10px;}
+#ivRoot.t-flower .fl-caption{font-size:7px;letter-spacing:2px;padding-bottom:3px;margin-bottom:4px;}
+#ivRoot.t-flower .fl-names{font-size:25px;line-height:1.16;}
+#ivRoot.t-flower .fl-when{margin-top:3px;gap:2px;}
+#ivRoot.t-flower .fl-date{font-size:11.5px;letter-spacing:1.3px;}
+#ivRoot.t-flower .fl-time{font-size:10.5px;}
+
+#ivRoot.t-gold-serif .lt-frame{width:92%;max-width:400px;min-height:clamp(330px,62%,500px);padding:clamp(34px,6vh,48px) 25px;box-shadow:0 10px 32px rgba(108,82,42,.13);}
+#ivRoot.t-gold-serif .lt-frame::before{inset:9px;}
+#ivRoot.t-gold-serif .lt-frame::after{inset:14px;}
+#ivRoot.t-gold-serif .lt-mono{width:39px;height:39px;margin-bottom:14px;}
+#ivRoot.t-gold-serif .lt-label{margin-bottom:14px;}
+#ivRoot.t-gold-serif .lt-names{font-size:26px;letter-spacing:2.5px;}
+#ivRoot.t-gold-serif .lt-rule{margin:14px auto;}
+#ivRoot.t-gold-serif .lt-msg{font-size:12.5px;line-height:1.8;}
+#ivRoot.t-gold-serif .lt-when{margin-top:12px;}
+
+@media (max-height:680px){
+  #ivRoot.t-classic-ivory .civ-photo-area{flex-basis:76%;}
+  #ivRoot.t-signature .sig-overlay{padding-bottom:52px;}
+  #ivRoot.t-fullscreen .cn-frame{inset:72px 18px;}
+  #ivRoot.t-gold-serif .lt-frame{min-height:320px;padding:31px 23px;}
+}
+@media (max-width:380px){
+  #ivRoot.t-classic-ivory .civ-names{font-size:25px;letter-spacing:2.8px;}
+  #ivRoot.t-hanok .hk-names{font-size:25px;letter-spacing:3.8px;}
+  #ivRoot.t-black .bk-names{font-size:24px;letter-spacing:4.2px;}
+  #ivRoot.t-flower .fl-names{font-size:23px;}
+  #ivRoot.t-gold-serif .lt-names{font-size:24px;letter-spacing:2.1px;}
+}
+</style>
+
 </head>
 <body>
 
@@ -1757,7 +2216,7 @@ input,select,textarea{font-family:inherit;}
         <div class="amb-eyebrow">Background Ambience</div>
         <div class="amb-lead">사진 분위기를 완성하는 배경 연출과 애니메이션을 선택합니다.</div>
         <div class="amb-box">
-          <select class="fs" id="f_particle" onchange="syncAmbCards();renderIV()" style="display:none;">
+          <select class="fs" id="f_particle" onchange="syncAmbCards();requestEditorRender()" style="display:none;">
             <option value="auto">자동 추천</option>
             <option value="none">사용 안 함</option>
             <option value="winter_snow">겨울눈</option>
@@ -1791,20 +2250,33 @@ input,select,textarea{font-family:inherit;}
       <h2 class="sec-title">두 분의 이름을 알려주세요</h2>
       <p class="sec-desc">청첩장 첫 화면과 인사말에 표시될 이름입니다. 혼주(부모님) 성함은 선택 사항이며, 입력하면 인사말 아래에 함께 표시됩니다.</p>
       <div class="frow">
-        <div class="fld"><label class="fld-label">신랑 이름</label><input class="fi" id="f_groom" placeholder="김민준" oninput="renderIV()"/></div>
-        <div class="fld"><label class="fld-label">신부 이름</label><input class="fi" id="f_bride" placeholder="이서연" oninput="renderIV()"/></div>
+        <div class="fld"><label class="fld-label">신랑 이름</label><input class="fi" id="f_groom" placeholder="김민준" oninput="requestEditorRender()"/></div>
+        <div class="fld"><label class="fld-label">신부 이름</label><input class="fi" id="f_bride" placeholder="이서연" oninput="requestEditorRender()"/></div>
       </div>
       <div class="fld"><label class="fld-label">표시 순서</label>
-        <select class="fs" id="f_order" onchange="renderIV()">
+        <select class="fs" id="f_order" onchange="requestEditorRender()">
           <option value="gb">신랑 · 신부 순</option>
           <option value="bg">신부 · 신랑 순</option>
         </select>
       </div>
+      <div class="couple-intro-editor">
+        <div class="couple-intro-editor-head">
+          <div class="couple-intro-editor-title"><strong>두 사람 소개</strong><span>각자의 매력이나 성격을 한 문장으로 소개해보세요.</span></div>
+          <div class="couple-intro-toggle"><input type="checkbox" id="f_couple_intro_enabled" onchange="toggleCoupleIntroBox();requestEditorRender()"/><label for="f_couple_intro_enabled" aria-label="두 사람 소개 사용"></label></div>
+        </div>
+        <div class="couple-intro-body" id="coupleIntroBox">
+          <div class="frow">
+            <label class="couple-intro-field"><span>신랑 소개</span><textarea class="fi" id="f_groom_intro" rows="3" maxlength="100" placeholder="예: 다정한 웃음으로 매일을 따뜻하게 만드는 사람" oninput="requestEditorRender()"></textarea></label>
+            <label class="couple-intro-field"><span>신부 소개</span><textarea class="fi" id="f_bride_intro" rows="3" maxlength="100" placeholder="예: 작은 순간도 특별하게 기억하는 사람" oninput="requestEditorRender()"></textarea></label>
+          </div>
+          <p class="couple-intro-help">입력한 사람만 청첩장에 표시됩니다. 두 문장을 모두 비우면 소개 영역은 자동으로 숨겨집니다.</p>
+        </div>
+      </div>
       <div class="parents-group">
         <div class="pg-head"><span class="pg-en">With Parents</span><span class="pg-ko">혼주 정보를 입력하세요</span></div>
         <div class="frow">
-          <div class="fld"><label class="fld-label">신랑측 혼주</label><input class="fi" id="f_gparent" placeholder="김아버지 · 박어머니" oninput="renderIV()"/><label class="dec-toggle"><input type="checkbox" id="f_gparent_dec" onchange="renderIV()"/><span class="dec-txt"><b>故</b> 표시 사용</span></label><p class="dec-note">하늘에 계신 부모님을 표기할 경우 사용합니다.</p></div>
-          <div class="fld"><label class="fld-label">신부측 혼주</label><input class="fi" id="f_bparent" placeholder="이아버지 · 최어머니" oninput="renderIV()"/><label class="dec-toggle"><input type="checkbox" id="f_bparent_dec" onchange="renderIV()"/><span class="dec-txt"><b>故</b> 표시 사용</span></label><p class="dec-note">하늘에 계신 부모님을 표기할 경우 사용합니다.</p></div>
+          <div class="fld"><label class="fld-label">신랑측 혼주</label><input class="fi" id="f_gparent" placeholder="김아버지 · 박어머니" oninput="requestEditorRender()"/><label class="dec-toggle"><input type="checkbox" id="f_gparent_dec" onchange="requestEditorRender()"/><span class="dec-txt"><b>故</b> 표시 사용</span></label><p class="dec-note">하늘에 계신 부모님을 표기할 경우 사용합니다.</p></div>
+          <div class="fld"><label class="fld-label">신부측 혼주</label><input class="fi" id="f_bparent" placeholder="이아버지 · 최어머니" oninput="requestEditorRender()"/><label class="dec-toggle"><input type="checkbox" id="f_bparent_dec" onchange="requestEditorRender()"/><span class="dec-txt"><b>故</b> 표시 사용</span></label><p class="dec-note">하늘에 계신 부모님을 표기할 경우 사용합니다.</p></div>
         </div>
       </div>
     </div>
@@ -1815,12 +2287,12 @@ input,select,textarea{font-family:inherit;}
       <h2 class="sec-title">예식 안내</h2>
       <p class="sec-desc">소중한 예식의 일정과 장소를 안내합니다.</p>
       <div class="frow">
-        <div class="fld"><label class="fld-label">예식 날짜</label><input type="date" class="fi" id="f_date" oninput="renderIV()"/></div>
-        <div class="fld"><label class="fld-label">예식 시간</label><input type="time" class="fi" id="f_time" value="14:00" oninput="renderIV()"/></div>
+        <div class="fld"><label class="fld-label">예식 날짜</label><input type="date" class="fi" id="f_date" oninput="requestEditorRender()"/></div>
+        <div class="fld"><label class="fld-label">예식 시간</label><input type="time" class="fi" id="f_time" value="14:00" oninput="requestEditorRender()"/></div>
       </div>
-      <div class="fld"><label class="fld-label">예식장</label><input class="fi" id="f_venue" placeholder="더채플앳청담" oninput="renderIV()"/></div>
-      <div class="fld"><label class="fld-label">웨딩홀</label><input class="fi" id="f_hall" placeholder="커티지홀" oninput="renderIV()"/></div>
-      <div class="fld"><label class="fld-label">주소</label><input class="fi" id="f_addr" placeholder="서울 강남구 선릉로 757" oninput="renderIV()"/><p class="fhint">입력한 주소를 기준으로 길찾기 버튼이 자동 생성됩니다.</p></div>
+      <div class="fld"><label class="fld-label">예식장</label><input class="fi" id="f_venue" placeholder="더채플앳청담" oninput="requestEditorRender()"/></div>
+      <div class="fld"><label class="fld-label">웨딩홀</label><input class="fi" id="f_hall" placeholder="커티지홀" oninput="requestEditorRender()"/></div>
+      <div class="fld"><label class="fld-label">주소</label><input class="fi" id="f_addr" placeholder="서울 강남구 선릉로 757" oninput="requestEditorRender()"/><p class="fhint">입력한 주소를 기준으로 길찾기 버튼이 자동 생성됩니다.</p></div>
 
       <div class="guest-guide-editor">
         <div class="guest-guide-editor-head">
@@ -1829,11 +2301,11 @@ input,select,textarea{font-family:inherit;}
         </div>
         <p class="guest-guide-editor-desc">주차·식사·셔틀 등 하객이 미리 알면 좋은 내용을 입력하세요. 입력한 항목만 청첩장에 표시됩니다.</p>
         <div class="guest-guide-grid">
-          <label class="guest-guide-field"><span>주차 안내</span><textarea class="fi" id="f_guest_parking" rows="2" maxlength="180" placeholder="예: 웨딩홀 지하주차장 2시간 무료" oninput="renderIV()"></textarea></label>
-          <label class="guest-guide-field"><span>식사 안내</span><textarea class="fi" id="f_guest_meal" rows="2" maxlength="180" placeholder="예: 3층 연회장, 오전 11시부터 이용 가능" oninput="renderIV()"></textarea></label>
-          <label class="guest-guide-field"><span>셔틀 안내</span><textarea class="fi" id="f_guest_shuttle" rows="2" maxlength="180" placeholder="예: 서울역 3번 출구에서 30분 간격 운행" oninput="renderIV()"></textarea></label>
-          <label class="guest-guide-field"><span>당일 연락 안내</span><textarea class="fi" id="f_guest_contact" rows="2" maxlength="180" placeholder="예: 당일 문의는 신랑측 혼주에게 부탁드립니다" oninput="renderIV()"></textarea></label>
-          <label class="guest-guide-field full"><span>기타 안내</span><textarea class="fi" id="f_guest_etc" rows="2" maxlength="240" placeholder="예: 예식 시작 20분 전까지 착석 부탁드립니다" oninput="renderIV()"></textarea></label>
+          <label class="guest-guide-field"><span>주차 안내</span><textarea class="fi" id="f_guest_parking" rows="2" maxlength="180" placeholder="예: 웨딩홀 지하주차장 2시간 무료" oninput="requestEditorRender()"></textarea></label>
+          <label class="guest-guide-field"><span>식사 안내</span><textarea class="fi" id="f_guest_meal" rows="2" maxlength="180" placeholder="예: 3층 연회장, 오전 11시부터 이용 가능" oninput="requestEditorRender()"></textarea></label>
+          <label class="guest-guide-field"><span>셔틀 안내</span><textarea class="fi" id="f_guest_shuttle" rows="2" maxlength="180" placeholder="예: 서울역 3번 출구에서 30분 간격 운행" oninput="requestEditorRender()"></textarea></label>
+          <label class="guest-guide-field"><span>당일 연락 안내</span><textarea class="fi" id="f_guest_contact" rows="2" maxlength="180" placeholder="예: 당일 문의는 신랑측 혼주에게 부탁드립니다" oninput="requestEditorRender()"></textarea></label>
+          <label class="guest-guide-field full"><span>기타 안내</span><textarea class="fi" id="f_guest_etc" rows="2" maxlength="240" placeholder="예: 예식 시작 20분 전까지 착석 부탁드립니다" oninput="requestEditorRender()"></textarea></label>
         </div>
         <p class="guest-guide-empty-note">모두 비워두면 하객 안내 영역은 청첩장에 나타나지 않습니다.</p>
       </div>
@@ -1920,6 +2392,27 @@ input,select,textarea{font-family:inherit;}
         <div id="mainPreview"></div>
       </div>
 
+      <!-- 프리미엄 모션 커버: 기존 고객 업로드 사진을 재사용 -->
+      <div class="motion-cover-editor" id="motionCoverEditor">
+        <div class="motion-cover-head"><div class="motion-cover-title">프리미엄 모션 커버</div><span class="motion-cover-badge" id="motionCoverBadge">3개 프리미엄 템플릿</span></div>
+        <p class="motion-cover-desc" id="motionCoverDesc">새 영상을 올리지 않고, 갤러리에 올린 고객님의 웨딩사진 2장과 대표사진을 연결해 템플릿에 맞는 약 6~7초 모션 오프닝을 만듭니다.</p>
+        <div class="motion-theme-lock" id="motionThemeLock">웨딩화보형(Signature), 시네마형(Fullscreen), 호텔·야간형(Black)에서 사용할 수 있습니다. 다른 템플릿의 기존 화면과 오프닝은 변경되지 않습니다.</div>
+        <div class="motion-cover-switch"><label for="motionCoverEnabled">모션 커버 사용</label><input type="checkbox" id="motionCoverEnabled" onchange="toggleMotionCover(this.checked)"/></div>
+        <div class="motion-cover-body">
+          <p class="motion-cover-note">첫 장면과 두 번째 장면은 갤러리 사진 중에서 선택합니다. 마지막 장면은 위의 대표사진을 자동으로 사용합니다.</p>
+          <div class="motion-slot">
+            <div class="motion-slot-head"><span class="motion-slot-title">첫 장면 사진</span><select class="motion-slot-pos" id="motionPos1" onchange="setMotionPosition(1,this.value)"><option value="top">인물 위쪽</option><option value="center" selected>중앙</option><option value="bottom">인물 아래쪽</option></select></div>
+            <div class="motion-thumb-strip" id="motionStrip1"></div>
+          </div>
+          <div class="motion-slot">
+            <div class="motion-slot-head"><span class="motion-slot-title">두 번째 장면 사진</span><select class="motion-slot-pos" id="motionPos2" onchange="setMotionPosition(2,this.value)"><option value="top">인물 위쪽</option><option value="center" selected>중앙</option><option value="bottom">인물 아래쪽</option></select></div>
+            <div class="motion-thumb-strip" id="motionStrip2"></div>
+          </div>
+          <div class="motion-actions"><button type="button" class="motion-preview-btn" id="motionPreviewBtn" onclick="playMotionPreview()">모션 커버 미리보기</button><button type="button" class="motion-reset-btn" onclick="resetMotionCover()">선택 초기화</button></div>
+          <p class="motion-status" id="motionStatus">대표사진과 갤러리 사진 2장을 준비해 주세요.</p>
+        </div>
+      </div>
+
       <!-- 갤러리 업로드 -->
       <div class="fld">
         <label class="fld-label">갤러리 사진 <span class="opt">최대 40장</span></label>
@@ -1958,7 +2451,34 @@ input,select,textarea{font-family:inherit;}
           <div class="msg-card-grid" id="msgCards2"></div>
         </div>
       </div>
-      <div class="fld"><label class="fld-label">인사말</label><p class="fhint msg-edit-hint">선택한 인사말은 자유롭게 수정할 수 있습니다.</p><textarea class="ft ft-msg" id="f_msg" oninput="renderIV()" placeholder="오랜 시간 함께 걸어온 두 사람이&#10;이제 같은 이름으로&#10;새로운 시작을 하려 합니다."></textarea></div>
+      <div class="fld"><label class="fld-label">인사말</label><p class="fhint msg-edit-hint">선택한 인사말은 자유롭게 수정할 수 있습니다.</p><textarea class="ft ft-msg" id="f_msg" oninput="requestEditorRender()" placeholder="오랜 시간 함께 걸어온 두 사람이&#10;이제 같은 이름으로&#10;새로운 시작을 하려 합니다."></textarea></div>
+      <div class="story-editor">
+        <div class="story-editor-head">
+          <div class="story-editor-title"><strong>우리 이야기</strong><span>처음 만난 순간부터 결혼식까지, 기억하고 싶은 장면만 최대 4개 담아보세요.</span></div>
+          <div class="story-editor-toggle"><input type="checkbox" id="f_timeline_enabled" onchange="toggleTimelineBox();requestEditorRender()"/><label for="f_timeline_enabled" aria-label="우리 이야기 사용"></label></div>
+        </div>
+        <div class="story-editor-body" id="storyTimelineBox">
+          <div class="story-edit-list">
+            <div class="story-edit-card" id="storyItemCard1">
+              <div class="story-edit-card-head"><div class="story-edit-card-title"><span class="story-edit-no">01</span><strong>첫 번째 장면</strong></div><label class="story-item-check"><input type="checkbox" id="f_timeline_item_1_enabled" onchange="toggleTimelineItem(1);requestEditorRender()"/><span>사용</span></label></div>
+              <div class="story-edit-grid"><label class="story-edit-field"><span>날짜 또는 시기</span><input class="fi" id="f_timeline_date_1" maxlength="30" placeholder="예: 2021. 05. 17" oninput="requestEditorRender()"/></label><label class="story-edit-field"><span>제목</span><input class="fi" id="f_timeline_title_1" maxlength="40" placeholder="예: 처음 만난 날" oninput="requestEditorRender()"/></label><label class="story-edit-field full"><span>짧은 이야기</span><textarea class="fi" id="f_timeline_text_1" maxlength="120" placeholder="서로의 첫인상이나 기억에 남은 순간을 짧게 적어주세요." oninput="requestEditorRender()"></textarea></label></div>
+            </div>
+            <div class="story-edit-card" id="storyItemCard2">
+              <div class="story-edit-card-head"><div class="story-edit-card-title"><span class="story-edit-no">02</span><strong>두 번째 장면</strong></div><label class="story-item-check"><input type="checkbox" id="f_timeline_item_2_enabled" onchange="toggleTimelineItem(2);requestEditorRender()"/><span>사용</span></label></div>
+              <div class="story-edit-grid"><label class="story-edit-field"><span>날짜 또는 시기</span><input class="fi" id="f_timeline_date_2" maxlength="30" placeholder="예: 2021. 08" oninput="requestEditorRender()"/></label><label class="story-edit-field"><span>제목</span><input class="fi" id="f_timeline_title_2" maxlength="40" placeholder="예: 연인이 된 날" oninput="requestEditorRender()"/></label><label class="story-edit-field full"><span>짧은 이야기</span><textarea class="fi" id="f_timeline_text_2" maxlength="120" placeholder="두 사람만의 특별한 기억을 짧고 자연스럽게 적어주세요." oninput="requestEditorRender()"></textarea></label></div>
+            </div>
+            <div class="story-edit-card" id="storyItemCard3">
+              <div class="story-edit-card-head"><div class="story-edit-card-title"><span class="story-edit-no">03</span><strong>세 번째 장면</strong></div><label class="story-item-check"><input type="checkbox" id="f_timeline_item_3_enabled" onchange="toggleTimelineItem(3);requestEditorRender()"/><span>사용</span></label></div>
+              <div class="story-edit-grid"><label class="story-edit-field"><span>날짜 또는 시기</span><input class="fi" id="f_timeline_date_3" maxlength="30" placeholder="예: 2025. 12. 24" oninput="requestEditorRender()"/></label><label class="story-edit-field"><span>제목</span><input class="fi" id="f_timeline_title_3" maxlength="40" placeholder="예: 함께 약속한 날" oninput="requestEditorRender()"/></label><label class="story-edit-field full"><span>짧은 이야기</span><textarea class="fi" id="f_timeline_text_3" maxlength="120" placeholder="프러포즈나 결혼을 약속한 순간을 적어주세요." oninput="requestEditorRender()"></textarea></label></div>
+            </div>
+            <div class="story-edit-card" id="storyItemCard4">
+              <div class="story-edit-card-head"><div class="story-edit-card-title"><span class="story-edit-no">04</span><strong>네 번째 장면</strong></div><label class="story-item-check"><input type="checkbox" id="f_timeline_item_4_enabled" onchange="toggleTimelineItem(4);requestEditorRender()"/><span>사용</span></label></div>
+              <div class="story-edit-grid"><label class="story-edit-field"><span>날짜 또는 시기</span><input class="fi" id="f_timeline_date_4" maxlength="30" placeholder="예: 2026. 10. 24" oninput="requestEditorRender()"/></label><label class="story-edit-field"><span>제목</span><input class="fi" id="f_timeline_title_4" maxlength="40" placeholder="예: 우리의 결혼식" oninput="requestEditorRender()"/></label><label class="story-edit-field full"><span>짧은 이야기</span><textarea class="fi" id="f_timeline_text_4" maxlength="120" placeholder="소중한 분들과 함께할 결혼식의 의미를 적어주세요." oninput="requestEditorRender()"></textarea></label></div>
+            </div>
+          </div>
+          <p class="story-editor-help">‘사용’을 켠 장면 중 내용이 입력된 항목만 표시됩니다. 순서는 01부터 04까지 자동으로 정리됩니다.</p>
+        </div>
+      </div>
     </div>
 
     <!-- 7. 다국어 -->
@@ -1980,8 +2500,8 @@ input,select,textarea{font-family:inherit;}
         <summary>해외 하객용 장소 표기 수정하기</summary>
         <div class="lang-advanced-body">
           <p class="fhint" style="margin-top:14px;">필요한 경우에만 예식장과 주소 영문 표기를 수정하세요.</p>
-          <div class="fld"><label class="fld-label">예식장 영문 표기 <span class="opt">선택</span></label><input class="fi intl" id="f_venue2" oninput="renderIV()" placeholder="예) The Chapel Cheongdam, Cottage Hall"/></div>
-          <div class="fld"><label class="fld-label">주소 영문 표기 <span class="opt">선택</span></label><textarea class="ft intl" id="f_address2" oninput="renderIV()" placeholder="예) 757 Seolleung-ro, Gangnam-gu, Seoul, Korea" style="min-height:80px;"></textarea></div>
+          <div class="fld"><label class="fld-label">예식장 영문 표기 <span class="opt">선택</span></label><input class="fi intl" id="f_venue2" oninput="requestEditorRender()" placeholder="예) The Chapel Cheongdam, Cottage Hall"/></div>
+          <div class="fld"><label class="fld-label">주소 영문 표기 <span class="opt">선택</span></label><textarea class="ft intl" id="f_address2" oninput="requestEditorRender()" placeholder="예) 757 Seolleung-ro, Gangnam-gu, Seoul, Korea" style="min-height:80px;"></textarea></div>
         </div>
       </details>
     </div>
@@ -2043,7 +2563,7 @@ input,select,textarea{font-family:inherit;}
   <div class="preview" id="preview">
     <button class="prev-close" onclick="togglePreview()">✕</button>
     <div class="prev-label">Live Preview</div>
-    <div class="phone"><div class="scr"><div id="ivRoot"></div><div class="ed-op" id="edOp"></div></div></div>
+    <div class="phone"><div class="scr"><div id="ivRoot"></div><div class="ed-op" id="edOp"></div><div class="ed-motion" id="edMotion" aria-hidden="true"></div></div></div>
     <div class="prev-hint">입력하면 바로 반영됩니다</div>
   </div>
 </div>
@@ -2164,6 +2684,23 @@ input,select,textarea{font-family:inherit;}
   </div>
 </div>
 
+
+<!-- FEATURE27: 하객 사진 승인 관리 모달 -->
+<div class="ov" id="guestPhotoManagerOv">
+  <div class="modal guest-photo-manager-modal">
+    <span class="modal-x" onclick="closeGuestPhotoManager()">×</span>
+    <h3>하객 사진 관리</h3>
+    <p>하객이 올린 사진은 승인하기 전까지 청첩장에 공개되지 않습니다.</p>
+    <div class="guest-photo-manager-toolbar">
+      <span id="guestPhotoManagerSummary">대기 중인 사진을 안전하게 불러옵니다.</span>
+      <button type="button" class="btn btn-ghost btn-sm" id="guestPhotoManagerRefresh" onclick="loadGuestPhotoManager(true)">새로고침</button>
+    </div>
+    <div class="guest-photo-manager-state" id="guestPhotoManagerState">사진 관리 기능을 준비 중입니다.</div>
+    <div class="guest-photo-manager-list" id="guestPhotoManagerList" style="display:none;"></div>
+    <p class="rsvp-manager-privacy">하객이 공유한 사진에는 초상권과 개인정보가 포함될 수 있습니다. 공개 전 내용을 확인하고, 예식 후 불필요한 사진은 삭제해 주세요.</p>
+  </div>
+</div>
+
 <!-- 구매자 인증 후 내 청첩장 수정 모달 -->
 <div class="ov" id="buyerManageOv">
   <div class="modal buyer-manage-modal">
@@ -2184,7 +2721,7 @@ input,select,textarea{font-family:inherit;}
           <input class="fi" id="mv_phone" placeholder="예: 01012345678" maxlength="11" inputmode="numeric" autocomplete="tel"/>
         </div>
       </div>
-      <div class="buyer-manage-error" id="buyerManageErr"></div>
+      <div class="buyer-manage-error" id="buyerManageErr" role="status" aria-live="polite"></div>
       <div class="buyer-manage-actions">
         <button type="button" class="btn btn-gold" id="buyerManageVerifyBtn" onclick="verifyBuyerForManage()">구매 확인 후 청첩장 찾기</button>
         <button type="button" class="btn btn-ghost" onclick="closeBuyerManage()">취소</button>
@@ -2218,14 +2755,14 @@ input,select,textarea{font-family:inherit;}
     <div class="order-form">
       <div>
         <label class="fld-label">구매자 이름 *</label>
-        <input id="ov_buyer_name" placeholder="주문하신 분의 이름" maxlength="20"/>
+        <input id="ov_buyer_name" placeholder="주문하신 분의 이름" maxlength="20" autocomplete="name"/>
       </div>
       <div>
         <label class="fld-label">휴대폰번호 *</label>
-        <input id="ov_phone" placeholder="예: 01012345678" maxlength="11" inputmode="numeric"/>
+        <input id="ov_phone" placeholder="예: 01012345678" maxlength="11" inputmode="numeric" autocomplete="tel"/>
       </div>
     </div>
-    <div class="order-err" id="orderErr"></div>
+    <div class="order-err" id="orderErr" role="status" aria-live="polite"></div>
     <button class="btn btn-gold" style="width:100%;margin-bottom:10px;" id="orderVerifyBtn" onclick="verifyOrder()">구매 확인하기</button>
     <button class="btn btn-ghost" style="width:100%;font-size:13px;" onclick="closeOrderModal()">취소</button>
   </div>
@@ -2273,6 +2810,10 @@ const BUYER_MANAGE_SESSION_STORE='wedding:buyerManageSession:v1';
 let _verifiedBuyerKey=null;
 let _buyerManageToken=null;
 let _buyerManageMode=false;
+/* V26: 인증 요청 수명주기 번호. 모달을 닫거나 다른 인증을 시작하면 이전 응답을 무시해
+   닫힌 화면에서 뒤늦게 발행/수정 화면이 열리는 경합을 막는다. */
+let _orderVerifySeq=0;
+let _buyerManageVerifySeq=0;
 
 /* ===== 상태 ===== */
 const ST={
@@ -2299,6 +2840,8 @@ const ST={
   shareSourceUrl:null,
   shareUploadNeeded:true,
   galleryLayout:'masonry',
+  /* 프리미엄 모션 커버 — 지원 3개 템플릿에서 갤러리 token으로 선택을 추적해 업로드/삭제 중 인덱스 혼입을 막는다. */
+  motionCover:{enabled:false,photo1Token:null,photo2Token:null,pos1:'center',pos2:'center'},
   /* 로그인 없이 Storage 경로를 구분하기 위한 세션 고유 ID */
   anonId: (()=>{
     let id=sessionStorage.getItem('_anon_id');
@@ -2619,7 +3162,7 @@ function pickTheme(t){
     if(V('f_opening'))V('f_opening').value=d.opening;
     if(typeof renderFonts==='function')renderFonts();
   }
-  renderTemplates();renderIV(true);queueDraftSave();
+  renderTemplates();requestEditorRender(true);renderMotionCoverEditor();queueDraftSave();
 }
 
 
@@ -2628,7 +3171,7 @@ function pickLayout(l,el){
   ST.galleryLayout=l;
   document.querySelectorAll('.lp-item').forEach(i=>i.classList.remove('on'));
   el.classList.add('on');
-  renderIV();queueDraftSave();
+  requestEditorRender();queueDraftSave();
 }
 
 /* ===== 기능 토글 ===== */
@@ -2637,6 +3180,7 @@ const TOGGLES=[
   {id:'o_gallery',label:'화보 갤러리',desc:'웨딩 화보를 더욱 아름답게 감상할 수 있습니다',def:true},
   {id:'o_rsvp',label:'참석 안내',desc:'소중한 분들의 참석 여부를 미리 확인할 수 있습니다',def:true},
   {id:'o_guest',label:'축하의 글',desc:'축복과 응원의 메시지를 받을 수 있습니다',def:true},
+  {id:'o_guest_photo',label:'하객 사진 공유',desc:'하객이 촬영한 사진을 받아 승인 후 함께 볼 수 있습니다',def:false},
   {id:'o_account',label:'마음 전하실 곳',desc:'마음을 전하실 분들을 위해 계좌를 안내합니다',def:true},
   {id:'o_video',label:'동영상',desc:'식전 영상이나 두 분의 영상을 청첩장에 담을 수 있습니다',def:false},
   {id:'o_music',label:'배경음악',desc:'청첩장에 어울리는 음악을 함께 전할 수 있습니다',def:false},
@@ -2645,8 +3189,12 @@ function renderToggles(){
   V('tglList').innerHTML=TOGGLES.map(t=>`
     <div class="tgl">
       <div class="tgl-info"><div class="tl">${t.label}</div><div class="td">${t.desc}</div></div>
-      <div class="sw"><input type="checkbox" id="${t.id}" ${t.def?'checked':''} onchange="${t.id==='o_music'?'toggleMusicBox();':(t.id==='o_video'?'toggleVideoBox();':'')} renderIV()"/><label for="${t.id}"></label></div>
-    </div>${t.id==='o_video'?`<div class="video-url-box" id="videoUrlBox">
+      <div class="sw"><input type="checkbox" id="${t.id}" ${t.def?'checked':''} onchange="${t.id==='o_music'?'toggleMusicBox();':(t.id==='o_video'?'toggleVideoBox();':(t.id==='o_guest_photo'?'toggleGuestPhotoBox();':''))} requestEditorRender()"/><label for="${t.id}"></label></div>
+    </div>${t.id==='o_guest_photo'?`<div class="guest-photo-config-box" id="guestPhotoConfigBox" aria-live="polite">
+      <div class="guest-photo-config-meta" aria-label="하객 사진 공유 조건"><span>사진만</span><span>최대 10장</span><span>승인 후 공개</span></div>
+      <p class="guest-photo-config-desc">하객은 한 번에 최대 3장을 올릴 수 있으며, 승인한 사진만 청첩장에 공개됩니다.</p>
+      <div class="guest-photo-manage-row" id="guestPhotoManageRow" hidden><div class="guest-photo-manage-note" id="guestPhotoManageNote">승인 대기 사진을 확인하고 관리할 수 있습니다.</div><button type="button" class="guest-photo-manage-btn" id="guestPhotoManageBtn" onclick="openGuestPhotoManager()">사진 관리</button></div>
+    </div>`:t.id==='o_video'?`<div class="video-url-box" id="videoUrlBox">
       <div class="video-config-card">
         <div class="video-config-grid">
           <label class="video-config-field"><span>YouTube 영상 주소</span><input class="fi" id="f_video_url" inputmode="url" autocomplete="off" placeholder="https://www.youtube.com/watch?v=..." oninput="onVideoInput()"/></label>
@@ -2703,10 +3251,107 @@ function renderVideoEditorPreview(){
   if(!id){box.innerHTML='<div class="video-preview-error">지원되는 YouTube 주소인지 확인해 주세요.<br>일반 영상·Shorts 주소를 사용할 수 있습니다.</div>';return;}
   box.innerHTML='<div class="video-editor-frame"><iframe src="'+youtubeEmbedUrl(id)+'" title="YouTube 영상 미리보기" loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>';
 }
-function onVideoInput(){renderVideoEditorPreview();renderIV();queueDraftSave();}
+var _videoEditorPreviewTimer=null;
+function onVideoInput(){
+  if(_videoEditorPreviewTimer)clearTimeout(_videoEditorPreviewTimer);
+  _videoEditorPreviewTimer=setTimeout(renderVideoEditorPreview,320);
+  requestEditorRender();
+}
+function toggleCoupleIntroBox(){
+  const box=V('coupleIntroBox'),on=!!(V('f_couple_intro_enabled')&&V('f_couple_intro_enabled').checked);
+  if(box)box.classList.toggle('show',on);
+}
+function toggleTimelineItem(slot){
+  const on=!!(V('f_timeline_item_'+slot+'_enabled')&&V('f_timeline_item_'+slot+'_enabled').checked);
+  const card=V('storyItemCard'+slot);if(card)card.classList.toggle('off',!on);
+  ['date','title','text'].forEach(function(k){const el=V('f_timeline_'+k+'_'+slot);if(el)el.disabled=!on;});
+}
+function toggleTimelineBox(){
+  const box=V('storyTimelineBox'),on=!!(V('f_timeline_enabled')&&V('f_timeline_enabled').checked);
+  if(box)box.classList.toggle('show',on);
+  for(let i=1;i<=4;i++)toggleTimelineItem(i);
+}
+function getTimelineEditorItems(escapeValues){
+  const items=[];
+  if(!(V('f_timeline_enabled')&&V('f_timeline_enabled').checked))return items;
+  for(let i=1;i<=4;i++){
+    if(!(V('f_timeline_item_'+i+'_enabled')&&V('f_timeline_item_'+i+'_enabled').checked))continue;
+    let date=(val('f_timeline_date_'+i)||'').trim().slice(0,30);
+    let title=(val('f_timeline_title_'+i)||'').trim().slice(0,40);
+    let text=(val('f_timeline_text_'+i)||'').trim().slice(0,120);
+    if(!date&&!title&&!text)continue;
+    if(escapeValues){date=esc(date);title=esc(title);text=esc(text);}
+    items.push({slot:i,date:date,title:title,text:text});
+  }
+  return items;
+}
+
 function toggleVideoBox(){
   const b=V('videoUrlBox');if(b)b.style.display=chk('o_video')?'block':'none';
   if(chk('o_video'))renderVideoEditorPreview();
+}
+
+function toggleGuestPhotoBox(){
+  const box=V('guestPhotoConfigBox'),on=chk('o_guest_photo'),toggle=V('o_guest_photo');
+  if(box)box.classList.toggle('show',on);
+  if(toggle)toggle.setAttribute('aria-expanded',on?'true':'false');
+  const row=V('guestPhotoManageRow'),btn=V('guestPhotoManageBtn'),note=V('guestPhotoManageNote');
+  const canManage=!!(editSlug&&(editCode||_buyerManageToken));
+  if(row)row.hidden=!canManage;
+  if(btn)btn.disabled=!canManage;
+  if(note)note.textContent='승인 대기 사진을 확인하고 관리할 수 있습니다.';
+}
+let _guestPhotoManagerItems=[],_guestPhotoManagerBusy=false;
+async function _guestPhotoManagerFetch(body,timeoutMs=15000){
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
+  try{return await fetch('/api/guest-photo-manage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:controller.signal});}
+  catch(error){if(error&&error.name==='AbortError')throw new Error('사진 관리 서버 응답이 지연되고 있습니다.');throw error;}
+  finally{clearTimeout(timer);}
+}
+function _guestPhotoManagerAuth(){return {slug:editSlug||'',editCode:editCode||'',manageToken:_buyerManageToken||''};}
+function openGuestPhotoManager(){
+  if(!editSlug||(!editCode&&!_buyerManageToken)){alert('발행된 청첩장의 수정 화면에서 사용할 수 있습니다.');return;}
+  const ov=V('guestPhotoManagerOv');if(ov)ov.classList.add('show');
+  loadGuestPhotoManager(false);
+}
+function closeGuestPhotoManager(){const ov=V('guestPhotoManagerOv');if(ov)ov.classList.remove('show');}
+function _guestPhotoStatusLabel(v){return v==='approved'?'공개 중':(v==='rejected'?'삭제됨':'승인 대기');}
+function renderGuestPhotoManager(){
+  const list=V('guestPhotoManagerList'),state=V('guestPhotoManagerState'),summary=V('guestPhotoManagerSummary');
+  if(!list||!state)return;
+  const pending=_guestPhotoManagerItems.filter(x=>x.status==='pending').length;
+  const approved=_guestPhotoManagerItems.filter(x=>x.status==='approved').length;
+  if(summary)summary.textContent=`승인 대기 ${pending}장 · 공개 중 ${approved}장`;
+  if(!_guestPhotoManagerItems.length){list.style.display='none';state.style.display='block';state.textContent='아직 하객이 올린 사진이 없습니다.';return;}
+  state.style.display='none';list.style.display='grid';
+  list.innerHTML=_guestPhotoManagerItems.map(function(it){
+    const url=safeUrl(it.url||''),name=esc(it.guestName||'이름 미입력'),date=it.createdAt?new Date(it.createdAt).toLocaleString('ko-KR'):'';
+    return `<div class="guest-photo-manager-card">${url?`<img src="${url}" alt="하객 공유 사진" loading="lazy"/>`:`<div class="guest-photo-manager-state">사진을 불러올 수 없습니다.</div>`}<div class="guest-photo-manager-meta"><div class="guest-photo-manager-name">${name}</div><div class="guest-photo-manager-date">${esc(date)}</div><span class="guest-photo-manager-status ${esc(it.status)}">${_guestPhotoStatusLabel(it.status)}</span><div class="guest-photo-manager-actions">${it.status!=='approved'?`<button type="button" class="approve" onclick="manageGuestPhoto('approve','${it.id}')">승인</button>`:''}${it.status!=='rejected'?`<button type="button" class="danger" onclick="manageGuestPhoto('reject','${it.id}')">거절</button>`:''}<button type="button" class="danger" onclick="manageGuestPhoto('delete','${it.id}')">삭제</button></div></div></div>`;
+  }).join('');
+}
+async function loadGuestPhotoManager(force){
+  const state=V('guestPhotoManagerState'),list=V('guestPhotoManagerList'),refresh=V('guestPhotoManagerRefresh');
+  if(_guestPhotoManagerBusy&&!force)return;
+  _guestPhotoManagerBusy=true;if(refresh)refresh.disabled=true;
+  if(state){state.style.display='block';state.textContent='하객 사진을 불러오는 중입니다.';}if(list)list.style.display='none';
+  try{
+    const response=await _guestPhotoManagerFetch({..._guestPhotoManagerAuth(),action:'list'});
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok||!data.ok)throw new Error(data.error||'LOAD_FAILED');
+    _guestPhotoManagerItems=Array.isArray(data.items)?data.items:[];renderGuestPhotoManager();
+  }catch(e){if(state){state.style.display='block';state.textContent=e&&e.message&&e.message!=='LOAD_FAILED'?e.message:'사진 관리 정보를 불러오지 못했습니다. Preview 서버 설정과 Supabase 설치 상태를 확인해 주세요.';}}
+  finally{_guestPhotoManagerBusy=false;if(refresh)refresh.disabled=false;}
+}
+async function manageGuestPhoto(action,id){
+  if(_guestPhotoManagerBusy)return;
+  const msg=action==='approve'?'이 사진을 청첩장에 공개할까요?':(action==='reject'?'이 사진을 거절하고 저장 파일을 삭제할까요?':'이 사진을 완전히 삭제할까요?');
+  if(!confirm(msg))return;
+  _guestPhotoManagerBusy=true;document.querySelectorAll('#guestPhotoManagerList button').forEach(b=>b.disabled=true);
+  try{
+    const response=await _guestPhotoManagerFetch({..._guestPhotoManagerAuth(),action:action,id:id});
+    const data=await response.json().catch(()=>({}));if(!response.ok||!data.ok)throw new Error(data.error||'MANAGE_FAILED');
+    _guestPhotoManagerBusy=false;await loadGuestPhotoManager(true);
+  }catch(e){_guestPhotoManagerBusy=false;document.querySelectorAll('#guestPhotoManagerList button').forEach(b=>b.disabled=false);alert(e&&e.message&&e.message!=='MANAGE_FAILED'?e.message:'사진 처리에 실패했습니다. 잠시 후 다시 시도해 주세요.');}
 }
 function toggleMusicBox(){
   const b=V('musicUrlBox');if(b)b.style.display=chk('o_music')?'block':'none';
@@ -2764,7 +3409,7 @@ function pickBgmPreset(k){
   ST_bgmMode='preset'; ST_bgmPreset=k;
   if(V('f_bgm_url'))V('f_bgm_url').value='';
   _bgmNotice('');
-  renderBgmPresets(); renderIV();queueDraftSave();
+  renderBgmPresets(); requestEditorRender();queueDraftSave();
 }
 function onBgmUrlInput(){
   var v=V('f_bgm_url')?V('f_bgm_url').value.trim():'';
@@ -2772,7 +3417,7 @@ function onBgmUrlInput(){
   if(v){ ST_bgmMode='custom'; ST_bgmPreset=''; }
   else if(ST_bgmMode==='custom'){ ST_bgmMode='none'; }
   _bgmNotice('');
-  renderBgmPresets(); renderIV();queueDraftSave();
+  renderBgmPresets(); requestEditorRender();queueDraftSave();
 }
 function _startBgmPreview(src,key){
   if(_previewKey===key&&_previewAudio){ stopPreviewBgm(); return; }
@@ -2871,7 +3516,7 @@ const SAMPLES={
   catholic:'하느님의 축복 안에서\n새로운 삶을 시작하려 합니다.\n\n소중한 자리에 함께해 주시어\n축복해 주시면 감사하겠습니다.',
   buddhist:'소중한 인연으로 만나\n이제 한 길을 함께 걷고자 합니다.\n\n귀한 걸음으로 함께해 주시면\n감사하겠습니다.'
 };
-function applySample(k){if(SAMPLES[k]&&V('f_msg')){V('f_msg').value=SAMPLES[k];renderIV();}}
+function applySample(k){if(SAMPLES[k]&&V('f_msg')){V('f_msg').value=SAMPLES[k];requestEditorRender();}}
 /* Step6 보조 언어 기본 인사말 */
 const LANG2_SAMPLES={
   en:'We would be honored\nto celebrate with you.',
@@ -2978,7 +3623,7 @@ function onLang2Change(){
     if(V('f_msg2'))V('f_msg2').value='';
     if(V('f_venue2'))V('f_venue2').value='';
     if(V('f_address2'))V('f_address2').value='';
-    renderIV();
+    requestEditorRender();
     return;
   }
   var ta=V('f_msg2');
@@ -2996,9 +3641,9 @@ function onLang2Change(){
     var sa=suggestAddressEn();
     if(sa)addr2.value=sa;
   }
-  renderIV();
+  requestEditorRender();
 }
-function onMsg2Input(){ renderIV(); }
+function onMsg2Input(){ requestEditorRender(); }
 /* 영문 표기 품질 판별: 미리보기 표시 여부에만 사용 (입력값은 절대 지우지 않음) */
 function _isWeakEn(v){
   if(!v)return true;
@@ -3146,7 +3791,7 @@ async function upMain(i){
         `<div class="rm" onclick="rmMain()">×</div></div>`+
         `<div class="mp-side"><p class="up-status" id="upMainStatus">업로드 중...</p>`+
         `<p class="mp-note">이 사진이 청첩장 첫 화면에 사용되며 카카오 미리보기의 기본 사진으로 연결됩니다.</p></div></div>`;
-      renderIV();
+      renderMotionCoverEditor();requestEditorRender();
     });
     const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
     const url=await uploadFile(file,`${ST.anonId}/main_${uploadToken}.${ext}`);
@@ -3179,7 +3824,7 @@ function rmMain(){
   if(V('mainPreview'))V('mainPreview').innerHTML='';
   if(V('upMain'))V('upMain').value='';
   if(ST.shareSource!=='custom')_setSharePhoto(null,'main',null,false);
-  renderIV();queueDraftSave();
+  renderMotionCoverEditor();requestEditorRender();queueDraftSave();
 }
 
 const _galleryUploadBatches=new Set();
@@ -3249,7 +3894,7 @@ function _trackGalleryBatch(promise){
   promise.finally(function(){
     _galleryUploadBatches.delete(promise);
     updateGalleryUploadStatus();
-    renderGal();renderIV();queueDraftSave();
+    renderGal();requestEditorRender();queueDraftSave();
   });
   return promise;
 }
@@ -3287,7 +3932,7 @@ async function upGal(i){
       ST.galleryTokens.push(token);
       items.push({file:files[j],token});
     }
-    renderGal();renderIV();queueDraftSave();
+    renderGal();requestEditorRender();queueDraftSave();
     batch=_runGalleryUploadBatch(items);
     _trackGalleryBatch(batch);
   }catch(e){
@@ -3306,6 +3951,7 @@ function renderGal(){
     `<div class="pthumb"><img src="${s}" alt="갤러리${i+1}" loading="lazy" decoding="async"/><div class="rm" onclick="rmGal(${i})">×</div></div>`
   ).join('');
   updateLayoutThumbs();
+  renderMotionCoverEditor();
 }
 function updateLayoutThumbs(){
   var imgs=(ST.gallery||[]).slice(0,6);
@@ -3321,12 +3967,129 @@ function updateLayoutThumbs(){
 function rmGal(i){
   /* 네 배열은 항상 같은 사진을 가리킨다. 업로드 중이어도 token으로 결과 혼입을 막는다. */
   var preview=ST.gallery[i];
+  var removedToken=ST.galleryTokens[i]||null;
   if(typeof preview==='string'&&preview.startsWith('blob:')){try{URL.revokeObjectURL(preview);}catch(e){}}
   ST.gallery.splice(i,1);
   ST.galleryUrls.splice(i,1);
   ST.galleryFiles.splice(i,1);
   ST.galleryTokens.splice(i,1);
-  renderGal();renderIV();queueDraftSave();updateGalleryUploadStatus();
+  if(removedToken&&ST.motionCover){
+    if(ST.motionCover.photo1Token===removedToken)ST.motionCover.photo1Token=null;
+    if(ST.motionCover.photo2Token===removedToken)ST.motionCover.photo2Token=null;
+  }
+  renderGal();renderMotionCoverEditor();requestEditorRender();queueDraftSave();updateGalleryUploadStatus();
+}
+
+/* ===== 프리미엄 모션 커버: Signature · Fullscreen · Black ===== */
+function _motionThemeSupported(theme){return theme==='signature'||theme==='fullscreen'||theme==='black';}
+function _motionThemeMeta(theme){
+  if(theme==='signature')return{badge:'SIGNATURE · PORTRAIT',desc:'고객 웨딩사진 2장과 대표사진을 부드럽게 연결해 약 6.5초의 웨딩 화보형 오프닝을 만듭니다.'};
+  if(theme==='fullscreen')return{badge:'FULLSCREEN · CINEMA',desc:'고객 웨딩사진을 영화 컷처럼 보여준 뒤 실제 시네마 타이틀 첫 화면으로 자연스럽게 연결합니다.'};
+  if(theme==='black')return{badge:'BLACK · NOIR',desc:'고객 야간·호텔 웨딩사진을 깊은 디졸브로 연결한 뒤 실제 블랙 포스터 첫 화면에 정착합니다.'};
+  return{badge:'3개 프리미엄 템플릿',desc:'웨딩화보형, 시네마형, 호텔·야간형에서 고객님의 웨딩사진으로 템플릿별 모션 커버를 만들 수 있습니다.'};
+}
+function _motionPosCss(v){return v==='top'?'center 26%':(v==='bottom'?'center 72%':'center 48%');}
+function _motionIndexByToken(token){return token?ST.galleryTokens.indexOf(token):-1;}
+function _motionPhotoByToken(token){const i=_motionIndexByToken(token);return i>=0?(ST.gallery[i]||ST.galleryUrls[i]||''):'';}
+function _motionUrlByToken(token,urls){const i=_motionIndexByToken(token);return i>=0?safeUrl((urls||ST.galleryUrls)[i]||''):'';}
+function _motionReady(){
+  if(!ST.motionCover||!ST.motionCover.enabled||!_motionThemeSupported(ST.theme))return false;
+  const a=_motionPhotoByToken(ST.motionCover.photo1Token),b=_motionPhotoByToken(ST.motionCover.photo2Token);
+  return !!(ST.mainPhoto&&a&&b&&ST.motionCover.photo1Token!==ST.motionCover.photo2Token);
+}
+function _motionThumbHtml(slot,src,token,selected,index){
+  return `<button type="button" class="motion-thumb${selected?' on':''}" onclick="pickMotionPhoto(${slot},'${esc(token)}')" aria-label="갤러리 ${index+1}번 사진 선택"><img src="${src}" alt="갤러리 ${index+1}번" loading="lazy" decoding="async"/></button>`;
+}
+function renderMotionCoverEditor(){
+  const box=V('motionCoverEditor');if(!box)return;
+  const mc=ST.motionCover||(ST.motionCover={enabled:false,photo1Token:null,photo2Token:null,pos1:'center',pos2:'center'});
+  const locked=!_motionThemeSupported(ST.theme),meta=_motionThemeMeta(ST.theme);
+  /* 지원하지 않는 템플릿으로 바꾸면 모션만 자동 OFF. 선택 사진은 보존해 다시 지원 템플릿에서 재사용한다. */
+  if(locked&&mc.enabled)mc.enabled=false;
+  box.classList.toggle('locked',locked);box.classList.toggle('on',!!mc.enabled&&!locked);
+  if(V('motionCoverBadge'))V('motionCoverBadge').textContent=meta.badge;
+  if(V('motionCoverDesc'))V('motionCoverDesc').textContent=meta.desc;
+  if(V('motionThemeLock'))V('motionThemeLock').textContent='웨딩화보형(Signature), 시네마형(Fullscreen), 호텔·야간형(Black)에서 사용할 수 있습니다. 현재 템플릿의 기존 화면과 오프닝은 변경되지 않습니다.';
+  const toggle=V('motionCoverEnabled');if(toggle)toggle.checked=!!mc.enabled;
+  const p1=V('motionPos1'),p2=V('motionPos2');if(p1)p1.value=mc.pos1||'center';if(p2)p2.value=mc.pos2||'center';
+  const empty='<div class="motion-empty">먼저 아래 갤러리에 웨딩사진을 2장 이상 올려 주세요.</div>';
+  const html1=ST.gallery.length?ST.gallery.map((src,i)=>_motionThumbHtml(1,src,ST.galleryTokens[i],mc.photo1Token===ST.galleryTokens[i],i)).join(''):empty;
+  const html2=ST.gallery.length?ST.gallery.map((src,i)=>_motionThumbHtml(2,src,ST.galleryTokens[i],mc.photo2Token===ST.galleryTokens[i],i)).join(''):empty;
+  if(V('motionStrip1'))V('motionStrip1').innerHTML=html1;
+  if(V('motionStrip2'))V('motionStrip2').innerHTML=html2;
+  const ready=_motionReady();
+  const btn=V('motionPreviewBtn');if(btn)btn.disabled=!ready;
+  const status=V('motionStatus');if(status){
+    if(locked)status.textContent='';
+    else if(!mc.enabled)status.textContent='사용함을 켜면 현재 템플릿 전용 모션 오프닝을 만들 수 있습니다.';
+    else if(!ST.mainPhoto)status.textContent='먼저 위에서 대표사진을 올려 주세요.';
+    else if(!mc.photo1Token||!mc.photo2Token)status.textContent='갤러리에서 첫 장면과 두 번째 장면을 각각 선택해 주세요.';
+    else if(mc.photo1Token===mc.photo2Token)status.textContent='서로 다른 사진 2장을 선택해 주세요.';
+    else status.textContent='준비 완료. 미리보기에서 사진 크롭과 실제 첫 화면 연결을 확인해 주세요.';
+  }
+}
+function toggleMotionCover(on){
+  ST.motionCover.enabled=!!on;
+  if(on&&!_motionThemeSupported(ST.theme))ST.motionCover.enabled=false;
+  renderMotionCoverEditor();queueDraftSave();
+}
+function pickMotionPhoto(slot,token){
+  if(!ST.motionCover||!_motionThemeSupported(ST.theme))return;
+  if(slot===1)ST.motionCover.photo1Token=token||null;else ST.motionCover.photo2Token=token||null;
+  renderMotionCoverEditor();queueDraftSave();
+}
+function setMotionPosition(slot,value){
+  const v=(value==='top'||value==='bottom')?value:'center';
+  if(slot===1)ST.motionCover.pos1=v;else ST.motionCover.pos2=v;
+  queueDraftSave();
+}
+function resetMotionCover(){
+  ST.motionCover.photo1Token=null;ST.motionCover.photo2Token=null;ST.motionCover.pos1='center';ST.motionCover.pos2='center';
+  renderMotionCoverEditor();queueDraftSave();
+}
+function stopMotionPreview(){
+  const eo=V('edMotion');if(!eo)return;
+  if(eo._t)clearTimeout(eo._t);eo._t=null;eo.className='ed-motion';eo.innerHTML='';eo.setAttribute('aria-hidden','true');
+}
+function _motionPreviewDate(){let dt='';const raw=val('f_date');if(raw){const d=new Date(raw+'T00:00:00');if(!isNaN(d.getTime()))dt=`${d.getFullYear()} · ${String(d.getMonth()+1).padStart(2,'0')} · ${String(d.getDate()).padStart(2,'0')}`;}return dt;}
+function playMotionPreview(){
+  if(!_motionReady()){renderMotionCoverEditor();return;}
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches){alert('현재 기기의 애니메이션 줄이기 설정이 켜져 있어 모션 미리보기를 재생하지 않습니다.');return;}
+  const a=_motionPhotoByToken(ST.motionCover.photo1Token),b=_motionPhotoByToken(ST.motionCover.photo2Token),c=ST.mainPhoto;
+  const g=esc(val('f_groom')||'민준'),br=esc(val('f_bride')||'서연'),order=val('f_order')||'gb';
+  const ef=order==='gb'?g:br,es=order==='gb'?br:g,theme=ST.theme;
+  const dt=_motionPreviewDate(),tm=fmtTime(val('f_time'));
+  const raw=val('f_date');let cineDt='',cineWd='';if(raw){const d=new Date(raw+'T00:00:00');if(!isNaN(d.getTime())){cineDt=`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;cineWd=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'][d.getDay()];}}
+  const eo=V('edMotion');if(!eo)return;stopMotionPreview();
+  if(theme==='fullscreen'){
+    eo.innerHTML=`<div class="em-scene em-scene-1" style="background-image:url('${a}');background-position:${_motionPosCss(ST.motionCover.pos1)}"></div><div class="em-scene em-scene-2" style="background-image:url('${b}');background-position:${_motionPosCss(ST.motionCover.pos2)}"></div><div class="em-scene em-scene-3" style="background-image:url('${c}');background-position:center 50%"></div><div class="em-cine-beat"></div><div class="em-cine-final"><div class="em-cine-frame" aria-hidden="true"></div><div class="em-cine-word" aria-hidden="true">WEDDING</div><div class="em-cine-label">A WEDDING FILM</div><div class="em-cine-title"><div class="em-cine-names"><span>${ef}</span><span class="em-cine-dot">·</span><span>${es}</span></div></div><div class="em-cine-meta"><div class="em-cine-row">${cineDt?`<span>${cineDt}</span>`:''}${cineDt&&cineWd?'<span class="em-cine-meta-dot"></span>':''}${cineWd?`<span>${cineWd}</span>`:''}</div>${tm?`<div class="em-cine-time">${tm}</div>`:''}</div></div><button type="button" class="em-skip" onclick="stopMotionPreview()">건너뛰기</button>`;
+    eo.className='ed-motion show motion-fullscreen';eo._t=setTimeout(stopMotionPreview,7750);
+  }else if(theme==='black'){
+    const bkDate=dt.replace(/ · /g,'. ');
+    eo.innerHTML=`<div class="em-scene em-scene-1" style="background-image:url('${a}');background-position:${_motionPosCss(ST.motionCover.pos1)}"></div><div class="em-scene em-scene-2" style="background-image:url('${b}');background-position:${_motionPosCss(ST.motionCover.pos2)}"></div><div class="em-black-final"><div class="em-black-photo-area"><div class="em-black-photo" style="background-image:url('${c}')"></div><div class="em-black-glow"></div><div class="em-black-fade"></div></div><div class="em-black-info"><div class="em-black-rule"></div><div class="em-black-names"><span>${ef}</span><span class="em-black-dot">·</span><span>${es}</span></div><div class="em-black-when">${bkDate?`<div class="em-black-date">${bkDate}</div>`:''}${tm?`<div class="em-black-time">${tm}</div>`:''}</div></div></div><button type="button" class="em-skip" onclick="stopMotionPreview()">건너뛰기</button>`;
+    eo.className='ed-motion show motion-black';eo._t=setTimeout(stopMotionPreview,7450);
+  }else{
+    eo.innerHTML=`<div class="em-scene em-scene-1" style="background-image:url('${a}');background-position:${_motionPosCss(ST.motionCover.pos1)}"></div><div class="em-scene em-scene-2" style="background-image:url('${b}');background-position:${_motionPosCss(ST.motionCover.pos2)}"></div><div class="em-scene em-scene-3" style="background-image:url('${c}');background-position:center 52%"></div><div class="em-signature-grain" aria-hidden="true"></div><div class="em-signature-flash" aria-hidden="true"></div><div class="em-final"><div class="em-names"><span>${ef}</span><span>${es}</span></div>${dt?`<div class="em-date">${dt}</div>`:''}${tm?`<div class="em-time">${tm}</div>`:''}</div><button type="button" class="em-skip" onclick="stopMotionPreview()">건너뛰기</button>`;
+    eo.className='ed-motion show motion-signature';eo._t=setTimeout(stopMotionPreview,7450);
+  }
+  eo.setAttribute('aria-hidden','false');void eo.offsetWidth;
+}
+function getMotionDraftData(){
+  const mc=ST.motionCover||{};
+  return {enabled:!!mc.enabled,photo1Url:_motionUrlByToken(mc.photo1Token),photo2Url:_motionUrlByToken(mc.photo2Token),pos1:mc.pos1||'center',pos2:mc.pos2||'center'};
+}
+function restoreMotionCoverFromUrls(cfg){
+  cfg=cfg&&typeof cfg==='object'?cfg:{};
+  const findToken=function(url){url=safeUrl(url||'');if(!url)return null;const i=ST.galleryUrls.findIndex(function(u){return safeUrl(u)===url;});return i>=0?ST.galleryTokens[i]:null;};
+  ST.motionCover={enabled:cfg.enabled===true,photo1Token:findToken(cfg.photo1_url||cfg.photo1Url),photo2Token:findToken(cfg.photo2_url||cfg.photo2Url),pos1:(cfg.pos1==='top'||cfg.pos1==='bottom')?cfg.pos1:'center',pos2:(cfg.pos2==='top'||cfg.pos2==='bottom')?cfg.pos2:'center'};
+  renderMotionCoverEditor();
+}
+function getMotionPublishConfig(galleryUrls,mainUrl){
+  const mc=ST.motionCover||{};
+  if(!_motionThemeSupported(ST.theme)||mc.enabled!==true)return null;
+  const p1=_motionUrlByToken(mc.photo1Token,galleryUrls),p2=_motionUrlByToken(mc.photo2Token,galleryUrls),main=safeUrl(mainUrl||'');
+  if(!p1||!p2||!main||p1===p2)return null;
+  return {enabled:true,version:2,photo_urls:[p1,p2],positions:[mc.pos1||'center',mc.pos2||'center']};
 }
 
 /* ===== 날짜 ===== */
@@ -3378,7 +4141,7 @@ function renderFonts(){
 function pickFont(id){
   if(V('f_font'))V('f_font').value=id;
   renderFonts();
-  renderIV();queueDraftSave();
+  requestEditorRender();queueDraftSave();
 }
 
 /* 사진 없을 때 고급스러운 fallback (가는 선 꽃 모티브) */
@@ -3786,7 +4549,7 @@ function updateKShare(namesPlain, photo){
 function pickAmb(v){
   var sel=V('f_particle'); if(sel)sel.value=v;
   syncAmbCards();
-  renderIV();queueDraftSave();
+  requestEditorRender();queueDraftSave();
 }
 function syncAmbCards(){
   var sel=V('f_particle'); if(!sel)return;
@@ -3816,9 +4579,19 @@ function _previewFallbackCopy(txt){
   if(ta&&ta.parentNode)ta.parentNode.removeChild(ta);
   return ok;
 }
+function _previewAccountCopyText(btn){
+  var d=btn&&btn.dataset?btn.dataset:{};
+  var bank=String(d.bank||'').trim(),acc=String(d.acc||'').trim(),holder=String(d.holder||'').trim();
+  if(!acc)return'';
+  var parts=[];
+  if(bank)parts.push(bank);
+  parts.push(acc);
+  if(holder)parts.push('(예금주: '+holder+')');
+  return parts.join(' ');
+}
 function copyPreviewAccount(btn,ev){
   if(ev){ev.preventDefault();ev.stopPropagation();}
-  var txt=(btn&&btn.dataset&&btn.dataset.acc)||'';
+  var txt=_previewAccountCopyText(btn);
   if(!txt)return;
   var done=function(ok){
     if(!ok)return;
@@ -3847,7 +4620,58 @@ function flushAccountRender(){
   if(_accountRenderTimer){clearTimeout(_accountRenderTimer);_accountRenderTimer=null;}
   if(!_accountRenderDirty)return;
   _accountRenderDirty=false;
-  renderIV();
+  requestEditorRender();
+}
+
+/* ===== 모바일 에디터 미리보기 지연 렌더 =====
+   모바일에서는 편집 화면과 미리보기가 동시에 보이지 않는다.
+   따라서 입력/선택 때마다 숨겨진 청첩장 전체 DOM을 다시 만들지 않고,
+   미리보기를 여는 순간 최신 값으로 한 번만 렌더링한다.
+   PC에서는 기존 Live Preview를 그대로 유지한다. */
+var _editorPreviewDirty=false;
+var _editorPreviewPlayOp=false;
+var _editorShareMetaTimer=null;
+function _isMobileEditor(){
+  return !!(window.matchMedia&&window.matchMedia('(max-width:1024px)').matches);
+}
+function _isEditorPreviewOpen(){
+  var p=V('preview');
+  return !!(p&&p.classList.contains('show'));
+}
+function _syncEditorShareMetaNow(){
+  if(_editorShareMetaTimer){clearTimeout(_editorShareMetaTimer);_editorShareMetaTimer=null;}
+  var g=val('f_groom')||'민준', b=val('f_bride')||'서연', order=val('f_order')||'gb';
+  var namesPlain=order==='gb'?(g+' ♥ '+b):(b+' ♥ '+g);
+  var t=V('kshareTitle');if(t)t.textContent=namesPlain+'의 결혼식에 초대합니다';
+  var d=fmtDate(val('f_date')),tm=fmtTime(val('f_time')),venue=val('f_venue');
+  var desc=[d?d.full:'예식 날짜',tm||'',venue||'예식장'].filter(Boolean).join(' · ');
+  var de=V('kshareDesc');if(de)de.textContent=desc;
+  if(ST.shareSource!=='custom'&&ST.mainPhoto!==ST.sharePhoto){
+    _setSharePhoto(ST.mainPhoto||null,'main',null,true);
+  }
+}
+function _scheduleEditorShareMetaSync(){
+  if(_editorShareMetaTimer)clearTimeout(_editorShareMetaTimer);
+  _editorShareMetaTimer=setTimeout(_syncEditorShareMetaNow,180);
+}
+function requestEditorRender(playOp){
+  if(_isMobileEditor()&&!_isEditorPreviewOpen()){
+    _editorPreviewDirty=true;
+    _editorPreviewPlayOp=_editorPreviewPlayOp||!!playOp;
+    _scheduleEditorShareMetaSync();
+    return;
+  }
+  _editorPreviewDirty=false;
+  _editorPreviewPlayOp=false;
+  renderIV(!!playOp);
+}
+function flushEditorPreviewRender(){
+  if(!_editorPreviewDirty)return;
+  var play=_editorPreviewPlayOp;
+  _editorPreviewDirty=false;
+  _editorPreviewPlayOp=false;
+  _syncEditorShareMetaNow();
+  renderIV(play);
 }
 function renderIV(playOp){
   const root=V('ivRoot');if(!root)return;
@@ -3898,6 +4722,10 @@ function renderIV(playOp){
   const calDow=_calValid?_calDays[_calObj.getDay()]:'SAT';
   const msg=esc(val('f_msg')||'서로 마주보며 다져온 사랑을\n이제 함께 한 곳을 바라보며 걸어가려 합니다.');
   const msg2=esc(val('f_msg2')||'');
+  const coupleIntroEnabled=!!(V('f_couple_intro_enabled')&&V('f_couple_intro_enabled').checked);
+  const groomIntro=esc((val('f_groom_intro')||'').trim().slice(0,100));
+  const brideIntro=esc((val('f_bride_intro')||'').trim().slice(0,100));
+  const timelineItems=getTimelineEditorItems(true);
   const gParentRaw=esc(val('f_gparent')||'');
   const bParentRaw=esc(val('f_bparent')||'');
   const gParent=gParentRaw?((V('f_gparent_dec')&&V('f_gparent_dec').checked?'故 ':'')+gParentRaw):'';
@@ -4173,6 +5001,26 @@ function renderIV(playOp){
       ${lang2&&msg2?`<span class="sub-lang" style="display:block;margin-top:18px;font-style:italic;opacity:.6;">${msg2}</span>`:''}
     </div></div>`;
 
+  /* FEATURE23: 신랑·신부 소개 — 사용함 + 입력값이 있을 때만 표시 */
+  if(coupleIntroEnabled&&(groomIntro||brideIntro)){
+    const _profileTitle=tpl==='minimal'?'PROFILE':(tpl==='fullscreen'?'CAST':(tpl==='flower'?'ABOUT US':(tpl==='classic-ivory'?'신랑 · 신부':'두 사람')));
+    const _profileItems=[];
+    if(order==='gb'){
+      if(groomIntro)_profileItems.push({role:'GROOM',name:g,text:groomIntro,cls:'groom'});
+      if(brideIntro)_profileItems.push({role:'BRIDE',name:b,text:brideIntro,cls:'bride'});
+    }else{
+      if(brideIntro)_profileItems.push({role:'BRIDE',name:b,text:brideIntro,cls:'bride'});
+      if(groomIntro)_profileItems.push({role:'GROOM',name:g,text:groomIntro,cls:'groom'});
+    }
+    html+=`<div class="iv-sec couple-profile-sec"><div class="iv-sec-t">${_profileTitle}</div><div class="couple-profile-grid${_profileItems.length===1?' single':''}">${_profileItems.map(function(it){return `<div class="couple-profile-item couple-profile-${it.cls}"><div class="couple-profile-kicker">${it.role}</div><div class="couple-profile-name">${it.name}</div><div class="couple-profile-text">${it.text.replace(/\n/g,'<br>')}</div></div>`;}).join('')}</div></div>`;
+  }
+
+  /* FEATURE24: 우리 이야기 — 선택된 최대 4개 장면만 표시 */
+  if(timelineItems.length){
+    const _storyTitle=tpl==='minimal'?'STORY INDEX':(tpl==='fullscreen'?'CHAPTERS':(tpl==='flower'?'OUR MOMENTS':(tpl==='hanok'?'우리의 이야기':(tpl==='classic-ivory'?'두 사람의 이야기':'Our Story'))));
+    html+=`<div class="iv-sec story-timeline-sec"><div class="iv-sec-t">${_storyTitle}</div><div class="story-timeline-list">${timelineItems.map(function(it,idx){return `<div class="story-timeline-item"><div class="story-timeline-index"><span>${String(idx+1).padStart(2,'0')}</span></div><div class="story-timeline-content">${it.date?`<div class="story-timeline-date">${it.date}</div>`:''}${it.title?`<div class="story-timeline-title">${it.title}</div>`:''}${it.text?`<div class="story-timeline-text">${it.text.replace(/\n/g,'<br>')}</div>`:''}</div></div>`;}).join('')}</div></div>`;
+  }
+
   /* 혼주 (선택 입력 — 비어있으면 표시 안 함) */
   if(gParent||bParent){
     html+=`<div class="iv-sec"><div class="iv-sec-t">${tpl==='hanok'?'양가 부모님':'With Parents'}</div>
@@ -4251,16 +5099,19 @@ function renderIV(playOp){
     ?`<div class="iv-sec guest-sec"><div class="iv-sec-t">축하의 글</div><div class="iv-info hk-sec-desc" style="margin-top:8px;">두 사람에게 따뜻한 마음을 전해주세요</div><div class="iv-chips" style="margin-top:10px;"><span class="iv-chip hk-guest-btn">마음 남기기</span></div></div>`
     :`<div class="iv-sec"><div class="iv-sec-t">축하의 글</div><div class="iv-info" style="margin-top:8px;">두 사람에게 따뜻한 마음을 전해주세요</div></div>`);
 
+  /* ⑦-b 하객 사진 공유 — 편집기에서는 승인형 구조를 정적으로 미리보기 */
+  if(chk('o_guest_photo'))html+=`<div class="iv-sec guest-photo-preview-sec"><div class="iv-sec-t">하객이 담은 순간</div><div class="guest-photo-preview-grid"><span></span><span></span><span></span></div><div class="guest-photo-preview-copy">하객이 올린 사진은 신랑·신부 승인 후 이곳에 표시됩니다.</div><span class="guest-photo-preview-btn">사진 남기기</span></div>`;
+
   /* ⑧ 계좌 */
   if(chk('o_account')&&(gAcc||bAcc||gpAcc||bpAcc)){
     html+=`<div class="iv-sec acc-sec"><div class="iv-sec-t">마음 전하실 곳</div>
       ${tpl==='hanok'?`<div class="hk-sec-desc" style="font-size:13px;opacity:.9;margin-top:6px;margin-bottom:12px;">마음을 전하실 분들을 위해 준비했습니다</div>`:''}
       <div class="acc-box"><button type="button" class="acc-toggle" aria-expanded="false" onclick="togglePreviewAccount(this)">계좌번호 확인하기</button>
         <div class="acc-list" style="display:none;">
-          ${gAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${gBank} ${gHolder}</span><span class="acc-num">${gAcc}</span></div><button type="button" class="acc-copy" data-acc="${gAcc}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
-          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-acc="${gpAcc}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
-          ${bAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${bBank} ${bHolder}</span><span class="acc-num">${bAcc}</span></div><button type="button" class="acc-copy" data-acc="${bAcc}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
-          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-acc="${bpAcc}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
+          ${gAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${gBank} ${gHolder}</span><span class="acc-num">${gAcc}</span></div><button type="button" class="acc-copy" data-bank="${gBank}" data-acc="${gAcc}" data-holder="${gHolder}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
+          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-bank="${gpBank}" data-acc="${gpAcc}" data-holder="${gpHolder}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
+          ${bAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${bBank} ${bHolder}</span><span class="acc-num">${bAcc}</span></div><button type="button" class="acc-copy" data-bank="${bBank}" data-acc="${bAcc}" data-holder="${bHolder}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
+          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-bank="${bpBank}" data-acc="${bpAcc}" data-holder="${bpHolder}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
         </div>
       </div>
     </div>`;
@@ -4404,7 +5255,7 @@ async function cancelCloneMode(){
   if(!confirm('복제본에서 수정한 내용을 버리고 원본 수정 화면으로 돌아갈까요?'))return;
   try{localStorage.removeItem(CLONE_DRAFT_KEY);localStorage.removeItem(CLONE_META_KEY);}catch(e){}
   cloneMode=false;cloneAudience='family';_purchaseId=null;_newEditCode=null;_setCloneQuery(false);
-  await loadForEdit();renderIV();updateCloneUi();
+  await loadForEdit();requestEditorRender();updateCloneUi();
 }
 function finishCloneMode(newSlug,newEditCode){
   if(!cloneMode)return;
@@ -4594,6 +5445,12 @@ function collectPreflightIssues(){
   if(chk('o_gallery')&&galleryItems===0){
     issues.push(_preflightIssue('warning','photo','upGal','갤러리 기능이 켜져 있지만 사진이 없습니다.','사진을 추가하거나 Step 07에서 화보 갤러리 기능을 꺼 주세요.'));
   }
+  if(ST.motionCover&&ST.motionCover.enabled){
+    if(!_motionThemeSupported(ST.theme))issues.push(_preflightIssue('error','photo','motionCoverEnabled','모션 커버는 웨딩화보형·시네마형·호텔야간형에서만 사용할 수 있습니다.','지원 템플릿으로 바꾸거나 모션 커버를 꺼 주세요.'));
+    else if(!ST.motionCover.photo1Token||!ST.motionCover.photo2Token)issues.push(_preflightIssue('error','photo','motionCoverEditor','모션 커버 사진 2장을 선택해 주세요.','갤러리에서 첫 장면과 두 번째 장면을 각각 선택해 주세요.'));
+    else if(ST.motionCover.photo1Token===ST.motionCover.photo2Token)issues.push(_preflightIssue('error','photo','motionCoverEditor','모션 커버에는 서로 다른 사진 2장이 필요합니다.','첫 장면과 두 번째 장면에 다른 사진을 선택해 주세요.'));
+    else if(!hasMainReady)issues.push(_preflightIssue('error','photo','upMain','모션 커버의 마지막 대표사진이 없습니다.','대표사진 업로드를 완료해 주세요.'));
+  }
 
   if(chk('o_account')){
     const rows=[
@@ -4724,6 +5581,7 @@ async function ensureShareImageReadyForPublish(){
 
 /* ===== 발행 ===== */
 async function publish(){
+  _syncEditorShareMetaNow();
   if(!_preflightBypassOnce){
     const issues=collectPreflightIssues();
     if(issues.length){renderPreflight(issues);return;}
@@ -4742,7 +5600,10 @@ async function publish(){
     }
     /* 미인증 → 주문 인증 모달 표시 */
     btn.disabled=true;btn.textContent='인증 확인 중...';
+    _resetOrderVerifyUi();
+    if(V('orderErr'))V('orderErr').textContent='';
     V('orderOv').classList.add('show');
+    setTimeout(()=>V('ov_buyer_name')?.focus(),80);
     return;
   }
 
@@ -4915,7 +5776,8 @@ async function _proceedPublish(){
     address_lang2:val('f_address2')||null,
     options:{
       dday:chk('o_dday'),gallery:chk('o_gallery'),rsvp:chk('o_rsvp'),
-      guest:chk('o_guest'),account:chk('o_account'),video:chk('o_video'),music:chk('o_music'),
+      guest:chk('o_guest'),guest_photo:chk('o_guest_photo'),account:chk('o_account'),video:chk('o_video'),music:chk('o_music'),
+      guest_photo_share:chk('o_guest_photo')?{enabled:true,max_photos:10,approval_required:true,upload_days_after:14}:null,
       video_config:(function(){
         if(!chk('o_video'))return null;
         const id=extractYouTubeId(val('f_video_url'));if(!id)return null;
@@ -4938,6 +5800,19 @@ async function _proceedPublish(){
       bride_parent_bank:val('f_bpbank')||null,
       bride_parent_account:val('f_bpacc')||null,
       bride_parent_holder:val('f_bpholder')||null,
+      couple_intro:(function(){
+        if(!(V('f_couple_intro_enabled')&&V('f_couple_intro_enabled').checked))return null;
+        const profile={
+          enabled:true,
+          groom:(val('f_groom_intro')||'').trim().slice(0,100)||null,
+          bride:(val('f_bride_intro')||'').trim().slice(0,100)||null
+        };
+        return profile.groom||profile.bride?profile:null;
+      })(),
+      couple_timeline:(function(){
+        const items=getTimelineEditorItems(false).map(function(it){return {slot:it.slot,date:it.date||null,title:it.title||null,text:it.text||null};});
+        return items.length?{enabled:true,items:items}:null;
+      })(),
       guest_guide:(function(){
         const guide={
           parking:val('f_guest_parking')||null, meal:val('f_guest_meal')||null,
@@ -4946,6 +5821,7 @@ async function _proceedPublish(){
         };
         return Object.keys(guide).some(function(k){return !!guide[k];})?guide:null;
       })(),
+      motion_cover:getMotionPublishConfig(ST.galleryUrls,_mainUrl),
       particle_effect:val('f_particle')||'auto',
       share_image_url:safeUrl(ST.shareImageUrl)||null,
       share_image_version:ST.shareImageVersion||null,
@@ -5177,12 +6053,17 @@ function openBuyerManage(){
   ov.classList.add('show');
   setTimeout(()=>V('mv_buyer_name')?.focus(),80);
 }
-function closeBuyerManage(){V('buyerManageOv')?.classList.remove('show');}
+function closeBuyerManage(){
+  _buyerManageVerifySeq++;
+  V('buyerManageOv')?.classList.remove('show');
+  const btn=V('buyerManageVerifyBtn');if(btn){btn.disabled=false;btn.removeAttribute('aria-busy');btn.textContent='구매 확인 후 청첩장 찾기';}
+}
 function resetBuyerManage(){
+  _buyerManageVerifySeq++;
   V('buyerManageAuthView')?.style.removeProperty('display');
   V('buyerManageResultView')?.classList.remove('show');
   if(V('buyerManageErr'))V('buyerManageErr').textContent='';
-  const btn=V('buyerManageVerifyBtn');if(btn){btn.disabled=false;btn.textContent='구매 확인 후 청첩장 찾기';}
+  const btn=V('buyerManageVerifyBtn');if(btn){btn.disabled=false;btn.removeAttribute('aria-busy');btn.textContent='구매 확인 후 청첩장 찾기';}
 }
 function _formatManageDate(value){
   const m=String(value||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[1]}.${m[2]}.${m[3]}`:'';
@@ -5258,14 +6139,25 @@ async function _fetchBuyerVerification(payload,timeoutMs=12000){
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify(payload),
-      signal:controller?controller.signal:undefined
+      signal:controller?controller.signal:undefined,
+      cache:'no-store',
+      credentials:'omit',
+      referrerPolicy:'no-referrer'
     });
     if(!res.ok)throw new Error('VERIFY_HTTP_'+res.status);
-    return await res.json();
+    const json=await res.json();
+    if(!json||typeof json!=='object'||Array.isArray(json))throw new Error('VERIFY_BAD_RESPONSE');
+    return json;
   }finally{
     if(timer)clearTimeout(timer);
   }
 }
+function _verifyReason(json,fallback){
+  const raw=typeof json?.reason==='string'?json.reason:(typeof json?.error==='string'?json.error:'');
+  const clean=raw.replace(/[\r\n\t]+/g,' ').trim().slice(0,180);
+  return clean||fallback;
+}
+function _isVerifyModalOpen(id){return !!V(id)?.classList.contains('show');}
 async function verifyBuyerForManage(){
   if(!_requireServer())return;
   const buyerName=V('mv_buyer_name')?.value.trim();
@@ -5274,13 +6166,16 @@ async function verifyBuyerForManage(){
   if(err)err.textContent='';
   if(!buyerName||buyerPhone.length<10||buyerPhone.length>11){if(err)err.textContent='구매자 이름과 휴대폰번호를 정확히 입력해주세요.';return;}
   if(!btn||btn.disabled)return;
+  const requestSeq=++_buyerManageVerifySeq;
   btn.disabled=true;btn.setAttribute('aria-busy','true');btn.textContent='구매 내역 확인 중...';
   if(err)err.textContent='구매 정보를 확인하고 있습니다. 잠시만 기다려주세요.';
   const key=await _buyerIdentityKey(buyerName,buyerPhone);
+  if(requestSeq!==_buyerManageVerifySeq||!_isVerifyModalOpen('buyerManageOv'))return;
   let localRecords=_readBuyerManageRecords(key);
   let backendMessage='';
   try{
     const json=await _fetchBuyerVerification({buyerName,buyerPhone,purpose:'manage'});
+    if(requestSeq!==_buyerManageVerifySeq||!_isVerifyModalOpen('buyerManageOv'))return;
     if(err)err.textContent='';
 
     /* 기존 인증 API가 구매 UUID를 확인한 뒤에만 Supabase 관리 세션을 발급한다.
@@ -5290,19 +6185,21 @@ async function verifyBuyerForManage(){
         p_purchase_id:json.purchaseId,
         p_buyer_name:buyerName
       });
+      if(requestSeq!==_buyerManageVerifySeq||!_isVerifyModalOpen('buyerManageOv'))return;
+      const issuedData=Array.isArray(issued.data)?issued.data[0]:issued.data;
       if(issued.error){
         backendMessage='구매 확인은 완료됐지만 관리 기능 연결에 실패했습니다. 잠시 후 다시 시도해주세요.';
-      }else if(issued.data&&issued.data.success){
-        _storeBuyerManageToken(issued.data.manage_token);
+      }else if(issuedData&&issuedData.success){
+        _storeBuyerManageToken(issuedData.manage_token);
         _buyerManageMode=true;
-        const serverRecords=_recordsFromBuyerSession(issued.data.cards);
+        const serverRecords=_recordsFromBuyerSession(issuedData.cards);
         if(serverRecords.length){
           _renderBuyerManageRecords(serverRecords,buyerName);
           return;
         }
         backendMessage='발행된 청첩장을 찾지 못했습니다.';
       }else{
-        backendMessage=issued.data?.error||'구매자 관리 인증을 완료하지 못했습니다.';
+        backendMessage=_verifyReason(issuedData,'구매자 관리 인증을 완료하지 못했습니다.');
       }
     }
 
@@ -5314,8 +6211,9 @@ async function verifyBuyerForManage(){
     }
     if(localRecords.length){_renderBuyerManageRecords(localRecords,buyerName);return;}
 
-    if(err)err.textContent=backendMessage||json.reason||'구매 내역을 확인하지 못했습니다. 입력 정보를 다시 확인해주세요.';
+    if(err)err.textContent=backendMessage||_verifyReason(json,'구매 내역을 확인하지 못했습니다. 입력 정보를 다시 확인해주세요.');
   }catch(e){
+    if(requestSeq!==_buyerManageVerifySeq||!_isVerifyModalOpen('buyerManageOv'))return;
     if(localRecords.length){_renderBuyerManageRecords(localRecords,buyerName);return;}
     if(err){
       err.textContent=(e&&e.name==='AbortError')
@@ -5323,14 +6221,22 @@ async function verifyBuyerForManage(){
         :'서버 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.';
     }
   }finally{
-    btn.disabled=false;btn.removeAttribute('aria-busy');btn.textContent='구매 확인 후 청첩장 찾기';
+    if(requestSeq===_buyerManageVerifySeq){
+      btn.disabled=false;btn.removeAttribute('aria-busy');btn.textContent='구매 확인 후 청첩장 찾기';
+    }
   }
 }
 
 /* ===== 주문 인증 ===== */
+function _resetOrderVerifyUi(){
+  const verifyBtn=V('orderVerifyBtn');
+  if(verifyBtn){verifyBtn.disabled=false;verifyBtn.removeAttribute('aria-busy');verifyBtn.textContent='구매 확인하기';}
+}
 function closeOrderModal(){
+  _orderVerifySeq++;
   V('orderOv').classList.remove('show');
   V('orderErr').textContent='';
+  _resetOrderVerifyUi();
   // 인증 중 발행 버튼 복구
   const btn=V('publishBtn');
   if(btn){btn.disabled=false;btn.textContent=cloneMode?'복제본 발행':(editId?'수정 완료':'발행하기');}
@@ -5338,42 +6244,45 @@ function closeOrderModal(){
 
 async function verifyOrder(){
   if(!_requireServer())return;
-  const buyerName  = V('ov_buyer_name')?.value.trim();
-  const buyerPhone = V('ov_phone')?.value.replace(/\D/g,'').trim();
-  const errEl      = V('orderErr');
-  const verifyBtn  = V('orderVerifyBtn');
+  const buyerName=V('ov_buyer_name')?.value.trim();
+  const buyerPhone=_normalizeBuyerPhone(V('ov_phone')?.value);
+  const errEl=V('orderErr');
+  const verifyBtn=V('orderVerifyBtn');
 
-  errEl.textContent='';
-  if(!buyerName||!buyerPhone){
-    errEl.textContent='구매자명과 휴대폰번호를 모두 입력해주세요.';return;
+  if(errEl)errEl.textContent='';
+  if(!buyerName||buyerPhone.length<10||buyerPhone.length>11){
+    if(errEl)errEl.textContent='구매자 이름과 휴대폰번호를 정확히 입력해주세요.';
+    return;
   }
-  if(buyerPhone.length<10||buyerPhone.length>11){
-    errEl.textContent='올바른 휴대폰번호를 입력해주세요. (숫자 10~11자리)';return;
-  }
+  if(!verifyBtn||verifyBtn.disabled)return;
 
-  verifyBtn.textContent='확인 중...';verifyBtn.disabled=true;
+  const requestSeq=++_orderVerifySeq;
+  verifyBtn.textContent='구매 확인 중...';verifyBtn.disabled=true;verifyBtn.setAttribute('aria-busy','true');
+  if(errEl)errEl.textContent='주문 정보를 확인하고 있습니다. 잠시만 기다려주세요.';
 
   try{
-    const res=await fetch('https://weddingapi.duckdns.org/verify-order',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({buyerName,buyerPhone})
-    });
-    const json=await res.json();
+    const json=await _fetchBuyerVerification({buyerName,buyerPhone});
+    if(requestSeq!==_orderVerifySeq||!_isVerifyModalOpen('orderOv'))return;
 
     if(json.valid&&json.purchaseId){
-      /* 정상 인증 — purchaseId 확보 후 발행 진행 */
+      /* 정상 인증 — purchaseId만 메모리에 보관하고 이름·휴대폰 원문은 저장하지 않는다. */
       _purchaseId=json.purchaseId;
       _verifiedBuyerKey=await _buyerIdentityKey(buyerName,buyerPhone);
-      V('orderOv').classList.remove('show');
+      if(requestSeq!==_orderVerifySeq||!_isVerifyModalOpen('orderOv'))return;
+      closeOrderModal();
       await _proceedPublish();
     }else{
-      errEl.textContent=json.reason||'인증에 실패했어요. 입력 정보를 다시 확인해주세요.';
-      verifyBtn.textContent='구매 확인하기';verifyBtn.disabled=false;
+      if(errEl)errEl.textContent=_verifyReason(json,'인증에 실패했어요. 입력 정보를 다시 확인해주세요.');
     }
   }catch(e){
-    errEl.textContent='서버 연결 오류가 발생했어요. 잠시 후 다시 시도해주세요.';
-    verifyBtn.textContent='구매 확인하기';verifyBtn.disabled=false;
+    if(requestSeq!==_orderVerifySeq||!_isVerifyModalOpen('orderOv'))return;
+    if(errEl){
+      errEl.textContent=(e&&e.name==='AbortError')
+        ?'구매 확인 서버 응답이 늦어 중단했습니다. 잠시 후 다시 눌러주세요.'
+        :'서버 연결 오류가 발생했어요. 잠시 후 다시 시도해주세요.';
+    }
+  }finally{
+    if(requestSeq===_orderVerifySeq)_resetOrderVerifyUi();
   }
 }
 
@@ -5389,12 +6298,12 @@ var _draftSaveTimer=null;
 function queueDraftSave(){
   if(editSlug&&!cloneMode)return;
   if(_draftSaveTimer)clearTimeout(_draftSaveTimer);
-  _draftSaveTimer=setTimeout(saveDraft,220);
+  _draftSaveTimer=setTimeout(saveDraft,_isMobileEditor()?700:220);
 }
 const DRAFT_KEY='mr_draft_v2';
 function activeDraftKey(){return cloneMode?CLONE_DRAFT_KEY:DRAFT_KEY;}
-const DRAFT_FIELDS=['f_groom','f_bride','f_order','f_date','f_time','f_venue','f_hall','f_addr','f_guest_parking','f_guest_meal','f_guest_shuttle','f_guest_contact','f_guest_etc','f_msg','f_font','f_opening','f_lang2','f_msg2','f_venue2','f_address2','f_gbank','f_gacc','f_gholder','f_bbank','f_bacc','f_bholder','f_gpbank','f_gpacc','f_gpholder','f_bpbank','f_bpacc','f_bpholder','f_video_url','f_video_title','f_bgm_url','f_gparent','f_bparent','f_particle'];
-const DRAFT_TGLS=['o_dday','o_gallery','o_rsvp','o_guest','o_account','o_video','o_music','f_gparent_dec','f_bparent_dec'];
+const DRAFT_FIELDS=['f_groom','f_bride','f_order','f_groom_intro','f_bride_intro','f_timeline_date_1','f_timeline_title_1','f_timeline_text_1','f_timeline_date_2','f_timeline_title_2','f_timeline_text_2','f_timeline_date_3','f_timeline_title_3','f_timeline_text_3','f_timeline_date_4','f_timeline_title_4','f_timeline_text_4','f_date','f_time','f_venue','f_hall','f_addr','f_guest_parking','f_guest_meal','f_guest_shuttle','f_guest_contact','f_guest_etc','f_msg','f_font','f_opening','f_lang2','f_msg2','f_venue2','f_address2','f_gbank','f_gacc','f_gholder','f_bbank','f_bacc','f_bholder','f_gpbank','f_gpacc','f_gpholder','f_bpbank','f_bpacc','f_bpholder','f_video_url','f_video_title','f_bgm_url','f_gparent','f_bparent','f_particle'];
+const DRAFT_TGLS=['o_dday','o_gallery','o_rsvp','o_guest','o_guest_photo','o_account','o_video','o_music','f_couple_intro_enabled','f_timeline_enabled','f_timeline_item_1_enabled','f_timeline_item_2_enabled','f_timeline_item_3_enabled','f_timeline_item_4_enabled','f_gparent_dec','f_bparent_dec'];
 function saveDraft(){
   if(editSlug&&!cloneMode)return;
   const d={
@@ -5408,6 +6317,7 @@ function saveDraft(){
       version:ST.shareImageVersion||null,
       crop:getShareCropSaveData()
     },
+    motionCover:getMotionDraftData(),
     fields:{},tgls:{}
   };
   DRAFT_FIELDS.forEach(id=>{if(V(id))d.fields[id]=V(id).value;});
@@ -5430,6 +6340,7 @@ function loadDraft(){
     const _draftGallery=(Array.isArray(d.galleryUrls)?d.galleryUrls:[]).map(safeUrl).filter(Boolean).slice(0,40);
     ST.mainPhotoUrl=_draftMain||null;ST.mainPhoto=_draftMain||null;ST.mainFile=null;
     ST.galleryUrls=[..._draftGallery];ST.gallery=[..._draftGallery];ST.galleryFiles=new Array(_draftGallery.length).fill(null);ST.galleryTokens=_draftGallery.map(()=>_newGalleryToken());
+    restoreMotionCoverFromUrls(d.motionCover||{});
     updateGalleryUploadStatus();
     if(V('mainPreview'))V('mainPreview').innerHTML=_draftMain?`<div class="mp-wrap"><div class="mp-box"><img src="${esc(_draftMain)}" alt="대표사진"/><div class="rm" onclick="rmMain()">×</div></div></div>`:'';
     const _ds=d.share||{};
@@ -5438,13 +6349,16 @@ function loadDraft(){
     if(_dsSource)_setSharePhoto(_dsSource,_ds.source==='custom'?'custom':'main',null,false,{sourceUrl:_dsSource,imageUrl:ST.shareImageUrl,version:ST.shareImageVersion,crop:_ds.crop||{}});
     renderGal();
     if(typeof toggleVideoBox==='function')toggleVideoBox();
+    if(typeof toggleGuestPhotoBox==='function')toggleGuestPhotoBox();
+    if(typeof toggleCoupleIntroBox==='function')toggleCoupleIntroBox();
+    if(typeof toggleTimelineBox==='function')toggleTimelineBox();
     if(d.tgls?.o_music&&V('musicUrlBox'))V('musicUrlBox').style.display='block';
     /* BGM 모드 복원: 명시값 우선, 없으면 f_bgm_url 유무로 추론(기존 호환) */
     ST_bgmMode=d.bgmMode||((d.fields&&d.fields.f_bgm_url)?'custom':'none');
     ST_bgmPreset=d.bgmPreset||'';
     if(typeof renderBgmPresets==='function')renderBgmPresets();
     syncAmbCards();
-    renderIV();renderFonts();V('saveState').textContent=cloneMode?`${_cloneAudienceLabel(cloneAudience)} 복제본 불러옴 ✓`:'이전 작업 불러옴 ✓';
+    requestEditorRender();renderFonts();V('saveState').textContent=cloneMode?`${_cloneAudienceLabel(cloneAudience)} 복제본 불러옴 ✓`:'이전 작업 불러옴 ✓';
     return true;
   }catch(e){return false;}
 }
@@ -5492,6 +6406,19 @@ async function loadForEdit(){
   set('f_address2',data.address_lang2||data.options?.address_lang2);
   set('f_gbank',data.groom_bank);set('f_gacc',data.groom_account);set('f_gholder',data.groom_holder);set('f_bbank',data.bride_bank);set('f_bacc',data.bride_account);set('f_bholder',data.bride_holder);
   set('f_gpbank',data.groom_parent_bank||data.options?.groom_parent_bank);set('f_gpacc',data.groom_parent_account||data.options?.groom_parent_account);set('f_gpholder',data.groom_parent_holder||data.options?.groom_parent_holder);set('f_bpbank',data.bride_parent_bank||data.options?.bride_parent_bank);set('f_bpacc',data.bride_parent_account||data.options?.bride_parent_account);set('f_bpholder',data.bride_parent_holder||data.options?.bride_parent_holder);
+  const _coupleIntro=data.options?.couple_intro&&typeof data.options.couple_intro==='object'?data.options.couple_intro:{};
+  set('f_groom_intro',_coupleIntro.groom);set('f_bride_intro',_coupleIntro.bride);
+  if(V('f_couple_intro_enabled'))V('f_couple_intro_enabled').checked=_coupleIntro.enabled===true&&!!(_coupleIntro.groom||_coupleIntro.bride);
+  if(typeof toggleCoupleIntroBox==='function')toggleCoupleIntroBox();
+  const _timeline=data.options?.couple_timeline&&typeof data.options.couple_timeline==='object'?data.options.couple_timeline:{};
+  const _timelineItems=Array.isArray(_timeline.items)?_timeline.items:[];
+  if(V('f_timeline_enabled'))V('f_timeline_enabled').checked=_timeline.enabled===true&&_timelineItems.length>0;
+  for(let _ti=1;_ti<=4;_ti++){
+    const _item=_timelineItems.find(function(it){return Number(it&&it.slot)===_ti;})||{};
+    set('f_timeline_date_'+_ti,_item.date);set('f_timeline_title_'+_ti,_item.title);set('f_timeline_text_'+_ti,_item.text);
+    if(V('f_timeline_item_'+_ti+'_enabled'))V('f_timeline_item_'+_ti+'_enabled').checked=!!(_item.date||_item.title||_item.text);
+  }
+  if(typeof toggleTimelineBox==='function')toggleTimelineBox();
   const _guestGuide=data.options?.guest_guide&&typeof data.options.guest_guide==='object'?data.options.guest_guide:{};
   set('f_guest_parking',_guestGuide.parking);set('f_guest_meal',_guestGuide.meal);set('f_guest_shuttle',_guestGuide.shuttle);set('f_guest_contact',_guestGuide.contact);set('f_guest_etc',_guestGuide.etc);
   const _videoCfg=data.options?.video_config&&typeof data.options.video_config==='object'?data.options.video_config:{};
@@ -5521,6 +6448,8 @@ async function loadForEdit(){
   }
   ST.mainPhotoUrl=data.main_photo_url||null;ST.mainPhoto=data.main_photo_url||null;
   ST.galleryUrls=[...(data.gallery_urls||[])];ST.gallery=[...(data.gallery_urls||[])];ST.galleryFiles=new Array(ST.gallery.length).fill(null);ST.galleryTokens=ST.gallery.map(()=>_newGalleryToken());
+  const _motionCfg=data.options?.motion_cover&&typeof data.options.motion_cover==='object'?data.options.motion_cover:{};
+  restoreMotionCoverFromUrls({enabled:_motionCfg.enabled===true,photo1_url:Array.isArray(_motionCfg.photo_urls)?_motionCfg.photo_urls[0]:'',photo2_url:Array.isArray(_motionCfg.photo_urls)?_motionCfg.photo_urls[1]:'',pos1:Array.isArray(_motionCfg.positions)?_motionCfg.positions[0]:'center',pos2:Array.isArray(_motionCfg.positions)?_motionCfg.positions[1]:'center'});
   const _shareOpts=data.options||{};
   ST.shareImageUrl=safeUrl(_shareOpts.share_image_url)||null;
   ST.shareImageVersion=_shareOpts.share_image_version||null;
@@ -5529,7 +6458,11 @@ async function loadForEdit(){
   if(_shareSourceUrl)_setSharePhoto(_shareSourceUrl,_shareSourceType,null,false,{sourceUrl:_shareSourceUrl,imageUrl:ST.shareImageUrl,version:ST.shareImageVersion,crop:_shareOpts.share_crop||{}});
   updateGalleryUploadStatus();
   const o=data.options||{};
-  DRAFT_TGLS.forEach(id=>{if(!id.startsWith('o_')||id==='o_video')return;if(V(id))V(id).checked=o[id.slice(2)]!==false;});
+  DRAFT_TGLS.forEach(id=>{if(!id.startsWith('o_')||id==='o_video'||id==='o_guest_photo')return;if(V(id))V(id).checked=o[id.slice(2)]!==false;});
+  /* 하객 사진 공유는 신규 선택 기능이므로 구형 데이터에서 자동으로 켜지지 않는다. */
+  const _guestPhotoCfg=o.guest_photo_share&&typeof o.guest_photo_share==='object'?o.guest_photo_share:{};
+  if(V('o_guest_photo'))V('o_guest_photo').checked=_guestPhotoCfg.enabled===true||o.guest_photo===true;
+  if(typeof toggleGuestPhotoBox==='function')toggleGuestPhotoBox();
   /* 동영상은 신규 선택 기능이므로 구형 데이터에서 자동으로 켜지지 않는다. */
   var _hasVideoFlag=Object.prototype.hasOwnProperty.call(o,'video');
   if(V('o_video'))V('o_video').checked=_hasVideoFlag?(o.video===true):!!_videoId;
@@ -5548,22 +6481,35 @@ async function loadForEdit(){
 }
 
 /* ===== 미리보기 토글 (모바일) ===== */
-function togglePreview(){V('preview').classList.toggle('show');}
+function togglePreview(){
+  var p=V('preview');if(!p)return;
+  var opening=!p.classList.contains('show');
+  p.classList.toggle('show',opening);
+  if(opening){
+    requestAnimationFrame(function(){
+      flushEditorPreviewRender();
+      var hint=document.querySelector('.prev-hint');
+      if(hint)hint.textContent='최신 입력 내용이 반영되었습니다';
+    });
+  }
+}
 
 /* ===== 초기화 ===== */
 try{renderMsgCards();}catch(e){console.error('renderMsgCards',e);}
 renderTemplates();
 renderFonts();
 renderToggles();
+if(typeof toggleGuestPhotoBox==='function')toggleGuestPhotoBox();
 renderStepbar();
 syncAmbCards();
-renderIV(true);
+if(typeof toggleTimelineBox==='function')toggleTimelineBox();
+requestEditorRender(true);
 V('work').addEventListener('scroll',()=>requestAnimationFrame(onScroll),{passive:true});
 let _dt;V('work').addEventListener('input',()=>{clearTimeout(_dt);_dt=setTimeout(saveDraft,1500);},{passive:true});
 V('work').addEventListener('change',()=>{clearTimeout(_dt);_dt=setTimeout(saveDraft,600);},{passive:true});
 if(editSlug)loadForEdit().then(()=>{
   if(cloneMode){_readCloneMeta();const restored=loadDraft();if(!restored)saveDraft();updateCloneUi();}
-  renderIV();
+  requestEditorRender();
 });
 else loadDraft();
 
