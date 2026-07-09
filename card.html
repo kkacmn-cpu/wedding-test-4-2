@@ -1748,12 +1748,10 @@ html.motion-cover-lock .fab-wrap,html.motion-cover-lock .bgm-fab,html.motion-cov
    - 8개 판매 템플릿의 첫 화면을 동일한 안정 viewport 기준으로 통일
    - 모바일 주소창 변화에 즉시 반응하는 dvh는 사용하지 않음
    - 작은 화면에서 min-height 강제 초과, 긴 화면에서 고정 px 공백을 제거 */
-/* FEATURE30: 카드와 오프닝이 동일한 안정 viewport 높이를 공유한다.
-   JS가 최초 진입 높이를 px로 고정하며, JS 미지원 시 svh를 fallback으로 사용한다. */
+/* FEATURE41: 카드와 오프닝이 동일한 안정 viewport 높이를 공유한다.
+   카카오톡 등 인앱 브라우저에서 100svh가 실제 WebView보다 작게 계산되는 경우가 있어
+   CSS fallback은 100vh로 두고, JS가 실제 viewport 후보 중 가장 큰 정상값을 px로 고정한다. */
 :root{--invitation-cover-height:100vh;}
-@supports (height:100svh){
-  :root{--invitation-cover-height:100svh;}
-}
 #card>.iv-cover{overflow-anchor:none;}
 #card .sig-hero,
 #card .civ-stage,
@@ -1784,32 +1782,70 @@ html.motion-cover-lock .fab-wrap,html.motion-cover-lock .bgm-fab,html.motion-cov
 
 </style>
 <script>
-/* FEATURE30 — 모바일 주소창이 접힐 때 첫 화면 사진 크롭이 다시 계산되지 않도록
-   최초의 실제 가시 높이를 고정한다. 모바일 resize에는 반응하지 않고 방향 전환만 갱신한다. */
+/* FEATURE41 — 카카오톡/인앱 브라우저 첫 화면 높이 안정화
+   - visualViewport가 WebView 실제 높이보다 작게 보고되는 경우를 보정한다.
+   - 최초 진입의 짧은 안정화 구간에서만 여러 번 측정하고 가장 큰 정상값을 유지한다.
+   - 일반 스크롤·주소창 변화에는 재계산하지 않아 사진 크롭과 첫 스크롤을 보호한다.
+   - 데스크톱 resize와 기기 방향 전환에서만 새 기준으로 다시 계산한다. */
 (function(){
   const root=document.documentElement;
+  const settleDelays=[0,80,180,320,520,900];
+  let stableCoverHeight=0;
   let desktopResizeTimer=0;
-  function measureStableCoverHeight(){
+  let settleTimers=[];
+
+  function readCoverHeight(){
     const vv=window.visualViewport;
-    const raw=(vv&&vv.height)||window.innerHeight||root.clientHeight;
-    const h=Math.round(Number(raw)||0);
-    if(h>=320)root.style.setProperty('--invitation-cover-height',h+'px');
+    const candidates=[
+      vv&&Number(vv.height),
+      Number(window.innerHeight),
+      Number(root.clientHeight)
+    ].filter(function(v){return Number.isFinite(v)&&v>=320;});
+    return candidates.length?Math.round(Math.max.apply(Math,candidates)):0;
   }
+
+  function applyCoverHeight(allowShrink){
+    const h=readCoverHeight();
+    if(h<320)return;
+    if(allowShrink||h>stableCoverHeight){
+      stableCoverHeight=h;
+      root.style.setProperty('--invitation-cover-height',h+'px');
+    }
+  }
+
+  function clearSettleTimers(){
+    settleTimers.forEach(function(id){clearTimeout(id);});
+    settleTimers=[];
+  }
+
+  function scheduleInitialSettle(reset){
+    clearSettleTimers();
+    if(reset)stableCoverHeight=0;
+    settleDelays.forEach(function(delay){
+      settleTimers.push(setTimeout(function(){applyCoverHeight(false);},delay));
+    });
+  }
+
   function refreshAfterOrientation(){
-    setTimeout(measureStableCoverHeight,180);
-    setTimeout(measureStableCoverHeight,420);
+    clearSettleTimers();
+    stableCoverHeight=0;
+    settleTimers.push(setTimeout(function(){scheduleInitialSettle(true);},120));
   }
-  measureStableCoverHeight();
-  document.addEventListener('DOMContentLoaded',measureStableCoverHeight,{once:true});
-  window.addEventListener('pageshow',measureStableCoverHeight,{passive:true});
+
+  scheduleInitialSettle(true);
+  document.addEventListener('DOMContentLoaded',function(){scheduleInitialSettle(false);},{once:true});
+  window.addEventListener('pageshow',function(){scheduleInitialSettle(false);},{passive:true});
   window.addEventListener('orientationchange',refreshAfterOrientation,{passive:true});
+
   const coarse=window.matchMedia&&window.matchMedia('(pointer:coarse)').matches;
   if(!coarse){
     window.addEventListener('resize',function(){
-      clearTimeout(desktopResizeTimer);desktopResizeTimer=setTimeout(measureStableCoverHeight,80);
+      clearTimeout(desktopResizeTimer);
+      desktopResizeTimer=setTimeout(function(){applyCoverHeight(true);},80);
     },{passive:true});
   }
-  window.__refreshInvitationCoverHeight=measureStableCoverHeight;
+
+  window.__refreshInvitationCoverHeight=function(){scheduleInitialSettle(false);};
 })();
 </script>
 
