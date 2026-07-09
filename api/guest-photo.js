@@ -21,6 +21,7 @@ async function listApproved(slug,res){
   const card=await C.getCardBySlug(slug);
   const cfg=C.featureConfig(card);
   if(!card||!cfg.enabled)return C.json(res,200,{ok:true,enabled:false,items:[]});
+  await C.cleanupRejected(card.id).catch(error=>console.warn('guest-photo rejected cleanup skipped',error&&error.message));
   const rows=await C.listUploads(card.id,['approved']);
   const signed=await C.createSignedViews(rows.map(r=>r.storage_path));
   const byPath=new Map(signed.map(x=>[x.path,x.signedUrl]));
@@ -43,6 +44,7 @@ async function prepare(body,res){
   /* 만료 예약 정리는 보조 작업이다. 삭제 장애가 새 업로드 전체를 막지 않도록 실패를 기록만 한다.
      실제 수량 판정 RPC는 만료된 uploading 행을 제외하고 계산한다. */
   await C.cleanupExpiredUploading(card.id).catch(error=>console.warn('guest-photo cleanup skipped',error&&error.message));
+  await C.cleanupRejected(card.id).catch(error=>console.warn('guest-photo rejected cleanup skipped',error&&error.message));
 
   const guestName=C.cleanName(body.guestName);
   const descriptors=files.map(meta=>{
@@ -82,8 +84,16 @@ async function complete(body,res){
   const id=String(body.id||''),secret=String(body.secret||'');
   if(!/^[0-9a-f-]{36}$/i.test(id)||secret.length<20)return C.json(res,400,{ok:false,error:'업로드 정보를 확인해 주세요.'});
   const row=await C.getUploadById(id);
-  if(!row||row.status!=='uploading')return C.json(res,404,{ok:false,error:'업로드 요청을 찾을 수 없습니다.'});
-  if(!C.hashEquals(row.upload_secret_hash,C.sha256(secret)))return C.json(res,403,{ok:false,error:'업로드 권한을 확인할 수 없습니다.'});
+  if(!row)return C.json(res,404,{ok:false,error:'업로드 요청을 찾을 수 없습니다.'});
+  const secretHash=C.sha256(secret);
+  /* complete 응답 직후 네트워크가 끊기면 클라이언트는 같은 요청을 다시 보낸다.
+     pending/approved 상태를 성공으로 돌려 중복 접수·가짜 실패를 막는다. */
+  if(row.status==='pending'||row.status==='approved'){
+    if(row.upload_secret_hash&&!C.hashEquals(row.upload_secret_hash,secretHash))return C.json(res,403,{ok:false,error:'업로드 권한을 확인할 수 없습니다.'});
+    return C.json(res,200,{ok:true,status:row.status,alreadyCompleted:true});
+  }
+  if(row.status!=='uploading')return C.json(res,409,{ok:false,error:'이미 처리된 업로드 요청입니다.'});
+  if(!C.hashEquals(row.upload_secret_hash,secretHash))return C.json(res,403,{ok:false,error:'업로드 권한을 확인할 수 없습니다.'});
   if(row.expires_at&&new Date(row.expires_at).getTime()<Date.now())return C.json(res,410,{ok:false,error:'업로드 시간이 만료되었습니다.'});
 
   /* 클라이언트가 complete만 호출해 빈 예약을 pending으로 바꾸지 못하도록
@@ -100,7 +110,9 @@ async function complete(body,res){
     await C.deleteUploadRow(id).catch(()=>{});
     return C.json(res,400,{ok:false,error:'전송된 사진 파일을 확인할 수 없습니다. 다시 선택해 주세요.'});
   }
-  await C.updateUpload(id,{status:'pending',completed_at:C.nowIso(),upload_secret_hash:null,expires_at:null,size_bytes:actualSize,mime_type:actualMime});
+  /* 승인 전까지 해시를 유지해 complete 재시도를 안전하게 검증한다.
+     승인·거절·삭제 시 관리 API가 해시를 제거한다. */
+  await C.updateUpload(id,{status:'pending',completed_at:C.nowIso(),expires_at:null,size_bytes:actualSize,mime_type:actualMime});
   return C.json(res,200,{ok:true,status:'pending'});
 }
 
@@ -110,7 +122,9 @@ async function cancel(body,res){
   if(!/^[0-9a-f-]{36}$/i.test(id)||secret.length<20)return C.json(res,400,{ok:false,error:'업로드 정보를 확인해 주세요.'});
   const row=await C.getUploadById(id);
   if(!row)return C.json(res,200,{ok:true,status:'cancelled'});
-  if(row.status!=='uploading')return C.json(res,409,{ok:false,error:'이미 접수된 사진은 취소할 수 없습니다.'});
+  if(row.status==='pending'||row.status==='approved')return C.json(res,200,{ok:true,status:row.status,alreadyCompleted:true});
+  if(row.status==='rejected')return C.json(res,200,{ok:true,status:'cancelled'});
+  if(row.status!=='uploading')return C.json(res,409,{ok:false,error:'이미 처리된 업로드 요청입니다.'});
   if(!C.hashEquals(row.upload_secret_hash,C.sha256(secret)))return C.json(res,403,{ok:false,error:'업로드 권한을 확인할 수 없습니다.'});
   try{
     await C.removeStorage([row.storage_path]);

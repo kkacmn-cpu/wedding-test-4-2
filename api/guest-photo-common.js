@@ -124,6 +124,24 @@ async function cleanupExpiredUploading(cardId){
   for(const row of rows){await deleteUploadRow(row.id);removed++;}
   return removed;
 }
+async function cleanupRejected(cardId){
+  const params=new URLSearchParams({
+    select:'id,storage_path',card_id:`eq.${cardId}`,status:'eq.rejected',purge_after:`lte.${nowIso()}`,limit:'50'
+  });
+  const rows=await rest(`guest_photo_uploads?${params.toString()}`);
+  if(!Array.isArray(rows)||!rows.length)return 0;
+  let removed=0;
+  for(const row of rows){
+    try{
+      if(row.storage_path)await removeStorage([row.storage_path]);
+      await deleteUploadRow(row.id);
+      removed++;
+    }catch(error){
+      console.warn('guest-photo rejected cleanup deferred',row&&row.id,error&&error.message);
+    }
+  }
+  return removed;
+}
 async function countActive(cardId){
   const params=new URLSearchParams({
     select:'id',card_id:`eq.${cardId}`,status:'in.(uploading,pending,approved)',limit:'200'
@@ -270,6 +288,6 @@ module.exports={
   SUPABASE_URL,SERVICE_ROLE_KEY,BUCKET,STORAGE_URL,MAX_CARD_PHOTOS,MAX_FILES_PER_REQUEST,MAX_FILE_BYTES,
   SIGNED_UPLOAD_TTL_SECONDS,SIGNED_VIEW_TTL_SECONDS,REQUEST_TIMEOUT_MS,
   configured,securityHeaders,json,headers,timedFetch,readJson,safeSlug,cleanName,safeMime,extForMime,sha256,randomSecret,hashEquals,
-  featureConfig,uploadWindowOpen,rest,getCardBySlug,cleanupExpiredUploading,countActive,countRecentSession,reserveUploads,insertUpload,deleteUploadRow,getUploadById,updateUpload,listUploads,
+  featureConfig,uploadWindowOpen,rest,getCardBySlug,cleanupExpiredUploading,cleanupRejected,countActive,countRecentSession,reserveUploads,insertUpload,deleteUploadRow,getUploadById,updateUpload,listUploads,
   getStorageObjectInfo,waitForStorageObject,createSignedUpload,createSignedViews,removeStorage,rpc,verifyOwner,parseBody,nowIso
 };

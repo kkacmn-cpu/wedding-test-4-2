@@ -15,7 +15,8 @@ async function authenticate(body){
   return C.verifyOwner(body.slug,body.editCode,body.manageToken);
 }
 async function list(owner,res){
-  const rows=await C.listUploads(owner.id,['pending','approved','rejected']);
+  await C.cleanupRejected(owner.id).catch(error=>console.warn('guest-photo rejected cleanup skipped',error&&error.message));
+  const rows=await C.listUploads(owner.id,['pending','approved']);
   return C.json(res,200,{ok:true,items:await signedRows(rows)});
 }
 async function mutate(owner,body,res){
@@ -28,19 +29,23 @@ async function mutate(owner,body,res){
     if(!['pending','approved'].includes(row.status))return C.json(res,409,{ok:false,error:'승인할 수 없는 사진입니다.'});
     const info=await C.waitForStorageObject(row.storage_path,2);
     if(!info)return C.json(res,409,{ok:false,error:'사진 파일을 확인할 수 없어 승인하지 못했습니다.'});
-    await C.updateUpload(id,{status:'approved',reviewed_at:C.nowIso()});
+    await C.updateUpload(id,{status:'approved',reviewed_at:C.nowIso(),upload_secret_hash:null,expires_at:null,purge_after:null});
     return C.json(res,200,{ok:true,status:'approved'});
   }
-  if(action==='reject'){
-    /* 파일 삭제가 실패한 상태에서 메타데이터만 거절 처리하면 비공개 버킷에 고아 파일이 남는다. */
-    await C.removeStorage([row.storage_path]);
-    await C.updateUpload(id,{status:'rejected',reviewed_at:C.nowIso(),purge_after:new Date(Date.now()+30*24*60*60*1000).toISOString()});
-    return C.json(res,200,{ok:true,status:'rejected'});
-  }
-  if(action==='delete'){
-    await C.removeStorage([row.storage_path]);
-    await C.deleteUploadRow(id);
-    return C.json(res,200,{ok:true,status:'deleted'});
+  if(action==='reject'||action==='delete'){
+    /* 먼저 공개 대상에서 숨긴 뒤 Storage와 행을 제거한다.
+       Storage 장애가 생겨도 승인 사진이 계속 노출되지 않으며, 다음 API 호출에서 cleanupRejected가 재시도한다. */
+    const purgeNow=new Date(Date.now()-1000).toISOString();
+    await C.updateUpload(id,{status:'rejected',reviewed_at:C.nowIso(),purge_after:purgeNow,upload_secret_hash:null,expires_at:null});
+    let cleanupPending=false;
+    try{
+      if(row.storage_path)await C.removeStorage([row.storage_path]);
+      await C.deleteUploadRow(id);
+    }catch(error){
+      cleanupPending=true;
+      console.warn('guest-photo purge deferred',id,error&&error.message);
+    }
+    return C.json(res,200,{ok:true,status:action==='delete'?'deleted':'rejected',cleanupPending});
   }
   return C.json(res,400,{ok:false,error:'지원하지 않는 관리 요청입니다.'});
 }
