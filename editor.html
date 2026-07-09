@@ -80,16 +80,26 @@ input,select,textarea{font-family:inherit;}
 .ft{resize:vertical;min-height:120px;line-height:1.8;}
 .ft.intl,.fi.intl{font-family:var(--intl);}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-/* STEP2 혼주 그룹 + 故 토글 (입력창/컬러/폰트/2열 무변경) */
+/* V45 HOTFIX: 혼주를 사람별로 입력하고 故 표시는 해당 이름 앞에만 적용 */
 .parents-group{margin-top:18px;padding-top:18px;border-top:1px solid var(--line);}
 .pg-head{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;}
 .pg-en{font-family:var(--display);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-deep);}
 .pg-ko{font-size:13px;font-weight:500;color:var(--brown-soft);}
-.dec-toggle{display:inline-flex;align-items:center;gap:7px;margin-top:8px;cursor:pointer;font-size:12px;color:var(--brown-mute);user-select:none;}
+.parent-side-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
+.parent-side-card{min-width:0;padding:15px;border:1px solid rgba(184,148,95,.22);border-radius:14px;background:linear-gradient(180deg,rgba(255,253,248,.96),rgba(248,244,236,.72));}
+.parent-side-title{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid var(--line-soft);}
+.parent-side-title strong{font-size:13px;font-weight:600;color:var(--brown);}
+.parent-side-title span{font-size:10.5px;color:var(--brown-mute);white-space:nowrap;}
+.parent-person-row{display:grid;grid-template-columns:48px minmax(0,1fr);gap:7px 8px;align-items:center;}
+.parent-person-row+.parent-person-row{margin-top:11px;padding-top:11px;border-top:1px solid rgba(184,148,95,.12);}
+.parent-person-label{font-size:12px;color:var(--brown-soft);}
+.parent-person-row .fi{min-width:0;padding:11px 12px;font-size:14px;border-radius:10px;}
+.dec-toggle{display:inline-flex;align-items:center;gap:7px;grid-column:2;margin-top:0;cursor:pointer;font-size:11.5px;color:var(--brown-mute);user-select:none;width:max-content;}
 .dec-toggle input{width:auto;margin:0;accent-color:var(--gold);}
 .dec-txt b{color:var(--gold-deep);font-weight:700;}
 .dec-toggle input:checked ~ .dec-txt{color:var(--brown-soft);}
-.dec-note{font-size:11px;color:var(--brown-mute);opacity:.7;margin:5px 0 0;line-height:1.4;word-break:keep-all;}
+.dec-note{font-size:11px;color:var(--brown-mute);opacity:.76;margin:10px 0 0;line-height:1.55;word-break:keep-all;}
+@media(max-width:640px){.parent-side-grid{grid-template-columns:1fr}.parent-side-card{padding:14px 13px}.parent-person-row{grid-template-columns:45px minmax(0,1fr)}}
 .fhint{font-size:12px;color:var(--brown-mute);margin-top:6px;line-height:1.6;}
 .fsub{font-family:var(--serif);font-size:15px;color:var(--gold-deep);margin:24px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--gold-pale);}
 
@@ -111,7 +121,73 @@ input,select,textarea{font-family:inherit;}
 .couple-intro-field>span{font-size:12px;font-weight:700;color:var(--brown);}
 .couple-intro-field textarea{box-sizing:border-box;min-height:86px;resize:vertical;line-height:1.6;font-family:inherit;}
 .couple-intro-help{margin:10px 0 0;font-size:11.5px;line-height:1.55;color:var(--brown-mute);word-break:keep-all;}
-@media(max-width:640px){.couple-intro-editor{padding:16px 14px}.couple-intro-body .frow{grid-template-columns:1fr}.couple-intro-field textarea{min-height:76px}}
+.couple-profile-editor-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.couple-profile-editor-person{min-width:0;padding:13px;border:1px solid rgba(184,148,95,.18);border-radius:13px;background:rgba(255,255,255,.62);}
+.couple-profile-editor-role{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:12px;font-weight:700;color:var(--brown);}
+.couple-profile-photo-editor{display:grid;grid-template-columns:82px minmax(0,1fr);gap:11px;align-items:center;margin-bottom:11px;}
+.couple-profile-photo-preview{position:relative;aspect-ratio:4/5;border:1px dashed rgba(184,148,95,.36);border-radius:9px;overflow:hidden;background:#f5f1e9;display:flex;align-items:center;justify-content:center;color:var(--brown-mute);font-size:10.5px;text-align:center;line-height:1.35;}
+.couple-profile-photo-preview img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 36%;}
+.couple-profile-photo-actions{display:flex;flex-direction:column;gap:7px;}
+.couple-profile-photo-actions .btn{width:100%;justify-content:center;padding:8px 9px;font-size:11.5px;}
+.couple-profile-photo-status{min-height:16px;margin-top:2px;color:var(--brown-mute);font-size:10.5px;line-height:1.4;word-break:keep-all;}
+.couple-profile-position{grid-column:1/-1;margin-top:10px;}
+.couple-profile-position-label{display:block;margin-bottom:7px;font-size:10.5px;font-weight:700;color:var(--brown-mute);}
+.couple-profile-position-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;}
+.couple-profile-position-btn{appearance:none;border:1px solid rgba(184,148,95,.26);border-radius:8px;background:rgba(255,255,255,.72);padding:7px 3px;font-family:inherit;font-size:10.5px;color:var(--brown-mute);cursor:pointer;transition:border-color .18s,background .18s,color .18s,box-shadow .18s;}
+.couple-profile-position-btn.on{border-color:rgba(159,119,59,.58);background:#fffaf0;color:var(--brown);box-shadow:0 2px 8px rgba(114,82,42,.08);}
+.couple-profile-position-btn:disabled{opacity:.42;cursor:default;}
+.couple-profile-editor-person .couple-intro-field textarea{min-height:76px;}
+@media(max-width:640px){.couple-intro-editor{padding:16px 14px}.couple-profile-editor-grid{grid-template-columns:1fr}.couple-intro-field textarea{min-height:76px}.couple-profile-photo-editor{grid-template-columns:88px minmax(0,1fr)}}
+
+
+/* ===== V46 DEV: 선택형 우리 가족 편집 ===== */
+.family-intro-editor{margin:18px 0 4px;padding:18px;border:1px solid rgba(184,148,95,.22);border-radius:14px;background:linear-gradient(180deg,rgba(255,253,248,.94),rgba(248,244,236,.78));}
+.family-intro-editor-head{display:flex;align-items:center;justify-content:space-between;gap:14px;}
+.family-intro-editor-title{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.family-intro-editor-title strong{font-family:var(--display);font-size:15px;font-weight:600;color:var(--brown);}
+.family-intro-editor-title span{font-size:11.5px;line-height:1.5;color:var(--brown-mute);word-break:keep-all;}
+.family-intro-toggle{position:relative;width:44px;height:24px;flex:0 0 auto;}
+.family-intro-toggle input{display:none;}
+.family-intro-toggle label{position:absolute;inset:0;border-radius:999px;background:var(--sand);cursor:pointer;transition:.25s;}
+.family-intro-toggle label::after{content:'';position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.18);transition:.25s;}
+.family-intro-toggle input:checked+label{background:var(--gold);}
+.family-intro-toggle input:checked+label::after{transform:translateX(20px);}
+.family-intro-body{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--line-soft);}
+.family-intro-body.show{display:block;}
+.family-member-list{display:grid;gap:12px;}
+.family-member-card{min-width:0;padding:14px;border:1px solid rgba(184,148,95,.18);border-radius:13px;background:rgba(255,255,255,.64);}
+.family-member-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px;}
+.family-member-card-title{display:flex;align-items:center;gap:8px;min-width:0;}
+.family-member-number{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid rgba(159,119,59,.28);border-radius:50%;font-family:var(--display);font-size:9px;color:var(--gold-deep);background:#fff;}
+.family-member-card-title strong{font-size:12.5px;font-weight:700;color:var(--brown);}
+.family-member-order{display:flex;align-items:center;gap:5px;}
+.family-member-mini-btn{appearance:none;border:1px solid rgba(184,148,95,.23);border-radius:8px;background:#fff;padding:6px 8px;font-family:inherit;font-size:10.5px;color:var(--brown-mute);cursor:pointer;}
+.family-member-mini-btn:disabled{opacity:.35;cursor:default;}
+.family-member-mini-btn.danger{color:#9b5b52;}
+.family-member-main{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;align-items:start;}
+.family-member-photo-preview{position:relative;aspect-ratio:4/5;border:1px dashed rgba(184,148,95,.36);border-radius:10px;overflow:hidden;background:#f5f1e9;display:flex;align-items:center;justify-content:center;color:var(--brown-mute);font-size:10.5px;text-align:center;line-height:1.35;}
+.family-member-photo-preview img{width:100%;height:100%;display:block;object-fit:cover;}
+.family-member-photo-actions{display:flex;flex-direction:column;gap:6px;margin-top:7px;}
+.family-member-photo-actions .btn{width:100%;justify-content:center;padding:7px 7px;font-size:10.5px;}
+.family-member-status{min-height:15px;margin-top:3px;color:var(--brown-mute);font-size:10px;line-height:1.35;word-break:keep-all;}
+.family-member-fields{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.family-member-field{display:flex;flex-direction:column;gap:6px;min-width:0;}
+.family-member-field.full{grid-column:1/-1;}
+.family-member-field>span{font-size:11px;font-weight:700;color:var(--brown-soft);}
+.family-member-field .fi{padding:10px 11px;border-radius:9px;font-size:12.5px;}
+.family-member-field textarea.fi{min-height:67px;resize:vertical;line-height:1.55;font-family:inherit;}
+.family-member-position{grid-column:1/-1;margin-top:1px;}
+.family-member-position-label{display:block;margin-bottom:6px;font-size:10.5px;font-weight:700;color:var(--brown-mute);}
+.family-member-position-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;}
+.family-member-position-btn{appearance:none;border:1px solid rgba(184,148,95,.26);border-radius:8px;background:rgba(255,255,255,.72);padding:7px 3px;font-family:inherit;font-size:10.5px;color:var(--brown-mute);cursor:pointer;}
+.family-member-position-btn.on{border-color:rgba(159,119,59,.58);background:#fffaf0;color:var(--brown);box-shadow:0 2px 8px rgba(114,82,42,.08);}
+.family-member-position-btn:disabled{opacity:.42;cursor:default;}
+.family-add-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;}
+.family-add-count{font-size:10.5px;color:var(--brown-mute);}
+.family-add-btn{appearance:none;border:1px solid rgba(159,119,59,.34);border-radius:10px;background:#fffaf0;padding:9px 12px;font-family:inherit;font-size:11.5px;font-weight:700;color:var(--gold-deep);cursor:pointer;}
+.family-add-btn:disabled{opacity:.45;cursor:default;}
+.family-intro-help{margin:11px 0 0;font-size:11.5px;line-height:1.58;color:var(--brown-mute);word-break:keep-all;}
+@media(max-width:640px){.family-intro-editor{padding:16px 14px}.family-member-main{grid-template-columns:84px minmax(0,1fr);gap:10px}.family-member-fields{grid-template-columns:1fr}.family-member-field.full{grid-column:auto}.family-member-card{padding:13px 11px}.family-member-order{gap:3px}.family-member-mini-btn{padding:6px 7px}}
 
 /* ===== FEATURE24: 커플 타임라인 편집 ===== */
 .story-editor{margin-top:24px;padding:20px;border:1px solid rgba(184,148,95,.23);border-radius:16px;background:linear-gradient(180deg,rgba(255,253,248,.96),rgba(247,242,233,.80));}
@@ -144,6 +220,78 @@ input,select,textarea{font-family:inherit;}
 .story-edit-field textarea.fi{min-height:72px;resize:vertical;line-height:1.55;font-family:inherit;}
 .story-editor-help{margin:12px 0 0;font-size:11.5px;line-height:1.6;color:var(--brown-mute);word-break:keep-all;}
 @media(max-width:640px){.story-editor{padding:17px 14px}.story-edit-grid{grid-template-columns:1fr}.story-edit-field.full{grid-column:auto}.story-edit-card{padding:14px 12px}}
+
+
+/* ===== V46 DEV: 선택형 우리 가족 출력 ===== */
+.family-profile-sec{--fm-accent:#8a7355;--fm-line:rgba(138,115,85,.22);--fm-bg:rgba(255,255,255,.50);}
+.family-profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:350px;margin:17px auto 0;align-items:start;}
+.family-profile-grid.count-1{grid-template-columns:minmax(0,1fr);max-width:240px;}
+.family-profile-grid.count-3 .family-profile-item:last-child{grid-column:1/-1;max-width:240px;width:100%;justify-self:center;}
+.family-profile-item{min-width:0;padding:9px 9px 14px;border:1px solid var(--fm-line);border-radius:12px;background:var(--fm-bg);text-align:center;}
+.family-profile-photo{position:relative;aspect-ratio:4/5;overflow:hidden;background:#eee9df;}
+.family-profile-photo img{width:100%;height:100%;display:block;object-fit:cover;}
+.family-profile-copy{min-width:0;padding:12px 4px 1px;}
+.family-profile-relation{color:var(--fm-accent);font-family:var(--sans);font-size:8.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;word-break:keep-all;}
+.family-profile-name{margin-top:5px;font-family:'Noto Serif KR',serif;font-size:15.5px;font-weight:500;letter-spacing:.05em;color:inherit;word-break:keep-all;overflow-wrap:anywhere;}
+.family-profile-text{margin-top:8px;font-size:12px;line-height:1.7;word-break:keep-all;overflow-wrap:anywhere;color:inherit;opacity:.80;}
+.t-signature .family-profile-sec{--fm-accent:#9a7546;--fm-line:rgba(154,117,70,.20);--fm-bg:transparent;}
+.t-signature .family-profile-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+.t-signature .family-profile-item{padding:0;border:0;border-radius:0;background:transparent;text-align:left;}
+.t-signature .family-profile-item:nth-child(even){margin-top:22px;}
+.t-signature .family-profile-grid.count-1 .family-profile-item,.t-signature .family-profile-grid.count-3 .family-profile-item:last-child{margin-top:0;}
+.t-signature .family-profile-photo{aspect-ratio:3/4;box-shadow:0 18px 38px -34px rgba(45,34,23,.55);}
+.t-signature .family-profile-copy{margin-top:10px;padding:13px 1px 0;border-top:1px solid var(--fm-line);}
+.t-classic-ivory .family-profile-sec{--fm-accent:#826b47;--fm-line:rgba(130,107,71,.17);--fm-bg:rgba(255,255,255,.55);}
+.t-classic-ivory .family-profile-item{position:relative;padding:9px 9px 15px;border-radius:18px;box-shadow:0 18px 42px -37px rgba(88,68,43,.48);}
+.t-classic-ivory .family-profile-item::after{content:'';position:absolute;inset:5px;border:1px solid rgba(130,107,71,.07);border-radius:14px;pointer-events:none;}
+.t-classic-ivory .family-profile-photo{border-radius:11px;}
+.t-hanok .family-profile-sec{--fm-accent:#8a4538;--fm-line:rgba(138,69,56,.22);--fm-bg:transparent;}
+.t-hanok .family-profile-grid{grid-template-columns:1fr;gap:0;border-top:1px solid var(--fm-line);max-width:350px;}
+.t-hanok .family-profile-grid.count-3 .family-profile-item:last-child{grid-column:auto;max-width:none;}
+.t-hanok .family-profile-item{display:grid;grid-template-columns:94px minmax(0,1fr);gap:17px;align-items:center;padding:15px 3px;border:0;border-bottom:1px solid var(--fm-line);border-radius:0;background:transparent;text-align:left;}
+.t-hanok .family-profile-item:nth-child(even){grid-template-columns:minmax(0,1fr) 94px;}
+.t-hanok .family-profile-item:nth-child(even) .family-profile-photo{grid-column:2;grid-row:1;}
+.t-hanok .family-profile-item:nth-child(even) .family-profile-copy{grid-column:1;grid-row:1;text-align:right;}
+.t-hanok .family-profile-photo{border:5px solid rgba(255,252,244,.78);outline:1px solid var(--fm-line);}
+.t-hanok .family-profile-copy{padding:0;}
+.t-black .family-profile-sec{--fm-accent:#d2b478;--fm-line:rgba(210,180,120,.25);--fm-bg:rgba(255,255,255,.018);}
+.t-black .family-profile-grid{counter-reset:family-cast;}
+.t-black .family-profile-item{counter-increment:family-cast;position:relative;border-radius:1px;text-align:left;background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.008));}
+.t-black .family-profile-item::before{content:'0' counter(family-cast);position:absolute;top:13px;right:13px;z-index:2;font-family:var(--sans);font-size:8px;letter-spacing:.16em;color:rgba(232,210,168,.72);}
+.t-black .family-profile-photo{aspect-ratio:3/4;box-shadow:inset 0 0 0 1px rgba(210,180,120,.16);}
+.t-black .family-profile-text{color:rgba(239,231,216,.70);}
+.t-fullscreen .family-profile-sec{--fm-accent:rgba(214,186,132,.95);--fm-line:rgba(214,186,132,.24);--fm-bg:transparent;}
+.t-fullscreen .family-profile-grid{grid-template-columns:1fr;gap:0;max-width:none;border-top:1px solid var(--fm-line);counter-reset:family-cinema;}
+.t-fullscreen .family-profile-grid.count-3 .family-profile-item:last-child{grid-column:auto;max-width:none;}
+.t-fullscreen .family-profile-item{counter-increment:family-cinema;position:relative;display:grid;grid-template-columns:37% minmax(0,1fr);gap:17px;align-items:center;padding:16px 0;border:0;border-bottom:1px solid var(--fm-line);border-radius:0;background:transparent;text-align:left;overflow:hidden;}
+.t-fullscreen .family-profile-item::after{content:'0' counter(family-cinema);position:absolute;right:2px;bottom:-9px;font-family:var(--sans);font-size:45px;font-weight:700;line-height:1;color:rgba(214,186,132,.05);}
+.t-fullscreen .family-profile-item:nth-child(even){grid-template-columns:minmax(0,1fr) 37%;}
+.t-fullscreen .family-profile-item:nth-child(even) .family-profile-photo{grid-column:2;grid-row:1;}
+.t-fullscreen .family-profile-item:nth-child(even) .family-profile-copy{grid-column:1;grid-row:1;text-align:right;}
+.t-fullscreen .family-profile-photo{aspect-ratio:3/4;border:1px solid var(--fm-line);}
+.t-fullscreen .family-profile-copy{padding:0;}
+.t-minimal .family-profile-sec{--fm-accent:#322619;--fm-line:rgba(50,38,25,.18);--fm-bg:transparent;text-align:left;}
+.t-minimal .family-profile-grid{grid-template-columns:1.08fr .92fr;gap:26px;max-width:none;}
+.t-minimal .family-profile-item{padding:0;border:0;border-radius:0;background:transparent;text-align:left;}
+.t-minimal .family-profile-item:nth-child(even){margin-top:38px;}
+.t-minimal .family-profile-grid.count-1 .family-profile-item,.t-minimal .family-profile-grid.count-3 .family-profile-item:last-child{margin-top:0;}
+.t-minimal .family-profile-copy{margin-top:10px;padding:13px 0 0;border-top:1px solid var(--fm-line);}
+.t-flower .family-profile-sec{--fm-accent:#6d7258;--fm-line:rgba(109,114,88,.16);--fm-bg:transparent;}
+.t-flower .family-profile-grid{gap:16px;}
+.t-flower .family-profile-item{position:relative;z-index:0;padding:0;border:0;border-radius:0;background:transparent;text-align:left;}
+.t-flower .family-profile-item::before{content:'';position:absolute;inset:9px -7px -8px 7px;z-index:-1;border-radius:18px;background:rgba(222,226,210,.46);border:1px solid rgba(109,114,88,.08);}
+.t-flower .family-profile-item:nth-child(odd){transform:rotate(-.55deg);}
+.t-flower .family-profile-item:nth-child(even){transform:translateY(12px) rotate(.65deg);}
+.t-flower .family-profile-grid.count-1 .family-profile-item,.t-flower .family-profile-grid.count-3 .family-profile-item:last-child{transform:none;}
+.t-flower .family-profile-photo{border-radius:17px;box-shadow:0 18px 42px -34px rgba(51,55,39,.50);}
+.t-flower .family-profile-copy{padding:14px 7px 7px;}
+.t-gold-serif .family-profile-sec{--fm-accent:#7a5a28;--fm-line:rgba(122,90,40,.24);--fm-bg:rgba(255,253,248,.26);}
+.t-gold-serif .family-profile-item{position:relative;padding:14px 11px 17px;border:0;border-radius:0;background:var(--fm-bg);}
+.t-gold-serif .family-profile-item::before,.t-gold-serif .family-profile-item::after{content:'';position:absolute;pointer-events:none;}
+.t-gold-serif .family-profile-item::before{inset:0;border:1px solid var(--fm-line);}
+.t-gold-serif .family-profile-item::after{inset:4px;border:1px solid rgba(122,90,40,.08);}
+.t-gold-serif .family-profile-photo{aspect-ratio:3/4;margin:0 4px;border:1px solid rgba(122,90,40,.20);}
+@media(max-width:360px){.family-profile-grid{gap:8px}.family-profile-item{padding:7px 7px 12px}.family-profile-name{font-size:15px}.family-profile-text{font-size:11.8px}.t-signature .family-profile-grid,.t-classic-ivory .family-profile-grid,.t-black .family-profile-grid,.t-flower .family-profile-grid,.t-gold-serif .family-profile-grid{gap:8px}.t-hanok .family-profile-item{grid-template-columns:82px minmax(0,1fr);gap:12px}.t-hanok .family-profile-item:nth-child(even){grid-template-columns:minmax(0,1fr) 82px}.t-fullscreen .family-profile-item{gap:13px}.t-minimal .family-profile-grid{gap:17px}.t-minimal .family-profile-item:nth-child(even){margin-top:26px}}
 
 /* ===== FEATURE24: 커플 타임라인 출력 ===== */
 .story-timeline-sec{--st-accent:#8a7355;--st-line:rgba(138,115,85,.22);--st-bg:rgba(255,255,255,.48);--st-ink:inherit;}
@@ -1756,6 +1904,50 @@ input,select,textarea{font-family:inherit;}
 }
 @media(max-width:360px){.manage-entry-btn{font-size:0}.manage-entry-btn::after{content:'내 청첩장';font-size:11.5px;}}
 
+/* V47 DEV: 신랑·신부 통합 관리센터 */
+.owner-center-modal{width:min(760px,calc(100vw - 28px));max-height:min(850px,90vh);overflow:auto;text-align:left;padding:30px;}
+.owner-center-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px;}
+.owner-center-head-copy{min-width:0;}
+.owner-center-kicker{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:7px;}
+.owner-center-head h3{margin:0 0 6px;text-align:left;}
+.owner-center-head p{margin:0!important;font-size:12.5px;line-height:1.65;color:var(--brown-mute);}
+.owner-center-refresh{flex:0 0 auto;padding:8px 12px!important;font-size:11.5px!important;}
+.owner-center-state{display:none;margin-bottom:12px;padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:var(--ivory-2);font-size:12px;line-height:1.55;color:var(--brown-mute);}
+.owner-center-state.show{display:block;}
+.owner-center-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;}
+.owner-center-card{display:flex;flex-direction:column;min-height:158px;padding:17px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,#fff,#fcf8f1);box-shadow:0 10px 26px rgba(73,53,31,.055);}
+.owner-center-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.owner-center-card-label{font-size:12px;font-weight:650;color:var(--brown);}
+.owner-center-card-count{font-family:var(--serif);font-size:29px;line-height:1;color:var(--gold-deep);white-space:nowrap;}
+.owner-center-card-count small{font-family:var(--sans);font-size:10px;font-weight:500;color:var(--brown-mute);margin-left:2px;}
+.owner-center-card-desc{margin:10px 0 14px;font-size:11.5px;line-height:1.6;color:var(--brown-mute);word-break:keep-all;}
+.owner-center-card-meta{min-height:18px;margin-top:auto;margin-bottom:10px;font-size:10.5px;color:var(--brown-soft);}
+.owner-center-card .btn{width:100%;padding:9px 12px;font-size:12px;}
+.owner-center-foot{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px;padding-top:13px;border-top:1px solid var(--line-soft);}
+.owner-center-privacy{margin:13px 0 0!important;font-size:10.5px!important;line-height:1.55!important;color:var(--brown-mute)!important;text-align:left;}
+.owner-center-banner-btn{display:none;}
+.guestbook-manager-modal{width:min(680px,calc(100vw - 28px));max-height:min(820px,88vh);overflow:auto;text-align:left;padding:30px;}
+.guestbook-manager-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0 12px;padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:var(--ivory-2);}
+.guestbook-manager-toolbar span{font-size:12px;color:var(--brown-soft);}
+.guestbook-manager-state{padding:30px 14px;text-align:center;border:1px dashed var(--sand);border-radius:13px;color:var(--brown-mute);font-size:13px;line-height:1.7;}
+.guestbook-manager-list{display:flex;flex-direction:column;gap:9px;}
+.guestbook-manager-item{padding:14px 15px;border:1px solid var(--line);border-radius:13px;background:#fff;}
+.guestbook-manager-item-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;}
+.guestbook-manager-item-head b{font-size:13px;color:var(--brown);}
+.guestbook-manager-item-head span{font-size:10.5px;color:var(--brown-mute);white-space:nowrap;}
+.guestbook-manager-item p{margin:0!important;font-size:12px;line-height:1.72;color:var(--brown-soft);white-space:pre-wrap;word-break:break-word;}
+@media(max-width:640px){
+  .owner-center-modal,.guestbook-manager-modal{padding:25px 17px 19px;max-height:calc(100vh - 18px);}
+  .owner-center-head{display:block;}
+  .owner-center-refresh{width:100%;margin-top:12px;}
+  .owner-center-grid{grid-template-columns:1fr;}
+  .owner-center-card{min-height:142px;}
+  .owner-center-foot{grid-template-columns:1fr;}
+  .clone-actions{width:100%;display:grid!important;grid-template-columns:1fr 1fr;}
+  .clone-actions .btn{width:100%;}
+}
+
+
 
 /* ===== FEATURE23: 신랑·신부 소개 카드 ===== */
 .couple-profile-sec{--cp-accent:#8a7355;--cp-line:rgba(138,115,85,.22);--cp-bg:rgba(255,255,255,.42);}
@@ -1793,6 +1985,127 @@ input,select,textarea{font-family:inherit;}
 .t-gold-serif .couple-profile-sec{--cp-accent:#7a5a28;--cp-line:rgba(122,90,40,.26);--cp-bg:rgba(255,253,248,.38);}
 .t-gold-serif .couple-profile-item{border-radius:3px;outline:1px solid rgba(122,90,40,.10);outline-offset:3px;}
 @media(max-width:420px){.couple-profile-grid{gap:9px;max-width:100%}.couple-profile-item{padding:14px 10px}.couple-profile-text{font-size:12px}.t-hanok .couple-profile-item,.t-fullscreen .couple-profile-item{grid-template-columns:48px 52px 1fr;gap:7px}.t-minimal .couple-profile-grid{gap:18px}.t-flower .couple-profile-item:nth-child(2){transform:translateY(7px)}}
+/* V45 DEV: 사진 중심 인물 프로필 */
+.couple-profile-photo{position:relative;aspect-ratio:4/5;overflow:hidden;background:#eee9df;}
+.couple-profile-photo img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 36%;}
+.couple-profile-copy{min-width:0;}
+.t-signature .couple-profile-grid{gap:16px;border:0;}
+.t-signature .couple-profile-item{padding:0;text-align:left;}
+.t-signature .couple-profile-item+ .couple-profile-item{border-left:0;}
+.t-signature .couple-profile-photo{border-radius:2px;}
+.t-signature .couple-profile-copy{padding:13px 2px 0;}
+.t-classic-ivory .couple-profile-item{padding:10px;background:rgba(255,255,255,.58);}
+.t-classic-ivory .couple-profile-photo{border-radius:12px;}
+.t-classic-ivory .couple-profile-copy{padding:12px 4px 4px;}
+.t-hanok .couple-profile-item{grid-template-columns:96px minmax(0,1fr);gap:16px;align-items:center;padding:14px 0;}
+.t-hanok .couple-profile-photo{border:5px solid rgba(255,252,244,.7);outline:1px solid var(--cp-line);}
+.t-hanok .couple-profile-copy{display:block;}
+.t-black .couple-profile-item{padding:9px;text-align:left;}
+.t-black .couple-profile-photo{border:1px solid rgba(210,180,120,.22);}
+.t-black .couple-profile-copy{padding:13px 5px 5px;}
+.t-fullscreen .couple-profile-item{grid-template-columns:42% minmax(0,1fr);gap:18px;align-items:center;padding:16px 0;}
+.t-fullscreen .couple-profile-photo{border:1px solid var(--cp-line);}
+.t-fullscreen .couple-profile-copy{display:block;}
+.t-minimal .couple-profile-grid{align-items:start;}
+.t-minimal .couple-profile-item{padding:0;}
+.t-minimal .couple-profile-item:nth-child(2){margin-top:34px;}
+.t-minimal .couple-profile-copy{padding-top:12px;}
+.t-flower .couple-profile-item{padding:9px;text-align:left;}
+.t-flower .couple-profile-item:nth-child(1){transform:rotate(-1.1deg);}
+.t-flower .couple-profile-item:nth-child(2){transform:translateY(12px) rotate(1.1deg);}
+.t-flower .couple-profile-photo{border-radius:13px;}
+.t-flower .couple-profile-copy{padding:12px 5px 4px;}
+.t-gold-serif .couple-profile-item{padding:10px;text-align:left;}
+.t-gold-serif .couple-profile-photo{border:1px solid var(--cp-line);}
+.t-gold-serif .couple-profile-copy{padding:13px 5px 4px;}
+@media(max-width:420px){.t-hanok .couple-profile-item,.t-fullscreen .couple-profile-item{grid-template-columns:88px minmax(0,1fr);gap:13px}.t-minimal .couple-profile-item:nth-child(2){margin-top:24px}}
+/* V45.2 DEV: 템플릿별 프로필 아트디렉션 */
+.t-signature .couple-profile-grid{grid-template-columns:1.08fr .92fr;gap:18px;align-items:start;max-width:350px;}
+.t-signature .couple-profile-item:nth-child(2){margin-top:24px;}
+.t-signature .couple-profile-grid.single{grid-template-columns:1fr;max-width:246px;}
+.t-signature .couple-profile-grid.single .couple-profile-item{margin-top:0;}
+.t-signature .couple-profile-photo{aspect-ratio:3/4;box-shadow:0 18px 38px -34px rgba(45,34,23,.55);}
+.t-signature .couple-profile-copy{padding:14px 1px 0;border-top:1px solid rgba(154,117,70,.20);margin-top:10px;}
+.t-signature .couple-profile-name{font-size:17px;letter-spacing:.06em;}
+
+.t-classic-ivory .couple-profile-grid{gap:12px;max-width:346px;}
+.t-classic-ivory .couple-profile-item{position:relative;padding:9px 9px 16px;border:1px solid rgba(130,107,71,.16);border-radius:18px;background:rgba(255,255,255,.54);box-shadow:0 18px 42px -37px rgba(88,68,43,.48);}
+.t-classic-ivory .couple-profile-item::after{content:'';position:absolute;inset:5px;border:1px solid rgba(130,107,71,.07);border-radius:14px;pointer-events:none;}
+.t-classic-ivory .couple-profile-photo{aspect-ratio:4/5;border-radius:11px;}
+.t-classic-ivory .couple-profile-copy{padding:13px 5px 1px;text-align:center;}
+.t-classic-ivory .couple-profile-text{margin-top:8px;}
+
+.t-hanok .couple-profile-grid{max-width:350px;border-top:1px solid var(--cp-line);}
+.t-hanok .couple-profile-item{grid-template-columns:102px minmax(0,1fr);gap:18px;padding:18px 3px;}
+.t-hanok .couple-profile-item:nth-child(2){grid-template-columns:minmax(0,1fr) 102px;}
+.t-hanok .couple-profile-item:nth-child(2) .couple-profile-photo{grid-column:2;grid-row:1;}
+.t-hanok .couple-profile-item:nth-child(2) .couple-profile-copy{grid-column:1;grid-row:1;text-align:right;}
+.t-hanok .couple-profile-photo{aspect-ratio:4/5;border:6px solid rgba(255,252,244,.78);outline:1px solid rgba(138,69,56,.20);box-shadow:0 10px 25px -22px rgba(89,54,42,.4);}
+.t-hanok .couple-profile-kicker{font-size:8px;letter-spacing:.18em;}
+.t-hanok .couple-profile-name{margin-top:5px;font-size:17px;}
+.t-hanok .couple-profile-text{margin-top:7px;}
+
+.t-black .couple-profile-grid{gap:12px;max-width:350px;counter-reset:black-profile;}
+.t-black .couple-profile-item{counter-increment:black-profile;position:relative;padding:8px 8px 17px;border:1px solid rgba(210,180,120,.25);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.01));}
+.t-black .couple-profile-item::before{content:'0' counter(black-profile);position:absolute;top:13px;right:13px;z-index:2;font-family:var(--sans);font-size:8px;letter-spacing:.16em;color:rgba(232,210,168,.72);text-shadow:0 1px 4px rgba(0,0,0,.4);}
+.t-black .couple-profile-photo{aspect-ratio:3/4;border:0;box-shadow:inset 0 0 0 1px rgba(210,180,120,.18);}
+.t-black .couple-profile-copy{padding:14px 4px 0;}
+.t-black .couple-profile-name{font-size:17px;}
+.t-black .couple-profile-text{color:rgba(239,231,216,.70);}
+
+.t-fullscreen .couple-profile-grid{max-width:none;border-top:1px solid var(--cp-line);counter-reset:cast-profile;}
+.t-fullscreen .couple-profile-item{counter-increment:cast-profile;position:relative;grid-template-columns:41% minmax(0,1fr);gap:19px;padding:19px 0;overflow:hidden;}
+.t-fullscreen .couple-profile-item::after{content:'0' counter(cast-profile);position:absolute;right:2px;bottom:-10px;font-family:var(--sans);font-size:48px;font-weight:700;line-height:1;color:rgba(214,186,132,.055);letter-spacing:-.04em;}
+.t-fullscreen .couple-profile-item:nth-child(2){grid-template-columns:minmax(0,1fr) 41%;}
+.t-fullscreen .couple-profile-item:nth-child(2) .couple-profile-photo{grid-column:2;grid-row:1;}
+.t-fullscreen .couple-profile-item:nth-child(2) .couple-profile-copy{grid-column:1;grid-row:1;text-align:right;}
+.t-fullscreen .couple-profile-photo{aspect-ratio:3/4;border:1px solid rgba(214,186,132,.28);}
+.t-fullscreen .couple-profile-kicker{font-size:8px;letter-spacing:.24em;}
+.t-fullscreen .couple-profile-name{font-size:18px;letter-spacing:.03em;}
+
+.t-minimal .couple-profile-grid{grid-template-columns:1.16fr .84fr;gap:26px;max-width:none;border-top:0;align-items:start;}
+.t-minimal .couple-profile-item:nth-child(2){margin-top:54px;}
+.t-minimal .couple-profile-grid.single{grid-template-columns:1fr;max-width:260px;}
+.t-minimal .couple-profile-grid.single .couple-profile-item{margin-top:0;}
+.t-minimal .couple-profile-photo{aspect-ratio:3/4;}
+.t-minimal .couple-profile-item:nth-child(2) .couple-profile-photo{aspect-ratio:4/5;}
+.t-minimal .couple-profile-copy{padding-top:14px;border-top:1px solid var(--cp-line);margin-top:10px;}
+.t-minimal .couple-profile-kicker{font-size:8px;letter-spacing:.28em;}
+.t-minimal .couple-profile-name{font-size:18px;letter-spacing:.03em;}
+.t-minimal .couple-profile-text{max-width:16em;}
+
+.t-flower .couple-profile-grid{gap:18px;max-width:346px;align-items:start;}
+.t-flower .couple-profile-item{position:relative;z-index:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;}
+.t-flower .couple-profile-item::before{content:'';position:absolute;inset:10px -7px -8px 7px;z-index:-1;border-radius:20px;background:rgba(222,226,210,.48);border:1px solid rgba(109,114,88,.09);}
+.t-flower .couple-profile-item:nth-child(1){transform:rotate(-.7deg);}
+.t-flower .couple-profile-item:nth-child(2){transform:translateY(18px) rotate(.8deg);}
+.t-flower .couple-profile-photo{aspect-ratio:4/5;border-radius:18px;box-shadow:0 18px 42px -34px rgba(51,55,39,.50);}
+.t-flower .couple-profile-copy{padding:15px 7px 8px;}
+.t-flower .couple-profile-name{font-size:17px;}
+.t-flower .couple-profile-text{margin-top:8px;color:rgba(63,68,51,.72);}
+
+.t-gold-serif .couple-profile-grid{gap:10px;max-width:350px;}
+.t-gold-serif .couple-profile-item{position:relative;padding:14px 11px 18px;border:0;border-radius:0;outline:0;background:rgba(255,253,248,.26);text-align:center;}
+.t-gold-serif .couple-profile-item::before,.t-gold-serif .couple-profile-item::after{content:'';position:absolute;pointer-events:none;}
+.t-gold-serif .couple-profile-item::before{inset:0;border:1px solid rgba(122,90,40,.24);}
+.t-gold-serif .couple-profile-item::after{inset:4px;border:1px solid rgba(122,90,40,.08);}
+.t-gold-serif .couple-profile-photo{aspect-ratio:3/4;margin:0 5px;border:1px solid rgba(122,90,40,.22);}
+.t-gold-serif .couple-profile-copy{padding:14px 3px 0;text-align:center;}
+.t-gold-serif .couple-profile-kicker{font-family:'Noto Serif KR',serif;font-size:8px;letter-spacing:.24em;}
+.t-gold-serif .couple-profile-name{font-size:17px;letter-spacing:.06em;}
+.t-gold-serif .couple-profile-text{margin-top:9px;}
+
+@media(max-width:360px){
+  .t-signature .couple-profile-grid,.t-classic-ivory .couple-profile-grid,.t-black .couple-profile-grid,.t-flower .couple-profile-grid,.t-gold-serif .couple-profile-grid{gap:8px;}
+  .t-signature .couple-profile-item:nth-child(2){margin-top:16px;}
+  .t-hanok .couple-profile-item{grid-template-columns:84px minmax(0,1fr);gap:12px;}
+  .t-hanok .couple-profile-item:nth-child(2){grid-template-columns:minmax(0,1fr) 84px;}
+  .t-fullscreen .couple-profile-item{gap:13px;}
+  .t-minimal .couple-profile-grid{gap:18px;}
+  .t-minimal .couple-profile-item:nth-child(2){margin-top:36px;}
+  .t-flower .couple-profile-item:nth-child(2){transform:translateY(12px) rotate(.8deg);}
+}
+
 
 /* ===== 예식 당일 하객 안내 ===== */
 .guest-guide-editor{margin-top:22px;padding:20px;border:1px solid rgba(184,148,95,.22);border-radius:14px;background:linear-gradient(180deg,rgba(255,253,248,.92),rgba(248,244,236,.82));}
@@ -2200,6 +2513,7 @@ input,select,textarea{font-family:inherit;}
         <span id="cloneBannerDesc">같은 내용을 새 주소로 만들려면 원본을 건드리지 않고 복제할 수 있습니다.</span>
       </div>
       <div class="clone-actions">
+        <button type="button" class="btn btn-gold btn-sm owner-center-banner-btn" id="ownerCenterBtn" onclick="openOwnerCenter()">관리센터</button>
         <button type="button" class="btn btn-ghost btn-sm" id="rsvpManageBtn" onclick="openRsvpManager()" style="display:none;">참석자 관리</button>
         <button type="button" class="btn btn-ghost btn-sm" id="cloneBannerBtn" onclick="openCloneModal()">복제본 만들기</button>
       </div>
@@ -2261,23 +2575,99 @@ input,select,textarea{font-family:inherit;}
       </div>
       <div class="couple-intro-editor">
         <div class="couple-intro-editor-head">
-          <div class="couple-intro-editor-title"><strong>두 사람 소개</strong><span>각자의 매력이나 성격을 한 문장으로 소개해보세요.</span></div>
-          <div class="couple-intro-toggle"><input type="checkbox" id="f_couple_intro_enabled" onchange="toggleCoupleIntroBox();requestEditorRender()"/><label for="f_couple_intro_enabled" aria-label="두 사람 소개 사용"></label></div>
+          <div class="couple-intro-editor-title"><strong>두 사람의 작은 프로필</strong><span>어린 시절 사진이나 각자의 매력이 잘 보이는 사진을 한 장씩 소개해보세요.</span></div>
+          <div class="couple-intro-toggle"><input type="checkbox" id="f_couple_intro_enabled" onchange="toggleCoupleIntroBox();requestEditorRender()"/><label for="f_couple_intro_enabled" aria-label="두 사람 프로필 사용"></label></div>
         </div>
         <div class="couple-intro-body" id="coupleIntroBox">
-          <div class="frow">
-            <label class="couple-intro-field"><span>신랑 소개</span><textarea class="fi" id="f_groom_intro" rows="3" maxlength="100" placeholder="예: 다정한 웃음으로 매일을 따뜻하게 만드는 사람" oninput="requestEditorRender()"></textarea></label>
-            <label class="couple-intro-field"><span>신부 소개</span><textarea class="fi" id="f_bride_intro" rows="3" maxlength="100" placeholder="예: 작은 순간도 특별하게 기억하는 사람" oninput="requestEditorRender()"></textarea></label>
+          <div class="couple-profile-editor-grid">
+            <div class="couple-profile-editor-person">
+              <div class="couple-profile-editor-role"><span>신랑 프로필</span><span>사진 1장</span></div>
+              <div class="couple-profile-photo-editor">
+                <div class="couple-profile-photo-preview" id="groomProfilePreview"><span>4:5<br>소개사진</span></div>
+                <div class="couple-profile-photo-actions">
+                  <input type="file" id="f_groom_profile_photo" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden onchange="upCoupleProfile('groom',this)"/>
+                  <button type="button" class="btn btn-ghost" onclick="V('f_groom_profile_photo').click()">사진 선택</button>
+                  <button type="button" class="btn btn-ghost" onclick="removeCoupleProfile('groom')">사진 삭제</button>
+                  <div class="couple-profile-photo-status" id="groomProfileStatus"></div>
+                </div>
+              </div>
+              <div class="couple-profile-position" id="groomProfilePosition">
+                <span class="couple-profile-position-label">사진에서 얼굴 위치</span>
+                <div class="couple-profile-position-buttons" role="group" aria-label="신랑 소개사진 위치">
+                  <button type="button" class="couple-profile-position-btn" data-pos="top" onclick="setCoupleProfilePosition('groom','top')">위쪽</button>
+                  <button type="button" class="couple-profile-position-btn" data-pos="center" onclick="setCoupleProfilePosition('groom','center')">가운데</button>
+                  <button type="button" class="couple-profile-position-btn" data-pos="bottom" onclick="setCoupleProfilePosition('groom','bottom')">아래쪽</button>
+                </div>
+              </div>
+              <label class="couple-intro-field"><span>신랑 한 줄 소개</span><textarea class="fi" id="f_groom_intro" rows="3" maxlength="100" placeholder="예: 다정한 웃음으로 매일을 따뜻하게 만드는 사람" oninput="requestEditorRender()"></textarea></label>
+            </div>
+            <div class="couple-profile-editor-person">
+              <div class="couple-profile-editor-role"><span>신부 프로필</span><span>사진 1장</span></div>
+              <div class="couple-profile-photo-editor">
+                <div class="couple-profile-photo-preview" id="brideProfilePreview"><span>4:5<br>소개사진</span></div>
+                <div class="couple-profile-photo-actions">
+                  <input type="file" id="f_bride_profile_photo" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden onchange="upCoupleProfile('bride',this)"/>
+                  <button type="button" class="btn btn-ghost" onclick="V('f_bride_profile_photo').click()">사진 선택</button>
+                  <button type="button" class="btn btn-ghost" onclick="removeCoupleProfile('bride')">사진 삭제</button>
+                  <div class="couple-profile-photo-status" id="brideProfileStatus"></div>
+                </div>
+              </div>
+              <div class="couple-profile-position" id="brideProfilePosition">
+                <span class="couple-profile-position-label">사진에서 얼굴 위치</span>
+                <div class="couple-profile-position-buttons" role="group" aria-label="신부 소개사진 위치">
+                  <button type="button" class="couple-profile-position-btn" data-pos="top" onclick="setCoupleProfilePosition('bride','top')">위쪽</button>
+                  <button type="button" class="couple-profile-position-btn" data-pos="center" onclick="setCoupleProfilePosition('bride','center')">가운데</button>
+                  <button type="button" class="couple-profile-position-btn" data-pos="bottom" onclick="setCoupleProfilePosition('bride','bottom')">아래쪽</button>
+                </div>
+              </div>
+              <label class="couple-intro-field"><span>신부 한 줄 소개</span><textarea class="fi" id="f_bride_intro" rows="3" maxlength="100" placeholder="예: 작은 순간도 특별하게 기억하는 사람" oninput="requestEditorRender()"></textarea></label>
+            </div>
           </div>
-          <p class="couple-intro-help">입력한 사람만 청첩장에 표시됩니다. 두 문장을 모두 비우면 소개 영역은 자동으로 숨겨집니다.</p>
+          <p class="couple-intro-help">사진이 있는 사람만 청첩장에 표시됩니다. 소개 문구는 선택 사항입니다.</p>
+        </div>
+      </div>
+      <div class="family-intro-editor">
+        <div class="family-intro-editor-head">
+          <div class="family-intro-editor-title"><strong>우리 가족</strong><span>아이, 반려동물 또는 함께 소개하고 싶은 가족을 사진과 짧은 문장으로 담아보세요.</span></div>
+          <div class="family-intro-toggle"><input type="checkbox" id="f_family_intro_enabled" onchange="toggleFamilyIntroBox();queueDraftSave();requestEditorRender()"/><label for="f_family_intro_enabled" aria-label="우리 가족 소개 사용"></label></div>
+        </div>
+        <div class="family-intro-body" id="familyIntroBox">
+          <div class="family-member-list" id="familyMemberList"></div>
+          <div class="family-add-row"><span class="family-add-count" id="familyMemberCount">0 / 4명</span><button type="button" class="family-add-btn" id="familyAddBtn" onclick="addFamilyMember()">+ 가족 구성원 추가</button></div>
+          <p class="family-intro-help">관계는 ‘아들’, ‘반려견’, ‘우리 집 막내’처럼 자유롭게 적을 수 있습니다. 사진이 있는 구성원만 청첩장에 표시됩니다.</p>
         </div>
       </div>
       <div class="parents-group">
-        <div class="pg-head"><span class="pg-en">With Parents</span><span class="pg-ko">혼주 정보를 입력하세요</span></div>
-        <div class="frow">
-          <div class="fld"><label class="fld-label">신랑측 혼주</label><input class="fi" id="f_gparent" placeholder="김아버지 · 박어머니" oninput="requestEditorRender()"/><label class="dec-toggle"><input type="checkbox" id="f_gparent_dec" onchange="requestEditorRender()"/><span class="dec-txt"><b>故</b> 표시 사용</span></label><p class="dec-note">하늘에 계신 부모님을 표기할 경우 사용합니다.</p></div>
-          <div class="fld"><label class="fld-label">신부측 혼주</label><input class="fi" id="f_bparent" placeholder="이아버지 · 최어머니" oninput="requestEditorRender()"/><label class="dec-toggle"><input type="checkbox" id="f_bparent_dec" onchange="requestEditorRender()"/><span class="dec-txt"><b>故</b> 표시 사용</span></label><p class="dec-note">하늘에 계신 부모님을 표기할 경우 사용합니다.</p></div>
+        <div class="pg-head"><span class="pg-en">With Parents</span><span class="pg-ko">부모님 성함을 각각 입력하세요</span></div>
+        <div class="parent-side-grid">
+          <section class="parent-side-card" aria-label="신랑측 혼주 입력">
+            <div class="parent-side-title"><strong>신랑측 혼주</strong><span>선택 입력</span></div>
+            <div class="parent-person-row">
+              <label class="parent-person-label" for="f_gfather">아버지</label>
+              <input class="fi" id="f_gfather" placeholder="김아버지" oninput="requestEditorRender()"/>
+              <label class="dec-toggle"><input type="checkbox" id="f_gfather_dec" onchange="requestEditorRender()"/><span class="dec-txt"><b>故</b> 표시</span></label>
+            </div>
+            <div class="parent-person-row">
+              <label class="parent-person-label" for="f_gmother">어머니</label>
+              <input class="fi" id="f_gmother" placeholder="박어머니" oninput="requestEditorRender()"/>
+              <label class="dec-toggle"><input type="checkbox" id="f_gmother_dec" onchange="requestEditorRender()"/><span class="dec-txt"><b>故</b> 표시</span></label>
+            </div>
+          </section>
+          <section class="parent-side-card" aria-label="신부측 혼주 입력">
+            <div class="parent-side-title"><strong>신부측 혼주</strong><span>선택 입력</span></div>
+            <div class="parent-person-row">
+              <label class="parent-person-label" for="f_bfather">아버지</label>
+              <input class="fi" id="f_bfather" placeholder="이아버지" oninput="requestEditorRender()"/>
+              <label class="dec-toggle"><input type="checkbox" id="f_bfather_dec" onchange="requestEditorRender()"/><span class="dec-txt"><b>故</b> 표시</span></label>
+            </div>
+            <div class="parent-person-row">
+              <label class="parent-person-label" for="f_bmother">어머니</label>
+              <input class="fi" id="f_bmother" placeholder="최어머니" oninput="requestEditorRender()"/>
+              <label class="dec-toggle"><input type="checkbox" id="f_bmother_dec" onchange="requestEditorRender()"/><span class="dec-txt"><b>故</b> 표시</span></label>
+            </div>
+          </section>
         </div>
+        <p class="dec-note">故 표시는 선택한 부모님 성함 바로 앞에만 표시됩니다. 신랑·신부 표시 순서를 바꾸면 혼주 순서도 함께 바뀝니다.</p>
       </div>
     </div>
 
@@ -2643,6 +3033,70 @@ input,select,textarea{font-family:inherit;}
   </div>
 </div>
 
+
+<!-- V47 DEV: 신랑·신부 통합 관리센터 -->
+<div class="ov" id="ownerCenterOv">
+  <div class="modal owner-center-modal">
+    <span class="modal-x" onclick="closeOwnerCenter()">×</span>
+    <div class="owner-center-head">
+      <div class="owner-center-head-copy">
+        <div class="owner-center-kicker">Wedding Management</div>
+        <h3 id="ownerCenterTitle">내 청첩장 관리</h3>
+        <p id="ownerCenterSubtitle">참석 응답, 하객 사진과 방명록을 한곳에서 확인합니다.</p>
+      </div>
+      <button type="button" class="btn btn-ghost owner-center-refresh" id="ownerCenterRefresh" onclick="loadOwnerCenter(true)">새로고침</button>
+    </div>
+    <div class="owner-center-state" id="ownerCenterState" aria-live="polite"></div>
+    <div class="owner-center-grid">
+      <section class="owner-center-card">
+        <div class="owner-center-card-top"><span class="owner-center-card-label">참석 응답</span><strong class="owner-center-card-count" id="ownerCenterRsvpCount">—</strong></div>
+        <p class="owner-center-card-desc">참석 여부와 예상 인원, 식사 인원을 확인합니다.</p>
+        <div class="owner-center-card-meta" id="ownerCenterRsvpMeta">응답 현황을 불러오는 중입니다.</div>
+        <button type="button" class="btn btn-gold" onclick="openRsvpFromOwnerCenter()">참석자 확인</button>
+      </section>
+      <section class="owner-center-card">
+        <div class="owner-center-card-top"><span class="owner-center-card-label">하객 사진</span><strong class="owner-center-card-count" id="ownerCenterPhotoCount">—</strong></div>
+        <p class="owner-center-card-desc">하객이 올린 사진을 확인하고 승인·거절합니다.</p>
+        <div class="owner-center-card-meta" id="ownerCenterPhotoMeta">승인 대기 사진을 확인합니다.</div>
+        <button type="button" class="btn btn-gold" onclick="openGuestPhotoFromOwnerCenter()">사진 관리</button>
+      </section>
+      <section class="owner-center-card">
+        <div class="owner-center-card-top"><span class="owner-center-card-label">방명록</span><strong class="owner-center-card-count" id="ownerCenterGuestbookCount">—</strong></div>
+        <p class="owner-center-card-desc">하객이 남긴 축하 메시지를 최신순으로 확인합니다.</p>
+        <div class="owner-center-card-meta">신랑·신부 전용 읽기 화면</div>
+        <button type="button" class="btn btn-ghost" onclick="openGuestbookFromOwnerCenter()">방명록 확인</button>
+      </section>
+      <section class="owner-center-card">
+        <div class="owner-center-card-top"><span class="owner-center-card-label">발행된 청첩장</span><strong class="owner-center-card-count">↗</strong></div>
+        <p class="owner-center-card-desc">실제 하객 화면을 새 창에서 열어 최종 상태를 확인합니다.</p>
+        <div class="owner-center-card-meta" id="ownerCenterCardMeta">현재 수정 중인 주소로 연결됩니다.</div>
+        <button type="button" class="btn btn-ghost" onclick="openOwnerPublishedCard()">청첩장 보기</button>
+      </section>
+    </div>
+    <div class="owner-center-foot">
+      <button type="button" class="btn btn-ghost" onclick="closeOwnerCenter()">내용 수정 계속하기</button>
+      <button type="button" class="btn btn-gold" onclick="publish()">수정 내용 저장</button>
+    </div>
+    <p class="owner-center-privacy">구매자 인증 또는 비상용 수정번호로 확인된 소유자만 접근할 수 있습니다. 참석자 연락처와 하객 사진은 외부에 전달하지 마세요.</p>
+  </div>
+</div>
+
+<!-- V47 DEV: 신랑·신부 방명록 확인 -->
+<div class="ov" id="guestbookManagerOv">
+  <div class="modal guestbook-manager-modal">
+    <span class="modal-x" onclick="closeGuestbookManager()">×</span>
+    <h3>방명록 확인</h3>
+    <p>하객이 남긴 축하 메시지를 최신순으로 확인합니다.</p>
+    <div class="guestbook-manager-toolbar">
+      <span id="guestbookManagerSummary">방명록을 안전하게 불러옵니다.</span>
+      <button type="button" class="btn btn-ghost btn-sm" id="guestbookManagerRefresh" onclick="loadGuestbookManager(true)">새로고침</button>
+    </div>
+    <div class="guestbook-manager-state" id="guestbookManagerState">방명록을 불러오는 중입니다.</div>
+    <div class="guestbook-manager-list" id="guestbookManagerList" style="display:none;"></div>
+    <p class="rsvp-manager-privacy">이 화면은 확인용입니다. 부적절한 메시지 삭제 기능은 안전한 권한 검수 후 별도 단계에서 추가합니다.</p>
+  </div>
+</div>
+
 <!-- RSVP 참석자 관리 모달 (소유자 수정번호 검증 전용) -->
 <div class="ov" id="rsvpManagerOv">
   <div class="modal rsvp-manager-modal">
@@ -2842,6 +3296,13 @@ const ST={
   galleryLayout:'masonry',
   /* 프리미엄 모션 커버 — 지원 3개 템플릿에서 갤러리 token으로 선택을 추적해 업로드/삭제 중 인덱스 혼입을 막는다. */
   motionCover:{enabled:false,photo1Token:null,photo2Token:null,pos1:'center',pos2:'center'},
+  /* V45 DEV: 신랑·신부 사진형 프로필. 대표사진/갤러리와 독립 저장한다. */
+  coupleProfile:{
+    groom:{preview:null,url:null,file:null,uploading:false,token:null,position:'top'},
+    bride:{preview:null,url:null,file:null,uploading:false,token:null,position:'top'}
+  },
+  /* V46 DEV: 선택형 우리 가족. 사진은 대표/갤러리와 독립 저장한다. */
+  familyProfile:{members:[]},
   /* 로그인 없이 Storage 경로를 구분하기 위한 세션 고유 ID */
   anonId: (()=>{
     let id=sessionStorage.getItem('_anon_id');
@@ -2886,6 +3347,35 @@ function esc(str){
     .replace(/>/g,'&gt;')
     .replace(/"/g,'&quot;')
     .replace(/'/g,'&#x27;');
+}
+/* V45 HOTFIX: 사람별 혼주 데이터와 기존 한 줄 데이터 호환 */
+function _parentPersonRaw(nameId,decId){
+  const name=val(nameId);
+  return name?((chk(decId)?'故 ':'')+name):'';
+}
+function _parentPersonEsc(nameId,decId){
+  const name=esc(val(nameId));
+  return name?((chk(decId)?'故 ':'')+name):'';
+}
+function _parentLineRaw(fatherId,fatherDecId,motherId,motherDecId){
+  return [_parentPersonRaw(fatherId,fatherDecId),_parentPersonRaw(motherId,motherDecId)].filter(Boolean).join(' · ');
+}
+function _parentLineEsc(fatherId,fatherDecId,motherId,motherDecId){
+  return [_parentPersonEsc(fatherId,fatherDecId),_parentPersonEsc(motherId,motherDecId)].filter(Boolean).join(' · ');
+}
+function _parseLegacyParentLine(raw,legacyGroupDeceased){
+  const text=String(raw||'').trim();
+  if(!text)return {father:'',mother:'',fatherDeceased:false,motherDeceased:false};
+  const parts=text.split(/\s*(?:·|ㆍ|•|\||\/|,|&)\s*/).filter(Boolean);
+  const clean=function(part){
+    const value=String(part||'').trim();
+    const deceased=/^故\s*/.test(value);
+    return {name:value.replace(/^故\s*/,''),deceased:deceased};
+  };
+  const father=clean(parts[0]||'');
+  const mother=clean(parts.slice(1).join(' · '));
+  if(legacyGroupDeceased&&!father.deceased&&!mother.deceased)father.deceased=true;
+  return {father:father.name,mother:mother.name,fatherDeceased:father.deceased,motherDeceased:mother.deceased};
 }
 /* URL 검증 - http/https/Supabase Storage만 허용 */
 function safeUrl(url){
@@ -3261,6 +3751,164 @@ function toggleCoupleIntroBox(){
   const box=V('coupleIntroBox'),on=!!(V('f_couple_intro_enabled')&&V('f_couple_intro_enabled').checked);
   if(box)box.classList.toggle('show',on);
 }
+function _coupleProfileState(role){
+  return role==='bride'?ST.coupleProfile.bride:ST.coupleProfile.groom;
+}
+function normalizeCoupleProfilePosition(value){
+  return value==='center'||value==='bottom'?value:'top';
+}
+function coupleProfileObjectPosition(value){
+  const pos=normalizeCoupleProfilePosition(value);
+  return pos==='center'?'center 50%':(pos==='bottom'?'center 74%':'center 28%');
+}
+function setCoupleProfilePosition(role,value){
+  const st=_coupleProfileState(role);
+  st.position=normalizeCoupleProfilePosition(value);
+  renderCoupleProfileEditor(role);
+  queueDraftSave();
+  requestEditorRender();
+}
+function renderCoupleProfileEditor(role){
+  const st=_coupleProfileState(role),box=V(role+'ProfilePreview'),status=V(role+'ProfileStatus');
+  st.position=normalizeCoupleProfilePosition(st.position);
+  const src=safeUrl(st.preview||st.url)||((typeof st.preview==='string'&&/^(data:|blob:)/i.test(st.preview))?st.preview:'');
+  if(box)box.innerHTML=src?'<img src="'+esc(src)+'" style="object-position:'+coupleProfileObjectPosition(st.position)+'" alt="'+(role==='bride'?'신부':'신랑')+' 소개사진"/>':'<span>4:5<br>소개사진</span>';
+  const posBox=V(role+'ProfilePosition');
+  if(posBox)posBox.querySelectorAll('.couple-profile-position-btn').forEach(function(btn){btn.classList.toggle('on',btn.dataset.pos===st.position);btn.disabled=!src;btn.setAttribute('aria-pressed',btn.dataset.pos===st.position?'true':'false');});
+  if(status){
+    if(st.uploading)status.textContent='사진 준비 중...';
+    else if(st.file)status.textContent='발행할 때 저장됩니다.';
+    else if(st.url)status.textContent='저장된 사진입니다.';
+    else status.textContent='';
+  }
+}
+async function upCoupleProfile(role,input){
+  if(!input||!input.files||!input.files[0])return;
+  let file=input.files[0];
+  if(!/^image\//i.test(file.type)){alert('이미지 파일만 올릴 수 있어요.');input.value='';return;}
+  if(file.size>10*1024*1024){alert('파일 크기가 10MB를 초과해요.');input.value='';return;}
+  const st=_coupleProfileState(role),token=role+'_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
+  st.token=token;st.uploading=true;renderCoupleProfileEditor(role);
+  try{
+    file=await compressImageFile(file,{maxW:1400,maxH:1750,quality:0.82});
+    if(st.token!==token)return;
+    st.file=file;st.url=null;st.position='top';
+    st.preview=await new Promise(function(resolve){const r=new FileReader();r.onload=function(ev){resolve(ev.target.result);};r.onerror=function(){resolve(null);};r.readAsDataURL(file);});
+    st.uploading=false;renderCoupleProfileEditor(role);queueDraftSave();requestEditorRender();
+  }catch(err){
+    if(st.token===token){st.uploading=false;renderCoupleProfileEditor(role);alert('소개사진을 준비하지 못했습니다. 다른 사진으로 다시 시도해 주세요.');}
+  }finally{input.value='';}
+}
+function removeCoupleProfile(role){
+  const st=_coupleProfileState(role);
+  st.token=role+'_removed_'+Date.now();st.preview=null;st.url=null;st.file=null;st.uploading=false;st.position='top';
+  renderCoupleProfileEditor(role);queueDraftSave();requestEditorRender();
+}
+
+/* ===== V46 DEV: 선택형 우리 가족 편집 엔진 ===== */
+function _familyMemberId(value){
+  const clean=String(value||'').replace(/[^a-zA-Z0-9_-]/g,'').slice(0,40);
+  return clean||('family_'+Date.now()+'_'+Math.random().toString(36).slice(2,7));
+}
+function _newFamilyMember(raw){
+  raw=raw&&typeof raw==='object'?raw:{};
+  return {
+    id:_familyMemberId(raw.id),
+    name:String(raw.name||'').slice(0,30),
+    relation:String(raw.relation||'').slice(0,30),
+    text:String(raw.text||'').slice(0,120),
+    preview:safeUrl(raw.preview||raw.photo_url||raw.url||'')||null,
+    url:safeUrl(raw.photo_url||raw.url||'')||null,
+    file:null,uploading:false,token:null,
+    position:normalizeCoupleProfilePosition(raw.photo_position||raw.position)
+  };
+}
+function _familyMember(index){return ST.familyProfile.members[Number(index)]||null;}
+function _familyPreviewUrl(member){
+  if(!member)return '';
+  return safeUrl(member.preview||member.url)||((typeof member.preview==='string'&&/^(data:|blob:)/i.test(member.preview))?member.preview:'');
+}
+function toggleFamilyIntroBox(){
+  const box=V('familyIntroBox'),on=!!(V('f_family_intro_enabled')&&V('f_family_intro_enabled').checked);
+  if(on&&ST.familyProfile.members.length===0)ST.familyProfile.members.push(_newFamilyMember());
+  if(box)box.classList.toggle('show',on);
+  renderFamilyEditor();
+}
+function renderFamilyEditor(){
+  const list=V('familyMemberList');if(!list)return;
+  const members=ST.familyProfile.members.slice(0,4);
+  list.innerHTML=members.map(function(m,index){
+    const src=_familyPreviewUrl(m),pos=normalizeCoupleProfilePosition(m.position);
+    const status=m.uploading?'사진 준비 중...':(m.file?'발행할 때 저장됩니다.':(m.url?'저장된 사진입니다.':''));
+    const posBtn=function(value,label){return '<button type="button" class="family-member-position-btn'+(pos===value?' on':'')+'" data-pos="'+value+'" '+(!src?'disabled':'')+' onclick="setFamilyMemberPosition('+index+',\''+value+'\')">'+label+'</button>';};
+    return '<section class="family-member-card" data-family-index="'+index+'">'
+      +'<div class="family-member-card-head"><div class="family-member-card-title"><span class="family-member-number">'+String(index+1).padStart(2,'0')+'</span><strong>가족 구성원 '+(index+1)+'</strong></div>'
+      +'<div class="family-member-order"><button type="button" class="family-member-mini-btn" '+(index===0?'disabled':'')+' onclick="moveFamilyMember('+index+',-1)">위로</button><button type="button" class="family-member-mini-btn" '+(index===members.length-1?'disabled':'')+' onclick="moveFamilyMember('+index+',1)">아래로</button><button type="button" class="family-member-mini-btn danger" onclick="removeFamilyMember('+index+')">삭제</button></div></div>'
+      +'<div class="family-member-main"><div><div class="family-member-photo-preview">'+(src?'<img src="'+esc(src)+'" style="object-position:'+coupleProfileObjectPosition(pos)+'" alt="가족 소개사진"/>':'<span>4:5<br>가족사진</span>')+'</div>'
+      +'<div class="family-member-photo-actions"><input type="file" id="familyPhoto_'+index+'" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden onchange="upFamilyMemberPhoto('+index+',this)"/><button type="button" class="btn btn-ghost" onclick="V(\'familyPhoto_'+index+'\').click()">사진 선택</button><button type="button" class="btn btn-ghost" onclick="removeFamilyMemberPhoto('+index+')">사진 삭제</button></div><div class="family-member-status">'+esc(status)+'</div></div>'
+      +'<div class="family-member-fields"><label class="family-member-field"><span>이름 또는 애칭</span><input class="fi" maxlength="30" value="'+esc(m.name)+'" placeholder="예: 봄이" oninput="updateFamilyMemberField('+index+',\'name\',this.value)"/></label>'
+      +'<label class="family-member-field"><span>관계·호칭</span><input class="fi" maxlength="30" value="'+esc(m.relation)+'" placeholder="예: 우리 집 막내" oninput="updateFamilyMemberField('+index+',\'relation\',this.value)"/></label>'
+      +'<label class="family-member-field full"><span>한 줄 소개</span><textarea class="fi" maxlength="120" placeholder="예: 두 사람보다 먼저 가족이 된 사랑스러운 반려견" oninput="updateFamilyMemberField('+index+',\'text\',this.value)">'+esc(m.text)+'</textarea></label>'
+      +'<div class="family-member-position"><span class="family-member-position-label">사진에서 얼굴 위치</span><div class="family-member-position-buttons">'+posBtn('top','위쪽')+posBtn('center','가운데')+posBtn('bottom','아래쪽')+'</div></div></div></div></section>';
+  }).join('');
+  const count=V('familyMemberCount'),add=V('familyAddBtn');
+  if(count)count.textContent=members.length+' / 4명';
+  if(add)add.disabled=members.length>=4;
+}
+function addFamilyMember(){
+  if(ST.familyProfile.members.length>=4){alert('가족 구성원은 최대 4명까지 소개할 수 있습니다.');return;}
+  ST.familyProfile.members.push(_newFamilyMember());
+  renderFamilyEditor();queueDraftSave();requestEditorRender();
+}
+function removeFamilyMember(index){
+  const m=_familyMember(index);if(!m)return;
+  if(typeof m.preview==='string'&&m.preview.startsWith('blob:')){try{URL.revokeObjectURL(m.preview);}catch(e){}}
+  ST.familyProfile.members.splice(Number(index),1);
+  renderFamilyEditor();queueDraftSave();requestEditorRender();
+}
+function moveFamilyMember(index,delta){
+  index=Number(index);const next=index+Number(delta);
+  if(index<0||next<0||index>=ST.familyProfile.members.length||next>=ST.familyProfile.members.length)return;
+  const tmp=ST.familyProfile.members[index];ST.familyProfile.members[index]=ST.familyProfile.members[next];ST.familyProfile.members[next]=tmp;
+  renderFamilyEditor();queueDraftSave();requestEditorRender();
+}
+function updateFamilyMemberField(index,field,value){
+  const m=_familyMember(index);if(!m||!['name','relation','text'].includes(field))return;
+  const limit=field==='text'?120:30;m[field]=String(value||'').slice(0,limit);
+  queueDraftSave();requestEditorRender();
+}
+function setFamilyMemberPosition(index,value){
+  const m=_familyMember(index);if(!m)return;
+  m.position=normalizeCoupleProfilePosition(value);renderFamilyEditor();queueDraftSave();requestEditorRender();
+}
+async function upFamilyMemberPhoto(index,input){
+  const m=_familyMember(index);if(!m||!input||!input.files||!input.files[0])return;
+  let file=input.files[0];
+  if(!/^image\//i.test(file.type)){alert('이미지 파일만 올릴 수 있어요.');input.value='';return;}
+  if(file.size>10*1024*1024){alert('파일 크기가 10MB를 초과해요.');input.value='';return;}
+  const token=m.id+'_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);m.token=token;m.uploading=true;renderFamilyEditor();
+  try{
+    file=await compressImageFile(file,{maxW:1400,maxH:1750,quality:0.82});
+    if(m.token!==token)return;
+    m.file=file;m.url=null;m.position='top';
+    m.preview=await new Promise(function(resolve){const r=new FileReader();r.onload=function(ev){resolve(ev.target.result);};r.onerror=function(){resolve(null);};r.readAsDataURL(file);});
+    m.uploading=false;renderFamilyEditor();queueDraftSave();requestEditorRender();
+  }catch(err){if(m.token===token){m.uploading=false;renderFamilyEditor();alert('가족 소개사진을 준비하지 못했습니다. 다른 사진으로 다시 시도해 주세요.');}}
+  finally{input.value='';}
+}
+function removeFamilyMemberPhoto(index){
+  const m=_familyMember(index);if(!m)return;
+  m.token=m.id+'_removed_'+Date.now();m.preview=null;m.url=null;m.file=null;m.uploading=false;m.position='top';
+  renderFamilyEditor();queueDraftSave();requestEditorRender();
+}
+function getFamilyPreviewMembers(){
+  if(!(V('f_family_intro_enabled')&&V('f_family_intro_enabled').checked))return [];
+  return ST.familyProfile.members.slice(0,4).map(function(m){
+    const photo=_familyPreviewUrl(m);if(!photo)return null;
+    return {id:m.id,name:esc(String(m.name||'').trim().slice(0,30)),relation:esc(String(m.relation||'').trim().slice(0,30)),text:esc(String(m.text||'').trim().slice(0,120)),photo:photo,position:normalizeCoupleProfilePosition(m.position)};
+  }).filter(Boolean);
+}
+
 function toggleTimelineItem(slot){
   const on=!!(V('f_timeline_item_'+slot+'_enabled')&&V('f_timeline_item_'+slot+'_enabled').checked);
   const card=V('storyItemCard'+slot);if(card)card.classList.toggle('off',!on);
@@ -3350,7 +3998,7 @@ async function manageGuestPhoto(action,id){
   try{
     const response=await _guestPhotoManagerFetch({..._guestPhotoManagerAuth(),action:action,id:id});
     const data=await response.json().catch(()=>({}));if(!response.ok||!data.ok)throw new Error(data.error||'MANAGE_FAILED');
-    _guestPhotoManagerBusy=false;await loadGuestPhotoManager(true);
+    _guestPhotoManagerBusy=false;await loadGuestPhotoManager(true);if(_ownerCenterSummary)loadOwnerCenter(true);
   }catch(e){_guestPhotoManagerBusy=false;document.querySelectorAll('#guestPhotoManagerList button').forEach(b=>b.disabled=false);alert(e&&e.message&&e.message!=='MANAGE_FAILED'?e.message:'사진 처리에 실패했습니다. 잠시 후 다시 시도해 주세요.');}
 }
 function toggleMusicBox(){
@@ -4725,11 +5373,17 @@ function renderIV(playOp){
   const coupleIntroEnabled=!!(V('f_couple_intro_enabled')&&V('f_couple_intro_enabled').checked);
   const groomIntro=esc((val('f_groom_intro')||'').trim().slice(0,100));
   const brideIntro=esc((val('f_bride_intro')||'').trim().slice(0,100));
+  const groomProfilePhoto=safeUrl(ST.coupleProfile.groom.preview||ST.coupleProfile.groom.url)||((typeof ST.coupleProfile.groom.preview==='string'&&/^(data:|blob:)/i.test(ST.coupleProfile.groom.preview))?ST.coupleProfile.groom.preview:'');
+  const brideProfilePhoto=safeUrl(ST.coupleProfile.bride.preview||ST.coupleProfile.bride.url)||((typeof ST.coupleProfile.bride.preview==='string'&&/^(data:|blob:)/i.test(ST.coupleProfile.bride.preview))?ST.coupleProfile.bride.preview:'');
+  const groomProfilePosition=normalizeCoupleProfilePosition(ST.coupleProfile.groom.position);
+  const brideProfilePosition=normalizeCoupleProfilePosition(ST.coupleProfile.bride.position);
+  const familyPreviewMembers=getFamilyPreviewMembers();
   const timelineItems=getTimelineEditorItems(true);
-  const gParentRaw=esc(val('f_gparent')||'');
-  const bParentRaw=esc(val('f_bparent')||'');
-  const gParent=gParentRaw?((V('f_gparent_dec')&&V('f_gparent_dec').checked?'故 ':'')+gParentRaw):'';
-  const bParent=bParentRaw?((V('f_bparent_dec')&&V('f_bparent_dec').checked?'故 ':'')+bParentRaw):'';
+  const gParent=_parentLineEsc('f_gfather','f_gfather_dec','f_gmother','f_gmother_dec');
+  const bParent=_parentLineEsc('f_bfather','f_bfather_dec','f_bmother','f_bmother_dec');
+  const parentRows=(order==='gb'
+    ?[{label:'신랑측 혼주',value:gParent},{label:'신부측 혼주',value:bParent}]
+    :[{label:'신부측 혼주',value:bParent},{label:'신랑측 혼주',value:gParent}]).filter(function(row){return !!row.value;});
   const venueN=esc(val('f_venue')||'더채플앳청담');
   const venueH=esc(val('f_hall')||'커티지홀');
   const venueA=esc(val('f_addr')||'서울 강남구 선릉로 757');
@@ -5001,18 +5655,21 @@ function renderIV(playOp){
       ${lang2&&msg2?`<span class="sub-lang" style="display:block;margin-top:18px;font-style:italic;opacity:.6;">${msg2}</span>`:''}
     </div></div>`;
 
-  /* FEATURE23: 신랑·신부 소개 — 사용함 + 입력값이 있을 때만 표시 */
-  if(coupleIntroEnabled&&(groomIntro||brideIntro)){
-    const _profileTitle=tpl==='minimal'?'PROFILE':(tpl==='fullscreen'?'CAST':(tpl==='flower'?'ABOUT US':(tpl==='classic-ivory'?'신랑 · 신부':'두 사람')));
+  /* V45 DEV: 사진이 있는 사람만 두 사람 프로필에 표시 */
+  if(coupleIntroEnabled&&(groomProfilePhoto||brideProfilePhoto)){
+    const _profileTitle=tpl==='minimal'?'PROFILE':(tpl==='fullscreen'?'CAST':(tpl==='flower'?'ABOUT US':(tpl==='classic-ivory'?'우리 두 사람':(tpl==='hanok'?'두 사람 이야기':(tpl==='signature'?'PORTRAITS':(tpl==='black'?'PORTRAITS':(tpl==='gold-serif'?'PORTRAITS':'두 사람')))))));
     const _profileItems=[];
-    if(order==='gb'){
-      if(groomIntro)_profileItems.push({role:'GROOM',name:g,text:groomIntro,cls:'groom'});
-      if(brideIntro)_profileItems.push({role:'BRIDE',name:b,text:brideIntro,cls:'bride'});
-    }else{
-      if(brideIntro)_profileItems.push({role:'BRIDE',name:b,text:brideIntro,cls:'bride'});
-      if(groomIntro)_profileItems.push({role:'GROOM',name:g,text:groomIntro,cls:'groom'});
-    }
-    html+=`<div class="iv-sec couple-profile-sec"><div class="iv-sec-t">${_profileTitle}</div><div class="couple-profile-grid${_profileItems.length===1?' single':''}">${_profileItems.map(function(it){return `<div class="couple-profile-item couple-profile-${it.cls}"><div class="couple-profile-kicker">${it.role}</div><div class="couple-profile-name">${it.name}</div><div class="couple-profile-text">${it.text.replace(/\n/g,'<br>')}</div></div>`;}).join('')}</div></div>`;
+    const _pushProfile=function(role,name,text,cls,photo,position){if(photo)_profileItems.push({role:role,name:name,text:text,cls:cls,photo:photo,position:normalizeCoupleProfilePosition(position)});};
+    if(order==='gb'){_pushProfile('GROOM',g,groomIntro,'groom',groomProfilePhoto,groomProfilePosition);_pushProfile('BRIDE',b,brideIntro,'bride',brideProfilePhoto,brideProfilePosition);}
+    else{_pushProfile('BRIDE',b,brideIntro,'bride',brideProfilePhoto,brideProfilePosition);_pushProfile('GROOM',g,groomIntro,'groom',groomProfilePhoto,groomProfilePosition);}
+    html+=`<div class="iv-sec couple-profile-sec"><div class="iv-sec-t">${_profileTitle}</div><div class="couple-profile-grid${_profileItems.length===1?' single':''}">${_profileItems.map(function(it){return `<article class="couple-profile-item couple-profile-${it.cls}"><div class="couple-profile-photo"><img src="${esc(it.photo)}" style="object-position:${coupleProfileObjectPosition(it.position)}" alt="${it.name} ${it.role==='GROOM'?'신랑':'신부'} 소개사진"/></div><div class="couple-profile-copy"><div class="couple-profile-kicker">${it.role}</div><div class="couple-profile-name">${it.name}</div>${it.text?`<div class="couple-profile-text">${it.text.replace(/\n/g,'<br>')}</div>`:''}</div></article>`;}).join('')}</div></div>`;
+  }
+
+
+  /* V46 DEV: 선택한 가족 구성원 중 사진이 있는 사람만 표시 */
+  if(familyPreviewMembers.length){
+    const _familyTitle=tpl==='minimal'?'FAMILY NOTES':(tpl==='fullscreen'?'OUR FAMILY':(tpl==='flower'?'WITH LOVE':(tpl==='hanok'?'함께하는 가족':(tpl==='classic-ivory'?'우리 가족':(tpl==='signature'?'OUR FAMILY':(tpl==='black'?'OUR FAMILY':(tpl==='gold-serif'?'OUR FAMILY':'우리 가족')))))));
+    html+=`<div class="iv-sec family-profile-sec"><div class="iv-sec-t">${_familyTitle}</div><div class="family-profile-grid count-${familyPreviewMembers.length}">${familyPreviewMembers.map(function(it){const label=it.relation||'FAMILY';return `<article class="family-profile-item"><div class="family-profile-photo"><img src="${esc(it.photo)}" style="object-position:${coupleProfileObjectPosition(it.position)}" alt="${it.name||label} 가족 소개사진"/></div><div class="family-profile-copy">${label?`<div class="family-profile-relation">${label}</div>`:''}${it.name?`<div class="family-profile-name">${it.name}</div>`:''}${it.text?`<div class="family-profile-text">${it.text.replace(/\n/g,'<br>')}</div>`:''}</div></article>`;}).join('')}</div></div>`;
   }
 
   /* FEATURE24: 우리 이야기 — 선택된 최대 4개 장면만 표시 */
@@ -5021,12 +5678,11 @@ function renderIV(playOp){
     html+=`<div class="iv-sec story-timeline-sec"><div class="iv-sec-t">${_storyTitle}</div><div class="story-timeline-list">${timelineItems.map(function(it,idx){return `<div class="story-timeline-item"><div class="story-timeline-index"><span>${String(idx+1).padStart(2,'0')}</span></div><div class="story-timeline-content">${it.date?`<div class="story-timeline-date">${it.date}</div>`:''}${it.title?`<div class="story-timeline-title">${it.title}</div>`:''}${it.text?`<div class="story-timeline-text">${it.text.replace(/\n/g,'<br>')}</div>`:''}</div></div>`;}).join('')}</div></div>`;
   }
 
-  /* 혼주 (선택 입력 — 비어있으면 표시 안 함) */
-  if(gParent||bParent){
+  /* V45 HOTFIX: 신랑·신부 표시 순서에 맞춰 혼주도 같은 순서로 표시 */
+  if(parentRows.length){
     html+=`<div class="iv-sec"><div class="iv-sec-t">${tpl==='hanok'?'양가 부모님':'With Parents'}</div>
       <div class="iv-parents" style="margin-top:10px;display:flex;flex-direction:column;gap:12px;text-align:center;">
-        ${gParent?`<div><div class="${tpl==='hanok'?'hk-parent-label':''}" style="font-size:11px;letter-spacing:1px;${tpl==='hanok'?'':(tpl==='fullscreen'?'color:rgba(214,186,132,.85);':(tpl==='gold-serif'?'color:#8a6a38;':'color:var(--brown-mute);'))}margin-bottom:3px;">신랑측 혼주</div><div style="font-size:13.8px;word-break:keep-all;line-height:1.6;">${gParent}</div></div>`:''}
-        ${bParent?`<div><div class="${tpl==='hanok'?'hk-parent-label':''}" style="font-size:11px;letter-spacing:1px;${tpl==='hanok'?'':(tpl==='fullscreen'?'color:rgba(214,186,132,.85);':(tpl==='gold-serif'?'color:#8a6a38;':'color:var(--brown-mute);'))}margin-bottom:3px;">신부측 혼주</div><div style="font-size:13.8px;word-break:keep-all;line-height:1.6;">${bParent}</div></div>`:''}
+        ${parentRows.map(function(row){return `<div><div class="${tpl==='hanok'?'hk-parent-label':''}" style="font-size:11px;letter-spacing:1px;${tpl==='hanok'?'':(tpl==='fullscreen'?'color:rgba(214,186,132,.85);':(tpl==='gold-serif'?'color:#8a6a38;':'color:var(--brown-mute);'))}margin-bottom:3px;">${row.label}</div><div style="font-size:13.8px;word-break:keep-all;line-height:1.6;">${row.value}</div></div>`;}).join('')}
       </div></div>`;
   }
 
@@ -5199,12 +5855,13 @@ function _setCloneQuery(on){
   try{const u=new URL(location.href);if(on)u.searchParams.set('clone','1');else u.searchParams.delete('clone');history.replaceState({},'',u.href);}catch(e){}
 }
 function updateCloneUi(){
-  const banner=V('cloneBanner'),title=V('cloneBannerTitle'),desc=V('cloneBannerDesc'),btn=V('cloneBannerBtn'),mgr=V('rsvpManageBtn');
+  const banner=V('cloneBanner'),title=V('cloneBannerTitle'),desc=V('cloneBannerDesc'),btn=V('cloneBannerBtn'),mgr=V('rsvpManageBtn'),center=V('ownerCenterBtn');
   if(!banner)return;
   const show=!!editId||cloneMode;
   const isBuyerManaged=!!(_buyerManageMode&&_buyerManageToken&&!cloneMode);
   banner.classList.toggle('show',show);banner.classList.toggle('is-clone',cloneMode);
-  if(mgr)mgr.style.display=(!!editId&&!cloneMode&&!isBuyerManaged&&!!editCode)?'inline-flex':'none';
+  if(mgr)mgr.style.display='none';
+  if(center)center.style.display=(!!editId&&!cloneMode&&(!!editCode||!!_buyerManageToken))?'inline-flex':'none';
   if(!show)return;
   if(cloneMode){
     btn.style.display='inline-flex';
@@ -5277,6 +5934,95 @@ function finishCloneMode(newSlug,newEditCode){
   updateCloneUi();
 }
 
+
+/* ===== V47 DEV: 신랑·신부 통합 관리센터 ===== */
+let _ownerCenterBusy=false,_ownerCenterSummary=null,_guestbookManagerRows=[],_guestbookManagerBusy=false;
+function _ownerCenterAuth(){return {slug:editSlug||'',editCode:editCode||'',manageToken:_buyerManageToken||''};}
+async function _ownerCenterFetch(action,timeoutMs=15000){
+  const controller=typeof AbortController!=='undefined'?new AbortController():null;
+  const timer=controller?setTimeout(()=>controller.abort(),timeoutMs):null;
+  try{
+    const response=await fetch('/api/owner-center',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({..._ownerCenterAuth(),action:action||'summary'}),signal:controller?controller.signal:undefined,cache:'no-store'});
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok||!data.ok)throw new Error(data.error||'관리 정보를 불러오지 못했습니다.');
+    return data;
+  }catch(error){
+    if(error&&error.name==='AbortError')throw new Error('관리 서버 응답이 지연되고 있습니다.');
+    throw error;
+  }finally{if(timer)clearTimeout(timer);}
+}
+function openOwnerCenter(){
+  if(!editId||cloneMode||!editSlug||(!editCode&&!_buyerManageToken)){alert('발행된 원본 청첩장의 수정 화면에서 사용할 수 있습니다.');return;}
+  const ov=V('ownerCenterOv');if(!ov)return;
+  const names=[val('f_groom'),val('f_bride')].filter(Boolean).join(' · ')||'내 청첩장';
+  if(V('ownerCenterTitle'))V('ownerCenterTitle').textContent=`${names} 관리`;
+  const date=_formatManageDate(val('f_date'));
+  if(V('ownerCenterSubtitle'))V('ownerCenterSubtitle').textContent=[date,val('f_venue')].filter(Boolean).join(' · ')||'참석 응답, 하객 사진과 방명록을 한곳에서 확인합니다.';
+  if(V('ownerCenterCardMeta'))V('ownerCenterCardMeta').textContent=editSlug?`주소 ${editSlug}`:'현재 수정 중인 청첩장';
+  ov.classList.add('show');
+  loadOwnerCenter(false);
+}
+function closeOwnerCenter(){V('ownerCenterOv')?.classList.remove('show');}
+function _setOwnerCenterNumber(id,value,unit){const el=V(id);if(el)el.innerHTML=`${Number(value||0)}${unit?`<small>${unit}</small>`:''}`;}
+function renderOwnerCenter(summary){
+  summary=summary&&typeof summary==='object'?summary:{};_ownerCenterSummary=summary;
+  _setOwnerCenterNumber('ownerCenterRsvpCount',summary.responses,'건');
+  _setOwnerCenterNumber('ownerCenterPhotoCount',summary.pendingPhotos,'장');
+  _setOwnerCenterNumber('ownerCenterGuestbookCount',summary.guestbook,'건');
+  if(V('ownerCenterRsvpMeta'))V('ownerCenterRsvpMeta').textContent=`참석 예상 ${Number(summary.guests||0)}명 · 식사 예상 ${Number(summary.meals||0)}명 · 불참 ${Number(summary.declines||0)}건`;
+  if(V('ownerCenterPhotoMeta'))V('ownerCenterPhotoMeta').textContent=`승인 대기 ${Number(summary.pendingPhotos||0)}장 · 공개 중 ${Number(summary.approvedPhotos||0)}장`;
+}
+async function loadOwnerCenter(force){
+  if(_ownerCenterBusy&&!force)return;
+  const state=V('ownerCenterState'),refresh=V('ownerCenterRefresh');
+  _ownerCenterBusy=true;if(refresh){refresh.disabled=true;refresh.textContent='불러오는 중...';}
+  if(state){state.classList.add('show');state.textContent='관리 현황을 안전하게 불러오는 중입니다.';}
+  try{
+    const data=await _ownerCenterFetch('summary');
+    renderOwnerCenter(data.summary||{});
+    if(state){state.classList.remove('show');state.textContent='';}
+  }catch(error){
+    if(state){state.classList.add('show');state.textContent=error&&error.message?error.message:'관리 정보를 불러오지 못했습니다.';}
+  }finally{
+    _ownerCenterBusy=false;if(refresh){refresh.disabled=false;refresh.textContent='새로고침';}
+  }
+}
+function openRsvpFromOwnerCenter(){closeOwnerCenter();setTimeout(openRsvpManager,80);}
+function openGuestPhotoFromOwnerCenter(){closeOwnerCenter();setTimeout(openGuestPhotoManager,80);}
+function openGuestbookFromOwnerCenter(){closeOwnerCenter();setTimeout(openGuestbookManager,80);}
+function openOwnerPublishedCard(){
+  if(!editSlug){alert('청첩장 주소를 확인할 수 없습니다.');return;}
+  const url=new URL('card.html',location.href);url.searchParams.set('slug',editSlug);window.open(url.href,'_blank','noopener');
+}
+function openGuestbookManager(){
+  if(!editSlug||(!editCode&&!_buyerManageToken)){alert('발행된 청첩장의 수정 화면에서 사용할 수 있습니다.');return;}
+  V('guestbookManagerOv')?.classList.add('show');loadGuestbookManager(false);
+}
+function closeGuestbookManager(){V('guestbookManagerOv')?.classList.remove('show');}
+function renderGuestbookManager(){
+  const state=V('guestbookManagerState'),list=V('guestbookManagerList'),summary=V('guestbookManagerSummary');
+  if(!state||!list)return;
+  if(summary)summary.textContent=`도착한 축하 메시지 ${_guestbookManagerRows.length}건`;
+  if(!_guestbookManagerRows.length){list.style.display='none';state.style.display='block';state.textContent='아직 도착한 방명록 메시지가 없습니다.';return;}
+  state.style.display='none';list.style.display='flex';
+  list.innerHTML=_guestbookManagerRows.map(row=>{
+    const date=row.created_at?new Date(row.created_at).toLocaleString('ko-KR'):'';
+    return `<article class="guestbook-manager-item"><div class="guestbook-manager-item-head"><b>${esc(row.name||'이름 없음')}</b><span>${esc(date)}</span></div><p>${esc(row.message||'')}</p></article>`;
+  }).join('');
+}
+async function loadGuestbookManager(force){
+  if(_guestbookManagerBusy&&!force)return;
+  const state=V('guestbookManagerState'),list=V('guestbookManagerList'),refresh=V('guestbookManagerRefresh');
+  _guestbookManagerBusy=true;if(refresh)refresh.disabled=true;
+  if(state){state.style.display='block';state.textContent='방명록을 안전하게 불러오는 중입니다.';}if(list)list.style.display='none';
+  try{
+    const data=await _ownerCenterFetch('guestbook');
+    _guestbookManagerRows=Array.isArray(data.rows)?data.rows:[];renderGuestbookManager();
+  }catch(error){
+    _guestbookManagerRows=[];if(state){state.style.display='block';state.textContent=error&&error.message?error.message:'방명록을 불러오지 못했습니다.';}
+  }finally{_guestbookManagerBusy=false;if(refresh)refresh.disabled=false;}
+}
+
 /* ===== RSVP 참석자 관리 (소유자 전용·읽기 전용) ===== */
 let rsvpManagerRows=[];
 let rsvpAttendanceFilter='all';
@@ -5296,7 +6042,7 @@ function _normalizeRsvpRow(r){
 function _rsvpPartySize(r){return r.attendance==='참석'?1+r.plus_count:0;}
 function openRsvpManager(){
   if(!editId||cloneMode){alert('발행된 원본 청첩장의 수정 화면에서만 참석자를 확인할 수 있습니다.');return;}
-  if(!editSlug||!editCode){alert('수정 권한 정보를 확인할 수 없습니다. 발행 완료 화면에서 받은 수정번호로 다시 들어와 주세요.');return;}
+  if(!editSlug||(!editCode&&!_buyerManageToken)){alert('수정 권한 정보를 확인할 수 없습니다. 내 청첩장 수정에서 다시 인증해 주세요.');return;}
   if(!_requireServer())return;
   rsvpAttendanceFilter='all';
   document.querySelectorAll('#rsvpFilterTabs .rsvp-filter-btn').forEach(el=>el.classList.toggle('on',el.dataset.filter==='all'));
@@ -5308,7 +6054,7 @@ function openRsvpManager(){
 function closeRsvpManager(){const ov=V('rsvpManagerOv');if(ov)ov.classList.remove('show');}
 async function loadRsvpManager(force){
   if(rsvpManagerLoading)return;
-  if(!editSlug||!editCode||!sb)return;
+  if(!editSlug||(!editCode&&!_buyerManageToken))return;
   rsvpManagerLoading=true;
   const refresh=V('rsvpRefreshBtn'),csv=V('rsvpCsvBtn'),state=V('rsvpManagerState'),list=V('rsvpManagerList');
   if(refresh){refresh.disabled=true;refresh.textContent='불러오는 중...';}
@@ -5316,10 +6062,8 @@ async function loadRsvpManager(force){
   if(state){state.style.display='block';state.textContent='참석자 정보를 안전하게 불러오는 중입니다.';}
   if(list)list.style.display='none';
   try{
-    const{data,error}=await sb.rpc('get_rsvp_for_edit',{p_slug:editSlug,p_edit_code:editCode});
-    if(error)throw error;
-    if(data&&data.success===false)throw new Error(data.error||'수정 권한을 확인할 수 없습니다.');
-    const raw=Array.isArray(data)?data:(Array.isArray(data?.rows)?data.rows:[]);
+    const data=await _ownerCenterFetch('rsvp');
+    const raw=Array.isArray(data?.rows)?data.rows:[];
     rsvpManagerRows=raw.map(_normalizeRsvpRow);
     if(V('rsvpManagerCardTitle'))V('rsvpManagerCardTitle').textContent=`${val('f_groom')||'신랑'} · ${val('f_bride')||'신부'} 참석 현황`;
     if(V('rsvpManagerUpdated'))V('rsvpManagerUpdated').textContent=`마지막 확인 ${new Date().toLocaleString('ko-KR')}`;
@@ -5580,6 +6324,43 @@ async function ensureShareImageReadyForPublish(){
 }
 
 /* ===== 발행 ===== */
+let _publishRequestActive=false;
+function _publishBaseLabel(){
+  return (editId&&!cloneMode)?'수정 완료':(cloneMode?'복제본 발행':'발행하기');
+}
+function _setPublishUi(busy,label){
+  const text=label||_publishBaseLabel();
+  document.querySelectorAll('[onclick="publish()"],#publishBtn,.mab-publish').forEach(function(el){
+    if(!el)return;
+    el.disabled=!!busy;
+    el.setAttribute('aria-busy',busy?'true':'false');
+    if(el.classList&&el.classList.contains('mab-publish'))el.textContent=busy?text:(text+' →');
+    else if(el.id==='publishBtn')el.textContent=text;
+    else if(el.textContent&&/청첩장|발행|수정|저장/.test(el.textContent))el.textContent=busy?text:(text+' →');
+  });
+}
+function _friendlyPublishError(error){
+  const raw=String(error&&error.message||error||'').trim();
+  if(/manage|token|session|expired|권한|인증/i.test(raw))return '수정 권한이 만료되었거나 확인되지 않습니다. 내 청첩장 수정에서 다시 인증해 주세요.';
+  if(/network|fetch|timeout|Failed to fetch|Load failed/i.test(raw))return '서버 연결이 원활하지 않습니다. 인터넷 연결을 확인한 뒤 다시 눌러주세요.';
+  return '저장 중 오류가 발생했습니다. 입력 내용은 그대로 유지됩니다. 잠시 후 다시 시도해 주세요.';
+}
+async function _runPublishSafely(){
+  if(_publishRequestActive)return;
+  _publishRequestActive=true;
+  _setPublishUi(true,'저장 중...');
+  try{
+    await _proceedPublishUnsafe();
+  }catch(error){
+    console.error('publish failed:',error);
+    alert(_friendlyPublishError(error));
+  }finally{
+    _publishRequestActive=false;
+    _setPublishUi(false,_publishBaseLabel());
+  }
+}
+/* 기존 내부 호출·테스트 호환: 실제 실행은 공통 안전 래퍼 한 곳으로 통일 */
+async function _proceedPublish(){return _runPublishSafely();}
 async function publish(){
   _syncEditorShareMetaNow();
   if(!_preflightBypassOnce){
@@ -5587,32 +6368,22 @@ async function publish(){
     if(issues.length){renderPreflight(issues);return;}
   }
   _preflightBypassOnce=false;
-  const btn=V('publishBtn');
-  if(btn.disabled)return; /* 중복 클릭 방지 */
+  if(_publishRequestActive)return;
   if(!_requireServer())return; /* 서버 없으면 차단 (거짓 성공 방지) */
 
-  /* ── 주문 인증 게이트 (신규·복제 발행 / 원본 수정은 통과) ── */
+  /* 신규·복제 발행만 주문 인증. 원본 수정은 즉시 저장한다. */
   if(!editId||cloneMode){
-    /* 이미 인증 완료됐으면 바로 발행 */
-    if(_purchaseId){
-      await _proceedPublish();
-      return;
-    }
-    /* 미인증 → 주문 인증 모달 표시 */
-    btn.disabled=true;btn.textContent='인증 확인 중...';
+    if(_purchaseId){await _proceedPublish();return;}
     _resetOrderVerifyUi();
     if(V('orderErr'))V('orderErr').textContent='';
-    V('orderOv').classList.add('show');
+    V('orderOv')?.classList.add('show');
     setTimeout(()=>V('ov_buyer_name')?.focus(),80);
     return;
   }
-
-  /* 원본 수정 모드 — 주문 재인증 불필요 */
-  btn.disabled=true;btn.textContent='저장 중...';
   await _proceedPublish();
 }
 
-async function _proceedPublish(){
+async function _proceedPublishUnsafe(){
   /* 배경음악을 켠 경우 실제 재생 소스가 있어야 한다. 스위치만 켜진 빈 설정이나
      배포되지 않은 프리셋이 조용히 저장되는 것을 발행 전에 차단한다. */
   if(chk('o_music')){
@@ -5659,6 +6430,46 @@ async function _proceedPublish(){
       btn.disabled=false;btn.textContent=(editId&&!cloneMode)?'수정 완료':(cloneMode?'복제본 발행':'발행하기');
       alert('대표사진 업로드에 실패했어요.\n다시 시도하거나, 사진 없이 먼저 발행 후 수정에서 사진을 추가해주세요.');
       return;
+    }
+  }
+
+  /* V45 DEV: 신랑·신부 프로필 사진은 대표사진과 독립 경로에 저장한다. */
+  if(V('f_couple_intro_enabled')&&V('f_couple_intro_enabled').checked){
+  for(const role of ['groom','bride']){
+    const st=_coupleProfileState(role);
+    if(st.uploading){
+      btn.textContent='소개사진 준비 중...';
+      for(let i=0;i<160&&st.uploading;i++)await new Promise(r=>setTimeout(r,250));
+      if(st.uploading){btn.disabled=false;btn.textContent=(editId&&!cloneMode)?'수정 완료':(cloneMode?'복제본 발행':'발행하기');alert('소개사진 준비가 아직 끝나지 않았습니다. 잠시 후 다시 발행해 주세요.');return;}
+    }
+    if(st.file instanceof File){
+      btn.textContent=(role==='groom'?'신랑':'신부')+' 소개사진 저장 중...';
+      const ext=(st.file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+      const url=await uploadFile(st.file,`${ST.anonId}/profile_${role}_${Date.now()}.${ext}`);
+      if(!url){btn.disabled=false;btn.textContent=(editId&&!cloneMode)?'수정 완료':(cloneMode?'복제본 발행':'발행하기');alert((role==='groom'?'신랑':'신부')+' 소개사진을 저장하지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.');return;}
+      st.url=url;st.preview=url;st.file=null;renderCoupleProfileEditor(role);
+    }
+  }
+  }
+
+
+  /* V46 DEV: 우리 가족 소개사진 업로드 */
+  if(V('f_family_intro_enabled')&&V('f_family_intro_enabled').checked){
+    for(let i=0;i<ST.familyProfile.members.length;i++){
+      const member=ST.familyProfile.members[i];
+      if(member.uploading){
+        btn.textContent='가족 소개사진 준비 중...';
+        for(let wait=0;wait<160&&member.uploading;wait++)await new Promise(r=>setTimeout(r,250));
+        if(member.uploading){btn.disabled=false;btn.textContent=(editId&&!cloneMode)?'수정 완료':(cloneMode?'복제본 발행':'발행하기');alert('가족 소개사진 준비가 아직 끝나지 않았습니다. 잠시 후 다시 발행해 주세요.');return;}
+      }
+      if(member.file instanceof File){
+        btn.textContent='가족 소개사진 저장 중... ('+(i+1)+'/'+ST.familyProfile.members.length+')';
+        const ext=(member.file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+        const safeId=_familyMemberId(member.id);
+        const url=await uploadFile(member.file,`${ST.anonId}/family_${safeId}_${Date.now()}.${ext}`);
+        if(!url){btn.disabled=false;btn.textContent=(editId&&!cloneMode)?'수정 완료':(cloneMode?'복제본 발행':'발행하기');alert('가족 소개사진을 저장하지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.');return;}
+        member.url=url;member.preview=url;member.file=null;renderFamilyEditor();
+      }
     }
   }
 
@@ -5788,10 +6599,19 @@ async function _proceedPublish(){
       bgm_preset:(chk('o_music')&&ST_bgmMode==='preset'&&!safeUrl(val('f_bgm_url')))?ST_bgmPreset:null,
       gallery_layout:ST.galleryLayout,
       order_gb:val('f_order')==='gb',
-      groom_parents:val('f_gparent')||null,
-      bride_parents:val('f_bparent')||null,
-      groom_parent_deceased:!!(V('f_gparent_dec')&&V('f_gparent_dec').checked),
-      bride_parent_deceased:!!(V('f_bparent_dec')&&V('f_bparent_dec').checked),
+      /* 기존 card 버전도 읽을 수 있도록 한 줄 호환값과 새 사람별 값을 함께 저장한다. */
+      groom_parents:_parentLineRaw('f_gfather','f_gfather_dec','f_gmother','f_gmother_dec')||null,
+      bride_parents:_parentLineRaw('f_bfather','f_bfather_dec','f_bmother','f_bmother_dec')||null,
+      groom_parent_deceased:false,
+      bride_parent_deceased:false,
+      groom_father_name:val('f_gfather')||null,
+      groom_mother_name:val('f_gmother')||null,
+      bride_father_name:val('f_bfather')||null,
+      bride_mother_name:val('f_bmother')||null,
+      groom_father_deceased:chk('f_gfather_dec'),
+      groom_mother_deceased:chk('f_gmother_dec'),
+      bride_father_deceased:chk('f_bfather_dec'),
+      bride_mother_deceased:chk('f_bmother_dec'),
       /* cards 테이블에 별도 컬럼이 없는 값은 기존 설계대로 options JSONB에 저장 */
       address_lang2:val('f_address2')||null,
       groom_parent_bank:val('f_gpbank')||null,
@@ -5805,9 +6625,21 @@ async function _proceedPublish(){
         const profile={
           enabled:true,
           groom:(val('f_groom_intro')||'').trim().slice(0,100)||null,
-          bride:(val('f_bride_intro')||'').trim().slice(0,100)||null
+          bride:(val('f_bride_intro')||'').trim().slice(0,100)||null,
+          groom_photo_url:_isPublicUrl(ST.coupleProfile.groom.url)?ST.coupleProfile.groom.url:null,
+          bride_photo_url:_isPublicUrl(ST.coupleProfile.bride.url)?ST.coupleProfile.bride.url:null,
+          groom_photo_position:normalizeCoupleProfilePosition(ST.coupleProfile.groom.position),
+          bride_photo_position:normalizeCoupleProfilePosition(ST.coupleProfile.bride.position)
         };
-        return profile.groom||profile.bride?profile:null;
+        return profile.groom||profile.bride||profile.groom_photo_url||profile.bride_photo_url?profile:null;
+      })(),
+      family_intro:(function(){
+        if(!(V('f_family_intro_enabled')&&V('f_family_intro_enabled').checked))return null;
+        const members=ST.familyProfile.members.slice(0,4).map(function(m,index){
+          const photo=_isPublicUrl(m.url)?m.url:null;if(!photo)return null;
+          return {id:_familyMemberId(m.id),order:index+1,name:String(m.name||'').trim().slice(0,30)||null,relation:String(m.relation||'').trim().slice(0,30)||null,text:String(m.text||'').trim().slice(0,120)||null,photo_url:photo,photo_position:normalizeCoupleProfilePosition(m.position)};
+        }).filter(Boolean);
+        return members.length?{enabled:true,members:members}:null;
       })(),
       couple_timeline:(function(){
         const items=getTimelineEditorItems(false).map(function(it){return {slot:it.slot,date:it.date||null,title:it.title||null,text:it.text||null};});
@@ -6237,9 +7069,9 @@ function closeOrderModal(){
   V('orderOv').classList.remove('show');
   V('orderErr').textContent='';
   _resetOrderVerifyUi();
-  // 인증 중 발행 버튼 복구
-  const btn=V('publishBtn');
-  if(btn){btn.disabled=false;btn.textContent=cloneMode?'복제본 발행':(editId?'수정 완료':'발행하기');}
+  // 인증 모달을 닫아도 모바일·PC 발행 버튼 상태를 함께 복구
+  if(typeof _setPublishUi==='function'&&typeof _publishRequestActive!=='undefined'&&!_publishRequestActive)_setPublishUi(false,_publishBaseLabel());
+  else{const btn=V('publishBtn');if(btn){btn.disabled=false;btn.textContent=cloneMode?'복제본 발행':(editId?'수정 완료':'발행하기');}}
 }
 
 async function verifyOrder(){
@@ -6302,8 +7134,8 @@ function queueDraftSave(){
 }
 const DRAFT_KEY='mr_draft_v2';
 function activeDraftKey(){return cloneMode?CLONE_DRAFT_KEY:DRAFT_KEY;}
-const DRAFT_FIELDS=['f_groom','f_bride','f_order','f_groom_intro','f_bride_intro','f_timeline_date_1','f_timeline_title_1','f_timeline_text_1','f_timeline_date_2','f_timeline_title_2','f_timeline_text_2','f_timeline_date_3','f_timeline_title_3','f_timeline_text_3','f_timeline_date_4','f_timeline_title_4','f_timeline_text_4','f_date','f_time','f_venue','f_hall','f_addr','f_guest_parking','f_guest_meal','f_guest_shuttle','f_guest_contact','f_guest_etc','f_msg','f_font','f_opening','f_lang2','f_msg2','f_venue2','f_address2','f_gbank','f_gacc','f_gholder','f_bbank','f_bacc','f_bholder','f_gpbank','f_gpacc','f_gpholder','f_bpbank','f_bpacc','f_bpholder','f_video_url','f_video_title','f_bgm_url','f_gparent','f_bparent','f_particle'];
-const DRAFT_TGLS=['o_dday','o_gallery','o_rsvp','o_guest','o_guest_photo','o_account','o_video','o_music','f_couple_intro_enabled','f_timeline_enabled','f_timeline_item_1_enabled','f_timeline_item_2_enabled','f_timeline_item_3_enabled','f_timeline_item_4_enabled','f_gparent_dec','f_bparent_dec'];
+const DRAFT_FIELDS=['f_groom','f_bride','f_order','f_groom_intro','f_bride_intro','f_timeline_date_1','f_timeline_title_1','f_timeline_text_1','f_timeline_date_2','f_timeline_title_2','f_timeline_text_2','f_timeline_date_3','f_timeline_title_3','f_timeline_text_3','f_timeline_date_4','f_timeline_title_4','f_timeline_text_4','f_date','f_time','f_venue','f_hall','f_addr','f_guest_parking','f_guest_meal','f_guest_shuttle','f_guest_contact','f_guest_etc','f_msg','f_font','f_opening','f_lang2','f_msg2','f_venue2','f_address2','f_gbank','f_gacc','f_gholder','f_bbank','f_bacc','f_bholder','f_gpbank','f_gpacc','f_gpholder','f_bpbank','f_bpacc','f_bpholder','f_video_url','f_video_title','f_bgm_url','f_gfather','f_gmother','f_bfather','f_bmother','f_particle'];
+const DRAFT_TGLS=['o_dday','o_gallery','o_rsvp','o_guest','o_guest_photo','o_account','o_video','o_music','f_couple_intro_enabled','f_family_intro_enabled','f_timeline_enabled','f_timeline_item_1_enabled','f_timeline_item_2_enabled','f_timeline_item_3_enabled','f_timeline_item_4_enabled','f_gfather_dec','f_gmother_dec','f_bfather_dec','f_bmother_dec'];
 function saveDraft(){
   if(editSlug&&!cloneMode)return;
   const d={
@@ -6318,6 +7150,12 @@ function saveDraft(){
       crop:getShareCropSaveData()
     },
     motionCover:getMotionDraftData(),
+    coupleProfile:{
+      groom:safeUrl(ST.coupleProfile.groom.url)||null,bride:safeUrl(ST.coupleProfile.bride.url)||null,
+      groomPosition:normalizeCoupleProfilePosition(ST.coupleProfile.groom.position),
+      bridePosition:normalizeCoupleProfilePosition(ST.coupleProfile.bride.position)
+    },
+    familyProfile:{members:ST.familyProfile.members.slice(0,4).map(function(m){return {id:_familyMemberId(m.id),name:String(m.name||'').slice(0,30),relation:String(m.relation||'').slice(0,30),text:String(m.text||'').slice(0,120),url:safeUrl(m.url)||null,position:normalizeCoupleProfilePosition(m.position)};})},
     fields:{},tgls:{}
   };
   DRAFT_FIELDS.forEach(id=>{if(V(id))d.fields[id]=V(id).value;});
@@ -6335,12 +7173,26 @@ function loadDraft(){
     const _draftEffects={auto:1,none:1,winter_snow:1,gold_dust:1,film_dust:1,pearl_bokeh:1};
     Object.entries(d.fields||{}).forEach(([id,v])=>{if(V(id)){if(id==='f_particle'&&!_draftEffects[v])v='auto';V(id).value=v;}});
     Object.entries(d.tgls||{}).forEach(([id,v])=>{if(V(id))V(id).checked=v;});
+    /* 구버전 임시저장의 한 줄 혼주 입력도 새 4칸 구조로 복원 */
+    if(!(d.fields&&('f_gfather'in d.fields||'f_gmother'in d.fields||'f_bfather'in d.fields||'f_bmother'in d.fields))){
+      const _dgp=_parseLegacyParentLine(d.fields&&d.fields.f_gparent,d.tgls&&d.tgls.f_gparent_dec);
+      const _dbp=_parseLegacyParentLine(d.fields&&d.fields.f_bparent,d.tgls&&d.tgls.f_bparent_dec);
+      if(V('f_gfather'))V('f_gfather').value=_dgp.father;if(V('f_gmother'))V('f_gmother').value=_dgp.mother;
+      if(V('f_bfather'))V('f_bfather').value=_dbp.father;if(V('f_bmother'))V('f_bmother').value=_dbp.mother;
+      if(V('f_gfather_dec'))V('f_gfather_dec').checked=_dgp.fatherDeceased;if(V('f_gmother_dec'))V('f_gmother_dec').checked=_dgp.motherDeceased;
+      if(V('f_bfather_dec'))V('f_bfather_dec').checked=_dbp.fatherDeceased;if(V('f_bmother_dec'))V('f_bmother_dec').checked=_dbp.motherDeceased;
+    }
     /* 이미 Storage 업로드가 끝난 사진 URL은 새로고침 뒤에도 복원한다. File/base64는 저장하지 않는다. */
     const _draftMain=safeUrl(d.mainPhotoUrl||'');
     const _draftGallery=(Array.isArray(d.galleryUrls)?d.galleryUrls:[]).map(safeUrl).filter(Boolean).slice(0,40);
     ST.mainPhotoUrl=_draftMain||null;ST.mainPhoto=_draftMain||null;ST.mainFile=null;
     ST.galleryUrls=[..._draftGallery];ST.gallery=[..._draftGallery];ST.galleryFiles=new Array(_draftGallery.length).fill(null);ST.galleryTokens=_draftGallery.map(()=>_newGalleryToken());
     restoreMotionCoverFromUrls(d.motionCover||{});
+    const _draftProfile=d.coupleProfile&&typeof d.coupleProfile==='object'?d.coupleProfile:{};
+    ['groom','bride'].forEach(function(role){const u=safeUrl(_draftProfile[role]||'');const st=_coupleProfileState(role);st.url=u||null;st.preview=u||null;st.file=null;st.uploading=false;st.position=normalizeCoupleProfilePosition(_draftProfile[role+'Position']);renderCoupleProfileEditor(role);});
+    const _draftFamily=d.familyProfile&&typeof d.familyProfile==='object'&&Array.isArray(d.familyProfile.members)?d.familyProfile.members:[];
+    ST.familyProfile.members=_draftFamily.slice(0,4).map(function(m){return _newFamilyMember(m);});
+    renderFamilyEditor();
     updateGalleryUploadStatus();
     if(V('mainPreview'))V('mainPreview').innerHTML=_draftMain?`<div class="mp-wrap"><div class="mp-box"><img src="${esc(_draftMain)}" alt="대표사진"/><div class="rm" onclick="rmMain()">×</div></div></div>`:'';
     const _ds=d.share||{};
@@ -6351,6 +7203,7 @@ function loadDraft(){
     if(typeof toggleVideoBox==='function')toggleVideoBox();
     if(typeof toggleGuestPhotoBox==='function')toggleGuestPhotoBox();
     if(typeof toggleCoupleIntroBox==='function')toggleCoupleIntroBox();
+    if(typeof toggleFamilyIntroBox==='function')toggleFamilyIntroBox();
     if(typeof toggleTimelineBox==='function')toggleTimelineBox();
     if(d.tgls?.o_music&&V('musicUrlBox'))V('musicUrlBox').style.display='block';
     /* BGM 모드 복원: 명시값 우선, 없으면 f_bgm_url 유무로 추론(기존 호환) */
@@ -6408,8 +7261,17 @@ async function loadForEdit(){
   set('f_gpbank',data.groom_parent_bank||data.options?.groom_parent_bank);set('f_gpacc',data.groom_parent_account||data.options?.groom_parent_account);set('f_gpholder',data.groom_parent_holder||data.options?.groom_parent_holder);set('f_bpbank',data.bride_parent_bank||data.options?.bride_parent_bank);set('f_bpacc',data.bride_parent_account||data.options?.bride_parent_account);set('f_bpholder',data.bride_parent_holder||data.options?.bride_parent_holder);
   const _coupleIntro=data.options?.couple_intro&&typeof data.options.couple_intro==='object'?data.options.couple_intro:{};
   set('f_groom_intro',_coupleIntro.groom);set('f_bride_intro',_coupleIntro.bride);
-  if(V('f_couple_intro_enabled'))V('f_couple_intro_enabled').checked=_coupleIntro.enabled===true&&!!(_coupleIntro.groom||_coupleIntro.bride);
+  const _profileUrls={groom:safeUrl(_coupleIntro.groom_photo_url||''),bride:safeUrl(_coupleIntro.bride_photo_url||'')};
+  const _profilePositions={groom:normalizeCoupleProfilePosition(_coupleIntro.groom_photo_position),bride:normalizeCoupleProfilePosition(_coupleIntro.bride_photo_position)};
+  ['groom','bride'].forEach(function(role){const st=_coupleProfileState(role),u=_profileUrls[role];st.url=u||null;st.preview=u||null;st.file=null;st.uploading=false;st.position=_profilePositions[role];renderCoupleProfileEditor(role);});
+  if(V('f_couple_intro_enabled'))V('f_couple_intro_enabled').checked=_coupleIntro.enabled===true&&!!(_coupleIntro.groom||_coupleIntro.bride||_profileUrls.groom||_profileUrls.bride);
   if(typeof toggleCoupleIntroBox==='function')toggleCoupleIntroBox();
+  const _familyIntro=data.options?.family_intro&&typeof data.options.family_intro==='object'?data.options.family_intro:{};
+  const _familyMembers=Array.isArray(_familyIntro.members)?_familyIntro.members:[];
+  ST.familyProfile.members=_familyMembers.slice(0,4).map(function(m){return _newFamilyMember({id:m&&m.id,name:m&&m.name,relation:m&&m.relation,text:m&&m.text,photo_url:m&&m.photo_url,photo_position:m&&m.photo_position});});
+  if(V('f_family_intro_enabled'))V('f_family_intro_enabled').checked=_familyIntro.enabled===true&&ST.familyProfile.members.some(function(m){return !!safeUrl(m.url);});
+  renderFamilyEditor();
+  if(typeof toggleFamilyIntroBox==='function')toggleFamilyIntroBox();
   const _timeline=data.options?.couple_timeline&&typeof data.options.couple_timeline==='object'?data.options.couple_timeline:{};
   const _timelineItems=Array.isArray(_timeline.items)?_timeline.items:[];
   if(V('f_timeline_enabled'))V('f_timeline_enabled').checked=_timeline.enabled===true&&_timelineItems.length>0;
@@ -6429,10 +7291,25 @@ async function loadForEdit(){
   var _bm=data.options?.bgm_mode||(data.options?.bgm_url?'custom':'none');
   ST_bgmMode=_bm; ST_bgmPreset=data.options?.bgm_preset||'';
   if(typeof renderBgmPresets==='function')renderBgmPresets();
-  if(data.options?.groom_parents)set('f_gparent',data.options.groom_parents);
-  if(data.options?.bride_parents)set('f_bparent',data.options.bride_parents);
-  if(V('f_gparent_dec'))V('f_gparent_dec').checked=!!data.options?.groom_parent_deceased;
-  if(V('f_bparent_dec'))V('f_bparent_dec').checked=!!data.options?.bride_parent_deceased;
+  /* V45 HOTFIX: 새 사람별 혼주 데이터 우선, 기존 한 줄 데이터는 안전하게 분리해 복원 */
+  const _parentOpts=data.options||{};
+  const _hasStructuredParents=['groom_father_name','groom_mother_name','bride_father_name','bride_mother_name','groom_father_deceased','groom_mother_deceased','bride_father_deceased','bride_mother_deceased'].some(function(k){return Object.prototype.hasOwnProperty.call(_parentOpts,k);});
+  if(_hasStructuredParents){
+    set('f_gfather',_parentOpts.groom_father_name);set('f_gmother',_parentOpts.groom_mother_name);
+    set('f_bfather',_parentOpts.bride_father_name);set('f_bmother',_parentOpts.bride_mother_name);
+    if(V('f_gfather_dec'))V('f_gfather_dec').checked=!!_parentOpts.groom_father_deceased;
+    if(V('f_gmother_dec'))V('f_gmother_dec').checked=!!_parentOpts.groom_mother_deceased;
+    if(V('f_bfather_dec'))V('f_bfather_dec').checked=!!_parentOpts.bride_father_deceased;
+    if(V('f_bmother_dec'))V('f_bmother_dec').checked=!!_parentOpts.bride_mother_deceased;
+  }else{
+    const _gp=_parseLegacyParentLine(_parentOpts.groom_parents,_parentOpts.groom_parent_deceased);
+    const _bp=_parseLegacyParentLine(_parentOpts.bride_parents,_parentOpts.bride_parent_deceased);
+    set('f_gfather',_gp.father);set('f_gmother',_gp.mother);set('f_bfather',_bp.father);set('f_bmother',_bp.mother);
+    if(V('f_gfather_dec'))V('f_gfather_dec').checked=_gp.fatherDeceased;
+    if(V('f_gmother_dec'))V('f_gmother_dec').checked=_gp.motherDeceased;
+    if(V('f_bfather_dec'))V('f_bfather_dec').checked=_bp.fatherDeceased;
+    if(V('f_bmother_dec'))V('f_bmother_dec').checked=_bp.motherDeceased;
+  }
   ST.theme=data.theme||'signature';renderTemplates();
   renderFonts();
   ST.galleryLayout=data.options?.gallery_layout||'masonry';

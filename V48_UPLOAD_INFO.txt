@@ -1,0 +1,6 @@
+V48 Preview 통합 테스트 기준본
+기준: V47 전체 기능 + 발행/수정 무반응 방어 + card 흰 화면 방어
+업로드: 이 폴더 안의 모든 파일과 폴더를 Preview 브랜치 루트에 전체 교체
+금지: main/Production 반영 금지
+핵심 변경 파일: editor.html, card.html
+포함: V41~V47 누적 기능, api 전체, samples, music, vercel.json
