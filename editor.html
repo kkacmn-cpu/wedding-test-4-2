@@ -1203,6 +1203,10 @@ input,select,textarea{font-family:inherit;}
 .t-minimal .iv-gal-wrap .g img{width:100%;height:100%;object-fit:cover;display:block;}
 .t-minimal .iv-gal-wrap:not(.gal-expanded) .g:nth-child(9){grid-column:1 / -1;aspect-ratio:2/1;}
 .t-minimal .iv-gal-wrap.gal-expanded .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
+/* V42 — 실제 card와 동일한 2열 매거진 홀수 마감 규칙. Flower/grid/full은 기존 배열 유지. */
+#ivRoot:not(.t-flower) .gal-masonry.iv-gal-wrap:not(.gal-expanded) .g:nth-child(9){grid-column:1 / -1;aspect-ratio:2/1;}
+#ivRoot:not(.t-flower) .gal-masonry.iv-gal-wrap:not(.gal-expanded) .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
+#ivRoot:not(.t-flower) .gal-masonry.iv-gal-wrap.gal-expanded .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
 .t-minimal .gal-more-btn .gm-1{display:none;}
 .t-minimal .gal-more-btn .gm-2{opacity:1;font-size:13.5px;color:#62503e;margin-top:0;}
 .t-black .dday-lbl{color:rgba(240,232,216,.7);}
@@ -4570,9 +4574,19 @@ function _previewFallbackCopy(txt){
   if(ta&&ta.parentNode)ta.parentNode.removeChild(ta);
   return ok;
 }
+function _previewAccountCopyText(btn){
+  var d=btn&&btn.dataset?btn.dataset:{};
+  var bank=String(d.bank||'').trim(),acc=String(d.acc||'').trim(),holder=String(d.holder||'').trim();
+  if(!acc)return'';
+  var parts=[];
+  if(bank)parts.push(bank);
+  parts.push(acc);
+  if(holder)parts.push('(예금주: '+holder+')');
+  return parts.join(' ');
+}
 function copyPreviewAccount(btn,ev){
   if(ev){ev.preventDefault();ev.stopPropagation();}
-  var txt=(btn&&btn.dataset&&btn.dataset.acc)||'';
+  var txt=_previewAccountCopyText(btn);
   if(!txt)return;
   var done=function(ok){
     if(!ok)return;
@@ -5038,10 +5052,10 @@ function renderIV(playOp){
       ${tpl==='hanok'?`<div class="hk-sec-desc" style="font-size:13px;opacity:.9;margin-top:6px;margin-bottom:12px;">마음을 전하실 분들을 위해 준비했습니다</div>`:''}
       <div class="acc-box"><button type="button" class="acc-toggle" aria-expanded="false" onclick="togglePreviewAccount(this)">계좌번호 확인하기</button>
         <div class="acc-list" style="display:none;">
-          ${gAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${gBank} ${gHolder}</span><span class="acc-num">${gAcc}</span></div><button type="button" class="acc-copy" data-acc="${gAcc}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
-          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-acc="${gpAcc}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
-          ${bAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${bBank} ${bHolder}</span><span class="acc-num">${bAcc}</span></div><button type="button" class="acc-copy" data-acc="${bAcc}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
-          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-acc="${bpAcc}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
+          ${gAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${gBank} ${gHolder}</span><span class="acc-num">${gAcc}</span></div><button type="button" class="acc-copy" data-bank="${gBank}" data-acc="${gAcc}" data-holder="${gHolder}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
+          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-bank="${gpBank}" data-acc="${gpAcc}" data-holder="${gpHolder}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
+          ${bAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${bBank} ${bHolder}</span><span class="acc-num">${bAcc}</span></div><button type="button" class="acc-copy" data-bank="${bBank}" data-acc="${bAcc}" data-holder="${bHolder}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
+          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-bank="${bpBank}" data-acc="${bpAcc}" data-holder="${bpHolder}" onclick="copyPreviewAccount(this,event)">복사</button></div>`:''}
         </div>
       </div>
     </div>`;

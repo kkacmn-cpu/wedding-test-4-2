@@ -397,7 +397,7 @@ body{font-family:var(--sans);background:var(--ivory);color:var(--brown);min-heig
 .acc-info{display:flex;flex-direction:column;gap:3px;}
 .acc-side{font-size:10px;letter-spacing:1px;opacity:.5;text-transform:uppercase;}
 .acc-bank{font-size:13px;font-weight:500;}
-.acc-num{font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:400;opacity:.85;letter-spacing:.5px;-webkit-user-select:text;user-select:text;transition:background .2s;}.acc-num.copy-selected{background:rgba(193,158,96,.22);border-radius:4px;}
+.acc-num{font-family:'Noto Sans KR',sans-serif;font-size:15px;font-weight:400;opacity:.85;letter-spacing:.5px;-webkit-user-select:text;user-select:text;transition:background .2s;}.acc-bank.copy-selected,.acc-num.copy-selected{background:rgba(193,158,96,.22);border-radius:4px;}
 .acc-copy{flex-shrink:0;font-size:11px;padding:9px 15px;border-radius:999px;background:rgba(0,0,0,.06);color:inherit;cursor:pointer;border:none;transition:all .25s;opacity:.7;font-family:inherit;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .acc-copy:hover{opacity:1;background:rgba(0,0,0,.1);}
 .acc-copy.done{background:var(--ok);color:#fff;opacity:1;}
@@ -1053,6 +1053,12 @@ button,
 #card.t-minimal .iv-gal-wrap .g img{width:100%;height:100%;object-fit:cover;display:block;}
 #card.t-minimal .iv-gal-wrap:not(.gal-expanded) .g:nth-child(9){grid-column:1 / -1;aspect-ratio:2/1;}
 #card.t-minimal .iv-gal-wrap.gal-expanded .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
+/* V42 — 2열 매거진형은 사진 수가 홀수여도 마지막 줄을 비워두지 않는다.
+   접힌 10장 이상 상태는 9번째, 9장 이하 상태와 펼친 상태는 실제 마지막 사진을 전체 폭으로 마감한다.
+   Flower 비대칭 12열과 grid/full 레이아웃은 기존 디자인을 유지한다. */
+#card:not(.t-flower) .iv-gal-masonry.iv-gal-wrap:not(.gal-expanded) .g:nth-child(9){grid-column:1 / -1;aspect-ratio:2/1;}
+#card:not(.t-flower) .iv-gal-masonry.iv-gal-wrap:not(.gal-expanded) .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
+#card:not(.t-flower) .iv-gal-masonry.iv-gal-wrap.gal-expanded .g:last-child:nth-child(odd){grid-column:1 / -1;aspect-ratio:2/1;}
 /* 더보기 문구 중복 제거: gm-1 숨기고 gm-2만 (회갈 대비) */
 #card.t-minimal .gal-more-btn .gm-1{display:none;}
 #card.t-minimal .gal-more-btn .gm-2{opacity:1;font-size:13.5px;color:#62503e;margin-top:0;}
@@ -3000,10 +3006,10 @@ function renderCard(card){
       <div class="acc-box">
         <button type="button" class="acc-toggle" aria-expanded="false" onclick="toggleAccount(this)">계좌번호 확인하기</button>
         <div class="acc-list" style="display:none;">
-          ${groomAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${groomBank} ${groomHolder}</span><span class="acc-num">${groomAcc}</span></div><button type="button" class="acc-copy" data-acc="${groomAcc}" onclick="copyAcc(this,event)">복사</button></div>`:''}
-          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-acc="${gpAcc}" onclick="copyAcc(this,event)">복사</button></div>`:''}
-          ${brideAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${brideBank} ${brideHolder}</span><span class="acc-num">${brideAcc}</span></div><button type="button" class="acc-copy" data-acc="${brideAcc}" onclick="copyAcc(this,event)">복사</button></div>`:''}
-          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-acc="${bpAcc}" onclick="copyAcc(this,event)">복사</button></div>`:''}
+          ${groomAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측</span><span class="acc-bank">${groomBank} ${groomHolder}</span><span class="acc-num">${groomAcc}</span></div><button type="button" class="acc-copy" data-bank="${groomBank}" data-acc="${groomAcc}" data-holder="${groomHolder}" onclick="copyAcc(this,event)">복사</button></div>`:''}
+          ${gpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신랑측 혼주</span><span class="acc-bank">${gpBank} ${gpHolder}</span><span class="acc-num">${gpAcc}</span></div><button type="button" class="acc-copy" data-bank="${gpBank}" data-acc="${gpAcc}" data-holder="${gpHolder}" onclick="copyAcc(this,event)">복사</button></div>`:''}
+          ${brideAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측</span><span class="acc-bank">${brideBank} ${brideHolder}</span><span class="acc-num">${brideAcc}</span></div><button type="button" class="acc-copy" data-bank="${brideBank}" data-acc="${brideAcc}" data-holder="${brideHolder}" onclick="copyAcc(this,event)">복사</button></div>`:''}
+          ${bpAcc?`<div class="acc-row"><div class="acc-info"><span class="acc-side">신부측 혼주</span><span class="acc-bank">${bpBank} ${bpHolder}</span><span class="acc-num">${bpAcc}</span></div><button type="button" class="acc-copy" data-bank="${bpBank}" data-acc="${bpAcc}" data-holder="${bpHolder}" onclick="copyAcc(this,event)">복사</button></div>`:''}
         </div>
       </div>
     </div>`;
@@ -3389,15 +3395,26 @@ function _fallbackCopy(txt){
   if(window.pageXOffset!==sx||window.pageYOffset!==sy)window.scrollTo(sx,sy);
   return ok;
 }
+function _accountCopyText(btn){
+  var d=btn&&btn.dataset?btn.dataset:{};
+  var bank=String(d.bank||'').trim(),acc=String(d.acc||'').trim(),holder=String(d.holder||'').trim();
+  if(!acc)return'';
+  var parts=[];
+  if(bank)parts.push(bank);
+  parts.push(acc);
+  if(holder)parts.push('(예금주: '+holder+')');
+  return parts.join(' ');
+}
 function _selectVisibleAccount(btn){
   try{
     var row=btn&&btn.closest?btn.closest('.acc-row'):null;
-    var num=row?row.querySelector('.acc-num'):null;
+    var bank=row?row.querySelector('.acc-bank'):null,num=row?row.querySelector('.acc-num'):null;
     if(!num||!window.getSelection||!document.createRange)return false;
     var sel=window.getSelection(),range=document.createRange();
-    range.selectNodeContents(num);sel.removeAllRanges();sel.addRange(range);
-    num.classList.add('copy-selected');
-    setTimeout(function(){num.classList.remove('copy-selected');},2600);
+    if(bank){range.setStartBefore(bank);range.setEndAfter(num);}else range.selectNodeContents(num);
+    sel.removeAllRanges();sel.addRange(range);
+    if(bank)bank.classList.add('copy-selected');num.classList.add('copy-selected');
+    setTimeout(function(){if(bank)bank.classList.remove('copy-selected');num.classList.remove('copy-selected');},2600);
     return true;
   }catch(e){return false;}
 }
@@ -3406,22 +3423,22 @@ function _showAccountCopySuccess(btn){
   btn.dataset.label=orig;
   btn.textContent='복사됨 ✓';btn.classList.add('done');
   setTimeout(function(){btn.textContent=orig;btn.classList.remove('done');},1400);
-  _showCopyToast('계좌번호가 클립보드에 복사되었습니다.',true);
+  _showCopyToast('은행명·계좌번호·예금주가 복사되었습니다.',true);
 }
 function copyAcc(btn,ev){
   if(ev){ev.preventDefault();ev.stopPropagation();}
-  /* 클릭한 행의 data-acc만 사용 (다른 계좌 혼입 방지), 하이픈·공백 원본 그대로 */
-  var txt=btn&&btn.dataset?btn.dataset.acc||'':'';
-  if(!txt){_showCopyToast('복사하지 못했습니다. 계좌번호를 직접 선택해 주세요.',false);return;}
+  /* 클릭한 행의 은행명·계좌번호·예금주만 조합하며 입력된 하이픈·공백은 그대로 유지한다. */
+  var txt=_accountCopyText(btn);
+  if(!txt){_showCopyToast('복사하지 못했습니다. 계좌 정보를 직접 선택해 주세요.',false);return;}
   var original=btn.dataset.label||btn.textContent||'복사';btn.dataset.label=original;
   btn.disabled=true;btn.textContent='복사 중…';btn.setAttribute('aria-busy','true');
   _doCopy(txt).then(function(ok){
     btn.disabled=false;btn.removeAttribute('aria-busy');
     if(ok){btn.textContent=original;_showAccountCopySuccess(btn);return;}
     btn.textContent=original;
-    /* 자동 복사가 막힌 환경에서도 해당 행의 계좌번호를 바로 선택해 수동 복사가 가능하게 한다. */
+    /* 자동 복사가 막힌 환경에서도 해당 행의 은행명·예금주·계좌번호를 함께 선택한다. */
     var selected=_selectVisibleAccount(btn);
-    _showCopyToast(selected?'자동 복사가 차단되었습니다. 선택된 계좌번호를 길게 눌러 복사해 주세요.':'복사하지 못했습니다. 계좌번호를 직접 선택해 주세요.',false);
+    _showCopyToast(selected?'자동 복사가 차단되었습니다. 선택된 계좌 정보를 길게 눌러 복사해 주세요.':'복사하지 못했습니다. 계좌 정보를 직접 선택해 주세요.',false);
   });
 }
 
@@ -3727,8 +3744,8 @@ function shareKakao(){
   if(!window.Kakao){
     console.error('Kakao SDK not loaded');
     copyCardLink(
-      '카카오톡 공유를 사용할 수 없어 링크를 복사했어요. 카카오톡에 붙여넣기 해주세요.',
-      '카카오톡 공유와 링크 복사에 실패했어요. 주소창의 링크를 직접 복사해 주세요.'
+      '링크를 복사했습니다. 카카오톡에 붙여넣어 주세요.',
+      '링크를 복사하지 못했습니다. 주소창의 링크를 직접 복사해 주세요.'
     );
     return;
   }
@@ -3764,8 +3781,8 @@ function shareKakao(){
   }catch(e){
     console.error('Kakao share failed:', e);
     copyCardLink(
-      '카카오톡 공유를 사용할 수 없어 링크를 복사했어요. 카카오톡에 붙여넣기 해주세요.',
-      '카카오톡 공유와 링크 복사에 실패했어요. 주소창의 링크를 직접 복사해 주세요.'
+      '링크를 복사했습니다. 카카오톡에 붙여넣어 주세요.',
+      '링크를 복사하지 못했습니다. 주소창의 링크를 직접 복사해 주세요.'
     );
   }
 }
