@@ -144,7 +144,7 @@ async function cleanupRejected(cardId){
 }
 async function countActive(cardId){
   const params=new URLSearchParams({
-    select:'id',card_id:`eq.${cardId}`,status:'in.(uploading,pending,approved)',limit:'200'
+    select:'id',card_id:`eq.${cardId}`,status:'in.(uploading,pending,approved,hidden)',limit:'200'
   });
   const rows=await rest(`guest_photo_uploads?${params.toString()}`);
   return Array.isArray(rows)?rows.length:0;

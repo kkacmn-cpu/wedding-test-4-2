@@ -1,0 +1,460 @@
+{
+  "build": "V68_FINAL_FREEZE_01_20260711",
+  "createdAt": "2026-07-11",
+  "releaseType": "internal-final-freeze",
+  "files": [
+    {
+      "path": "editor.html",
+      "verify": "static",
+      "sha256": "4b933bcf735e3414c762e7ee4c6c54676a6fcfb2221652cfa0baa36033a7fc21",
+      "bytes": 825156
+    },
+    {
+      "path": "card.html",
+      "verify": "static",
+      "sha256": "9cbaccff48388fbaad47f500c4abcd6136bb136724df579627ce1a8ec8d27f85",
+      "bytes": 480061
+    },
+    {
+      "path": "admin.html",
+      "verify": "static",
+      "sha256": "e6cec15af3a3b5ca1a3f7b92223b33e45c6bafd643aef817869461f1002b4dbb",
+      "bytes": 13571
+    },
+    {
+      "path": "index.html",
+      "verify": "static",
+      "sha256": "8e708234dd6dc8a9a078f4f63fbb01db4b951059cbf15c027ebc9a09349ff48d",
+      "bytes": 524
+    },
+    {
+      "path": "system-check.html",
+      "verify": "static",
+      "sha256": "665d3afe8bc1eae0ccfaba78e7d92d53870b2764bfde537ecb4ec8e3d08a25ea",
+      "bytes": 7000
+    },
+    {
+      "path": "save-path-check.html",
+      "verify": "static",
+      "sha256": "457484e55568b6e12389c22b150e95c9c3d706a7ddac38f374bcea26c2cc2130",
+      "bytes": 9474
+    },
+    {
+      "path": "qa-center.html",
+      "verify": "static",
+      "sha256": "0bde4f7a95ad6bde1ad20eb6d7da9ec6bb789ee39cb00157d94a366ae1781788",
+      "bytes": 31243
+    },
+    {
+      "path": "og-default.jpg",
+      "verify": "static",
+      "sha256": "2a6d16618f98ca4aaf0f01826509359dafa9f6459659ebf3febd2409a6cea7e0",
+      "bytes": 115688
+    },
+    {
+      "path": "samples/tpl-black.webp",
+      "verify": "static",
+      "sha256": "435df0cbeb042ae7256d9266dcdc15d689efa813fc9f9d0d0abaf0866537fa0d",
+      "bytes": 1647810
+    },
+    {
+      "path": "samples/tpl-classic-ivory.webp",
+      "verify": "static",
+      "sha256": "457cbc87b7407b84cc2867c124803e27f52afa20a827f1dd6de7fe962777d2f9",
+      "bytes": 1684901
+    },
+    {
+      "path": "samples/tpl-flower.webp",
+      "verify": "static",
+      "sha256": "1ed906b4eaa076afe2a0f0e2a6e7123cc808003432e509dd1139a6ab27468d9f",
+      "bytes": 1968696
+    },
+    {
+      "path": "samples/tpl-hanok.webp",
+      "verify": "static",
+      "sha256": "b43fbd7513f75fd68335f45bb0cd41a0474dc8289201ffb6a84f6588373f352e",
+      "bytes": 2020829
+    },
+    {
+      "path": "samples/tpl-minimal.webp",
+      "verify": "static",
+      "sha256": "e1964686a21704f0674803eea2a30a3961e2ed7030633a43c76b52843a02c3dc",
+      "bytes": 1496690
+    },
+    {
+      "path": "samples/tpl-signature.png",
+      "verify": "static",
+      "sha256": "72f9f8198097baf6cddce377f58348e4a0e68879c255ea84f3c2cbda1cee5717",
+      "bytes": 2335108
+    },
+    {
+      "path": "api/admin-auth.js",
+      "verify": "server",
+      "sha256": "2551be8e69a1b6de560f263cc85691d725f8406293489a868178bdd53b8b0e91",
+      "bytes": 5141
+    },
+    {
+      "path": "api/admin-data.js",
+      "verify": "server",
+      "sha256": "c7dba81abd13bc6b30ece84a394a383ef880e64700803a4b7be8b86e602693d7",
+      "bytes": 5773
+    },
+    {
+      "path": "api/guest-photo-common.js",
+      "verify": "server",
+      "sha256": "bfc08439ebf65da77bc15fe88ccad7b6a34104f815f616604e38778b6fd77393",
+      "bytes": 12753
+    },
+    {
+      "path": "api/guest-photo-manage.js",
+      "verify": "server",
+      "sha256": "86a20aca3f698a3f5ead5bab69c43732067ba0bca388a278cb1b30f88430304e",
+      "bytes": 5578
+    },
+    {
+      "path": "api/guest-photo.js",
+      "verify": "server",
+      "sha256": "56a94d6be0948ebead954a061db2a7f595ec215ac95388ea212a2570a67bdad3",
+      "bytes": 9531
+    },
+    {
+      "path": "api/owner-center.js",
+      "verify": "server",
+      "sha256": "8d483ea07b3681311642d06346b9ea27e10e5debd016ede0f294bec890f08b64",
+      "bytes": 10457
+    },
+    {
+      "path": "api/release-health.js",
+      "verify": "server",
+      "sha256": "900581e1f3df447f69fdd39b1abdf26caa92936628c901b171046531a78bbbcf",
+      "bytes": 3384
+    },
+    {
+      "path": "api/wedding-share.js",
+      "verify": "server",
+      "sha256": "67b3a0999f2ac76ad2c59fa3ce4404b08a22fe579d3804f2cddb640712f0f080",
+      "bytes": 9200
+    },
+    {
+      "path": "vercel.json",
+      "verify": "config",
+      "sha256": "b7bd20e8b947cbb62ae6788d7728a971011fca583fae65843db1eeec6b3028e2",
+      "bytes": 332
+    }
+  ],
+  "staticIntegrityCount": 14,
+  "serverFunctionCount": 8,
+  "operationsBundle": "V67_PHASE4N_FINAL_FREEZE_20260711.zip",
+  "rollbackBuild": "V67_FULL_REGRESSION_01_20260711",
+  "preflightSql": "V66_PREVIEW_PREFLIGHT_VERIFY.sql",
+  "coverTypographySchema": {
+    "version": 1,
+    "layouts": [
+      "theme-default",
+      "bottom-center"
+    ],
+    "visualDefault": "unchanged",
+    "roles": [
+      "names",
+      "date",
+      "time"
+    ],
+    "editorReferenceWidth": 390,
+    "parityMode": "scaled-preview",
+    "presetScope": "main-cover"
+  },
+  "coverPickerUi": {
+    "version": 1,
+    "step": "theme",
+    "values": [
+      "theme-default",
+      "bottom-center"
+    ],
+    "immediatePreview": true,
+    "draftRestore": true,
+    "savePaths": [
+      "new",
+      "edit-code",
+      "buyer-manage"
+    ],
+    "legacyDefault": "theme-default",
+    "keyboard": [
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowUp",
+      "ArrowDown",
+      "Home",
+      "End"
+    ]
+  },
+  "fontRoleContract": {
+    "version": 1,
+    "legacyFontColumn": "font",
+    "optionPath": "options.typography",
+    "values": [
+      "theme-default",
+      "serif",
+      "gowun-batang",
+      "sans",
+      "premium"
+    ],
+    "roles": [
+      "title",
+      "body",
+      "utility",
+      "intl"
+    ],
+    "visualDefault": "theme-default",
+    "forcedDefaultSave": false,
+    "uiExposed": true,
+    "excluded": [
+      "cover",
+      "utility-controls",
+      "account-number",
+      "intl"
+    ],
+    "savePaths": [
+      "new",
+      "edit-code",
+      "buyer-manage"
+    ]
+  },
+  "typographyPickerUi": {
+    "version": 1,
+    "step": "theme",
+    "roles": [
+      "title",
+      "body"
+    ],
+    "values": [
+      "theme-default",
+      "serif",
+      "gowun-batang",
+      "sans",
+      "premium"
+    ],
+    "defaultValue": "theme-default",
+    "forcedDefaultSave": false,
+    "immediatePreview": true,
+    "draftRestore": true,
+    "scope": {
+      "title": [
+        "section-title",
+        "couple-profile-name",
+        "family-profile-name",
+        "story-title"
+      ],
+      "body": [
+        "main-message",
+        "couple-profile-text",
+        "family-profile-text",
+        "story-text",
+        "venue-info",
+        "guest-guide-text"
+      ]
+    },
+    "excluded": [
+      "cover-typography",
+      "utility-controls",
+      "account-number",
+      "intl"
+    ],
+    "savePaths": [
+      "new",
+      "edit-code",
+      "buyer-manage"
+    ],
+    "keyboard": [
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowUp",
+      "ArrowDown",
+      "Home",
+      "End"
+    ]
+  },
+  "typographyPairValidation": {
+    "version": 1,
+    "titleValues": [
+      "theme-default",
+      "serif",
+      "gowun-batang",
+      "sans",
+      "premium"
+    ],
+    "bodyValues": [
+      "theme-default",
+      "serif",
+      "gowun-batang",
+      "sans",
+      "premium"
+    ],
+    "pairCount": 25,
+    "themes": 8,
+    "languages": [
+      "ko",
+      "en",
+      "ja",
+      "vi",
+      "th"
+    ],
+    "themeDefaultPreviewParity": true,
+    "runtimeVisualChange": "editor-picker-theme-default-sample-only",
+    "cardRenderingChange": false,
+    "saveContractChange": false
+  },
+  "editorUiIntegration": {
+    "version": 1,
+    "step": "theme",
+    "scope": [
+      "cover-layout-picker",
+      "detail-typography-picker",
+      "shared-preset-mobile-spacing"
+    ],
+    "functionalChange": false,
+    "saveContractChange": false,
+    "cardRenderingChange": false,
+    "visualDefault": "unchanged",
+    "mobileWidths": [
+      320,
+      360,
+      390,
+      430
+    ],
+    "typographyColumns": {
+      "max350": 2,
+      "351to520": 3,
+      "desktop": 5
+    },
+    "typographyMobileDescriptions": "hidden",
+    "typographyMobileSummary": "screen-reader-only",
+    "copySimplified": true,
+    "previewProductionSupabase": "unchanged"
+  },
+  "fullRegression": {
+    "version": 1,
+    "functionalChange": false,
+    "runtimeVisualChange": false,
+    "saveContractChange": false,
+    "themes": [
+      "signature",
+      "classic-ivory",
+      "hanok",
+      "black",
+      "fullscreen",
+      "minimal",
+      "flower",
+      "gold-serif"
+    ],
+    "mobileWidths": [
+      320,
+      360,
+      390,
+      430
+    ],
+    "savePaths": [
+      "new",
+      "edit-code",
+      "buyer-manage"
+    ],
+    "languages": [
+      "ko",
+      "en",
+      "ja",
+      "vi",
+      "th"
+    ],
+    "protected": [
+      "content-layout",
+      "cover-typography",
+      "typography-picker",
+      "buyer-auth",
+      "account-copy",
+      "gallery-lightbox",
+      "share-link",
+      "kakao-share",
+      "calendar-ics"
+    ],
+    "previewProductionSupabase": "unchanged"
+  },
+  "preflightSqlIncluded": false,
+  "preflightSqlStatus": "external-reference-only",
+  "finalFreeze": {
+    "version": 1,
+    "status": "internal-final-freeze",
+    "runtimeZip": "V67_PHASE4N_RUNTIME_FINAL_FREEZE_20260711.zip",
+    "operationsBundle": "V67_PHASE4N_FINAL_FREEZE_20260711.zip",
+    "immediateRollback": "V67_PHASE4M_RUNTIME_FULL_REGRESSION_20260711.zip",
+    "lastFunctionalRollback": "V67_PHASE4L_RUNTIME_EDITOR_UI_INTEGRATION_20260711.zip",
+    "frozenBaselineV66": {
+      "file": "V66_PREVIEW_DEPLOY_RUNTIME_20260710.zip",
+      "sha256": "9c262aa6f04ac606728152528ce5a1f9cf5e86965f198984de9db6a768f51d85",
+      "included": false,
+      "reason": "original archive was not present in the active workspace; hash reference preserved without reconstruction"
+    },
+    "runtimeFileCount": 25,
+    "functionalChangeFromPhase4M": false,
+    "buildMarkerNormalization": true,
+    "previewProductionSupabase": "unchanged",
+    "externalValidationPending": [
+      "Preview upload",
+      "Production upload",
+      "live Supabase deep health",
+      "Google Fonts CDN",
+      "Kakao in-app browser",
+      "Android real device",
+      "iPhone real device"
+    ]
+  },
+  "baseBuild": "V68_ACCOUNT_ENVELOPE_THEME_STYLES_01_20260711",
+  "accountEnvelopeIntegration": {
+    "version": 2,
+    "optionPath": "options.account_display",
+    "values": [
+      "simple",
+      "envelope"
+    ],
+    "newCardDefault": "envelope",
+    "legacyCardDefault": "simple",
+    "editorPicker": true,
+    "editorPreview": true,
+    "publicCard": true,
+    "accountRowsPreserved": 4,
+    "accountCopyPreserved": true,
+    "savePaths": [
+      "new",
+      "edit-code",
+      "buyer-manage"
+    ],
+    "prototypeThemeStyles": [],
+    "fallbackThemeStyles": [],
+    "reducedMotion": true,
+    "previewProductionSupabase": "unchanged",
+    "completedThemeStyles": [
+      "signature",
+      "classic-ivory",
+      "hanok",
+      "black",
+      "fullscreen",
+      "minimal",
+      "flower",
+      "gold-serif"
+    ],
+    "themeStyleCompletion": true,
+    "functionalContractChange": false,
+    "saveContractChange": false
+  },
+  "externalValidationPending": [
+    "Preview upload",
+    "Production upload",
+    "Kakao in-app browser",
+    "Android real device",
+    "iPhone real device"
+  ],
+  "feature": "premium-account-envelope",
+  "deploymentStatus": "not-deployed",
+  "previewProductionSupabaseChanged": false,
+  "finalFixes": [
+    "account-envelope-secondary-language-bilingual-copy"
+  ]
+}

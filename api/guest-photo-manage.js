@@ -2,6 +2,14 @@
 
 const C=require('./guest-photo-common.js');
 
+function validId(value){
+  const id=String(value||'').trim();
+  return /^[0-9a-f-]{36}$/i.test(id)?id:'';
+}
+function validOperation(value){
+  const action=String(value||'');
+  return ['approve','hide','delete','reject'].includes(action)?action:'';
+}
 async function signedRows(rows){
   const viewable=rows.filter(r=>r.status!=='rejected'&&r.storage_path);
   const signed=await C.createSignedViews(viewable.map(r=>r.storage_path),15*60);
@@ -11,45 +19,73 @@ async function signedRows(rows){
     sizeBytes:Number(r.size_bytes||0),mimeType:r.mime_type||'',url:byPath.get(r.storage_path)||''
   }));
 }
-async function authenticate(body){
-  return C.verifyOwner(body.slug,body.editCode,body.manageToken);
-}
+async function authenticate(body){return C.verifyOwner(body.slug,body.editCode,body.manageToken);}
 async function list(owner,res){
   await C.cleanupRejected(owner.id).catch(error=>console.warn('guest-photo rejected cleanup skipped',error&&error.message));
-  const rows=await C.listUploads(owner.id,['pending','approved']);
+  const rows=await C.listUploads(owner.id,['pending','approved','hidden']);
   return C.json(res,200,{ok:true,items:await signedRows(rows)});
 }
-async function mutate(owner,body,res){
-  const id=String(body.id||'');
-  if(!/^[0-9a-f-]{36}$/i.test(id))return C.json(res,400,{ok:false,error:'사진 정보를 확인해 주세요.'});
-  const row=await C.getUploadById(id);
-  if(!row||row.card_id!==owner.id)return C.json(res,404,{ok:false,error:'사진을 찾을 수 없습니다.'});
-  const action=String(body.action||'');
-  if(action==='approve'){
-    if(!['pending','approved'].includes(row.status))return C.json(res,409,{ok:false,error:'승인할 수 없는 사진입니다.'});
-    const info=await C.waitForStorageObject(row.storage_path,2);
-    if(!info)return C.json(res,409,{ok:false,error:'사진 파일을 확인할 수 없어 승인하지 못했습니다.'});
-    await C.updateUpload(id,{status:'approved',reviewed_at:C.nowIso(),upload_secret_hash:null,expires_at:null,purge_after:null});
-    return C.json(res,200,{ok:true,status:'approved'});
-  }
-  if(action==='reject'||action==='delete'){
-    /* 먼저 공개 대상에서 숨긴 뒤 Storage와 행을 제거한다.
-       Storage 장애가 생겨도 승인 사진이 계속 노출되지 않으며, 다음 API 호출에서 cleanupRejected가 재시도한다. */
-    const purgeNow=new Date(Date.now()-1000).toISOString();
-    await C.updateUpload(id,{status:'rejected',reviewed_at:C.nowIso(),purge_after:purgeNow,upload_secret_hash:null,expires_at:null});
-    let cleanupPending=false;
-    try{
-      if(row.storage_path)await C.removeStorage([row.storage_path]);
-      await C.deleteUploadRow(id);
-    }catch(error){
-      cleanupPending=true;
-      console.warn('guest-photo purge deferred',id,error&&error.message);
-    }
-    return C.json(res,200,{ok:true,status:action==='delete'?'deleted':'rejected',cleanupPending});
-  }
-  return C.json(res,400,{ok:false,error:'지원하지 않는 관리 요청입니다.'});
+async function getOwnedUpload(owner,id){
+  const safe=validId(id);if(!safe)return null;
+  const row=await C.getUploadById(safe);
+  return row&&row.card_id===owner.id?row:null;
 }
-
+async function purgeUpload(row){
+  const purgeNow=new Date(Date.now()-1000).toISOString();
+  await C.updateUpload(row.id,{status:'rejected',reviewed_at:C.nowIso(),purge_after:purgeNow,upload_secret_hash:null,expires_at:null});
+  let cleanupPending=false;
+  try{
+    if(row.storage_path)await C.removeStorage([row.storage_path]);
+    await C.deleteUploadRow(row.id);
+  }catch(error){
+    cleanupPending=true;
+    console.warn('guest-photo purge deferred',row.id,error&&error.message);
+  }
+  return {status:'deleted',cleanupPending};
+}
+async function mutateOne(owner,operation,id){
+  const row=await getOwnedUpload(owner,id);
+  if(!row){const error=new Error('사진을 찾을 수 없습니다.');error.status=404;throw error;}
+  if(operation==='approve'){
+    if(!['pending','approved','hidden'].includes(row.status)){const error=new Error('공개할 수 없는 사진입니다.');error.status=409;throw error;}
+    const info=await C.waitForStorageObject(row.storage_path,2);
+    if(!info){const error=new Error('사진 파일을 확인할 수 없어 공개하지 못했습니다.');error.status=409;throw error;}
+    await C.updateUpload(row.id,{status:'approved',reviewed_at:C.nowIso(),upload_secret_hash:null,expires_at:null,purge_after:null});
+    return {status:'approved'};
+  }
+  if(operation==='hide'){
+    if(!['approved','hidden'].includes(row.status)){const error=new Error('공개 중인 사진만 숨길 수 있습니다.');error.status=409;throw error;}
+    await C.updateUpload(row.id,{status:'hidden',reviewed_at:C.nowIso(),upload_secret_hash:null,expires_at:null,purge_after:null});
+    return {status:'hidden'};
+  }
+  if(operation==='delete'||operation==='reject')return purgeUpload(row);
+  const error=new Error('지원하지 않는 관리 요청입니다.');error.status=400;throw error;
+}
+async function mutate(owner,body,res){
+  const operation=validOperation(body.action);
+  const id=validId(body.id);
+  if(!operation)return C.json(res,400,{ok:false,error:'지원하지 않는 관리 요청입니다.'});
+  if(!id)return C.json(res,400,{ok:false,error:'사진 정보를 확인해 주세요.'});
+  try{
+    const result=await mutateOne(owner,operation,id);
+    return C.json(res,200,{ok:true,...result});
+  }catch(error){
+    return C.json(res,error&&error.status||500,{ok:false,error:error&&error.message||'사진을 처리하지 못했습니다.'});
+  }
+}
+async function batch(owner,body,res){
+  const operation=validOperation(body.operation);
+  const ids=[...new Set((Array.isArray(body.ids)?body.ids:[]).map(validId).filter(Boolean))];
+  if(!operation||operation==='reject')return C.json(res,400,{ok:false,error:'일괄 처리 종류를 확인해 주세요.'});
+  if(!ids.length||ids.length>50)return C.json(res,400,{ok:false,error:'처리할 사진을 1장 이상 50장 이하로 선택해 주세요.'});
+  const results=[];
+  for(const id of ids){
+    try{results.push({id,ok:true,...await mutateOne(owner,operation,id)});}
+    catch(error){results.push({id,ok:false,error:error&&error.message||'처리 실패'});}
+  }
+  const processed=results.filter(x=>x.ok).length,failed=results.length-processed;
+  return C.json(res,200,{ok:true,operation,processed,failed,results});
+}
 async function handler(req,res){
   C.securityHeaders(res);
   if(String(req.method||'').toUpperCase()!=='POST'){
@@ -59,7 +95,9 @@ async function handler(req,res){
   try{
     const body=C.parseBody(req),owner=await authenticate(body);
     if(!owner)return C.json(res,401,{ok:false,error:'청첩장 수정 권한을 다시 확인해 주세요.'});
-    if(String(body.action||'')==='list')return await list(owner,res);
+    const action=String(body.action||'');
+    if(action==='list')return await list(owner,res);
+    if(action==='batch')return await batch(owner,body,res);
     return await mutate(owner,body,res);
   }catch(error){
     console.error('guest-photo-manage error',error);
@@ -68,4 +106,4 @@ async function handler(req,res){
 }
 
 module.exports=handler;
-module.exports._test={signedRows,mutate};
+module.exports._test={validId,validOperation,signedRows,mutateOne,mutate,batch};

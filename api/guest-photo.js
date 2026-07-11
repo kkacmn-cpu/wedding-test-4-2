@@ -88,7 +88,7 @@ async function complete(body,res){
   const secretHash=C.sha256(secret);
   /* complete 응답 직후 네트워크가 끊기면 클라이언트는 같은 요청을 다시 보낸다.
      pending/approved 상태를 성공으로 돌려 중복 접수·가짜 실패를 막는다. */
-  if(row.status==='pending'||row.status==='approved'){
+  if(row.status==='pending'||row.status==='approved'||row.status==='hidden'){
     if(row.upload_secret_hash&&!C.hashEquals(row.upload_secret_hash,secretHash))return C.json(res,403,{ok:false,error:'업로드 권한을 확인할 수 없습니다.'});
     return C.json(res,200,{ok:true,status:row.status,alreadyCompleted:true});
   }
@@ -122,7 +122,7 @@ async function cancel(body,res){
   if(!/^[0-9a-f-]{36}$/i.test(id)||secret.length<20)return C.json(res,400,{ok:false,error:'업로드 정보를 확인해 주세요.'});
   const row=await C.getUploadById(id);
   if(!row)return C.json(res,200,{ok:true,status:'cancelled'});
-  if(row.status==='pending'||row.status==='approved')return C.json(res,200,{ok:true,status:row.status,alreadyCompleted:true});
+  if(row.status==='pending'||row.status==='approved'||row.status==='hidden')return C.json(res,200,{ok:true,status:row.status,alreadyCompleted:true});
   if(row.status==='rejected')return C.json(res,200,{ok:true,status:'cancelled'});
   if(row.status!=='uploading')return C.json(res,409,{ok:false,error:'이미 처리된 업로드 요청입니다.'});
   if(!C.hashEquals(row.upload_secret_hash,C.sha256(secret)))return C.json(res,403,{ok:false,error:'업로드 권한을 확인할 수 없습니다.'});

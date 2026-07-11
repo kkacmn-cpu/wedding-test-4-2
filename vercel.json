@@ -11,6 +11,9 @@
     },
     "api/owner-center.js": {
       "maxDuration": 10
+    },
+    "api/release-health.js": {
+      "maxDuration": 10
     }
   }
 }
