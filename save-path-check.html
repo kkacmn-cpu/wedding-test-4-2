@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="app-build" content="V70_PREMIUM_REDESIGN_20260713"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>저장 경로 통합 검수</title>
+<style>
+:root{--bg:#f6f2eb;--card:#fff;--text:#302820;--muted:#807266;--line:#e7ddd0;--ok:#2f7d54;--bad:#b3413c;--warn:#987236;--ink:#302820}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif;color:var(--text)}
+main{max-width:840px;margin:0 auto;padding:24px 14px 72px}h1{font-size:25px;margin:0 0 8px}.lead{margin:0 0 18px;color:var(--muted);line-height:1.65}
+.top{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}a.btn,button{display:flex;align-items:center;justify-content:center;text-decoration:none;border:0;border-radius:13px;padding:13px 14px;font-size:14px;font-weight:750;cursor:pointer}
+.btn-dark{background:var(--ink);color:#fff}.btn-soft{background:#ece4da;color:var(--text)}.btn-outline{background:#fff;color:var(--text);border:1px solid var(--line)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 9px 28px rgba(48,40,32,.05)}
+.card h2{font-size:18px;margin:0 0 5px}.desc{color:var(--muted);font-size:13px;line-height:1.55;margin:0 0 12px}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}label{font-size:12px;color:var(--muted)}input{width:100%;margin-top:5px;padding:11px 12px;border:1px solid var(--line);border-radius:11px;font-size:14px;background:#fff}
+.checks{margin-top:13px;border-top:1px solid #f0e9df}.check{display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-bottom:1px solid #f0e9df;font-size:14px;line-height:1.45}
+.check input{width:18px;height:18px;margin:1px 0 0;accent-color:var(--ok)}.actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:13px}
+.status{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800;background:#eee;margin-left:6px}.status.ok{background:#e5f3eb;color:var(--ok)}.status.wait{background:#f4ecdf;color:var(--warn)}
+.summary{font-weight:800;font-size:18px;margin:4px 0 0}.small{font-size:12px;color:var(--muted);line-height:1.55}.result{width:100%;min-height:100px;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:12px;resize:vertical}
+@media(max-width:600px){.field-grid,.top{grid-template-columns:1fr}.actions{grid-template-columns:1fr}main{padding-top:18px}}
+</style>
+</head>
+<body><main>
+<h1>저장 경로 통합 검수</h1>
+<p class="lead">신규 발행, 수정번호 수정, 구매자 인증 수정의 세 경로를 같은 순서로 확인합니다. 이 화면은 검수 진행 상태만 이 기기에 저장하며 수정번호나 관리 토큰은 보고서에 포함하지 않습니다.</p>
+<div class="top">
+  <a class="btn btn-dark" href="system-check.html">① 배포 상태 먼저 확인</a>
+  <a class="btn btn-soft" href="editor.html">새 청첩장 만들기 열기</a>
+</div>
+<section class="card">
+  <div><b>검수 기준</b><span id="overall" class="status wait">0 / 3 완료</span></div>
+  <p class="summary" id="summary">세 경로 모두 실제 서버 재조회 완료가 보여야 통과입니다.</p>
+  <p class="small">각 경로에서 테스트 문구를 하나 바꾸고 저장 → 완료창의 서버 재확인 문구 → 공개 청첩장의 실제 반영까지 확인합니다.</p>
+</section>
+<div id="scenarios"></div>
+<section class="card">
+  <h2>검수 결과 전달</h2>
+  <p class="desc">완료 상태와 실패 메모만 복사합니다. 입력한 수정번호는 자동으로 제외됩니다.</p>
+  <textarea id="report" class="result" readonly></textarea>
+  <div class="actions"><button class="btn-dark" id="copyReport">보고서 복사</button><button class="btn-outline" id="resetAll">전체 초기화</button><a class="btn btn-soft" href="qa-center.html">오류 접수센터</a></div>
+</section>
+<script>
+const BUILD="V70_PREMIUM_REDESIGN_20260713";
+const KEY='wedding:v66-save-path-check';
+const defs=[
+ {id:'new',title:'1. 신규 발행',desc:'주문 인증 후 새 청첩장을 발행하고 신규 수정번호로 서버 재조회되는지 확인합니다.',open:'editor.html',marker:'예식장명 끝에 V67-3C-NEW 추가'},
+ {id:'edit',title:'2. 수정번호로 수정',desc:'발행 완료창의 관리 링크 또는 수정번호로 다시 들어가 저장합니다.',open:'',marker:'인사말 끝에 V67-3C-EDIT 추가'},
+ {id:'buyer',title:'3. 구매자 인증으로 수정',desc:'내 청첩장 수정에서 구매자 인증 후 같은 청첩장을 불러와 저장합니다.',open:'editor.html?buyerManage=1',marker:'예식장 홀 이름 끝에 V67-3C-BUYER 추가'}
+];
+const stepLabels=['버튼 한 번에 반응','저장 중 상태 표시','완료창 표시','서버 저장 후 재조회 확인','공개 청첩장에 변경 내용 반영'];
+let state={};
+try{state=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){state={};}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function ensure(id){if(!state[id])state[id]={checks:[false,false,false,false,false],note:'',slug:'',editCode:''};return state[id];}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));renderSummary();renderReport();}
+function scenarioHtml(d){
+ const s=ensure(d.id);
+ return `<section class="card" data-id="${d.id}"><h2>${d.title} <span class="status ${s.checks.every(Boolean)?'ok':'wait'}">${s.checks.filter(Boolean).length}/5</span></h2>
+ <p class="desc">${d.desc}<br><b>변경 문구:</b> ${d.marker}</p>
+ <div class="field-grid">
+   <label>청첩장 slug<input data-field="slug" value="${esc(s.slug)}" placeholder="예: 김민준-이서연-abcd"></label>
+   <label>수정번호(이 기기에만 저장)<input data-field="editCode" value="${esc(s.editCode)}" inputmode="numeric" placeholder="신규/수정번호 경로만"></label>
+ </div>
+ <div class="checks">${stepLabels.map((x,i)=>`<label class="check"><input type="checkbox" data-check="${i}" ${s.checks[i]?'checked':''}><span>${x}</span></label>`).join('')}</div>
+ <label>문제 메모<input data-field="note" value="${esc(s.note)}" placeholder="정상이면 비워두기"></label>
+ <div class="actions">
+  <button class="btn-dark" data-open="editor">이 경로 열기</button>
+  <button class="btn-outline" data-open="card">공개 청첩장 열기</button>
+  <button class="btn-soft" data-complete="1">전체 통과 표시</button>
+ </div></section>`;
+}
+function buildEditorUrl(d,s){
+ if(d.id==='new')return 'editor.html';
+ if(d.id==='edit'&&s.slug&&s.editCode)return `editor.html?slug=${encodeURIComponent(s.slug)}&editCode=${encodeURIComponent(s.editCode)}`;
+ if(d.id==='buyer'&&s.slug)return `editor.html?slug=${encodeURIComponent(s.slug)}&buyerManage=1`;
+ return d.open||'editor.html';
+}
+function render(){
+ document.getElementById('scenarios').innerHTML=defs.map(scenarioHtml).join('');
+ document.querySelectorAll('[data-id]').forEach(card=>{
+  const id=card.dataset.id,s=ensure(id),d=defs.find(x=>x.id===id);
+  card.querySelectorAll('[data-field]').forEach(el=>el.addEventListener('input',()=>{s[el.dataset.field]=el.value;save();}));
+  card.querySelectorAll('[data-check]').forEach(el=>el.addEventListener('change',()=>{s.checks[Number(el.dataset.check)]=el.checked;save();render();}));
+  card.querySelector('[data-complete]').addEventListener('click',()=>{s.checks=s.checks.map(()=>true);save();render();});
+  card.querySelector('[data-open="editor"]').addEventListener('click',()=>location.href=buildEditorUrl(d,s));
+  card.querySelector('[data-open="card"]').addEventListener('click',()=>{if(!s.slug)return alert('slug를 먼저 입력해 주세요.');location.href=`card.html?slug=${encodeURIComponent(s.slug)}`;});
+ });
+ renderSummary();renderReport();
+}
+function renderSummary(){
+ const done=defs.filter(d=>ensure(d.id).checks.every(Boolean)).length;
+ const el=document.getElementById('overall');el.textContent=`${done} / 3 완료`;el.className='status '+(done===3?'ok':'wait');
+ document.getElementById('summary').textContent=done===3?'세 저장 경로가 모두 통과했습니다.':'세 경로 모두 실제 서버 반영까지 확인해야 합니다.';
+}
+function renderReport(){
+ const lines=[`[V67-3C 저장 경로 검수]`,`빌드: ${BUILD}`,`일시: ${new Date().toLocaleString('ko-KR')}`,''];
+ defs.forEach((d,i)=>{const s=ensure(d.id),ok=s.checks.every(Boolean);lines.push(`${i+1}. ${d.title.replace(/^\d+\.\s*/, '')}: ${ok?'통과':'미완료'}`);lines.push(`- slug: ${s.slug||'미입력'}`);stepLabels.forEach((x,j)=>lines.push(`- ${x}: ${s.checks[j]?'정상':'미확인'}`));if(s.note)lines.push(`- 메모: ${s.note}`);lines.push('');});
+ document.getElementById('report').value=lines.join('\n');
+}
+document.getElementById('copyReport').addEventListener('click',async()=>{const t=document.getElementById('report').value;try{await navigator.clipboard.writeText(t);alert('검수 보고서를 복사했습니다.');}catch(e){document.getElementById('report').select();document.execCommand('copy');alert('검수 보고서를 복사했습니다.');}});
+document.getElementById('resetAll').addEventListener('click',()=>{if(!confirm('저장 경로 검수 기록을 모두 초기화할까요?'))return;state={};save();render();});
+render();
+</script></body></html>

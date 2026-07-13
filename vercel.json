@@ -1,7 +1,18 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "api/wedding-share.js": {
+      "maxDuration": 10
+    },
+    "api/guest-photo.js": {
+      "maxDuration": 10
+    },
+    "api/guest-photo-manage.js": {
+      "maxDuration": 10
+    },
+    "api/owner-center.js": {
+      "maxDuration": 10
+    },
+    "api/release-health.js": {
       "maxDuration": 10
     }
   }

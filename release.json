@@ -1,0 +1,555 @@
+{
+    "build":  "V70_PREMIUM_REDESIGN_20260713",
+    "createdAt":  "2026-07-13",
+    "releaseType":  "v70-premium-redesign-integrity-candidate",
+    "files":  [
+                  {
+                      "path":  "admin.html",
+                      "verify":  "static",
+                      "sha256":  "9e8cb1bc69e310ea330ff0c09990328a114f135540b56d2386e367f207474ddd",
+                      "bytes":  13682
+                  },
+                  {
+                      "path":  "api\\admin-auth.js",
+                      "verify":  "server",
+                      "sha256":  "5c26ae39786a49e269ddcc9e9aa9240c4857b37c8331a3a5989b2daaaf6c100c",
+                      "bytes":  5376
+                  },
+                  {
+                      "path":  "api\\admin-data.js",
+                      "verify":  "server",
+                      "sha256":  "a7af0d094d7a6c340e7705ab5eafeb5ee188d3da7f5b2e2ccca11022a58c3cab",
+                      "bytes":  5932
+                  },
+                  {
+                      "path":  "api\\guest-photo.js",
+                      "verify":  "server",
+                      "sha256":  "321bef3186dd5a0511cf50f411218a8a75ac4ccc273bbe3d552e076bd055729a",
+                      "bytes":  9690
+                  },
+                  {
+                      "path":  "api\\guest-photo-common.js",
+                      "verify":  "server",
+                      "sha256":  "38defed6eea0dae8756a861a05383a8e7342880d2049c440c3cefff769da90cb",
+                      "bytes":  13046
+                  },
+                  {
+                      "path":  "api\\guest-photo-manage.js",
+                      "verify":  "server",
+                      "sha256":  "fb8448b53a6bb87ebe4f5dfd643d115884c3619d566de65ecb3d9edd50334775",
+                      "bytes":  5687
+                  },
+                  {
+                      "path":  "api\\owner-center.js",
+                      "verify":  "server",
+                      "sha256":  "d9d942f6bf8344e1f46bcf90b86f2e2bb3125b37a47011099b904ac4c2495eb0",
+                      "bytes":  10687
+                  },
+                  {
+                      "path":  "api\\release-health.js",
+                      "verify":  "server",
+                      "sha256":  "e646079b84a68ea45f0931728c730213830d75e933b29d858e46f637c9508746",
+                      "bytes":  3542
+                  },
+                  {
+                      "path":  "api\\wedding-share.js",
+                      "verify":  "server",
+                      "sha256":  "d0a9b12f3cc31c63daaa5c60d0996b122703e4aef10d548d6ebd51f561f402d4",
+                      "bytes":  9806
+                  },
+                  {
+                      "path":  "card.html",
+                      "verify":  "static",
+                      "sha256":  "6f5329d9ef9404126ce78829e9b11878895d370ba5b36a2d27f4a8307d716f6e",
+                      "bytes":  556035
+                  },
+                  {
+                      "path":  "editor.html",
+                      "verify":  "static",
+                      "sha256":  "e2d366c9ffcbc80c1ae98ce1f97d11b092fb4f384b2c8f7764210100b96a9886",
+                      "bytes":  909305
+                  },
+                  {
+                      "path":  "index.html",
+                      "verify":  "static",
+                      "sha256":  "9f62c0b25b4566ee5b3fa7e39e0f8ba87690aef3b5bca20858048cff385a4890",
+                      "bytes":  538
+                  },
+                  {
+                      "path":  "music\\README.txt",
+                      "verify":  "static",
+                      "sha256":  "fb6b5e3b177290ea38dc677c18c5fd2e27d1f370f5fca33c20bd2b296f190f33",
+                      "bytes":  814
+                  },
+                  {
+                      "path":  "og-default.jpg",
+                      "verify":  "static",
+                      "sha256":  "2a6d16618f98ca4aaf0f01826509359dafa9f6459659ebf3febd2409a6cea7e0",
+                      "bytes":  115688
+                  },
+                  {
+                      "path":  "qa-center.html",
+                      "verify":  "static",
+                      "sha256":  "51ef88322b7adc823a1c2fb75d0a9190cbc84bf26b0aad017f5ada4e07ed4e2b",
+                      "bytes":  31361
+                  },
+                  {
+                      "path":  "qa-covers\\black.html",
+                      "verify":  "static",
+                      "sha256":  "92094e781270b85dcdfd633a64dcb7c25bf9b6562c436a87a876055eecde6cd6",
+                      "bytes":  326918
+                  },
+                  {
+                      "path":  "qa-covers\\classic-ivory.html",
+                      "verify":  "static",
+                      "sha256":  "ba418ee6dd87cd782022229de79408bd60a3adc13317ebd1725d3b6d84312398",
+                      "bytes":  326927
+                  },
+                  {
+                      "path":  "qa-covers\\flower.html",
+                      "verify":  "static",
+                      "sha256":  "927a8917bbe4dc864fb822b3230fd69756e0ca98da86b486ba7abad411632d14",
+                      "bytes":  326970
+                  },
+                  {
+                      "path":  "qa-covers\\fullscreen.html",
+                      "verify":  "static",
+                      "sha256":  "0dc6170357d2edd3e67c841350d6eeda875a0390023b1c21077210d4dfcf93c9",
+                      "bytes":  326970
+                  },
+                  {
+                      "path":  "qa-covers\\gold-serif.html",
+                      "verify":  "static",
+                      "sha256":  "3c46ac8b39be2f1f32aeb5fba06505c9a14534a903594f21da67f35a83a8a0aa",
+                      "bytes":  326985
+                  },
+                  {
+                      "path":  "qa-covers\\hanok.html",
+                      "verify":  "static",
+                      "sha256":  "99377b0830c3cac944ac101aeea6be7a512113f806831c8414d5fc68ad9244f8",
+                      "bytes":  326896
+                  },
+                  {
+                      "path":  "qa-covers\\minimal.html",
+                      "verify":  "static",
+                      "sha256":  "96a0e6c287599520543e24d1e14343bb0a6241d286051705d8d7d8a92842dccc",
+                      "bytes":  327059
+                  },
+                  {
+                      "path":  "qa-covers\\signature.html",
+                      "verify":  "static",
+                      "sha256":  "9c727bbd3323e430a7fc57db2d3bd105d430cb2b9445687a6d955bfffa0b8ff8",
+                      "bytes":  326841
+                  },
+                  {
+                      "path":  "samples\\tpl-black.webp",
+                      "verify":  "static",
+                      "sha256":  "435df0cbeb042ae7256d9266dcdc15d689efa813fc9f9d0d0abaf0866537fa0d",
+                      "bytes":  1647810
+                  },
+                  {
+                      "path":  "samples\\tpl-classic-ivory.webp",
+                      "verify":  "static",
+                      "sha256":  "457cbc87b7407b84cc2867c124803e27f52afa20a827f1dd6de7fe962777d2f9",
+                      "bytes":  1684901
+                  },
+                  {
+                      "path":  "samples\\tpl-flower.webp",
+                      "verify":  "static",
+                      "sha256":  "1ed906b4eaa076afe2a0f0e2a6e7123cc808003432e509dd1139a6ab27468d9f",
+                      "bytes":  1968696
+                  },
+                  {
+                      "path":  "samples\\tpl-hanok.webp",
+                      "verify":  "static",
+                      "sha256":  "b43fbd7513f75fd68335f45bb0cd41a0474dc8289201ffb6a84f6588373f352e",
+                      "bytes":  2020829
+                  },
+                  {
+                      "path":  "samples\\tpl-minimal.webp",
+                      "verify":  "static",
+                      "sha256":  "e1964686a21704f0674803eea2a30a3961e2ed7030633a43c76b52843a02c3dc",
+                      "bytes":  1496690
+                  },
+                  {
+                      "path":  "samples\\tpl-signature.png",
+                      "verify":  "static",
+                      "sha256":  "72f9f8198097baf6cddce377f58348e4a0e68879c255ea84f3c2cbda1cee5717",
+                      "bytes":  2335108
+                  },
+                  {
+                      "path":  "save-path-check.html",
+                      "verify":  "static",
+                      "sha256":  "199ad9730fa62871c101a93ddcbacfcb4eb541dad15269083d6f98927f56c5be",
+                      "bytes":  9579
+                  },
+                  {
+                      "path":  "system-check.html",
+                      "verify":  "static",
+                      "sha256":  "f8adb23ae165979bde01a4419d17c1ca98ff93fc7cfd04a312df6e0371bb072f",
+                      "bytes":  7072
+                  },
+                  {
+                      "path":  "v70-design.css",
+                      "verify":  "static",
+                      "sha256":  "e8c085929eb3e8ab73af506127003605494f0e029e42a44dab0e852228316dda",
+                      "bytes":  145739
+                  },
+                  {
+                      "path":  "vercel.json",
+                      "verify":  "config",
+                      "sha256":  "25e16c57f4f6bd68a1841843e2a458f4e4b3eee8dc198c287b18082ce18586a4",
+                      "bytes":  351
+                  }
+              ],
+    "staticIntegrityCount":  24,
+    "serverFunctionCount":  8,
+    "operationsBundle":  "V67_PHASE4N_FINAL_FREEZE_20260711.zip",
+    "rollbackBuild":  "V67_FULL_REGRESSION_01_20260711",
+    "preflightSql":  "V66_PREVIEW_PREFLIGHT_VERIFY.sql",
+    "coverTypographySchema":  {
+                                  "version":  1,
+                                  "layouts":  [
+                                                  "theme-default",
+                                                  "bottom-center"
+                                              ],
+                                  "visualDefault":  "unchanged",
+                                  "roles":  [
+                                                "names",
+                                                "date",
+                                                "time"
+                                            ],
+                                  "editorReferenceWidth":  390,
+                                  "parityMode":  "scaled-preview",
+                                  "presetScope":  "main-cover"
+                              },
+    "coverPickerUi":  {
+                          "version":  1,
+                          "step":  "theme",
+                          "values":  [
+                                         "theme-default",
+                                         "bottom-center"
+                                     ],
+                          "immediatePreview":  true,
+                          "draftRestore":  true,
+                          "savePaths":  [
+                                            "new",
+                                            "edit-code",
+                                            "buyer-manage"
+                                        ],
+                          "legacyDefault":  "theme-default",
+                          "keyboard":  [
+                                           "ArrowLeft",
+                                           "ArrowRight",
+                                           "ArrowUp",
+                                           "ArrowDown",
+                                           "Home",
+                                           "End"
+                                       ]
+                      },
+    "fontRoleContract":  {
+                             "version":  1,
+                             "legacyFontColumn":  "font",
+                             "optionPath":  "options.typography",
+                             "values":  [
+                                            "theme-default",
+                                            "serif",
+                                            "gowun-batang",
+                                            "sans",
+                                            "premium"
+                                        ],
+                             "roles":  [
+                                           "title",
+                                           "body",
+                                           "utility",
+                                           "intl"
+                                       ],
+                             "visualDefault":  "theme-default",
+                             "forcedDefaultSave":  false,
+                             "uiExposed":  true,
+                             "excluded":  [
+                                              "cover",
+                                              "utility-controls",
+                                              "account-number",
+                                              "intl"
+                                          ],
+                             "savePaths":  [
+                                               "new",
+                                               "edit-code",
+                                               "buyer-manage"
+                                           ]
+                         },
+    "typographyPickerUi":  {
+                               "version":  1,
+                               "step":  "theme",
+                               "roles":  [
+                                             "title",
+                                             "body"
+                                         ],
+                               "values":  [
+                                              "theme-default",
+                                              "serif",
+                                              "gowun-batang",
+                                              "sans",
+                                              "premium"
+                                          ],
+                               "defaultValue":  "theme-default",
+                               "forcedDefaultSave":  false,
+                               "immediatePreview":  true,
+                               "draftRestore":  true,
+                               "scope":  {
+                                             "title":  [
+                                                           "section-title",
+                                                           "couple-profile-name",
+                                                           "family-profile-name",
+                                                           "story-title"
+                                                       ],
+                                             "body":  [
+                                                          "main-message",
+                                                          "couple-profile-text",
+                                                          "family-profile-text",
+                                                          "story-text",
+                                                          "venue-info",
+                                                          "guest-guide-text"
+                                                      ]
+                                         },
+                               "excluded":  [
+                                                "cover-typography",
+                                                "utility-controls",
+                                                "account-number",
+                                                "intl"
+                                            ],
+                               "savePaths":  [
+                                                 "new",
+                                                 "edit-code",
+                                                 "buyer-manage"
+                                             ],
+                               "keyboard":  [
+                                                "ArrowLeft",
+                                                "ArrowRight",
+                                                "ArrowUp",
+                                                "ArrowDown",
+                                                "Home",
+                                                "End"
+                                            ]
+                           },
+    "typographyPairValidation":  {
+                                     "version":  1,
+                                     "titleValues":  [
+                                                         "theme-default",
+                                                         "serif",
+                                                         "gowun-batang",
+                                                         "sans",
+                                                         "premium"
+                                                     ],
+                                     "bodyValues":  [
+                                                        "theme-default",
+                                                        "serif",
+                                                        "gowun-batang",
+                                                        "sans",
+                                                        "premium"
+                                                    ],
+                                     "pairCount":  25,
+                                     "themes":  8,
+                                     "languages":  [
+                                                       "ko",
+                                                       "en",
+                                                       "ja",
+                                                       "vi",
+                                                       "th"
+                                                   ],
+                                     "themeDefaultPreviewParity":  true,
+                                     "runtimeVisualChange":  "editor-picker-theme-default-sample-only",
+                                     "cardRenderingChange":  false,
+                                     "saveContractChange":  false
+                                 },
+    "editorUiIntegration":  {
+                                "version":  1,
+                                "step":  "theme",
+                                "scope":  [
+                                              "cover-layout-picker",
+                                              "detail-typography-picker",
+                                              "shared-preset-mobile-spacing"
+                                          ],
+                                "functionalChange":  false,
+                                "saveContractChange":  false,
+                                "cardRenderingChange":  false,
+                                "visualDefault":  "unchanged",
+                                "mobileWidths":  [
+                                                     320,
+                                                     360,
+                                                     390,
+                                                     430
+                                                 ],
+                                "typographyColumns":  {
+                                                          "max350":  2,
+                                                          "351to520":  3,
+                                                          "desktop":  5
+                                                      },
+                                "typographyMobileDescriptions":  "hidden",
+                                "typographyMobileSummary":  "screen-reader-only",
+                                "copySimplified":  true,
+                                "previewProductionSupabase":  "unchanged"
+                            },
+    "fullRegression":  {
+                           "version":  1,
+                           "functionalChange":  false,
+                           "runtimeVisualChange":  false,
+                           "saveContractChange":  false,
+                           "themes":  [
+                                          "signature",
+                                          "classic-ivory",
+                                          "hanok",
+                                          "black",
+                                          "fullscreen",
+                                          "minimal",
+                                          "flower",
+                                          "gold-serif"
+                                      ],
+                           "mobileWidths":  [
+                                                320,
+                                                360,
+                                                390,
+                                                430
+                                            ],
+                           "savePaths":  [
+                                             "new",
+                                             "edit-code",
+                                             "buyer-manage"
+                                         ],
+                           "languages":  [
+                                             "ko",
+                                             "en",
+                                             "ja",
+                                             "vi",
+                                             "th"
+                                         ],
+                           "protected":  [
+                                             "content-layout",
+                                             "cover-typography",
+                                             "typography-picker",
+                                             "buyer-auth",
+                                             "account-copy",
+                                             "gallery-lightbox",
+                                             "share-link",
+                                             "kakao-share",
+                                             "calendar-ics"
+                                         ],
+                           "previewProductionSupabase":  "unchanged"
+                       },
+    "preflightSqlIncluded":  false,
+    "preflightSqlStatus":  "external-reference-only",
+    "finalFreeze":  {
+                        "version":  1,
+                        "status":  "internal-final-freeze",
+                        "runtimeZip":  "V67_PHASE4N_RUNTIME_FINAL_FREEZE_20260711.zip",
+                        "operationsBundle":  "V67_PHASE4N_FINAL_FREEZE_20260711.zip",
+                        "immediateRollback":  "V67_PHASE4M_RUNTIME_FULL_REGRESSION_20260711.zip",
+                        "lastFunctionalRollback":  "V67_PHASE4L_RUNTIME_EDITOR_UI_INTEGRATION_20260711.zip",
+                        "frozenBaselineV66":  {
+                                                  "file":  "V66_PREVIEW_DEPLOY_RUNTIME_20260710.zip",
+                                                  "sha256":  "9c262aa6f04ac606728152528ce5a1f9cf5e86965f198984de9db6a768f51d85",
+                                                  "included":  false,
+                                                  "reason":  "original archive was not present in the active workspace; hash reference preserved without reconstruction"
+                                              },
+                        "runtimeFileCount":  25,
+                        "functionalChangeFromPhase4M":  false,
+                        "buildMarkerNormalization":  true,
+                        "previewProductionSupabase":  "unchanged",
+                        "externalValidationPending":  [
+                                                          "Preview upload",
+                                                          "Production upload",
+                                                          "live Supabase deep health",
+                                                          "Google Fonts CDN",
+                                                          "Kakao in-app browser",
+                                                          "Android real device",
+                                                          "iPhone real device"
+                                                      ]
+                    },
+    "baseBuild":  "V68_ACCOUNT_ENVELOPE_THEME_STYLES_01_20260711",
+    "accountEnvelopeIntegration":  {
+                                       "version":  2,
+                                       "optionPath":  "options.account_display",
+                                       "values":  [
+                                                      "simple",
+                                                      "envelope"
+                                                  ],
+                                       "newCardDefault":  "envelope",
+                                       "legacyCardDefault":  "simple",
+                                       "editorPicker":  true,
+                                       "editorPreview":  true,
+                                       "publicCard":  true,
+                                       "accountRowsPreserved":  4,
+                                       "accountCopyPreserved":  true,
+                                       "savePaths":  [
+                                                         "new",
+                                                         "edit-code",
+                                                         "buyer-manage"
+                                                     ],
+                                       "prototypeThemeStyles":  [
+
+                                                                ],
+                                       "fallbackThemeStyles":  [
+
+                                                               ],
+                                       "reducedMotion":  true,
+                                       "previewProductionSupabase":  "unchanged",
+                                       "completedThemeStyles":  [
+                                                                    "signature",
+                                                                    "classic-ivory",
+                                                                    "hanok",
+                                                                    "black",
+                                                                    "fullscreen",
+                                                                    "minimal",
+                                                                    "flower",
+                                                                    "gold-serif"
+                                                                ],
+                                       "themeStyleCompletion":  true,
+                                       "functionalContractChange":  false,
+                                       "saveContractChange":  false
+                                   },
+    "externalValidationPending":  [
+                                      "Preview upload",
+                                      "Production upload",
+                                      "Kakao in-app browser",
+                                      "Android real device",
+                                      "iPhone real device"
+                                  ],
+    "feature":  "premium-account-envelope",
+    "deploymentStatus":  "not-deployed",
+    "previewProductionSupabaseChanged":  false,
+    "finalFixes":  [
+                       "account-envelope-secondary-language-bilingual-copy"
+                   ],
+    "baselineTag":  "memory-t117-stability-20260712",
+    "baselineCommit":  "32607e45b6368100171b1bac43f894634bd8e75a",
+    "workBranch":  "codex/v70-premium-redesign",
+    "configFileCount":  1,
+    "v70BaselineCertification":  {
+                                     "version":  1,
+                                     "certifiedAt":  "2026-07-12",
+                                     "scope":  "metadata-and-integrity-only",
+                                     "runtimeBehaviorChange":  false,
+                                     "designChange":  false,
+                                     "productionDeployment":  false,
+                                     "supabaseSchemaChange":  false,
+                                     "packageHashFile":  "PACKAGE_FILES.sha256",
+                                     "excludesSelfHash":  [
+                                                              "PACKAGE_FILES.sha256"
+                                                          ]
+                                 },
+    "v70ReleaseIntegrityCertification":  {
+                                               "version":  1,
+                                               "certifiedAt":  "2026-07-13",
+                                               "scope":  "work-branch-integrity-candidate",
+                                               "runtimeBehaviorChange":  false,
+                                               "productionDeployment":  false,
+                                               "supabaseSchemaChange":  false,
+                                               "classicIvoryVisualGate":  "inspection-pending",
+                                               "humanFinalApproval":  false,
+                                               "packageHashFile":  "PACKAGE_FILES.sha256",
+                                               "excludesSelfHash":  [
+                                                                        "PACKAGE_FILES.sha256"
+                                                                    ]
+                                           }
+}
