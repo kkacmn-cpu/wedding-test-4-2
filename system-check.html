@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="app-build" content="MEMORY_8_PREMIUM_FINAL_V2_20260715"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>모바일청첩장 배포 상태 확인</title>
+<style>
+:root{--bg:#f7f3ec;--card:#fff;--text:#342b24;--muted:#827467;--line:#e7ddd0;--ok:#2f7d54;--bad:#b3413c;--wait:#9a7740}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif;color:var(--text)}
+main{max-width:760px;margin:0 auto;padding:28px 16px 60px}h1{font-size:24px;margin:0 0 8px}.lead{color:var(--muted);line-height:1.6;margin:0 0 22px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 10px 30px rgba(52,43,36,.05)}
+.head{display:flex;justify-content:space-between;gap:12px;align-items:center}.badge{font-size:12px;font-weight:700;padding:6px 10px;border-radius:999px;background:#eee}.ok{color:var(--ok);background:#e7f4ec}.bad{color:var(--bad);background:#fae9e7}.wait{color:var(--wait);background:#f5eddf}
+.row{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-top:1px solid #f0e9df;font-size:14px}.row:first-child{border-top:0}.row span:last-child{text-align:right;word-break:break-all}
+button{width:100%;border:0;border-radius:14px;padding:15px;background:#342b24;color:#fff;font-size:15px;font-weight:700;cursor:pointer}button:disabled{opacity:.5}.small{font-size:12px;color:var(--muted);line-height:1.6}.summary{font-size:18px;font-weight:800;margin-top:4px}
+</style>
+</head>
+<body><main>
+<h1>배포 상태 확인</h1>
+<p class="lead">전체 파일이 같은 버전으로 올라갔는지, 서버 환경과 신규 관리 SQL이 준비됐는지 한 번에 확인합니다.</p>
+<button id="run" type="button">지금 전체 점검</button><p class="small" style="margin:10px 0 0"><a href="save-path-check.html" style="color:#342b24;font-weight:700">배포 확인 후 저장 경로 3종 검수 열기 →</a></p>
+<section class="panel"><div class="head"><b>종합 결과</b><span id="overall" class="badge wait">대기</span></div><p id="summary" class="summary">점검을 시작해 주세요.</p><p id="time" class="small"></p></section>
+<section class="panel"><div class="head"><b>정적 파일 버전·무결성</b><span id="filesBadge" class="badge wait">대기</span></div><div id="files"></div></section>
+<section class="panel"><div class="head"><b>서버·Supabase</b><span id="serverBadge" class="badge wait">대기</span></div><div id="server"></div></section>
+<p class="small">빨간 항목이 하나라도 있으면 직원 검수를 시작하지 말고 전체 ZIP을 다시 업로드해야 합니다. Production에는 사용하지 마세요.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const bust=()=>`v=${Date.now()}`;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function badge(el,ok,label){el.className='badge '+(ok?'ok':'bad');el.textContent=label;}
+async function sha256(buf){const hash=await crypto.subtle.digest('SHA-256',buf);return [...new Uint8Array(hash)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+async function checkFile(item){
+  try{const r=await fetch(`${item.path}?${bust()}`,{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);const b=await r.arrayBuffer();const hash=await sha256(b);return {...item,ok:hash===item.sha256,actual:hash};}
+  catch(e){return {...item,ok:false,error:e.message};}
+}
+function rows(target,items){target.innerHTML=items.map(x=>`<div class="row"><span>${esc(x.label||x.path||x.name)}</span><span class="${x.ok?'ok':'bad'}">${x.ok?'정상':esc(x.error||'불일치')}</span></div>`).join('');}
+async function run(){
+  $('run').disabled=true;$('run').textContent='점검 중…';$('summary').textContent='파일과 서버를 확인하고 있습니다.';
+  try{
+    const rel=await fetch(`release.json?${bust()}`,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('release.json을 찾을 수 없습니다.');return r.json();});
+    const staticFiles=(rel.files||[]).filter(x=>(x.verify||'static')==='static');
+    const fileResults=await Promise.all(staticFiles.map(checkFile));
+    rows($('files'),fileResults.map(x=>({...x,label:x.path,error:x.error||(x.ok?'':'파일 해시 불일치')})));
+    const filesOk=staticFiles.length>0&&fileResults.every(x=>x.ok);badge($('filesBadge'),filesOk,filesOk?'정상':'불일치');
+    let health;
+    try{const r=await fetch(`/api/release-health?deep=1&${bust()}`,{cache:'no-store'});health=await r.json();}catch(e){health={ok:false,build:'',env:{},checks:{},error:e.message};}
+    const serverItems=[
+      {name:'API 버전',ok:health.build===rel.build,error:`${health.build||'응답 없음'} / ${rel.build}`},
+      {name:'Supabase URL',ok:!!health.env?.supabaseUrl},
+      {name:'Service Role Key',ok:!!health.env?.serviceRoleKey},
+      {name:'방명록 관리 SQL',ok:!!health.checks?.guestbookModeration?.ok,error:health.checks?.guestbookModeration?.error},
+      {name:'하객 사진 숨김 SQL',ok:!!health.checks?.guestPhotoHidden?.ok,error:health.checks?.guestPhotoHidden?.error},
+      {name:'신규 발행 RPC',ok:!!health.checks?.publishCreateRpc?.ok,error:health.checks?.publishCreateRpc?.error},
+      {name:'수정번호 조회 RPC',ok:!!health.checks?.editReadRpc?.ok,error:health.checks?.editReadRpc?.error},
+      {name:'수정번호 저장 RPC',ok:!!health.checks?.editUpdateRpc?.ok,error:health.checks?.editUpdateRpc?.error},
+      {name:'구매자 관리 세션 RPC',ok:!!health.checks?.buyerSessionRpc?.ok,error:health.checks?.buyerSessionRpc?.error},
+      {name:'구매자 카드 목록 RPC',ok:!!health.checks?.buyerListRpc?.ok,error:health.checks?.buyerListRpc?.error},
+      {name:'구매자 조회 RPC',ok:!!health.checks?.buyerReadRpc?.ok,error:health.checks?.buyerReadRpc?.error},
+      {name:'구매자 저장 RPC',ok:!!health.checks?.buyerUpdateRpc?.ok,error:health.checks?.buyerUpdateRpc?.error},
+      {name:'하객 사진 Storage',ok:!!health.checks?.storageBucket?.ok,error:health.checks?.storageBucket?.error}
+    ];
+    rows($('server'),serverItems);const serverOk=health.ok&&serverItems.every(x=>x.ok);badge($('serverBadge'),serverOk,serverOk?'정상':'확인 필요');
+    const allOk=filesOk&&serverOk;badge($('overall'),allOk,allOk?'검수 시작 가능':'검수 시작 금지');
+    $('summary').textContent=allOk?'전체 파일과 서버 설정이 같은 최신 버전입니다.':'일부 파일 또는 서버 설정이 맞지 않습니다.';
+    $('time').textContent=`기준 ${rel.build} · ${new Date().toLocaleString('ko-KR')}`;
+  }catch(e){badge($('overall'),false,'점검 실패');$('summary').textContent=e.message;}
+  finally{$('run').disabled=false;$('run').textContent='다시 점검';}
+}
+$('run').addEventListener('click',run);run();
+</script></body></html>

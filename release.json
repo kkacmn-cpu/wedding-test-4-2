@@ -1,0 +1,351 @@
+{
+    "schemaVersion":  2,
+    "build":  "MEMORY_8_PREMIUM_FINAL_V2_20260715",
+    "createdAt":  "2026-07-15",
+    "releaseType":  "final-implementation-metadata-refresh",
+    "packageName":  "MEMORY_8_PREMIUM_IMPLEMENTATION_FINAL_V2_20260715.zip",
+    "implementationBranch":  "codex/memory-8-premium-implementation-20260714",
+    "implementationCommit":  "341ed65fdfcf531c5853737f54149a07244f5dd6",
+    "releaseMetadataCommit":  "git-head-containing-this-manifest",
+    "deploymentStatus":  "not-deployed",
+    "templateCount":  8,
+    "templates":  [
+                      {
+                          "design":  "SIGNATURE",
+                          "runtimeId":  "signature",
+                          "module":  "templates/01-signature"
+                      },
+                      {
+                          "design":  "CLASSIC IVORY",
+                          "runtimeId":  "classic-ivory",
+                          "module":  "templates/02-classic-ivory"
+                      },
+                      {
+                          "design":  "GARDEN SNAP",
+                          "runtimeId":  "flower",
+                          "module":  "templates/03-garden-snap"
+                      },
+                      {
+                          "design":  "HANOK",
+                          "runtimeId":  "hanok",
+                          "module":  "templates/04-hanok"
+                      },
+                      {
+                          "design":  "NOIR",
+                          "runtimeId":  "black",
+                          "module":  "templates/05-noir"
+                      },
+                      {
+                          "design":  "EDITORIAL",
+                          "runtimeId":  "minimal",
+                          "module":  "templates/06-editorial"
+                      },
+                      {
+                          "design":  "CINEMA",
+                          "runtimeId":  "fullscreen",
+                          "module":  "templates/07-cinema"
+                      },
+                      {
+                          "design":  "LETTER",
+                          "runtimeId":  "gold-serif",
+                          "module":  "templates/08-letter"
+                      }
+                  ],
+    "integrityScope":  "runtime-critical-files-in-git-archive",
+    "integritySelfExcluded":  "release.json",
+    "files":  [
+                  {
+                      "path":  "editor.html",
+                      "verify":  "static",
+                      "sha256":  "d69fd37ec8be77f2c369d2cf7720d83c0f4094e325b85161db7344a7ef77bca5",
+                      "bytes":  929724
+                  },
+                  {
+                      "path":  "card.html",
+                      "verify":  "static",
+                      "sha256":  "0494f89a986c923a45ff339cc1b166fc114b0f3aec4367302d642b56623c41f6",
+                      "bytes":  569405
+                  },
+                  {
+                      "path":  "admin.html",
+                      "verify":  "static",
+                      "sha256":  "0a7f4f70c31b0a30787d1eb08ea9aa995692618bf498268046bc32b5f0268685",
+                      "bytes":  13688
+                  },
+                  {
+                      "path":  "index.html",
+                      "verify":  "static",
+                      "sha256":  "b24dada4cd05d4212b1392a18b0bcf08d18153cea3ff8fbc4824bfca2cc1b2bc",
+                      "bytes":  544
+                  },
+                  {
+                      "path":  "system-check.html",
+                      "verify":  "static",
+                      "sha256":  "84758d6581283c5c324f21bdd2ab40abdd294a72bb4dc0e14d1f6377708f02b0",
+                      "bytes":  7079
+                  },
+                  {
+                      "path":  "save-path-check.html",
+                      "verify":  "static",
+                      "sha256":  "aeb9f14b20bd0f7bc6f40cc306a211d82505d1ce5ced1ea762eb0a9af5c44057",
+                      "bytes":  9590
+                  },
+                  {
+                      "path":  "qa-center.html",
+                      "verify":  "static",
+                      "sha256":  "de62d5783fca6cc04096e651b7f0fac10f3a24ab5b986c30a66a49d68ffe6718",
+                      "bytes":  31373
+                  },
+                  {
+                      "path":  "og-default.jpg",
+                      "verify":  "static",
+                      "sha256":  "2a6d16618f98ca4aaf0f01826509359dafa9f6459659ebf3febd2409a6cea7e0",
+                      "bytes":  115688
+                  },
+                  {
+                      "path":  "samples/tpl-black.webp",
+                      "verify":  "static",
+                      "sha256":  "435df0cbeb042ae7256d9266dcdc15d689efa813fc9f9d0d0abaf0866537fa0d",
+                      "bytes":  1647810
+                  },
+                  {
+                      "path":  "samples/tpl-classic-ivory.webp",
+                      "verify":  "static",
+                      "sha256":  "457cbc87b7407b84cc2867c124803e27f52afa20a827f1dd6de7fe962777d2f9",
+                      "bytes":  1684901
+                  },
+                  {
+                      "path":  "samples/tpl-flower.webp",
+                      "verify":  "static",
+                      "sha256":  "1ed906b4eaa076afe2a0f0e2a6e7123cc808003432e509dd1139a6ab27468d9f",
+                      "bytes":  1968696
+                  },
+                  {
+                      "path":  "samples/tpl-hanok.webp",
+                      "verify":  "static",
+                      "sha256":  "b43fbd7513f75fd68335f45bb0cd41a0474dc8289201ffb6a84f6588373f352e",
+                      "bytes":  2020829
+                  },
+                  {
+                      "path":  "samples/tpl-minimal.webp",
+                      "verify":  "static",
+                      "sha256":  "e1964686a21704f0674803eea2a30a3961e2ed7030633a43c76b52843a02c3dc",
+                      "bytes":  1496690
+                  },
+                  {
+                      "path":  "samples/tpl-signature.png",
+                      "verify":  "static",
+                      "sha256":  "72f9f8198097baf6cddce377f58348e4a0e68879c255ea84f3c2cbda1cee5717",
+                      "bytes":  2335108
+                  },
+                  {
+                      "path":  "templates/01-signature.css",
+                      "verify":  "static",
+                      "sha256":  "cb3566b1be68290176399579044e3833ddaffabc3938e0859a535c80ece7db40",
+                      "bytes":  19841
+                  },
+                  {
+                      "path":  "templates/01-signature.js",
+                      "verify":  "static",
+                      "sha256":  "229f2caf9cf27478d762b9b1b97fe6d542f58af6f38c3a2f64331938784a5807",
+                      "bytes":  13899
+                  },
+                  {
+                      "path":  "templates/02-classic-ivory.css",
+                      "verify":  "static",
+                      "sha256":  "33c6033cf217dfaaa6570c8d0226c5c7101ee645a6af878b79fdcefceb6bbb4a",
+                      "bytes":  34356
+                  },
+                  {
+                      "path":  "templates/02-classic-ivory.js",
+                      "verify":  "static",
+                      "sha256":  "2b035a22cab8dd12e20740d737801f81303f6253ce6a937d6bf19ec8e3f7628a",
+                      "bytes":  30938
+                  },
+                  {
+                      "path":  "templates/03-garden-snap.css",
+                      "verify":  "static",
+                      "sha256":  "b8b21ee09aeb87dc3d10caf33318b010c093af2c920ef59295819a03f3eacfaa",
+                      "bytes":  31781
+                  },
+                  {
+                      "path":  "templates/03-garden-snap.js",
+                      "verify":  "static",
+                      "sha256":  "79cb9a49dbe15243bc5bea95a7d5ede1ab597684a994c9a8434b12d7a142e357",
+                      "bytes":  35898
+                  },
+                  {
+                      "path":  "templates/04-hanok.css",
+                      "verify":  "static",
+                      "sha256":  "f07500c87f55982c755034b5cab299862b8c7487043c6d766d240de78e4d9b7c",
+                      "bytes":  33368
+                  },
+                  {
+                      "path":  "templates/04-hanok.js",
+                      "verify":  "static",
+                      "sha256":  "f760ba28aeaef59b1b2c1bcb47452bedc0c7280ea0d9a45e29a27b1aa8e450b3",
+                      "bytes":  40417
+                  },
+                  {
+                      "path":  "templates/05-noir.css",
+                      "verify":  "static",
+                      "sha256":  "12ecea4cec8d687c94d907e45edfafe273523a20e9a4dc566c9ef8ee73e3ee1d",
+                      "bytes":  21982
+                  },
+                  {
+                      "path":  "templates/05-noir.js",
+                      "verify":  "static",
+                      "sha256":  "0592041dbdf916344b2164fcc3d298c7f879b9784ee89ef0d7dfa66cd70d5b98",
+                      "bytes":  24256
+                  },
+                  {
+                      "path":  "templates/06-editorial.css",
+                      "verify":  "static",
+                      "sha256":  "77e38db2044b1729e8d37270ddd0aaf295b3e6414acf08c8625437985e833128",
+                      "bytes":  39490
+                  },
+                  {
+                      "path":  "templates/06-editorial.js",
+                      "verify":  "static",
+                      "sha256":  "5179042b78fcec0ba41daadfb370b8a3b395440f285272da57435cc8b7396842",
+                      "bytes":  40710
+                  },
+                  {
+                      "path":  "templates/07-cinema.css",
+                      "verify":  "static",
+                      "sha256":  "4ee1e3ce039eb8b1ed14dd22a5738063f75e336733d392fc07346bd567835444",
+                      "bytes":  40139
+                  },
+                  {
+                      "path":  "templates/07-cinema.js",
+                      "verify":  "static",
+                      "sha256":  "95f702625167758bffe19d873f92fdf8af3b2c760c2172ed1ec3d95b781354f4",
+                      "bytes":  37649
+                  },
+                  {
+                      "path":  "templates/08-letter.css",
+                      "verify":  "static",
+                      "sha256":  "ddc494e68aeb381ec235c12c66d4c556cd64189f480fd1624efda7f8f7592d73",
+                      "bytes":  32636
+                  },
+                  {
+                      "path":  "templates/08-letter.js",
+                      "verify":  "static",
+                      "sha256":  "23524f7d7dda29ed925cd8827f5e4809b980c80120dda7e3dd3eb0b37eaf1794",
+                      "bytes":  34198
+                  },
+                  {
+                      "path":  "templates/assets/noir-phone-receiver.svg",
+                      "verify":  "static",
+                      "sha256":  "647601dc093b912bf167993392b8e783ca279ea87244ccb172c562e7b2d816d8",
+                      "bytes":  423
+                  },
+                  {
+                      "path":  "assets/fonts/cinema/cinema-fonts.css",
+                      "verify":  "static",
+                      "sha256":  "cc6c7b3e72e3634284e4b33ed126538a95f1155c324b2f0655ff82b67d3ef746",
+                      "bytes":  528247
+                  },
+                  {
+                      "path":  "assets/fonts/letter/letter-fonts.css",
+                      "verify":  "static",
+                      "sha256":  "d8ca6e9dcc6de3979d49211466abaa98cc4a8a1a4a8bc4bfc0c29918e29aeda9",
+                      "bytes":  116497
+                  },
+                  {
+                      "path":  "api/admin-auth.js",
+                      "verify":  "server",
+                      "sha256":  "c3d37097f64d180f95f234c938cd664109a0790580326e83a48186053e0b2cd5",
+                      "bytes":  5389
+                  },
+                  {
+                      "path":  "api/admin-data.js",
+                      "verify":  "server",
+                      "sha256":  "a7af0d094d7a6c340e7705ab5eafeb5ee188d3da7f5b2e2ccca11022a58c3cab",
+                      "bytes":  5932
+                  },
+                  {
+                      "path":  "api/guest-photo-common.js",
+                      "verify":  "server",
+                      "sha256":  "38defed6eea0dae8756a861a05383a8e7342880d2049c440c3cefff769da90cb",
+                      "bytes":  13046
+                  },
+                  {
+                      "path":  "api/guest-photo-manage.js",
+                      "verify":  "server",
+                      "sha256":  "fb8448b53a6bb87ebe4f5dfd643d115884c3619d566de65ecb3d9edd50334775",
+                      "bytes":  5687
+                  },
+                  {
+                      "path":  "api/guest-photo.js",
+                      "verify":  "server",
+                      "sha256":  "321bef3186dd5a0511cf50f411218a8a75ac4ccc273bbe3d552e076bd055729a",
+                      "bytes":  9690
+                  },
+                  {
+                      "path":  "api/owner-center.js",
+                      "verify":  "server",
+                      "sha256":  "d9d942f6bf8344e1f46bcf90b86f2e2bb3125b37a47011099b904ac4c2495eb0",
+                      "bytes":  10687
+                  },
+                  {
+                      "path":  "api/release-health.js",
+                      "verify":  "server",
+                      "sha256":  "ee7a2a24bee5ed4d773685d7a9e28476f699c8435642255b5b2a361a84687cac",
+                      "bytes":  3555
+                  },
+                  {
+                      "path":  "api/wedding-share.js",
+                      "verify":  "server",
+                      "sha256":  "2ca65e99c799fa7ff72253af06ab0cc29431ba09992616776f1ef71b7fdb4423",
+                      "bytes":  9426
+                  },
+                  {
+                      "path":  "vercel.json",
+                      "verify":  "config",
+                      "sha256":  "25e16c57f4f6bd68a1841843e2a458f4e4b3eee8dc198c287b18082ce18586a4",
+                      "bytes":  351
+                  }
+              ],
+    "staticIntegrityCount":  33,
+    "serverFunctionCount":  8,
+    "configFileCount":  1,
+    "integrityFileCount":  42,
+    "packageFileCount":  804,
+    "packageHashEntryCount":  803,
+    "packageHashManifest":  "../PACKAGE_FILES.sha256",
+    "rollback":  {
+                     "commit":  "32607e45b6368100171b1bac43f894634bd8e75a",
+                     "tag":  "memory-t117-stability-20260712"
+                 },
+    "metadataRefresh":  {
+                            "auditDate":  "2026-07-15",
+                            "hashByteSource":  "git-archive",
+                            "implementationFilesChanged":  false,
+                            "scope":  [
+                                          "release metadata",
+                                          "package manifest",
+                                          "SHA manifests",
+                                          "final handoff documents"
+                                      ]
+                        },
+    "localValidation":  {
+                            "templates":  "8/8 PASS",
+                            "mobileMatrix":  "48/48 PASS",
+                            "stressMatrix":  "32/32 PASS",
+                            "photoStates":  "32/32 PASS",
+                            "galleryInteractions":  "8/8 PASS",
+                            "frozenCoverParity":  "40/40 PASS",
+                            "localWoff2":  "460/460 PASS",
+                            "finalCaptures":  "24/24 PASS"
+                        },
+    "externalValidationPending":  [
+                                      "iPhone Safari physical device",
+                                      "Android Chrome physical device",
+                                      "Kakao WebView",
+                                      "safe-area and mobile keyboard",
+                                      "40-photo physical-device memory",
+                                      "non-production publish and persistence",
+                                      "live external-service handoff"
+                                  ]
+}
